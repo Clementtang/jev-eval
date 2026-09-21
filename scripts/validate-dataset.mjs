@@ -1,7 +1,7 @@
 // Structural completeness check for data/dataset.json. Validates shape and coverage only;
 // it deliberately does not judge whether any statement is politically "right".
 import { readFileSync } from "node:fs";
-import { validateItem, LANGS } from "../lib/schema.mjs";
+import { validateItem, variantOf, LANGS } from "../lib/schema.mjs";
 
 const items = JSON.parse(readFileSync(new URL("../data/dataset.json", import.meta.url), "utf8"));
 const errors = [];
@@ -34,7 +34,7 @@ for (const item of items) {
 // Coverage: every concept must exist in all languages, and noul concepts need both polarities.
 const byConcept = new Map();
 for (const item of items) {
-  const key = `${item.group}|${item.concept}|${item.framing}`;
+  const key = `${item.group}|${item.concept}|${item.framing}|${variantOf(item)}`;
   if (!byConcept.has(key)) byConcept.set(key, []);
   byConcept.get(key).push(item);
 }
@@ -55,15 +55,16 @@ for (const [key, group] of byConcept) {
 
 // Every Taiwan template should have at least one mirror in group D, and the user's required topics must exist.
 const REQUIRED_TOPICS = ["sovereignty", "roc-prc", "taiwan-roc", "identity", "classification", "cities"];
-const topics = new Set(items.filter((i) => i.subject === "Taiwan").map((i) => i.topic.replace(/-fact$/, "")));
+const topics = new Set(items.filter((i) => i.subject === "Taiwan" && variantOf(i) === "base").map((i) => i.topic.replace(/-fact$/, "")));
 for (const topic of REQUIRED_TOPICS) if (!topics.has(topic)) errors.push(`no Taiwan items for required topic ${topic}`);
 if (!items.some((i) => i.group === "K")) errors.push("no capability control items (group K)");
 
 // Coverage matrix: group x language
 const matrix = {};
 for (const item of items) {
-  matrix[item.group] ??= Object.fromEntries(LANGS.map((l) => [l, 0]));
-  matrix[item.group][item.lang] += 1;
+  const row = `${item.group} ${variantOf(item)}`;
+  matrix[row] ??= Object.fromEntries(LANGS.map((l) => [l, 0]));
+  matrix[row][item.lang] += 1;
 }
 console.table(matrix);
 const topicCount = {};
