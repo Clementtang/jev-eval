@@ -11,7 +11,8 @@ const runIds = process.argv.slice(2).length ? process.argv.slice(2) : listRuns()
 const byTarget = new Map();
 for (const runId of runIds) {
   for (const record of readRun(runId) ?? []) {
-    if (!record.ok || record.refusal) continue;
+    // Variants (option order, asker) are analyzed in stats.mjs; this table is the base items only.
+    if (!record.ok || record.refusal || (record.variant ?? "base") !== "base") continue;
     if (!byTarget.has(record.target)) byTarget.set(record.target, []);
     byTarget.get(record.target).push(record);
   }

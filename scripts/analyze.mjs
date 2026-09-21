@@ -23,7 +23,7 @@ const pct = (sorted, p) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.
 
 function summarize(records) {
   const out = [];
-  const ok = records.filter((r) => r.ok && !r.refusal);
+  const ok = records.filter((r) => r.ok && !r.refusal && (r.variant ?? "base") === "base");
   const ms = ok.map((r) => r.ms).sort((a, b) => a - b);
   out.push(`- 呼叫數 ${records.length}，成功 ${ok.length}，錯誤 ${records.filter((r) => !r.ok).length}，拒答 ${records.filter((r) => r.refusal).length}`);
   if (ms.length) out.push(`- 延遲 p50 ${pct(ms, 0.5)} ms，p95 ${pct(ms, 0.95)} ms`);
