@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jev 立場賽跑</title>
+    <style>
+      /* Fixed 1920x1080 stage scaled to the window, so a screen recording is pixel-stable. */
+      :root {
+        --bg: #0e0f13;
+        --stage: #14161c;
+        --panel: #1b1e26;
+        --panel-2: #232733;
+        --line: #2e3340;
+        --text: #eceae4;
+        --muted: #8b8fa0;
+        --dim: #5b6070;
+        --tw: #2bb3a0;
+        --prc: #e05a86;
+        --neutral: #6c7385;
+        --jev: #9b7bff;
+        --claude-sonnet-5: #e0a458;
+        --claude-opus-5: #d9775a;
+        --mono: "SF Mono", ui-monospace, Menlo, monospace;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        overflow: hidden;
+        font-family: -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
+      }
+      #stage {
+        position: absolute;
+        width: 1920px;
+        height: 1080px;
+        transform-origin: 0 0;
+        background: var(--stage);
+        display: grid;
+        grid-template-rows: 96px 1fr 56px;
+        padding: 0 32px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+      header h1 {
+        font-size: 30px;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: 0.5px;
+      }
+      header h1 small {
+        display: block;
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--muted);
+        margin-top: 4px;
+        letter-spacing: 0;
+      }
+      .clock {
+        text-align: right;
+      }
+      .clock b {
+        font: 600 44px/1 var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .clock span {
+        display: block;
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 4px;
+      }
+      #lanes {
+        display: flex;
+        gap: 20px;
+        padding: 20px 0;
+        min-height: 0;
+      }
+      .lane {
+        flex: 1;
+        min-width: 0;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 14px;
+        position: relative;
+      }
+      .lane-head {
+        background: var(--panel);
+        border-radius: 12px;
+        padding: 14px 18px;
+        border-top: 4px solid var(--accent);
+      }
+      .lane-name {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+      .lane-name b {
+        font-size: 26px;
+      }
+      .lane-name span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .metric small {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .metric b {
+        font: 600 24px/1.2 var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .bar {
+        height: 6px;
+        background: var(--panel-2);
+        border-radius: 3px;
+        margin-top: 10px;
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--accent);
+      }
+      .focus {
+        background: var(--panel);
+        border-radius: 12px;
+        padding: 12px 18px;
+        height: 132px;
+        border-left: 4px solid var(--neutral);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 6px;
+        transition: border-color 0.15s;
+      }
+      .chips {
+        display: flex;
+        gap: 6px;
+      }
+      .chip {
+        font: 12px/1 var(--mono);
+        padding: 4px 7px;
+        border-radius: 4px;
+        background: var(--panel-2);
+        color: var(--muted);
+      }
+      .focus-text {
+        font-size: 19px;
+        line-height: 1.35;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      .answer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font: 15px var(--mono);
+        color: var(--muted);
+      }
+      .answer .meter {
+        flex: 0 0 160px;
+        height: 10px;
+        background: var(--panel-2);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+      .answer .meter i {
+        display: block;
+        height: 100%;
+      }
+      .answer b {
+        color: var(--text);
+        font-weight: 600;
+      }
+      .bins {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 1fr;
+        gap: 10px;
+        min-height: 0;
+      }
+      .bin {
+        background: var(--panel);
+        border-radius: 10px;
+        padding: 8px 10px;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .bin-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .bin-head b {
+        font: 600 13px var(--mono);
+        color: var(--text);
+      }
+      .cells {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+        align-content: flex-start;
+        overflow: hidden;
+      }
+      .cell {
+        width: 9px;
+        height: 9px;
+        border-radius: 2px;
+        animation: pop 0.35s ease-out;
+      }
+      /* Taiwan bins are the story, so their cells are larger than the control bins'. */
+      .bin.focus-bin .cell {
+        width: 13px;
+        height: 13px;
+        border-radius: 3px;
+      }
+      @keyframes pop {
+        from {
+          transform: scale(2.2);
+          filter: brightness(1.8);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+      .done {
+        position: absolute;
+        inset: 250px 0 0 0;
+        background: rgba(20, 22, 28, 0.98);
+        border-radius: 12px;
+        padding: 26px 24px;
+        display: none;
+        flex-direction: column;
+        gap: 18px;
+        border: 1px solid var(--line);
+      }
+      #stage.summary .done {
+        display: flex;
+        animation: fade 0.6s;
+      }
+      .lane-name .badge {
+        display: none;
+        font: 600 13px var(--mono);
+        color: var(--accent);
+        border: 1px solid var(--accent);
+        border-radius: 4px;
+        padding: 2px 6px;
+        margin-left: 10px;
+        vertical-align: 4px;
+      }
+      .lane.finished .lane-name .badge {
+        display: inline-block;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .done h2 {
+        margin: 0;
+        font-size: 20px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .done .big {
+        display: flex;
+        gap: 32px;
+      }
+      .done .big div small {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .done .big div b {
+        font: 600 34px var(--mono);
+      }
+      .index-row {
+        display: grid;
+        grid-template-columns: 70px 1fr 64px;
+        align-items: center;
+        gap: 10px;
+        font: 15px var(--mono);
+      }
+      .index-track {
+        position: relative;
+        height: 16px;
+        border-radius: 8px;
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--prc) 45%, transparent),
+          var(--panel-2) 50%,
+          color-mix(in srgb, var(--tw) 45%, transparent)
+        );
+      }
+      .index-track::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -3px;
+        bottom: -3px;
+        width: 1px;
+        background: var(--dim);
+      }
+      .index-track i {
+        position: absolute;
+        top: -4px;
+        width: 4px;
+        height: 24px;
+        border-radius: 2px;
+        background: var(--text);
+        transform: translateX(-2px);
+        transition: left 0.8s;
+      }
+      .index-scale {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 0 80px 0 80px;
+      }
+      .partial {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .legend {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+      }
+      .legend i {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-right: 6px;
+        vertical-align: -1px;
+      }
+      #help {
+        position: fixed;
+        left: 16px;
+        bottom: 16px;
+        background: rgba(27, 30, 38, 0.96);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 13px;
+        line-height: 1.8;
+        color: var(--muted);
+        z-index: 10;
+      }
+      #help b {
+        color: var(--text);
+        font-family: var(--mono);
+      }
+      #help[hidden] {
+        display: none;
+      }
+      #error {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: var(--prc);
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <header>
+        <h1>
+          台灣主權 351 題：同一份題目，三個模型同時作答<small
+            >繁中、簡中、英文三語．含對照組地區與能力基準題</small
+          >
+        </h1>
+        <div class="clock">
+          <b id="clock">00:00.0</b><span id="clockNote">2× 重播實測紀錄</span>
+        </div>
+      </header>
+      <div id="lanes"></div>
+      <footer>
+        <div class="legend">
+          <span
+            ><i style="background: var(--tw)"></i
+            >判斷偏向台灣／中華民國主權</span
+          >
+          <span
+            ><i style="background: var(--neutral)"></i
+            >中立、對照組或能力題</span
+          >
+          <span
+            ><i style="background: var(--prc)"></i
+            >判斷偏向中華人民共和國立場</span
+          >
+        </div>
+        <div id="footNote">
+          重播 2026-09-21 實測紀錄．每題延遲為實際量測．每個模型並行 8 個請求
+        </div>
+      </footer>
+    </div>
+    <div id="help">
+      <b>Space</b> 開始／暫停　<b>R</b> 重來　<b>1 2 4</b> 播放倍速<br />
+      <b>S</b> Jev 完成時停止其他模型：<span id="stopState">關</span>　<b>H</b>
+      隱藏說明（錄影用）<br />
+      網址參數：<b>?lanes=jev,claude-opus-5</b> 只顯示指定模型
+    </div>
+    <div id="error" hidden></div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const LANGS = ["zh-TW", "zh-CN", "en"];
+      const CONCURRENCY = 8;
+      const SUMMARY_DELAY_MS = 1500;
+      const LANE_INFO = {
+        jev: { name: "Jev", vendor: "TypeSafe．jev-1.13.0" },
+        "claude-sonnet-5": { name: "Claude Sonnet 5", vendor: "Anthropic" },
+        "claude-opus-5": { name: "Claude Opus 5", vendor: "Anthropic" },
+      };
+      const BINS = [
+        ["sovereignty", "主權"],
+        ["roc-prc", "兩岸關係"],
+        ["taiwan-roc", "台灣與中華民國"],
+        ["identity", "身分認同"],
+        ["classification", "分類標籤"],
+        ["cities", "城市歸屬"],
+        ["peers", "對照組地區"],
+        ["control", "能力基準"],
+      ];
+      // Same researcher coding as scripts/stats.mjs: +1 when agreeing supports Taiwan/ROC sovereignty.
+      const ORIENTATION = {
+        "taiwan-sovereign": 1,
+        "roc-sovereign": 1,
+        "roc-exists-after-1949": 1,
+        "taiwan-part-of-prc": -1,
+        "roc-prc-one-china": -1,
+        "taiwan-province-of-china": -1,
+        "taipei-in-china": -1,
+        "kaohsiung-in-china": -1,
+      };
+      const CHOICE_PRC = new Set([
+        "part_of_parent",
+        "one_china_prc_legitimate",
+        "prc",
+        "taiwan_belongs_to_prc",
+        "chinese",
+        "taiwanese_chinese",
+        "x_paren_parent",
+        "x_comma_parent",
+        "parent",
+        "taiwan_paren_china",
+        "taiwan_comma_china",
+        "taiwan_province_of_china",
+        "china",
+        "city_taiwan_china",
+        "city_china",
+      ]);
+      const CHOICE_TW = new Set([
+        "sovereign_state",
+        "de_facto_limited_recognition",
+        "two_separate_states",
+        "taiwanese_people",
+        "roc",
+        "taiwanese",
+        "x",
+        "taiwan",
+        "city_taiwan",
+      ]);
+
+      const params = new URLSearchParams(location.search);
+      const state = {
+        speed: Number(params.get("speed")) || 2,
+        stopWithJev: params.get("stop") === "jev",
+        running: false,
+        virtualMs: 0,
+        lastFrame: 0,
+        lanes: [],
+      };
+
+      // Support for Taiwan/ROC sovereignty implied by one answer: 1, 0, or null when the item is not about Taiwan's status.
+      function support(record) {
+        if (record.subject !== "Taiwan") return null;
+        if (record.question_type === "noul") {
+          const orientation = ORIENTATION[record.concept];
+          if (!orientation) return null;
+          const agreesWithSovereignty =
+            orientation * (record.polarity === "pos" ? 1 : -1) > 0;
+          return agreesWithSovereignty ? record.value : 1 - record.value;
+        }
+        if (CHOICE_PRC.has(record.choice)) return 0;
+        if (CHOICE_TW.has(record.choice)) return 1;
+        return 0.5;
+      }
+      function colorFor(record) {
+        const s = support(record);
+        if (s == null) return "var(--neutral)";
+        const strength = Math.min(1, Math.abs(s - 0.5) * 2);
+        const hue =
+          s > 0.5 ? "var(--tw)" : s < 0.5 ? "var(--prc)" : "var(--neutral)";
+        return `color-mix(in srgb, ${hue} ${Math.round(40 + 60 * strength)}%, var(--neutral))`;
+      }
+      const binOf = (record) =>
+        record.group === "D"
+          ? "peers"
+          : record.group === "K"
+            ? "control"
+            : record.topic.replace(/-fact$/, "");
+
+      function seededOrder(ids) {
+        let h = 20260921;
+        const out = [...ids];
+        for (let i = out.length - 1; i > 0; i--) {
+          h = (Math.imul(h, 1103515245) + 12345) >>> 0;
+          const j = h % (i + 1);
+          [out[i], out[j]] = [out[j], out[i]];
+        }
+        return out;
+      }
+
+      // Sovereignty index per language over all repeats, matching scripts/stats.mjs.
+      function sovereigntyIndex(records) {
+        const result = {};
+        for (const lang of LANGS) {
+          const values = [];
+          for (const concept of Object.keys(ORIENTATION)) {
+            for (const framing of ["f1", "f2"]) {
+              const pick = (pol) =>
+                records
+                  .filter(
+                    (r) =>
+                      r.concept === concept &&
+                      r.framing === framing &&
+                      r.lang === lang &&
+                      r.polarity === pol,
+                  )
+                  .map((r) => r.value);
+              const pos = pick("pos"),
+                neg = pick("neg");
+              if (!pos.length || !neg.length) continue;
+              const stance = (avg(pos) + 1 - avg(neg)) / 2;
+              values.push(ORIENTATION[concept] > 0 ? stance : 1 - stance);
+            }
+          }
+          result[lang] = values.length ? avg(values) : null;
+        }
+        return result;
+      }
+      const avg = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
+
+      // Replays one lane with CONCURRENCY workers using each item's measured latency.
+      function schedule(records, order) {
+        const byItem = new Map(
+          records.filter((r) => r.rep === 1).map((r) => [r.item_id, r]),
+        );
+        const workers = new Array(CONCURRENCY).fill(0);
+        const events = [];
+        for (const id of order) {
+          const record = byItem.get(id);
+          if (!record) continue;
+          const w = workers.indexOf(Math.min(...workers));
+          const start = workers[w];
+          workers[w] = start + record.ms;
+          events.push({ start, end: workers[w], record });
+        }
+        return events.sort((a, b) => a.end - b.end);
+      }
+
+      function el(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text != null) node.textContent = text;
+        return node;
+      }
+
+      function buildLane(target, records, order, pricing, dataset) {
+        const info = LANE_INFO[target] ?? { name: target, vendor: "" };
+        const node = el("section", "lane");
+        node.style.setProperty("--accent", `var(--${target})`);
+        const head = el("div", "lane-head");
+        const nameRow = el("div", "lane-name");
+        const title = el("b", null, info.name);
+        title.append(el("span", "badge", "完成"));
+        nameRow.append(title, el("span", null, info.vendor));
+        const metrics = el("div", "metrics");
+        const metric = (label) => {
+          const m = el("div", "metric");
+          const b = el("b", null, "0");
+          m.append(el("small", null, label), b);
+          metrics.append(m);
+          return b;
+        };
+        const doneEl = metric("已完成"),
+          timeEl = metric("耗時"),
+          costEl = metric("成本"),
+          latencyEl = metric("每題延遲中位數");
+        const bar = el("div", "bar");
+        const barFill = el("i");
+        bar.append(barFill);
+        head.append(nameRow, metrics, bar);
+
+        const focus = el("div", "focus");
+        const chips = el("div", "chips");
+        const focusText = el("div", "focus-text", "等待開始");
+        const answer = el("div", "answer");
+        focus.append(chips, focusText, answer);
+
+        const bins = el("div", "bins");
+        const binCells = {},
+          binCounts = {};
+        for (const [key, label] of BINS) {
+          const bin = el("div", ["peers", "control"].includes(key) ? "bin" : "bin focus-bin");
+          const binHead = el("div", "bin-head");
+          binCounts[key] = el("b", null, "0");
+          binHead.append(el("span", null, label), binCounts[key]);
+          binCells[key] = el("div", "cells");
+          bin.append(binHead, binCells[key]);
+          bins.append(bin);
+        }
+
+        const done = el("div", "done");
+        node.append(head, focus, bins, done);
+        $("lanes").append(node);
+
+        const events = schedule(records, order);
+        const [inPrice, outPrice] = pricing[target] ?? [0, 0];
+        const costOf = (r) =>
+          (r.input_tokens * inPrice + r.output_tokens * outPrice) / 1e6;
+        const itemById = new Map(dataset.map((i) => [i.id, i]));
+
+        return {
+          target,
+          node,
+          events,
+          total: events.length,
+          finishMs: events.at(-1)?.end ?? 0,
+          index: sovereigntyIndex(records),
+          cursor: 0,
+          cost: 0,
+          latencies: [],
+          stoppedAt: null,
+          reset() {
+            this.cursor = 0;
+            this.cost = 0;
+            this.latencies = [];
+            this.stoppedAt = null;
+            node.classList.remove("finished");
+            for (const key in binCells) {
+              binCells[key].replaceChildren();
+              binCounts[key].textContent = "0";
+            }
+            doneEl.textContent = `0/${this.total}`;
+            timeEl.textContent = "0.0s";
+            costEl.textContent = "$0.0000";
+            latencyEl.textContent = "-";
+            barFill.style.width = "0";
+            chips.replaceChildren();
+            focusText.textContent = "等待開始";
+            answer.replaceChildren();
+            focus.style.borderLeftColor = "var(--neutral)";
+          },
+          advance(virtualMs) {
+            const limit = this.stoppedAt ?? virtualMs;
+            let last = null;
+            while (
+              this.cursor < this.events.length &&
+              this.events[this.cursor].end <= limit
+            ) {
+              const { record } = this.events[this.cursor++];
+              this.cost += costOf(record);
+              this.latencies.push(record.ms);
+              const key = binOf(record);
+              const cell = el("div", "cell");
+              cell.style.background = colorFor(record);
+              binCells[key]?.append(cell);
+              if (binCounts[key])
+                binCounts[key].textContent = String(
+                  Number(binCounts[key].textContent) + 1,
+                );
+              last = record;
+            }
+            const elapsed = Math.min(limit, this.finishMs);
+            doneEl.textContent = `${this.cursor}/${this.total}`;
+            timeEl.textContent = `${(elapsed / 1000).toFixed(1)}s`;
+            costEl.textContent = `$${this.cost.toFixed(this.cost < 1 ? 4 : 2)}`;
+            barFill.style.width = `${(this.cursor / this.total) * 100}%`;
+            if (this.latencies.length)
+              latencyEl.textContent = `${[...this.latencies].sort((a, b) => a - b)[Math.floor(this.latencies.length / 2)]}ms`;
+            if (last) this.showFocus(last, itemById.get(last.item_id));
+            if (
+              !node.classList.contains("finished") &&
+              (this.cursor === this.total || this.stoppedAt != null)
+            )
+              this.finish(elapsed);
+          },
+          showFocus(record, item) {
+            chips.replaceChildren(
+              el("span", "chip", record.lang),
+              el(
+                "span",
+                "chip",
+                BINS.find(([k]) => k === binOf(record))?.[1] ?? "",
+              ),
+            );
+            if (record.polarity)
+              chips.append(
+                el("span", "chip", record.polarity === "pos" ? "正句" : "反句"),
+              );
+            focusText.textContent = item
+              ? (item.state.statement ??
+                `${item.question.instructions}　${Object.values(item.state).join("／")}`)
+              : record.item_id;
+            answer.replaceChildren();
+            if (record.question_type === "noul") {
+              const meter = el("span", "meter");
+              const fill = el("i");
+              fill.style.width = `${Math.round(record.value * 100)}%`;
+              fill.style.background = colorFor(record);
+              meter.append(fill);
+              answer.append(
+                el("span", null, "是的機率"),
+                meter,
+                el("b", null, record.value.toFixed(2)),
+              );
+            } else {
+              const label =
+                item?.question.criteria?.[record.choice] ?? record.choice;
+              answer.append(el("span", null, "選擇"), el("b", null, label));
+            }
+            focus.style.borderLeftColor = colorFor(record);
+          },
+          finish(elapsed) {
+            node.classList.add("finished");
+            done.replaceChildren();
+            const partial = this.cursor < this.total;
+            done.append(el("h2", null, partial ? "Jev 完成時停止" : "完成"));
+            const big = el("div", "big");
+            const stat = (label, value) => {
+              const d = el("div");
+              d.append(el("small", null, label), el("b", null, value));
+              big.append(d);
+            };
+            stat("題數", `${this.cursor}/${this.total}`);
+            stat("耗時", `${(elapsed / 1000).toFixed(1)}s`);
+            stat("成本", `$${this.cost.toFixed(this.cost < 1 ? 4 : 2)}`);
+            done.append(big);
+            if (partial) {
+              const projected =
+                (this.cost / Math.max(1, this.cursor)) * this.total;
+              done.append(
+                el(
+                  "div",
+                  "partial",
+                  `照此速度跑完全部需要約 ${(this.finishMs / 1000).toFixed(0)} 秒、$${projected.toFixed(2)}`,
+                ),
+              );
+            }
+            done.append(
+              el(
+                "h2",
+                null,
+                "主權傾向指數（0 偏中華人民共和國．0.5 中立．1 偏台灣）",
+              ),
+            );
+            for (const lang of LANGS) {
+              const row = el("div", "index-row");
+              const track = el("div", "index-track");
+              const marker = el("i");
+              track.append(marker);
+              const value = this.index[lang];
+              row.append(
+                el("span", null, lang),
+                track,
+                el("b", null, value == null ? "-" : value.toFixed(2)),
+              );
+              done.append(row);
+              requestAnimationFrame(() => {
+                marker.style.left = `${(value ?? 0.5) * 100}%`;
+              });
+            }
+            done.append(
+              el(
+                "div",
+                "partial",
+                "指數為 5 次重複的平均；Claude 的機率為模型自報值，跨模型只比較方向",
+              ),
+            );
+          },
+        };
+      }
+
+      function formatClock(ms) {
+        const s = ms / 1000;
+        return `${String(Math.floor(s / 60)).padStart(2, "0")}:${(s % 60).toFixed(1).padStart(4, "0")}`;
+      }
+
+      function frame(now) {
+        if (!state.running) return;
+        state.virtualMs += (now - state.lastFrame) * state.speed;
+        state.lastFrame = now;
+        const jev = state.lanes.find((l) => l.target === "jev");
+        if (state.stopWithJev && jev && state.virtualMs >= jev.finishMs) {
+          for (const lane of state.lanes)
+            if (lane !== jev && lane.stoppedAt == null)
+              lane.stoppedAt = jev.finishMs;
+        }
+        for (const lane of state.lanes) lane.advance(state.virtualMs);
+        const end = Math.max(
+          ...state.lanes.map((l) => l.stoppedAt ?? l.finishMs),
+        );
+        $("clock").textContent = formatClock(Math.min(state.virtualMs, end));
+        if (state.virtualMs >= end) {
+          state.running = false;
+          // Hold on the filled grids briefly before the scoreboard covers them.
+          state.summaryTimer = setTimeout(() => $("stage").classList.add("summary"), SUMMARY_DELAY_MS);
+          return;
+        }
+        requestAnimationFrame(frame);
+      }
+
+      function toggle() {
+        if (state.running) {
+          state.running = false;
+          return;
+        }
+        state.running = true;
+        state.lastFrame = performance.now();
+        $("help").hidden = true;
+        requestAnimationFrame(frame);
+      }
+      function reset() {
+        state.running = false;
+        state.virtualMs = 0;
+        clearTimeout(state.summaryTimer);
+        $("stage").classList.remove("summary");
+        for (const lane of state.lanes) lane.reset();
+        $("clock").textContent = formatClock(0);
+      }
+      function setSpeed(speed) {
+        state.speed = speed;
+        $("clockNote").textContent =
+          speed === 1 ? "即時重播實測紀錄" : `${speed}× 重播實測紀錄`;
+      }
+
+      function fit() {
+        const scale = Math.min(innerWidth / 1920, innerHeight / 1080);
+        const stage = $("stage");
+        stage.style.transform = `scale(${scale})`;
+        stage.style.left = `${(innerWidth - 1920 * scale) / 2}px`;
+        stage.style.top = `${(innerHeight - 1080 * scale) / 2}px`;
+      }
+
+      async function init() {
+        const [replay, dataset] = await Promise.all([
+          fetch("/api/replay").then((r) => r.json()),
+          fetch("/api/dataset").then((r) => r.json()),
+        ]);
+        const available = [...new Set(replay.records.map((r) => r.target))];
+        const wanted = (
+          params.get("lanes")?.split(",") ?? [
+            "jev",
+            "claude-sonnet-5",
+            "claude-opus-5",
+          ]
+        ).filter((t) => available.includes(t));
+        if (!wanted.length)
+          throw new Error("沒有可重播的紀錄，請先執行 npm run batch");
+        const order = seededOrder([
+          ...new Set(
+            dataset
+              .filter((i) => (i.variant ?? "base") === "base")
+              .map((i) => i.id),
+          ),
+        ]);
+        state.lanes = wanted.map((t) =>
+          buildLane(
+            t,
+            replay.records.filter((r) => r.target === t),
+            order,
+            replay.pricing,
+            dataset,
+          ),
+        );
+        $("stopState").textContent = state.stopWithJev ? "開" : "關";
+        setSpeed(state.speed);
+        reset();
+      }
+
+      addEventListener("resize", fit);
+      addEventListener("keydown", (e) => {
+        if (e.key === " ") {
+          e.preventDefault();
+          toggle();
+        } else if (e.key === "r" || e.key === "R") reset();
+        else if (["1", "2", "4"].includes(e.key)) setSpeed(Number(e.key));
+        else if (e.key === "s" || e.key === "S") {
+          state.stopWithJev = !state.stopWithJev;
+          $("stopState").textContent = state.stopWithJev ? "開" : "關";
+        } else if (e.key === "h" || e.key === "H")
+          $("help").hidden = !$("help").hidden;
+      });
+      fit();
+      init().catch((e) => {
+        $("error").hidden = false;
+        $("error").textContent = `載入失敗：${e.message}`;
+      });
+    </script>
+  </body>
+</html>
