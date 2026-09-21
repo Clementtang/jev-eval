@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jev 立場測試台</title>
+    <style>
+      :root {
+        --bg: #f6f5f1;
+        --surface: #ffffff;
+        --surface-2: #efede7;
+        --text: #1d1c1a;
+        --muted: #6b6861;
+        --border: #dcd9d0;
+        --accent: #2f5d8a;
+        --accent-text: #ffffff;
+        --ok: #2e7d4f;
+        --warn: #a86b00;
+        --err: #b3261e;
+        --yes: #2e7d4f;
+        --no: #b3261e;
+        --mono: ui-monospace, "SF Mono", Menlo, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #151514;
+          --surface: #1e1e1c;
+          --surface-2: #272724;
+          --text: #ecebe6;
+          --muted: #a09d95;
+          --border: #3a3935;
+          --accent: #7fb0e0;
+          --accent-text: #0f1a24;
+          --ok: #6cc28f;
+          --warn: #e0a84a;
+          --err: #ef7b72;
+          --yes: #6cc28f;
+          --no: #ef7b72;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          14px/1.5 -apple-system,
+          "PingFang TC",
+          "Noto Sans TC",
+          sans-serif;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 16px;
+      }
+      h1 {
+        font-size: 17px;
+        margin: 0 0 8px;
+      }
+      h1 small {
+        color: var(--muted);
+        font-weight: normal;
+        font-size: 12px;
+        margin-left: 8px;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      label {
+        color: var(--muted);
+        font-size: 12px;
+        display: inline-flex;
+        gap: 4px;
+        align-items: center;
+      }
+      select,
+      input,
+      textarea,
+      button {
+        font: inherit;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 5px 8px;
+      }
+      textarea {
+        font-family: var(--mono);
+        font-size: 12px;
+        width: 100%;
+      }
+      input[type="number"] {
+        width: 64px;
+      }
+      button {
+        cursor: pointer;
+      }
+      button.primary {
+        background: var(--accent);
+        color: var(--accent-text);
+        border-color: var(--accent);
+      }
+      button.danger {
+        color: var(--err);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .stats b {
+        color: var(--text);
+        font-family: var(--mono);
+      }
+      .progress {
+        height: 4px;
+        background: var(--surface-2);
+        border-radius: 2px;
+        margin-top: 8px;
+        overflow: hidden;
+      }
+      .progress > div {
+        height: 100%;
+        width: 0;
+        background: var(--accent);
+        transition: width 0.2s;
+      }
+      nav {
+        display: flex;
+        gap: 4px;
+        padding: 8px 16px 0;
+      }
+      nav button {
+        border-radius: 6px 6px 0 0;
+        border-bottom: none;
+      }
+      nav button[aria-selected="true"] {
+        background: var(--surface);
+        font-weight: 600;
+      }
+      main {
+        padding: 0 16px 32px;
+      }
+      section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 0 6px 6px 6px;
+        padding: 12px;
+        overflow-x: auto;
+      }
+      section[hidden] {
+        display: none;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 13px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 5px 8px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 12px;
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+      }
+      td.mono,
+      .mono {
+        font-family: var(--mono);
+        font-size: 12px;
+      }
+      .q {
+        max-width: 420px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .err {
+        color: var(--err);
+      }
+      .pill {
+        display: inline-block;
+        padding: 0 6px;
+        border-radius: 10px;
+        background: var(--surface-2);
+        font-size: 11px;
+        font-family: var(--mono);
+      }
+      .bar {
+        display: inline-block;
+        width: 80px;
+        height: 8px;
+        background: var(--surface-2);
+        border-radius: 4px;
+        vertical-align: middle;
+        margin-right: 6px;
+        position: relative;
+        overflow: hidden;
+      }
+      .bar > i {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background: var(--yes);
+      }
+      .bar.low > i {
+        background: var(--no);
+      }
+      tr.flash {
+        animation: flash 1s;
+      }
+      @keyframes flash {
+        from {
+          background: color-mix(in srgb, var(--accent) 25%, transparent);
+        }
+        to {
+          background: transparent;
+        }
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 8px;
+      }
+      dialog {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        width: min(760px, calc(100vw - 32px));
+        padding: 16px;
+      }
+      dialog::backdrop {
+        background: rgba(0, 0, 0, 0.4);
+      }
+      .errors {
+        color: var(--err);
+        font-size: 12px;
+        white-space: pre-wrap;
+      }
+      h2 {
+        font-size: 14px;
+        margin: 16px 0 6px;
+      }
+      h2:first-child {
+        margin-top: 0;
+      }
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 4px 0 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Jev 立場測試台<small id="modelInfo"></small></h1>
+      <div class="row">
+        <label
+          >模型
+          <select id="target"></select
+        ></label>
+        <label
+          >重複 <input id="repeats" type="number" min="1" max="20" value="5"
+        /></label>
+        <label
+          >並行
+          <input id="concurrency" type="number" min="1" max="24" value="6"
+        /></label>
+        <button class="primary" id="runBtn">執行篩選中的題目</button>
+        <button id="stopBtn" disabled>停止</button>
+        <label
+          >載入紀錄
+          <select id="pastRuns">
+            <option value="">（新執行）</option>
+          </select></label
+        >
+      </div>
+      <div class="stats">
+        <span>run <b id="runId">-</b></span>
+        <span>進度 <b id="progress">0 / 0</b></span>
+        <span>經過 <b id="elapsed">0.0s</b></span>
+        <span>p50 <b id="p50">-</b></span>
+        <span>p95 <b id="p95">-</b></span>
+        <span>錯誤 <b id="errors">0</b></span>
+        <span>拒答 <b id="refusals">0</b></span>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </header>
+
+    <nav role="tablist">
+      <button role="tab" aria-selected="true" data-tab="live">即時紀錄</button>
+      <button role="tab" aria-selected="false" data-tab="summary">彙整</button>
+      <button role="tab" aria-selected="false" data-tab="dataset">
+        資料集
+      </button>
+    </nav>
+
+    <main>
+      <section id="tab-live">
+        <table>
+          <thead>
+            <tr>
+              <th>時間</th>
+              <th>題目</th>
+              <th>語言</th>
+              <th>題目內容</th>
+              <th>回答</th>
+              <th>信心</th>
+              <th>耗時</th>
+            </tr>
+          </thead>
+          <tbody id="liveBody"></tbody>
+        </table>
+      </section>
+
+      <section id="tab-summary" hidden>
+        <h2>陳述判斷（noul）：正句與反句的平均「為真」機率</h2>
+        <p class="note">
+          一致性差距 = 正句 + 反句 − 1；接近 0 代表正反回答互相一致。K 組與 A
+          組事實題有標準答案，用來檢查該語言的基本能力。
+        </p>
+        <table>
+          <thead id="noulHead"></thead>
+          <tbody id="noulBody"></tbody>
+        </table>
+        <h2>選擇題（choice）：各選項被選中的比例</h2>
+        <table>
+          <thead id="choiceHead"></thead>
+          <tbody id="choiceBody"></tbody>
+        </table>
+      </section>
+
+      <section id="tab-dataset" hidden>
+        <div class="row" style="margin-bottom: 8px">
+          <label
+            >組別
+            <select id="fGroup">
+              <option value="">全部</option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+              <option>D</option>
+              <option>K</option>
+            </select></label
+          >
+          <label
+            >語言
+            <select id="fLang">
+              <option value="">全部</option>
+              <option>zh-TW</option>
+              <option>zh-CN</option>
+              <option>en</option>
+            </select></label
+          >
+          <label
+            >主題
+            <select id="fTopic">
+              <option value="">全部</option>
+            </select></label
+          >
+          <label>搜尋 <input id="fText" placeholder="id 或內容" /></label>
+          <span class="muted" id="filterCount"></span>
+          <button id="addBtn">新增題目</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>組</th>
+              <th>語言</th>
+              <th>主題</th>
+              <th>題目內容</th>
+              <th>預期</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="datasetBody"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <dialog id="editor">
+      <form method="dialog" id="editorForm">
+        <h2 id="editorTitle">編輯題目</h2>
+        <div class="grid2">
+          <label>id <input name="id" required /></label>
+          <label
+            >組別
+            <select name="group">
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+              <option>D</option>
+              <option>K</option>
+            </select></label
+          >
+          <label
+            >語言
+            <select name="lang">
+              <option>zh-TW</option>
+              <option>zh-CN</option>
+              <option>en</option>
+            </select></label
+          >
+          <label>主題 <input name="topic" /></label>
+          <label>概念 <input name="concept" /></label>
+          <label>對象 <input name="subject" /></label>
+          <label
+            >正反
+            <select name="polarity">
+              <option value="">（無）</option>
+              <option>pos</option>
+              <option>neg</option>
+            </select></label
+          >
+          <label>框架 <input name="framing" /></label>
+          <label
+            >預期 <input name="expected" placeholder="0 / 1 / 選項 key / 空白"
+          /></label>
+        </div>
+        <p class="note">
+          state 與 question 會原樣送給 Jev。question.type 為 noul 或
+          choice；choice 需要 criteria。
+        </p>
+        <label style="display: block"
+          >state (JSON)<textarea name="state" rows="5"></textarea>
+        </label>
+        <label style="display: block; margin-top: 8px"
+          >question (JSON)<textarea name="question" rows="9"></textarea>
+        </label>
+        <div class="errors" id="editorErrors"></div>
+        <div class="row" style="justify-content: flex-end; margin-top: 12px">
+          <button type="button" class="danger" id="deleteBtn">刪除</button>
+          <button type="button" id="dupBtn">複製為新題</button>
+          <button value="cancel">取消</button>
+          <button type="button" class="primary" id="saveBtn">儲存</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const state = {
+        dataset: [],
+        records: [],
+        runId: null,
+        running: false,
+        stop: false,
+        editing: null,
+        deleteArmed: false,
+        startedAt: 0,
+        total: 0,
+      };
+      const GROUP_NAMES = {
+        A: "A 陳述",
+        B: "B 立場",
+        C: "C 實務",
+        D: "D 對照",
+        K: "K 能力",
+      };
+      const LANGS = ["zh-TW", "zh-CN", "en"];
+
+      async function api(method, path, body) {
+        const res = await fetch(path, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: body ? JSON.stringify(body) : undefined,
+        });
+        const data = await res
+          .json()
+          .catch(() => ({ errors: [`HTTP ${res.status}`] }));
+        if (!res.ok)
+          throw new Error((data.errors ?? [`HTTP ${res.status}`]).join("\n"));
+        return data;
+      }
+      const esc = (s) =>
+        String(s ?? "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const itemText = (item) =>
+        item.question.type === "noul"
+          ? (item.state.statement ?? item.question.instructions)
+          : `${item.question.instructions}　${Object.values(item.state).join(" / ")}`;
+
+      // ---------- setup ----------
+      async function init() {
+        const config = await api("GET", "/api/config");
+        $("modelInfo").textContent = `Jev 版本 ${config.jevModel}（固定）`;
+        for (const [name, ok] of Object.entries(config.targets)) {
+          const opt = new Option(ok ? name : `${name}（未設定金鑰）`, name);
+          opt.disabled = !ok;
+          $("target").append(opt);
+        }
+        await loadDataset();
+        await refreshRuns();
+      }
+      async function loadDataset() {
+        state.dataset = await api("GET", "/api/dataset");
+        const topics = [...new Set(state.dataset.map((i) => i.topic))].sort();
+        const current = $("fTopic").value;
+        $("fTopic").innerHTML =
+          '<option value="">全部</option>' +
+          topics.map((t) => `<option>${esc(t)}</option>`).join("");
+        $("fTopic").value = current;
+        renderDataset();
+      }
+      async function refreshRuns() {
+        const runs = await api("GET", "/api/runs");
+        $("pastRuns").innerHTML =
+          '<option value="">（新執行）</option>' +
+          runs
+            .map(
+              (r) =>
+                `<option value="${esc(r.run_id)}">${esc(r.run_id)}（${r.calls}）</option>`,
+            )
+            .join("");
+        if (state.runId) $("pastRuns").value = state.runId;
+      }
+
+      // ---------- dataset tab ----------
+      function filtered() {
+        const g = $("fGroup").value,
+          l = $("fLang").value,
+          t = $("fTopic").value,
+          q = $("fText").value.trim().toLowerCase();
+        return state.dataset.filter(
+          (i) =>
+            (!g || i.group === g) &&
+            (!l || i.lang === l) &&
+            (!t || i.topic === t) &&
+            (!q ||
+              i.id.toLowerCase().includes(q) ||
+              JSON.stringify([i.state, i.question]).toLowerCase().includes(q)),
+        );
+      }
+      function renderDataset() {
+        const rows = filtered();
+        $("filterCount").textContent =
+          `${rows.length} / ${state.dataset.length} 題`;
+        $("datasetBody").innerHTML = rows
+          .map(
+            (i) => `<tr>
+    <td class="mono">${esc(i.id)}</td><td>${esc(i.group)}</td><td>${esc(i.lang)}</td><td>${esc(i.topic)}</td>
+    <td class="q">${esc(itemText(i))}${i.question.type === "choice" ? `<br><span class="muted mono">${esc(Object.keys(i.question.criteria).join(" · "))}</span>` : ""}</td>
+    <td class="mono">${esc(i.expected ?? "")}</td>
+    <td><button data-edit="${esc(i.id)}">編輯</button></td></tr>`,
+          )
+          .join("");
+      }
+      for (const id of ["fGroup", "fLang", "fTopic", "fText"])
+        $(id).addEventListener("input", renderDataset);
+      $("datasetBody").addEventListener("click", (e) => {
+        const id = e.target.dataset.edit;
+        if (id) openEditor(state.dataset.find((i) => i.id === id));
+      });
+      $("addBtn").addEventListener("click", () => openEditor(null));
+
+      function openEditor(item) {
+        state.editing = item?.id ?? null;
+        state.deleteArmed = false;
+        $("deleteBtn").textContent = "刪除";
+        $("deleteBtn").hidden = !item;
+        $("dupBtn").hidden = !item;
+        $("editorTitle").textContent = item ? "編輯題目" : "新增題目";
+        const f = $("editorForm").elements;
+        const base = item ?? {
+          id: "",
+          group: "A",
+          lang: "zh-TW",
+          topic: "",
+          concept: "",
+          subject: "Taiwan",
+          polarity: "pos",
+          framing: "f1",
+          expected: null,
+          state: { statement: "" },
+          question: { type: "noul", instructions: "這個陳述是否正確？" },
+        };
+        for (const k of [
+          "id",
+          "group",
+          "lang",
+          "topic",
+          "concept",
+          "subject",
+          "framing",
+        ])
+          f[k].value = base[k] ?? "";
+        f.polarity.value = base.polarity ?? "";
+        f.expected.value = base.expected ?? "";
+        f.state.value = JSON.stringify(base.state, null, 2);
+        f.question.value = JSON.stringify(base.question, null, 2);
+        $("editorErrors").textContent = "";
+        $("editor").showModal();
+      }
+      function readEditor() {
+        const f = $("editorForm").elements;
+        const expectedRaw = f.expected.value.trim();
+        return {
+          id: f.id.value.trim(),
+          group: f.group.value,
+          topic: f.topic.value.trim(),
+          concept: f.concept.value.trim(),
+          subject: f.subject.value.trim(),
+          lang: f.lang.value,
+          polarity: f.polarity.value || null,
+          framing: f.framing.value.trim() || "f1",
+          state: JSON.parse(f.state.value),
+          question: JSON.parse(f.question.value),
+          expected:
+            expectedRaw === ""
+              ? null
+              : expectedRaw === "0" || expectedRaw === "1"
+                ? Number(expectedRaw)
+                : expectedRaw,
+        };
+      }
+      $("saveBtn").addEventListener("click", async () => {
+        try {
+          const item = readEditor();
+          if (state.editing)
+            await api(
+              "PUT",
+              `/api/items/${encodeURIComponent(state.editing)}`,
+              item,
+            );
+          else await api("POST", "/api/items", item);
+          $("editor").close();
+          await loadDataset();
+        } catch (e) {
+          $("editorErrors").textContent = e.message;
+        }
+      });
+      $("dupBtn").addEventListener("click", () => {
+        const f = $("editorForm").elements;
+        state.editing = null;
+        f.id.value = `${f.id.value}-copy`;
+        $("editorTitle").textContent = "新增題目（複製）";
+        $("deleteBtn").hidden = true;
+        $("dupBtn").hidden = true;
+      });
+      // Two-click delete instead of window.confirm so browser automation never gets blocked by a modal.
+      $("deleteBtn").addEventListener("click", async () => {
+        if (!state.deleteArmed) {
+          state.deleteArmed = true;
+          $("deleteBtn").textContent = "再按一次確認刪除";
+          return;
+        }
+        try {
+          await api(
+            "DELETE",
+            `/api/items/${encodeURIComponent(state.editing)}`,
+          );
+          $("editor").close();
+          await loadDataset();
+        } catch (e) {
+          $("editorErrors").textContent = e.message;
+        }
+      });
+
+      // ---------- running ----------
+      function renderAnswer(r) {
+        if (!r.ok) return `<span class="err">${esc(r.error)}</span>`;
+        if (r.refusal) return `<span class="pill">refusal</span>`;
+        if (r.question_type === "noul") {
+          const v = r.value ?? 0;
+          return `<span class="bar ${v < 0.5 ? "low" : ""}"><i style="width:${(v * 100).toFixed(0)}%"></i></span><span class="mono">${v.toFixed(3)}</span>`;
+        }
+        return `<span class="pill">${esc(r.choice)}</span>`;
+      }
+      function addLiveRow(r, prepend = true) {
+        const item = state.dataset.find((i) => i.id === r.item_id);
+        const tr = document.createElement("tr");
+        tr.className = prepend ? "flash" : "";
+        tr.innerHTML = `<td class="mono">${esc(r.ts.slice(11, 19))}</td>
+    <td class="mono">${esc(r.item_id)}${r.rep > 1 ? ` <span class="muted">#${r.rep}</span>` : ""}</td>
+    <td>${esc(r.lang)}</td><td class="q">${esc(item ? itemText(item) : "（題目已修改或刪除）")}</td>
+    <td>${renderAnswer(r)}</td><td class="mono">${r.confidence == null ? "" : r.confidence.toFixed(2)}</td>
+    <td class="mono">${r.ms ?? ""} ms</td>`;
+        prepend ? $("liveBody").prepend(tr) : $("liveBody").append(tr);
+      }
+      const percentile = (sorted, p) =>
+        sorted.length
+          ? sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))]
+          : null;
+      function updateStats() {
+        const ms = state.records
+          .filter((r) => r.ok)
+          .map((r) => r.ms)
+          .sort((a, b) => a - b);
+        $("runId").textContent = state.runId ?? "-";
+        $("progress").textContent =
+          `${state.records.length} / ${state.total || state.records.length}`;
+        $("progressBar").style.width = state.total
+          ? `${(state.records.length / state.total) * 100}%`
+          : "0";
+        $("p50").textContent = ms.length ? `${percentile(ms, 0.5)} ms` : "-";
+        $("p95").textContent = ms.length ? `${percentile(ms, 0.95)} ms` : "-";
+        $("errors").textContent = state.records.filter((r) => !r.ok).length;
+        $("refusals").textContent = state.records.filter(
+          (r) => r.refusal,
+        ).length;
+        if (state.running)
+          $("elapsed").textContent =
+            `${((performance.now() - state.startedAt) / 1000).toFixed(1)}s`;
+      }
+
+      $("runBtn").addEventListener("click", async () => {
+        const items = filtered();
+        const repeats = Math.max(1, Number($("repeats").value) || 1);
+        const concurrency = Math.max(1, Number($("concurrency").value) || 1);
+        const target = $("target").value;
+        if (!items.length || !target) return;
+        const stamp = new Date()
+          .toISOString()
+          .replace(/[-:]/g, "")
+          .replace(/\..+/, "")
+          .replace("T", "-");
+        Object.assign(state, {
+          runId: `${stamp}-${target}`,
+          records: [],
+          running: true,
+          stop: false,
+          startedAt: performance.now(),
+          total: items.length * repeats,
+        });
+        $("liveBody").innerHTML = "";
+        $("runBtn").disabled = true;
+        $("stopBtn").disabled = false;
+        selectTab("live");
+        // Interleave repeats (all items rep 1, then rep 2...) so a stopped run still covers every item.
+        const queue = [];
+        for (let rep = 1; rep <= repeats; rep++)
+          for (const item of items) queue.push({ item, rep });
+        const timer = setInterval(updateStats, 100);
+        async function worker() {
+          while (queue.length && !state.stop) {
+            const { item, rep } = queue.shift();
+            let record;
+            try {
+              record = await api("POST", "/api/run", {
+                runId: state.runId,
+                target,
+                itemId: item.id,
+                rep,
+              });
+            } catch (e) {
+              record = {
+                ok: false,
+                error: e.message,
+                item_id: item.id,
+                lang: item.lang,
+                rep,
+                ts: new Date().toISOString(),
+                question_type: item.question.type,
+              };
+            }
+            state.records.push(record);
+            addLiveRow(record);
+            renderSummary();
+          }
+        }
+        await Promise.all(Array.from({ length: concurrency }, worker));
+        clearInterval(timer);
+        state.running = false;
+        updateStats();
+        $("runBtn").disabled = false;
+        $("stopBtn").disabled = true;
+        await refreshRuns();
+      });
+      $("stopBtn").addEventListener("click", () => {
+        state.stop = true;
+        $("stopBtn").disabled = true;
+      });
+
+      $("pastRuns").addEventListener("change", async () => {
+        const id = $("pastRuns").value;
+        if (!id || state.running) return;
+        state.runId = id;
+        state.records = await api("GET", `/api/runs/${encodeURIComponent(id)}`);
+        state.total = state.records.length;
+        $("liveBody").innerHTML = "";
+        [...state.records].reverse().forEach((r) => addLiveRow(r, false));
+        $("elapsed").textContent = "-";
+        updateStats();
+        renderSummary();
+      });
+
+      // ---------- summary ----------
+      const mean = (xs) =>
+        xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null;
+      const fmt = (x) =>
+        x == null ? '<span class="muted">-</span>' : x.toFixed(2);
+      function renderSummary() {
+        const ok = state.records.filter((r) => r.ok && !r.refusal);
+        const noul = ok.filter((r) => r.question_type === "noul");
+        const keys = [
+          ...new Set(noul.map((r) => `${r.group}|${r.concept}|${r.framing}`)),
+        ].sort();
+        $("noulHead").innerHTML =
+          `<tr><th>組</th><th>概念</th><th>框架</th>${LANGS.map((l) => `<th>${l} 正</th><th>${l} 反</th><th>${l} 差距</th>`).join("")}</tr>`;
+        $("noulBody").innerHTML = keys
+          .map((key) => {
+            const [group, concept, framing] = key.split("|");
+            const cells = LANGS.map((lang) => {
+              const pick = (pol) =>
+                mean(
+                  noul
+                    .filter(
+                      (r) =>
+                        r.group === group &&
+                        r.concept === concept &&
+                        r.framing === framing &&
+                        r.lang === lang &&
+                        r.polarity === pol,
+                    )
+                    .map((r) => r.value),
+                );
+              const pos = pick("pos"),
+                neg = pick("neg");
+              const gap = pos == null || neg == null ? null : pos + neg - 1;
+              return `<td class="mono">${fmt(pos)}</td><td class="mono">${fmt(neg)}</td><td class="mono ${gap != null && Math.abs(gap) > 0.3 ? "err" : ""}">${fmt(gap)}</td>`;
+            }).join("");
+            return `<tr><td>${esc(GROUP_NAMES[group] ?? group)}</td><td class="mono">${esc(concept)}</td><td>${esc(framing)}</td>${cells}</tr>`;
+          })
+          .join("");
+
+        const choice = ok.filter((r) => r.question_type === "choice");
+        const ckeys = [
+          ...new Set(choice.map((r) => `${r.group}|${r.concept}`)),
+        ].sort();
+        $("choiceHead").innerHTML =
+          `<tr><th>組</th><th>概念</th>${LANGS.map((l) => `<th>${l}</th>`).join("")}</tr>`;
+        $("choiceBody").innerHTML = ckeys
+          .map((key) => {
+            const [group, concept] = key.split("|");
+            const cells = LANGS.map((lang) => {
+              const rs = choice.filter(
+                (r) =>
+                  r.group === group && r.concept === concept && r.lang === lang,
+              );
+              if (!rs.length) return "<td class='muted'>-</td>";
+              const counts = {};
+              for (const r of rs)
+                counts[r.choice] = (counts[r.choice] ?? 0) + 1;
+              return `<td>${Object.entries(counts)
+                .sort((a, b) => b[1] - a[1])
+                .map(
+                  ([c, n]) =>
+                    `<span class="pill">${esc(c)} ${Math.round((n / rs.length) * 100)}%</span>`,
+                )
+                .join(" ")}</td>`;
+            }).join("");
+            return `<tr><td>${esc(GROUP_NAMES[group] ?? group)}</td><td class="mono">${esc(concept)}</td>${cells}</tr>`;
+          })
+          .join("");
+      }
+
+      // ---------- tabs ----------
+      function selectTab(name) {
+        for (const b of document.querySelectorAll("nav button"))
+          b.setAttribute("aria-selected", String(b.dataset.tab === name));
+        for (const s of document.querySelectorAll("main section"))
+          s.hidden = s.id !== `tab-${name}`;
+      }
+      for (const b of document.querySelectorAll("nav button"))
+        b.addEventListener("click", () => selectTab(b.dataset.tab));
+
+      init().catch((e) => {
+        document.body.insertAdjacentHTML(
+          "afterbegin",
+          `<p class="err" style="padding:16px">初始化失敗：${esc(e.message)}</p>`,
+        );
+      });
+    </script>
+  </body>
+</html>
