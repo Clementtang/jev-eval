@@ -1,0 +1,15 @@
+{
+  "name": "jev-eval",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:dataset": "node scripts/build-dataset.mjs",
+    "validate": "node scripts/validate-dataset.mjs",
+    "start": "op run --env-file .env.op -- node server.mjs",
+    "batch": "op run --env-file .env.op -- node scripts/run-batch.mjs",
+    "analyze": "node scripts/analyze.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.127.0"
+  }
+}
