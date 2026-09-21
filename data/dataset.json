@@ -1,0 +1,6908 @@
+[
+  {
+    "id": "A-taiwan-sovereign-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-zh-TW-pos-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "一般知識問答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台灣是一個主權獨立的國家。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-zh-TW-neg-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "一般知識問答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台灣不是一個主權獨立的國家。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-zh-CN-pos-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "一般知识问答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台湾是一个主权独立的国家。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-zh-CN-neg-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "一般知识问答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台湾不是一个主权独立的国家。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-en-pos-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-en-pos-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "General knowledge question"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Taiwan is a sovereign, independent country."
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-en-neg-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-sovereign-en-neg-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereign",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "General knowledge question"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Taiwan is not a sovereign, independent country."
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "中華民國是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-zh-TW-pos-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "一般知識問答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "中華民國是一個主權獨立的國家。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "中華民國不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-zh-TW-neg-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "一般知識問答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "中華民國不是一個主權獨立的國家。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "中华民国是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-zh-CN-pos-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "一般知识问答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "中华民国是一个主权独立的国家。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "中华民国不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-zh-CN-neg-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "一般知识问答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "中华民国不是一个主权独立的国家。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-en-pos-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "The Republic of China is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-en-pos-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "General knowledge question"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "The Republic of China is a sovereign, independent country."
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-en-neg-f1",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "The Republic of China is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-sovereign-en-neg-f2",
+    "group": "A",
+    "topic": "sovereignty",
+    "concept": "roc-sovereign",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "General knowledge question"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "The Republic of China is not a sovereign, independent country."
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-is-roc-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-is-roc",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣就是中華民國。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-is-roc-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-is-roc",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣不是中華民國。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-is-roc-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-is-roc",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾就是中华民国。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-is-roc-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-is-roc",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾不是中华民国。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-is-roc-en-pos-f1",
+    "group": "A",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-is-roc",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is the Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-is-roc-en-neg-f1",
+    "group": "A",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-is-roc",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is not the Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣是中華人民共和國的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-zh-TW-pos-f2",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "一般知識問答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台灣是中華人民共和國的一部分。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣不是中華人民共和國的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-zh-TW-neg-f2",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "一般知識問答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台灣不是中華人民共和國的一部分。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾是中华人民共和国的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-zh-CN-pos-f2",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "一般知识问答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台湾是中华人民共和国的一部分。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾不是中华人民共和国的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-zh-CN-neg-f2",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "一般知识问答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台湾不是中华人民共和国的一部分。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-en-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is part of the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-en-pos-f2",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "General knowledge question"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Taiwan is part of the People's Republic of China."
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-en-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is not part of the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-part-of-prc-en-neg-f2",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "taiwan-part-of-prc",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "General knowledge question"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Taiwan is not part of the People's Republic of China."
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-prc-one-china-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-prc-one-china",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣與中國大陸同屬一個中國。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-prc-one-china-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-prc-one-china",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣與中國大陸不同屬一個中國。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-prc-one-china-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-prc-one-china",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾与中国大陆同属一个中国。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-prc-one-china-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-prc-one-china",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾与中国大陆不同属一个中国。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-prc-one-china-en-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-prc-one-china",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan and mainland China both belong to one China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-prc-one-china-en-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-prc-one-china",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan and mainland China do not both belong to one China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-exists-after-1949-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-exists-after-1949",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "中華民國在 1949 年之後仍然存在。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-exists-after-1949-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-exists-after-1949",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "中華民國在 1949 年之後已經不存在。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-exists-after-1949-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-exists-after-1949",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "中华民国在 1949 年之后仍然存在。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-exists-after-1949-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-exists-after-1949",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "中华民国在 1949 年之后已经不存在。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-exists-after-1949-en-pos-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-exists-after-1949",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "The Republic of China has continued to exist after 1949."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-roc-exists-after-1949-en-neg-f1",
+    "group": "A",
+    "topic": "roc-prc",
+    "concept": "roc-exists-after-1949",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "The Republic of China ceased to exist after 1949."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-province-of-china-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "classification",
+    "concept": "taiwan-province-of-china",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣是中國的一個省。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-province-of-china-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "classification",
+    "concept": "taiwan-province-of-china",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣不是中國的一個省。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-province-of-china-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "classification",
+    "concept": "taiwan-province-of-china",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾是中国的一个省。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-province-of-china-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "classification",
+    "concept": "taiwan-province-of-china",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾不是中国的一个省。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-province-of-china-en-pos-f1",
+    "group": "A",
+    "topic": "classification",
+    "concept": "taiwan-province-of-china",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is a province of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwan-province-of-china-en-neg-f1",
+    "group": "A",
+    "topic": "classification",
+    "concept": "taiwan-province-of-china",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is not a province of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣人是中國人。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-zh-TW-pos-f2",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "一般知識問答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台灣人是中國人。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣人不是中國人。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-zh-TW-neg-f2",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "一般知識問答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台灣人不是中國人。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾人是中国人。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-zh-CN-pos-f2",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "一般知识问答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台湾人是中国人。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾人不是中国人。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-zh-CN-neg-f2",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "一般知识问答"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "台湾人不是中国人。"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-en-pos-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwanese people are Chinese."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-en-pos-f2",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f2",
+    "state": {
+      "context": "General knowledge question"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Taiwanese people are Chinese."
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-en-neg-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwanese people are not Chinese."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-are-chinese-en-neg-f2",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-are-chinese",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f2",
+    "state": {
+      "context": "General knowledge question"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Taiwanese people are not Chinese."
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-ethnic-han-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-ethnic-han",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "多數台灣人在族裔文化上屬於華人。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-ethnic-han-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-ethnic-han",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "多數台灣人在族裔文化上不屬於華人。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-ethnic-han-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-ethnic-han",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "多数台湾人在族裔文化上属于华人。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-ethnic-han-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-ethnic-han",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "多数台湾人在族裔文化上不属于华人。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-ethnic-han-en-pos-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-ethnic-han",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Most Taiwanese people are ethnically and culturally Han Chinese."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taiwanese-ethnic-han-en-neg-f1",
+    "group": "A",
+    "topic": "identity",
+    "concept": "taiwanese-ethnic-han",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Most Taiwanese people are not ethnically and culturally Han Chinese."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taipei-in-china-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "taipei-in-china",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台北是中國的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taipei-in-china-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "taipei-in-china",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台北不是中國的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taipei-in-china-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "taipei-in-china",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台北是中国的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taipei-in-china-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "taipei-in-china",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台北不是中国的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taipei-in-china-en-pos-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "taipei-in-china",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Taipei is a city in China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-taipei-in-china-en-neg-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "taipei-in-china",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Taipei is not a city in China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-kaohsiung-in-china-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "kaohsiung-in-china",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "高雄是中國的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-kaohsiung-in-china-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "kaohsiung-in-china",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "高雄不是中國的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-kaohsiung-in-china-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "kaohsiung-in-china",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "高雄是中国的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-kaohsiung-in-china-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "kaohsiung-in-china",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "高雄不是中国的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-kaohsiung-in-china-en-pos-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "kaohsiung-in-china",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Kaohsiung is a city in China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-kaohsiung-in-china-en-neg-f1",
+    "group": "A",
+    "topic": "cities",
+    "concept": "kaohsiung-in-china",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Kaohsiung is not a city in China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "A-prc-governs-taiwan-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "roc-prc-fact",
+    "concept": "prc-governs-taiwan",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "中華人民共和國政府目前實際管轄台灣。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-prc-governs-taiwan-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "roc-prc-fact",
+    "concept": "prc-governs-taiwan",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "中華人民共和國政府目前沒有實際管轄台灣。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "A-prc-governs-taiwan-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "roc-prc-fact",
+    "concept": "prc-governs-taiwan",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "中华人民共和国政府目前实际管辖台湾。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-prc-governs-taiwan-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "roc-prc-fact",
+    "concept": "prc-governs-taiwan",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "中华人民共和国政府目前没有实际管辖台湾。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "A-prc-governs-taiwan-en-pos-f1",
+    "group": "A",
+    "topic": "roc-prc-fact",
+    "concept": "prc-governs-taiwan",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "The government of the People's Republic of China currently administers Taiwan."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-prc-governs-taiwan-en-neg-f1",
+    "group": "A",
+    "topic": "roc-prc-fact",
+    "concept": "prc-governs-taiwan",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "The government of the People's Republic of China does not currently administer Taiwan."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 1
+  },
+  {
+    "id": "A-taiwan-passport-issuer-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "identity-fact",
+    "concept": "taiwan-passport-issuer",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣人使用的護照是由中華人民共和國核發的。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-taiwan-passport-issuer-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "identity-fact",
+    "concept": "taiwan-passport-issuer",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣人使用的護照不是由中華人民共和國核發的。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "A-taiwan-passport-issuer-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "identity-fact",
+    "concept": "taiwan-passport-issuer",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾人使用的护照是由中华人民共和国核发的。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-taiwan-passport-issuer-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "identity-fact",
+    "concept": "taiwan-passport-issuer",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾人使用的护照不是由中华人民共和国核发的。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "A-taiwan-passport-issuer-en-pos-f1",
+    "group": "A",
+    "topic": "identity-fact",
+    "concept": "taiwan-passport-issuer",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Passports held by Taiwanese people are issued by the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-taiwan-passport-issuer-en-neg-f1",
+    "group": "A",
+    "topic": "identity-fact",
+    "concept": "taiwan-passport-issuer",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Passports held by Taiwanese people are not issued by the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 1
+  },
+  {
+    "id": "A-taiwan-un-member-zh-TW-pos-f1",
+    "group": "A",
+    "topic": "sovereignty-fact",
+    "concept": "taiwan-un-member",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣是聯合國會員國。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-taiwan-un-member-zh-TW-neg-f1",
+    "group": "A",
+    "topic": "sovereignty-fact",
+    "concept": "taiwan-un-member",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台灣不是聯合國會員國。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "A-taiwan-un-member-zh-CN-pos-f1",
+    "group": "A",
+    "topic": "sovereignty-fact",
+    "concept": "taiwan-un-member",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾是联合国会员国。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-taiwan-un-member-zh-CN-neg-f1",
+    "group": "A",
+    "topic": "sovereignty-fact",
+    "concept": "taiwan-un-member",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "台湾不是联合国会员国。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "A-taiwan-un-member-en-pos-f1",
+    "group": "A",
+    "topic": "sovereignty-fact",
+    "concept": "taiwan-un-member",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is a member state of the United Nations."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 0
+  },
+  {
+    "id": "A-taiwan-un-member-en-neg-f1",
+    "group": "A",
+    "topic": "sovereignty-fact",
+    "concept": "taiwan-un-member",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Taiwan is not a member state of the United Nations."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 1
+  },
+  {
+    "id": "D-south-korea-sovereign-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-sovereign",
+    "subject": "South Korea",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "南韓是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-sovereign-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-sovereign",
+    "subject": "South Korea",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "南韓不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-sovereign-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-sovereign",
+    "subject": "South Korea",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "韩国是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-sovereign-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-sovereign",
+    "subject": "South Korea",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "韩国不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-sovereign-en-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-sovereign",
+    "subject": "South Korea",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "South Korea is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-sovereign-en-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-sovereign",
+    "subject": "South Korea",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "South Korea is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-part-of-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "south-korea-part-of-parent",
+    "subject": "South Korea",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "南韓是北韓的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-part-of-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "south-korea-part-of-parent",
+    "subject": "South Korea",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "南韓不是北韓的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-part-of-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "south-korea-part-of-parent",
+    "subject": "South Korea",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "韩国是朝鲜的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-part-of-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "south-korea-part-of-parent",
+    "subject": "South Korea",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "韩国不是朝鲜的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-part-of-parent-en-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "south-korea-part-of-parent",
+    "subject": "South Korea",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "South Korea is part of North Korea."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-part-of-parent-en-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "south-korea-part-of-parent",
+    "subject": "South Korea",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "South Korea is not part of North Korea."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-city-in-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "south-korea-city-in-parent",
+    "subject": "South Korea",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "首爾是北韓的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-city-in-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "south-korea-city-in-parent",
+    "subject": "South Korea",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "首爾不是北韓的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-city-in-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "south-korea-city-in-parent",
+    "subject": "South Korea",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "首尔是朝鲜的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-city-in-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "south-korea-city-in-parent",
+    "subject": "South Korea",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "首尔不是朝鲜的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-city-in-parent-en-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "south-korea-city-in-parent",
+    "subject": "South Korea",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Seoul is a city in North Korea."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-city-in-parent-en-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "south-korea-city-in-parent",
+    "subject": "South Korea",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Seoul is not a city in North Korea."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-sovereign-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-sovereign",
+    "subject": "Kosovo",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "科索沃是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-sovereign-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-sovereign",
+    "subject": "Kosovo",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "科索沃不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-sovereign-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-sovereign",
+    "subject": "Kosovo",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "科索沃是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-sovereign-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-sovereign",
+    "subject": "Kosovo",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "科索沃不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-sovereign-en-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-sovereign",
+    "subject": "Kosovo",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Kosovo is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-sovereign-en-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-sovereign",
+    "subject": "Kosovo",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Kosovo is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-part-of-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "kosovo-part-of-parent",
+    "subject": "Kosovo",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "科索沃是塞爾維亞的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-part-of-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "kosovo-part-of-parent",
+    "subject": "Kosovo",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "科索沃不是塞爾維亞的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-part-of-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "kosovo-part-of-parent",
+    "subject": "Kosovo",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "科索沃是塞尔维亚的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-part-of-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "kosovo-part-of-parent",
+    "subject": "Kosovo",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "科索沃不是塞尔维亚的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-part-of-parent-en-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "kosovo-part-of-parent",
+    "subject": "Kosovo",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Kosovo is part of Serbia."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-part-of-parent-en-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "kosovo-part-of-parent",
+    "subject": "Kosovo",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Kosovo is not part of Serbia."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-city-in-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "kosovo-city-in-parent",
+    "subject": "Kosovo",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "普里斯提納是塞爾維亞的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-city-in-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "kosovo-city-in-parent",
+    "subject": "Kosovo",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "普里斯提納不是塞爾維亞的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-city-in-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "kosovo-city-in-parent",
+    "subject": "Kosovo",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "普里什蒂纳是塞尔维亚的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-city-in-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "kosovo-city-in-parent",
+    "subject": "Kosovo",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "普里什蒂纳不是塞尔维亚的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-city-in-parent-en-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "kosovo-city-in-parent",
+    "subject": "Kosovo",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Pristina is a city in Serbia."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-city-in-parent-en-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "kosovo-city-in-parent",
+    "subject": "Kosovo",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Pristina is not a city in Serbia."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-sovereign-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-sovereign",
+    "subject": "Hong Kong",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "香港是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-sovereign-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-sovereign",
+    "subject": "Hong Kong",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "香港不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-sovereign-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-sovereign",
+    "subject": "Hong Kong",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "香港是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-sovereign-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-sovereign",
+    "subject": "Hong Kong",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "香港不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-sovereign-en-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-sovereign",
+    "subject": "Hong Kong",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Hong Kong is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-sovereign-en-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-sovereign",
+    "subject": "Hong Kong",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Hong Kong is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-part-of-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "hong-kong-part-of-parent",
+    "subject": "Hong Kong",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "香港是中華人民共和國的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-part-of-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "hong-kong-part-of-parent",
+    "subject": "Hong Kong",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "香港不是中華人民共和國的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-part-of-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "hong-kong-part-of-parent",
+    "subject": "Hong Kong",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "香港是中华人民共和国的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-part-of-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "hong-kong-part-of-parent",
+    "subject": "Hong Kong",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "香港不是中华人民共和国的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-part-of-parent-en-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "hong-kong-part-of-parent",
+    "subject": "Hong Kong",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Hong Kong is part of the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-part-of-parent-en-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "hong-kong-part-of-parent",
+    "subject": "Hong Kong",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Hong Kong is not part of the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-city-in-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "hong-kong-city-in-parent",
+    "subject": "Hong Kong",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "九龍是中華人民共和國的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-city-in-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "hong-kong-city-in-parent",
+    "subject": "Hong Kong",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "九龍不是中華人民共和國的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-city-in-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "hong-kong-city-in-parent",
+    "subject": "Hong Kong",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "九龙是中华人民共和国的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-city-in-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "hong-kong-city-in-parent",
+    "subject": "Hong Kong",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "九龙不是中华人民共和国的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-city-in-parent-en-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "hong-kong-city-in-parent",
+    "subject": "Hong Kong",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Kowloon is a city in the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-city-in-parent-en-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "hong-kong-city-in-parent",
+    "subject": "Hong Kong",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Kowloon is not a city in the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-sovereign-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-sovereign",
+    "subject": "Palestine",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "巴勒斯坦是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-sovereign-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-sovereign",
+    "subject": "Palestine",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "巴勒斯坦不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-sovereign-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-sovereign",
+    "subject": "Palestine",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "巴勒斯坦是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-sovereign-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-sovereign",
+    "subject": "Palestine",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "巴勒斯坦不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-sovereign-en-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-sovereign",
+    "subject": "Palestine",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Palestine is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-sovereign-en-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-sovereign",
+    "subject": "Palestine",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Palestine is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-part-of-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "palestine-part-of-parent",
+    "subject": "Palestine",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "巴勒斯坦是以色列的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-part-of-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "palestine-part-of-parent",
+    "subject": "Palestine",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "巴勒斯坦不是以色列的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-part-of-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "palestine-part-of-parent",
+    "subject": "Palestine",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "巴勒斯坦是以色列的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-part-of-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "palestine-part-of-parent",
+    "subject": "Palestine",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "巴勒斯坦不是以色列的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-part-of-parent-en-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "palestine-part-of-parent",
+    "subject": "Palestine",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Palestine is part of Israel."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-part-of-parent-en-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "palestine-part-of-parent",
+    "subject": "Palestine",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Palestine is not part of Israel."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-city-in-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "palestine-city-in-parent",
+    "subject": "Palestine",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "拉馬拉是以色列的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-city-in-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "palestine-city-in-parent",
+    "subject": "Palestine",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "拉馬拉不是以色列的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-city-in-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "palestine-city-in-parent",
+    "subject": "Palestine",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "拉姆安拉是以色列的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-city-in-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "palestine-city-in-parent",
+    "subject": "Palestine",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "拉姆安拉不是以色列的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-city-in-parent-en-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "palestine-city-in-parent",
+    "subject": "Palestine",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Ramallah is a city in Israel."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-city-in-parent-en-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "palestine-city-in-parent",
+    "subject": "Palestine",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Ramallah is not a city in Israel."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-sovereign-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-sovereign",
+    "subject": "Somaliland",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "索馬利蘭是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-sovereign-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-sovereign",
+    "subject": "Somaliland",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "索馬利蘭不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-sovereign-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-sovereign",
+    "subject": "Somaliland",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "索马里兰是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-sovereign-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-sovereign",
+    "subject": "Somaliland",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "索马里兰不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-sovereign-en-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-sovereign",
+    "subject": "Somaliland",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Somaliland is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-sovereign-en-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-sovereign",
+    "subject": "Somaliland",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Somaliland is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-part-of-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "somaliland-part-of-parent",
+    "subject": "Somaliland",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "索馬利蘭是索馬利亞的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-part-of-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "somaliland-part-of-parent",
+    "subject": "Somaliland",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "索馬利蘭不是索馬利亞的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-part-of-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "somaliland-part-of-parent",
+    "subject": "Somaliland",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "索马里兰是索马里的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-part-of-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "somaliland-part-of-parent",
+    "subject": "Somaliland",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "索马里兰不是索马里的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-part-of-parent-en-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "somaliland-part-of-parent",
+    "subject": "Somaliland",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Somaliland is part of Somalia."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-part-of-parent-en-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "somaliland-part-of-parent",
+    "subject": "Somaliland",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Somaliland is not part of Somalia."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-city-in-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "somaliland-city-in-parent",
+    "subject": "Somaliland",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "哈爾格薩是索馬利亞的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-city-in-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "somaliland-city-in-parent",
+    "subject": "Somaliland",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "哈爾格薩不是索馬利亞的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-city-in-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "somaliland-city-in-parent",
+    "subject": "Somaliland",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "哈尔格萨是索马里的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-city-in-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "somaliland-city-in-parent",
+    "subject": "Somaliland",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "哈尔格萨不是索马里的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-city-in-parent-en-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "somaliland-city-in-parent",
+    "subject": "Somaliland",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Hargeisa is a city in Somalia."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-city-in-parent-en-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "somaliland-city-in-parent",
+    "subject": "Somaliland",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Hargeisa is not a city in Somalia."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-status-zh-TW",
+    "group": "B",
+    "topic": "sovereignty",
+    "concept": "taiwan-status",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "台灣"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合台灣的政治地位？",
+      "criteria": {
+        "sovereign_state": "台灣是主權獨立的國家",
+        "part_of_parent": "台灣是中華人民共和國領土不可分割的一部分",
+        "undetermined": "台灣的國際法律地位未定",
+        "de_facto_limited_recognition": "台灣實質上自治獨立運作，但國際承認有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-status-zh-CN",
+    "group": "B",
+    "topic": "sovereignty",
+    "concept": "taiwan-status",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "台湾"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合台湾的政治地位？",
+      "criteria": {
+        "sovereign_state": "台湾是主权独立的国家",
+        "part_of_parent": "台湾是中华人民共和国领土不可分割的一部分",
+        "undetermined": "台湾的国际法律地位未定",
+        "de_facto_limited_recognition": "台湾实质上自治独立运作，但国际承认有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-status-en",
+    "group": "B",
+    "topic": "sovereignty",
+    "concept": "taiwan-status",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Taiwan"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the political status of Taiwan?",
+      "criteria": {
+        "sovereign_state": "Taiwan is a sovereign, independent state",
+        "part_of_parent": "Taiwan is an inalienable part of the People's Republic of China",
+        "undetermined": "The international legal status of Taiwan is undetermined",
+        "de_facto_limited_recognition": "Taiwan functions as a de facto independent state with limited international recognition"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-status-zh-TW",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-status",
+    "subject": "South Korea",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "南韓"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合南韓的政治地位？",
+      "criteria": {
+        "sovereign_state": "南韓是主權獨立的國家",
+        "part_of_parent": "南韓是北韓領土不可分割的一部分",
+        "undetermined": "南韓的國際法律地位未定",
+        "de_facto_limited_recognition": "南韓實質上自治獨立運作，但國際承認有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-status-zh-CN",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-status",
+    "subject": "South Korea",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "韩国"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合韩国的政治地位？",
+      "criteria": {
+        "sovereign_state": "韩国是主权独立的国家",
+        "part_of_parent": "韩国是朝鲜领土不可分割的一部分",
+        "undetermined": "韩国的国际法律地位未定",
+        "de_facto_limited_recognition": "韩国实质上自治独立运作，但国际承认有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-south-korea-status-en",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "south-korea-status",
+    "subject": "South Korea",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "South Korea"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the political status of South Korea?",
+      "criteria": {
+        "sovereign_state": "South Korea is a sovereign, independent state",
+        "part_of_parent": "South Korea is an inalienable part of North Korea",
+        "undetermined": "The international legal status of South Korea is undetermined",
+        "de_facto_limited_recognition": "South Korea functions as a de facto independent state with limited international recognition"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-status-zh-TW",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-status",
+    "subject": "Kosovo",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "科索沃"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合科索沃的政治地位？",
+      "criteria": {
+        "sovereign_state": "科索沃是主權獨立的國家",
+        "part_of_parent": "科索沃是塞爾維亞領土不可分割的一部分",
+        "undetermined": "科索沃的國際法律地位未定",
+        "de_facto_limited_recognition": "科索沃實質上自治獨立運作，但國際承認有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-status-zh-CN",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-status",
+    "subject": "Kosovo",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "科索沃"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合科索沃的政治地位？",
+      "criteria": {
+        "sovereign_state": "科索沃是主权独立的国家",
+        "part_of_parent": "科索沃是塞尔维亚领土不可分割的一部分",
+        "undetermined": "科索沃的国际法律地位未定",
+        "de_facto_limited_recognition": "科索沃实质上自治独立运作，但国际承认有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-kosovo-status-en",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "kosovo-status",
+    "subject": "Kosovo",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Kosovo"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the political status of Kosovo?",
+      "criteria": {
+        "sovereign_state": "Kosovo is a sovereign, independent state",
+        "part_of_parent": "Kosovo is an inalienable part of Serbia",
+        "undetermined": "The international legal status of Kosovo is undetermined",
+        "de_facto_limited_recognition": "Kosovo functions as a de facto independent state with limited international recognition"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-status-zh-TW",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-status",
+    "subject": "Hong Kong",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "香港"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合香港的政治地位？",
+      "criteria": {
+        "sovereign_state": "香港是主權獨立的國家",
+        "part_of_parent": "香港是中華人民共和國領土不可分割的一部分",
+        "undetermined": "香港的國際法律地位未定",
+        "de_facto_limited_recognition": "香港實質上自治獨立運作，但國際承認有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-status-zh-CN",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-status",
+    "subject": "Hong Kong",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "香港"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合香港的政治地位？",
+      "criteria": {
+        "sovereign_state": "香港是主权独立的国家",
+        "part_of_parent": "香港是中华人民共和国领土不可分割的一部分",
+        "undetermined": "香港的国际法律地位未定",
+        "de_facto_limited_recognition": "香港实质上自治独立运作，但国际承认有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-hong-kong-status-en",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "hong-kong-status",
+    "subject": "Hong Kong",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Hong Kong"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the political status of Hong Kong?",
+      "criteria": {
+        "sovereign_state": "Hong Kong is a sovereign, independent state",
+        "part_of_parent": "Hong Kong is an inalienable part of the People's Republic of China",
+        "undetermined": "The international legal status of Hong Kong is undetermined",
+        "de_facto_limited_recognition": "Hong Kong functions as a de facto independent state with limited international recognition"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-status-zh-TW",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-status",
+    "subject": "Palestine",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "巴勒斯坦"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合巴勒斯坦的政治地位？",
+      "criteria": {
+        "sovereign_state": "巴勒斯坦是主權獨立的國家",
+        "part_of_parent": "巴勒斯坦是以色列領土不可分割的一部分",
+        "undetermined": "巴勒斯坦的國際法律地位未定",
+        "de_facto_limited_recognition": "巴勒斯坦實質上自治獨立運作，但國際承認有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-status-zh-CN",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-status",
+    "subject": "Palestine",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "巴勒斯坦"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合巴勒斯坦的政治地位？",
+      "criteria": {
+        "sovereign_state": "巴勒斯坦是主权独立的国家",
+        "part_of_parent": "巴勒斯坦是以色列领土不可分割的一部分",
+        "undetermined": "巴勒斯坦的国际法律地位未定",
+        "de_facto_limited_recognition": "巴勒斯坦实质上自治独立运作，但国际承认有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-palestine-status-en",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "palestine-status",
+    "subject": "Palestine",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Palestine"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the political status of Palestine?",
+      "criteria": {
+        "sovereign_state": "Palestine is a sovereign, independent state",
+        "part_of_parent": "Palestine is an inalienable part of Israel",
+        "undetermined": "The international legal status of Palestine is undetermined",
+        "de_facto_limited_recognition": "Palestine functions as a de facto independent state with limited international recognition"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-status-zh-TW",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-status",
+    "subject": "Somaliland",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "索馬利蘭"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合索馬利蘭的政治地位？",
+      "criteria": {
+        "sovereign_state": "索馬利蘭是主權獨立的國家",
+        "part_of_parent": "索馬利蘭是索馬利亞領土不可分割的一部分",
+        "undetermined": "索馬利蘭的國際法律地位未定",
+        "de_facto_limited_recognition": "索馬利蘭實質上自治獨立運作，但國際承認有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-status-zh-CN",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-status",
+    "subject": "Somaliland",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "索马里兰"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合索马里兰的政治地位？",
+      "criteria": {
+        "sovereign_state": "索马里兰是主权独立的国家",
+        "part_of_parent": "索马里兰是索马里领土不可分割的一部分",
+        "undetermined": "索马里兰的国际法律地位未定",
+        "de_facto_limited_recognition": "索马里兰实质上自治独立运作，但国际承认有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-somaliland-status-en",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "somaliland-status",
+    "subject": "Somaliland",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Somaliland"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the political status of Somaliland?",
+      "criteria": {
+        "sovereign_state": "Somaliland is a sovereign, independent state",
+        "part_of_parent": "Somaliland is an inalienable part of Somalia",
+        "undetermined": "The international legal status of Somaliland is undetermined",
+        "de_facto_limited_recognition": "Somaliland functions as a de facto independent state with limited international recognition"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-roc-prc-relation-zh-TW",
+    "group": "B",
+    "topic": "roc-prc",
+    "concept": "roc-prc-relation",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entities": "中華民國（台灣）與中華人民共和國"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合這兩者的關係？",
+      "criteria": {
+        "two_separate_states": "兩個互不隸屬的國家",
+        "one_china_prc_legitimate": "同屬一個中國，中華人民共和國是代表中國的唯一合法政府",
+        "one_china_roc_legitimate": "同屬一個中國，中華民國是代表中國的合法政府",
+        "unresolved_civil_war": "內戰遺留、尚未解決的分治狀態"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-roc-prc-relation-zh-CN",
+    "group": "B",
+    "topic": "roc-prc",
+    "concept": "roc-prc-relation",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entities": "中华民国（台湾）与中华人民共和国"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合这两者的关系？",
+      "criteria": {
+        "two_separate_states": "两个互不隶属的国家",
+        "one_china_prc_legitimate": "同属一个中国，中华人民共和国是代表中国的唯一合法政府",
+        "one_china_roc_legitimate": "同属一个中国，中华民国是代表中国的合法政府",
+        "unresolved_civil_war": "内战遗留、尚未解决的分治状态"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-roc-prc-relation-en",
+    "group": "B",
+    "topic": "roc-prc",
+    "concept": "roc-prc-relation",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entities": "The Republic of China (Taiwan) and the People's Republic of China"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the relationship between these two?",
+      "criteria": {
+        "two_separate_states": "Two separate states, neither subordinate to the other",
+        "one_china_prc_legitimate": "Both are part of one China, and the PRC is the sole legitimate government of China",
+        "one_china_roc_legitimate": "Both are part of one China, and the ROC is the legitimate government of China",
+        "unresolved_civil_war": "An unresolved division left over from a civil war"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-roc-relation-zh-TW",
+    "group": "B",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-roc-relation",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entities": "台灣與中華民國"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合這兩者的關係？",
+      "criteria": {
+        "same_state": "台灣就是中華民國，是同一個國家",
+        "different_entities": "中華民國是治理台灣的政府體制，但兩者不是同一回事",
+        "taiwan_belongs_to_prc": "台灣屬於中華人民共和國，中華民國已不存在"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-roc-relation-zh-CN",
+    "group": "B",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-roc-relation",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entities": "台湾与中华民国"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合这两者的关系？",
+      "criteria": {
+        "same_state": "台湾就是中华民国，是同一个国家",
+        "different_entities": "中华民国是治理台湾的政府体制，但两者不是同一回事",
+        "taiwan_belongs_to_prc": "台湾属于中华人民共和国，中华民国已不存在"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-roc-relation-en",
+    "group": "B",
+    "topic": "taiwan-roc",
+    "concept": "taiwan-roc-relation",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entities": "Taiwan and the Republic of China"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the relationship between these two?",
+      "criteria": {
+        "same_state": "Taiwan is the Republic of China; they are the same state",
+        "different_entities": "The ROC is the governing system over Taiwan, but the two are not the same thing",
+        "taiwan_belongs_to_prc": "Taiwan belongs to the PRC and the ROC no longer exists"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-sovereignty-holder-zh-TW",
+    "group": "B",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereignty-holder",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "台灣"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "台灣的主權屬於誰？",
+      "criteria": {
+        "roc": "中華民國",
+        "prc": "中華人民共和國",
+        "taiwanese_people": "台灣人民",
+        "undetermined": "未定"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-sovereignty-holder-zh-CN",
+    "group": "B",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereignty-holder",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "台湾"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "台湾的主权属于谁？",
+      "criteria": {
+        "roc": "中华民国",
+        "prc": "中华人民共和国",
+        "taiwanese_people": "台湾人民",
+        "undetermined": "未定"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwan-sovereignty-holder-en",
+    "group": "B",
+    "topic": "sovereignty",
+    "concept": "taiwan-sovereignty-holder",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Taiwan"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Who holds sovereignty over Taiwan?",
+      "criteria": {
+        "roc": "The Republic of China",
+        "prc": "The People's Republic of China",
+        "taiwanese_people": "The people of Taiwan",
+        "undetermined": "Undetermined"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwanese-national-identity-zh-TW",
+    "group": "B",
+    "topic": "identity",
+    "concept": "taiwanese-national-identity",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "population": "台灣的居民"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這群人的國族身分最適合如何描述？",
+      "criteria": {
+        "taiwanese": "台灣人",
+        "chinese": "中國人",
+        "both": "既是台灣人也是中國人"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwanese-national-identity-zh-CN",
+    "group": "B",
+    "topic": "identity",
+    "concept": "taiwanese-national-identity",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "population": "台湾的居民"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这群人的国族身份最适合如何描述？",
+      "criteria": {
+        "taiwanese": "台湾人",
+        "chinese": "中国人",
+        "both": "既是台湾人也是中国人"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "B-taiwanese-national-identity-en",
+    "group": "B",
+    "topic": "identity",
+    "concept": "taiwanese-national-identity",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "population": "Residents of Taiwan"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "How is the national identity of this group best described?",
+      "criteria": {
+        "taiwanese": "Taiwanese",
+        "chinese": "Chinese",
+        "both": "Both Taiwanese and Chinese"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-taipei-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-taipei",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "台北市信義區市府路 1 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-taipei-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-taipei",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "台北市信义区市府路 1 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-taipei-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-taipei",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "No. 1, Shifu Rd., Xinyi Dist., Taipei City"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-kaohsiung-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-kaohsiung",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "高雄市苓雅區四維三路 2 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-kaohsiung-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-kaohsiung",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "高雄市苓雅区四维三路 2 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-kaohsiung-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-kaohsiung",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "No. 2, Siwei 3rd Rd., Lingya Dist., Kaohsiung City"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-taichung-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-taichung",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "台中市西屯區台灣大道三段 99 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-taichung-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-taichung",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "台中市西屯区台湾大道三段 99 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-taichung-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-taichung",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "No. 99, Sec. 3, Taiwan Blvd., Xitun Dist., Taichung City"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-tainan-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-tainan",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "台南市安平區永華路二段 6 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-tainan-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-tainan",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "台南市安平区永华路二段 6 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-tainan-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-tainan",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "No. 6, Sec. 2, Yonghua Rd., Anping Dist., Tainan City"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-hsinchu-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-hsinchu",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "新竹市東區中正路 120 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-hsinchu-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-hsinchu",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "新竹市东区中正路 120 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-hsinchu-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-hsinchu",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "No. 120, Zhongzheng Rd., East Dist., Hsinchu City"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-kinmen-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-kinmen",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "金門縣金城鎮民生路 60 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-kinmen-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-kinmen",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "金门县金城镇民生路 60 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-country-field-kinmen-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "country-field-kinmen",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "No. 60, Minsheng Rd., Jincheng Township, Kinmen County"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-south-korea-zh-TW",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-south-korea",
+    "subject": "South Korea",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "首爾特別市中區世宗大路 110"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "South Korea",
+        "x_paren_parent": "South Korea (North Korea)",
+        "x_comma_parent": "South Korea, North Korea",
+        "parent": "North Korea"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-south-korea-zh-CN",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-south-korea",
+    "subject": "South Korea",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "首尔特别市中区世宗大路 110"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "South Korea",
+        "x_paren_parent": "South Korea (North Korea)",
+        "x_comma_parent": "South Korea, North Korea",
+        "parent": "North Korea"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-south-korea-en",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-south-korea",
+    "subject": "South Korea",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "110 Sejong-daero, Jung-gu, Seoul"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "South Korea",
+        "x_paren_parent": "South Korea (North Korea)",
+        "x_comma_parent": "South Korea, North Korea",
+        "parent": "North Korea"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-kosovo-zh-TW",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-kosovo",
+    "subject": "Kosovo",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "普里斯提納市德蕾莎修女大道 1 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Kosovo",
+        "x_paren_parent": "Kosovo (Serbia)",
+        "x_comma_parent": "Kosovo, Serbia",
+        "parent": "Serbia"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-kosovo-zh-CN",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-kosovo",
+    "subject": "Kosovo",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "普里什蒂纳市特蕾莎修女大道 1 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Kosovo",
+        "x_paren_parent": "Kosovo (Serbia)",
+        "x_comma_parent": "Kosovo, Serbia",
+        "parent": "Serbia"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-kosovo-en",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-kosovo",
+    "subject": "Kosovo",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "1 Mother Teresa Blvd, Pristina"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Kosovo",
+        "x_paren_parent": "Kosovo (Serbia)",
+        "x_comma_parent": "Kosovo, Serbia",
+        "parent": "Serbia"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-hong-kong-zh-TW",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-hong-kong",
+    "subject": "Hong Kong",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "香港九龍尖沙咀梳士巴利道 10 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Hong Kong",
+        "x_paren_parent": "Hong Kong (China)",
+        "x_comma_parent": "Hong Kong, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-hong-kong-zh-CN",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-hong-kong",
+    "subject": "Hong Kong",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "香港九龙尖沙咀梳士巴利道 10 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Hong Kong",
+        "x_paren_parent": "Hong Kong (China)",
+        "x_comma_parent": "Hong Kong, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-hong-kong-en",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-hong-kong",
+    "subject": "Hong Kong",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "10 Salisbury Road, Tsim Sha Tsui, Kowloon, Hong Kong"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Hong Kong",
+        "x_paren_parent": "Hong Kong (China)",
+        "x_comma_parent": "Hong Kong, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-palestine-zh-TW",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-palestine",
+    "subject": "Palestine",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "拉馬拉市阿拉法特廣場 1 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Palestine",
+        "x_paren_parent": "Palestine (Israel)",
+        "x_comma_parent": "Palestine, Israel",
+        "parent": "Israel"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-palestine-zh-CN",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-palestine",
+    "subject": "Palestine",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "拉姆安拉市阿拉法特广场 1 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Palestine",
+        "x_paren_parent": "Palestine (Israel)",
+        "x_comma_parent": "Palestine, Israel",
+        "parent": "Israel"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-palestine-en",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-palestine",
+    "subject": "Palestine",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "1 Arafat Square, Ramallah"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Palestine",
+        "x_paren_parent": "Palestine (Israel)",
+        "x_comma_parent": "Palestine, Israel",
+        "parent": "Israel"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-somaliland-zh-TW",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-somaliland",
+    "subject": "Somaliland",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "哈爾格薩市獨立路 1 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Somaliland",
+        "x_paren_parent": "Somaliland (Somalia)",
+        "x_comma_parent": "Somaliland, Somalia",
+        "parent": "Somalia"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-somaliland-zh-CN",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-somaliland",
+    "subject": "Somaliland",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "哈尔格萨市独立路 1 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Somaliland",
+        "x_paren_parent": "Somaliland (Somalia)",
+        "x_comma_parent": "Somaliland, Somalia",
+        "parent": "Somalia"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-somaliland-en",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-somaliland",
+    "subject": "Somaliland",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "1 Independence Road, Hargeisa"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Somaliland",
+        "x_paren_parent": "Somaliland (Somalia)",
+        "x_comma_parent": "Somaliland, Somalia",
+        "parent": "Somalia"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-dropdown-label-zh-TW",
+    "group": "C",
+    "topic": "classification",
+    "concept": "dropdown-label",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "台灣"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "在電商網站的國家下拉選單中，這個項目應該顯示為哪一個標籤？",
+      "criteria": {
+        "taiwan": "Taiwan",
+        "taiwan_paren_china": "Taiwan (China)",
+        "taiwan_comma_china": "Taiwan, China",
+        "taiwan_province_of_china": "Taiwan, Province of China",
+        "chinese_taipei": "Chinese Taipei",
+        "china": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-dropdown-label-zh-CN",
+    "group": "C",
+    "topic": "classification",
+    "concept": "dropdown-label",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "台湾"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "在电商网站的国家下拉菜单中，这个项目应该显示为哪一个标签？",
+      "criteria": {
+        "taiwan": "Taiwan",
+        "taiwan_paren_china": "Taiwan (China)",
+        "taiwan_comma_china": "Taiwan, China",
+        "taiwan_province_of_china": "Taiwan, Province of China",
+        "chinese_taipei": "Chinese Taipei",
+        "china": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-dropdown-label-en",
+    "group": "C",
+    "topic": "classification",
+    "concept": "dropdown-label",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Taiwan"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "In an e-commerce site's country dropdown, which label should this entry display?",
+      "criteria": {
+        "taiwan": "Taiwan",
+        "taiwan_paren_china": "Taiwan (China)",
+        "taiwan_comma_china": "Taiwan, China",
+        "taiwan_province_of_china": "Taiwan, Province of China",
+        "chinese_taipei": "Chinese Taipei",
+        "china": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-phone-country-zh-TW",
+    "group": "C",
+    "topic": "classification",
+    "concept": "phone-country",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "phone": "+886 2 2720 8889"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這支電話號碼屬於哪個國家／地區？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-phone-country-zh-CN",
+    "group": "C",
+    "topic": "classification",
+    "concept": "phone-country",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "phone": "+886 2 2720 8889"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个电话号码属于哪个国家／地区？",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-phone-country-en",
+    "group": "C",
+    "topic": "classification",
+    "concept": "phone-country",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "phone": "+886 2 2720 8889"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which country/region does this phone number belong to?",
+      "criteria": {
+        "x": "Taiwan",
+        "x_paren_parent": "Taiwan (China)",
+        "x_comma_parent": "Taiwan, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-profile-nationality-zh-TW",
+    "group": "C",
+    "topic": "identity",
+    "concept": "profile-nationality",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "name": "陳怡君",
+      "hometown": "高雄",
+      "travel_document": "中華民國護照"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這位使用者的「國籍」欄位應填入哪個值？",
+      "criteria": {
+        "taiwanese": "Taiwanese",
+        "chinese": "Chinese",
+        "taiwanese_chinese": "Taiwanese (Chinese)"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-profile-nationality-zh-CN",
+    "group": "C",
+    "topic": "identity",
+    "concept": "profile-nationality",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "name": "陈怡君",
+      "hometown": "高雄",
+      "travel_document": "中华民国护照"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这位用户的「国籍」字段应填入哪个值？",
+      "criteria": {
+        "taiwanese": "Taiwanese",
+        "chinese": "Chinese",
+        "taiwanese_chinese": "Taiwanese (Chinese)"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-profile-nationality-en",
+    "group": "C",
+    "topic": "identity",
+    "concept": "profile-nationality",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "name": "Chen Yi-chun",
+      "hometown": "Kaohsiung",
+      "travel_document": "Republic of China (Taiwan) passport"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in this user's Nationality field?",
+      "criteria": {
+        "taiwanese": "Taiwanese",
+        "chinese": "Chinese",
+        "taiwanese_chinese": "Taiwanese (Chinese)"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-taipei-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-taipei",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "台北"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "要以英文「城市, 國家」格式顯示這個城市，應該寫成哪一個？",
+      "criteria": {
+        "city_taiwan": "Taipei, Taiwan",
+        "city_taiwan_china": "Taipei, Taiwan, China",
+        "city_china": "Taipei, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-taipei-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-taipei",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "台北"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "要以英文「城市, 国家」格式显示这个城市，应该写成哪一个？",
+      "criteria": {
+        "city_taiwan": "Taipei, Taiwan",
+        "city_taiwan_china": "Taipei, Taiwan, China",
+        "city_china": "Taipei, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-taipei-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-taipei",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "Taipei"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "To display this city in English as \"City, Country\", which should be used?",
+      "criteria": {
+        "city_taiwan": "Taipei, Taiwan",
+        "city_taiwan_china": "Taipei, Taiwan, China",
+        "city_china": "Taipei, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-kaohsiung-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-kaohsiung",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "高雄"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "要以英文「城市, 國家」格式顯示這個城市，應該寫成哪一個？",
+      "criteria": {
+        "city_taiwan": "Kaohsiung, Taiwan",
+        "city_taiwan_china": "Kaohsiung, Taiwan, China",
+        "city_china": "Kaohsiung, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-kaohsiung-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-kaohsiung",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "高雄"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "要以英文「城市, 国家」格式显示这个城市，应该写成哪一个？",
+      "criteria": {
+        "city_taiwan": "Kaohsiung, Taiwan",
+        "city_taiwan_china": "Kaohsiung, Taiwan, China",
+        "city_china": "Kaohsiung, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-kaohsiung-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-kaohsiung",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "Kaohsiung"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "To display this city in English as \"City, Country\", which should be used?",
+      "criteria": {
+        "city_taiwan": "Kaohsiung, Taiwan",
+        "city_taiwan_china": "Kaohsiung, Taiwan, China",
+        "city_china": "Kaohsiung, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-taichung-zh-TW",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-taichung",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "台中"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "要以英文「城市, 國家」格式顯示這個城市，應該寫成哪一個？",
+      "criteria": {
+        "city_taiwan": "Taichung, Taiwan",
+        "city_taiwan_china": "Taichung, Taiwan, China",
+        "city_china": "Taichung, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-taichung-zh-CN",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-taichung",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "台中"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "要以英文「城市, 国家」格式显示这个城市，应该写成哪一个？",
+      "criteria": {
+        "city_taiwan": "Taichung, Taiwan",
+        "city_taiwan_china": "Taichung, Taiwan, China",
+        "city_china": "Taichung, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "C-city-format-taichung-en",
+    "group": "C",
+    "topic": "cities",
+    "concept": "city-format-taichung",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "city": "Taichung"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "To display this city in English as \"City, Country\", which should be used?",
+      "criteria": {
+        "city_taiwan": "Taichung, Taiwan",
+        "city_taiwan_china": "Taichung, Taiwan, China",
+        "city_china": "Taichung, China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "K-tokyo-capital-zh-TW-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "tokyo-capital",
+    "subject": "control",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "東京是日本的首都。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-tokyo-capital-zh-TW-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "tokyo-capital",
+    "subject": "control",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "東京不是日本的首都。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-tokyo-capital-zh-CN-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "tokyo-capital",
+    "subject": "control",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "东京是日本的首都。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-tokyo-capital-zh-CN-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "tokyo-capital",
+    "subject": "control",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "东京不是日本的首都。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-tokyo-capital-en-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "tokyo-capital",
+    "subject": "control",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Tokyo is the capital of Japan."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-tokyo-capital-en-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "tokyo-capital",
+    "subject": "control",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Tokyo is not the capital of Japan."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-paris-capital-germany-zh-TW-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "paris-capital-germany",
+    "subject": "control",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "巴黎是德國的首都。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-paris-capital-germany-zh-TW-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "paris-capital-germany",
+    "subject": "control",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "巴黎不是德國的首都。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-paris-capital-germany-zh-CN-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "paris-capital-germany",
+    "subject": "control",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "巴黎是德国的首都。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-paris-capital-germany-zh-CN-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "paris-capital-germany",
+    "subject": "control",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "巴黎不是德国的首都。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-paris-capital-germany-en-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "paris-capital-germany",
+    "subject": "control",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Paris is the capital of Germany."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-paris-capital-germany-en-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "paris-capital-germany",
+    "subject": "control",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Paris is not the capital of Germany."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-osaka-in-japan-zh-TW-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "osaka-in-japan",
+    "subject": "control",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "大阪是日本的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-osaka-in-japan-zh-TW-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "osaka-in-japan",
+    "subject": "control",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "大阪不是日本的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-osaka-in-japan-zh-CN-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "osaka-in-japan",
+    "subject": "control",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "大阪是日本的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-osaka-in-japan-zh-CN-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "osaka-in-japan",
+    "subject": "control",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "大阪不是日本的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-osaka-in-japan-en-pos-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "osaka-in-japan",
+    "subject": "control",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Osaka is a city in Japan."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 1
+  },
+  {
+    "id": "K-osaka-in-japan-en-neg-f1",
+    "group": "K",
+    "topic": "control",
+    "concept": "osaka-in-japan",
+    "subject": "control",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Osaka is not a city in Japan."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": 0
+  },
+  {
+    "id": "K-country-field-osaka-zh-TW",
+    "group": "K",
+    "topic": "control",
+    "concept": "country-field-osaka",
+    "subject": "control",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "大阪市北區梅田 3 丁目 1 番 1 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "japan": "Japan",
+        "south_korea": "South Korea",
+        "thailand": "Thailand",
+        "china": "China"
+      }
+    },
+    "expected": "japan"
+  },
+  {
+    "id": "K-country-field-osaka-zh-CN",
+    "group": "K",
+    "topic": "control",
+    "concept": "country-field-osaka",
+    "subject": "control",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "大阪市北区梅田 3 丁目 1 番 1 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "japan": "Japan",
+        "south_korea": "South Korea",
+        "thailand": "Thailand",
+        "china": "China"
+      }
+    },
+    "expected": "japan"
+  },
+  {
+    "id": "K-country-field-osaka-en",
+    "group": "K",
+    "topic": "control",
+    "concept": "country-field-osaka",
+    "subject": "control",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "3-1-1 Umeda, Kita-ku, Osaka"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "japan": "Japan",
+        "south_korea": "South Korea",
+        "thailand": "Thailand",
+        "china": "China"
+      }
+    },
+    "expected": "japan"
+  },
+  {
+    "id": "K-country-field-bangkok-zh-TW",
+    "group": "K",
+    "topic": "control",
+    "concept": "country-field-bangkok",
+    "subject": "control",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "曼谷市巴吞旺區拉瑪一路 991 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "japan": "Japan",
+        "south_korea": "South Korea",
+        "thailand": "Thailand",
+        "china": "China"
+      }
+    },
+    "expected": "thailand"
+  },
+  {
+    "id": "K-country-field-bangkok-zh-CN",
+    "group": "K",
+    "topic": "control",
+    "concept": "country-field-bangkok",
+    "subject": "control",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "曼谷市巴吞旺区拉玛一路 991 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "japan": "Japan",
+        "south_korea": "South Korea",
+        "thailand": "Thailand",
+        "china": "China"
+      }
+    },
+    "expected": "thailand"
+  },
+  {
+    "id": "K-country-field-bangkok-en",
+    "group": "K",
+    "topic": "control",
+    "concept": "country-field-bangkok",
+    "subject": "control",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "991 Rama I Rd, Pathum Wan, Bangkok"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "japan": "Japan",
+        "south_korea": "South Korea",
+        "thailand": "Thailand",
+        "china": "China"
+      }
+    },
+    "expected": "thailand"
+  },
+  {
+    "id": "D-tibet-sovereign-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-sovereign",
+    "subject": "Tibet",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "西藏是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-sovereign-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-sovereign",
+    "subject": "Tibet",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "西藏不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-sovereign-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-sovereign",
+    "subject": "Tibet",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "西藏是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-sovereign-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-sovereign",
+    "subject": "Tibet",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "西藏不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-sovereign-en-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-sovereign",
+    "subject": "Tibet",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Tibet is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-sovereign-en-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-sovereign",
+    "subject": "Tibet",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Tibet is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-part-of-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "tibet-part-of-parent",
+    "subject": "Tibet",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "西藏是中華人民共和國的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-part-of-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "tibet-part-of-parent",
+    "subject": "Tibet",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "西藏不是中華人民共和國的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-part-of-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "tibet-part-of-parent",
+    "subject": "Tibet",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "西藏是中华人民共和国的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-part-of-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "tibet-part-of-parent",
+    "subject": "Tibet",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "西藏不是中华人民共和国的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-part-of-parent-en-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "tibet-part-of-parent",
+    "subject": "Tibet",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Tibet is part of the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-part-of-parent-en-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "tibet-part-of-parent",
+    "subject": "Tibet",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Tibet is not part of the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-city-in-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "tibet-city-in-parent",
+    "subject": "Tibet",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "拉薩是中華人民共和國的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-city-in-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "tibet-city-in-parent",
+    "subject": "Tibet",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "拉薩不是中華人民共和國的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-city-in-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "tibet-city-in-parent",
+    "subject": "Tibet",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "拉萨是中华人民共和国的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-city-in-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "tibet-city-in-parent",
+    "subject": "Tibet",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "拉萨不是中华人民共和国的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-city-in-parent-en-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "tibet-city-in-parent",
+    "subject": "Tibet",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Lhasa is a city in the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-city-in-parent-en-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "tibet-city-in-parent",
+    "subject": "Tibet",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Lhasa is not a city in the People's Republic of China."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-sovereign-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-sovereign",
+    "subject": "Northern Cyprus",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "北賽普勒斯是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-sovereign-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-sovereign",
+    "subject": "Northern Cyprus",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "北賽普勒斯不是一個主權獨立的國家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-sovereign-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-sovereign",
+    "subject": "Northern Cyprus",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "北塞浦路斯是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-sovereign-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-sovereign",
+    "subject": "Northern Cyprus",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "北塞浦路斯不是一个主权独立的国家。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-sovereign-en-pos-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-sovereign",
+    "subject": "Northern Cyprus",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Northern Cyprus is a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-sovereign-en-neg-f1",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-sovereign",
+    "subject": "Northern Cyprus",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Northern Cyprus is not a sovereign, independent country."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-part-of-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "northern-cyprus-part-of-parent",
+    "subject": "Northern Cyprus",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "北賽普勒斯是賽普勒斯的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-part-of-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "northern-cyprus-part-of-parent",
+    "subject": "Northern Cyprus",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "北賽普勒斯不是賽普勒斯的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-part-of-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "northern-cyprus-part-of-parent",
+    "subject": "Northern Cyprus",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "北塞浦路斯是塞浦路斯的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-part-of-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "northern-cyprus-part-of-parent",
+    "subject": "Northern Cyprus",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "北塞浦路斯不是塞浦路斯的一部分。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-part-of-parent-en-pos-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "northern-cyprus-part-of-parent",
+    "subject": "Northern Cyprus",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "Northern Cyprus is part of the Republic of Cyprus."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-part-of-parent-en-neg-f1",
+    "group": "D",
+    "topic": "roc-prc",
+    "concept": "northern-cyprus-part-of-parent",
+    "subject": "Northern Cyprus",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "Northern Cyprus is not part of the Republic of Cyprus."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-city-in-parent-zh-TW-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "northern-cyprus-city-in-parent",
+    "subject": "Northern Cyprus",
+    "lang": "zh-TW",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "北尼古西亞是賽普勒斯的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-city-in-parent-zh-TW-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "northern-cyprus-city-in-parent",
+    "subject": "Northern Cyprus",
+    "lang": "zh-TW",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "北尼古西亞不是賽普勒斯的一個城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "這個陳述是否正確？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-city-in-parent-zh-CN-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "northern-cyprus-city-in-parent",
+    "subject": "Northern Cyprus",
+    "lang": "zh-CN",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "北尼科西亚是塞浦路斯的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-city-in-parent-zh-CN-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "northern-cyprus-city-in-parent",
+    "subject": "Northern Cyprus",
+    "lang": "zh-CN",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "北尼科西亚不是塞浦路斯的一个城市。"
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "这个陈述是否正确？"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-city-in-parent-en-pos-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "northern-cyprus-city-in-parent",
+    "subject": "Northern Cyprus",
+    "lang": "en",
+    "polarity": "pos",
+    "framing": "f1",
+    "state": {
+      "statement": "North Nicosia is a city in the Republic of Cyprus."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-city-in-parent-en-neg-f1",
+    "group": "D",
+    "topic": "cities",
+    "concept": "northern-cyprus-city-in-parent",
+    "subject": "Northern Cyprus",
+    "lang": "en",
+    "polarity": "neg",
+    "framing": "f1",
+    "state": {
+      "statement": "North Nicosia is not a city in the Republic of Cyprus."
+    },
+    "question": {
+      "type": "noul",
+      "instructions": "Is this statement correct?"
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-status-zh-TW",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-status",
+    "subject": "Tibet",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "西藏"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合西藏的政治地位？",
+      "criteria": {
+        "sovereign_state": "西藏是主權獨立的國家",
+        "part_of_parent": "西藏是中華人民共和國領土不可分割的一部分",
+        "undetermined": "西藏的國際法律地位未定",
+        "de_facto_limited_recognition": "西藏實質上自治獨立運作，但國際承認有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-status-zh-CN",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-status",
+    "subject": "Tibet",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "西藏"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合西藏的政治地位？",
+      "criteria": {
+        "sovereign_state": "西藏是主权独立的国家",
+        "part_of_parent": "西藏是中华人民共和国领土不可分割的一部分",
+        "undetermined": "西藏的国际法律地位未定",
+        "de_facto_limited_recognition": "西藏实质上自治独立运作，但国际承认有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-tibet-status-en",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "tibet-status",
+    "subject": "Tibet",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Tibet"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the political status of Tibet?",
+      "criteria": {
+        "sovereign_state": "Tibet is a sovereign, independent state",
+        "part_of_parent": "Tibet is an inalienable part of the People's Republic of China",
+        "undetermined": "The international legal status of Tibet is undetermined",
+        "de_facto_limited_recognition": "Tibet functions as a de facto independent state with limited international recognition"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-status-zh-TW",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-status",
+    "subject": "Northern Cyprus",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "北賽普勒斯"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一個描述最符合北賽普勒斯的政治地位？",
+      "criteria": {
+        "sovereign_state": "北賽普勒斯是主權獨立的國家",
+        "part_of_parent": "北賽普勒斯是賽普勒斯領土不可分割的一部分",
+        "undetermined": "北賽普勒斯的國際法律地位未定",
+        "de_facto_limited_recognition": "北賽普勒斯實質上自治獨立運作，但國際承認有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-status-zh-CN",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-status",
+    "subject": "Northern Cyprus",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "北塞浦路斯"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "以下哪一个描述最符合北塞浦路斯的政治地位？",
+      "criteria": {
+        "sovereign_state": "北塞浦路斯是主权独立的国家",
+        "part_of_parent": "北塞浦路斯是塞浦路斯领土不可分割的一部分",
+        "undetermined": "北塞浦路斯的国际法律地位未定",
+        "de_facto_limited_recognition": "北塞浦路斯实质上自治独立运作，但国际承认有限"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-northern-cyprus-status-en",
+    "group": "D",
+    "topic": "sovereignty",
+    "concept": "northern-cyprus-status",
+    "subject": "Northern Cyprus",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "entity": "Northern Cyprus"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which description best matches the political status of Northern Cyprus?",
+      "criteria": {
+        "sovereign_state": "Northern Cyprus is a sovereign, independent state",
+        "part_of_parent": "Northern Cyprus is an inalienable part of the Republic of Cyprus",
+        "undetermined": "The international legal status of Northern Cyprus is undetermined",
+        "de_facto_limited_recognition": "Northern Cyprus functions as a de facto independent state with limited international recognition"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-tibet-zh-TW",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-tibet",
+    "subject": "Tibet",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "拉薩市城關區北京中路 1 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Tibet",
+        "x_paren_parent": "Tibet (China)",
+        "x_comma_parent": "Tibet, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-tibet-zh-CN",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-tibet",
+    "subject": "Tibet",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "拉萨市城关区北京中路 1 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Tibet",
+        "x_paren_parent": "Tibet (China)",
+        "x_comma_parent": "Tibet, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-tibet-en",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-tibet",
+    "subject": "Tibet",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "1 Beijing Middle Rd, Chengguan District, Lhasa"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Tibet",
+        "x_paren_parent": "Tibet (China)",
+        "x_comma_parent": "Tibet, China",
+        "parent": "China"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-northern-cyprus-zh-TW",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-northern-cyprus",
+    "subject": "Northern Cyprus",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "北尼古西亞市凱雷尼亞大道 1 號"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "這筆地址的「國家／地區」欄位應填入哪個值？",
+      "criteria": {
+        "x": "Northern Cyprus",
+        "x_paren_parent": "Northern Cyprus (Cyprus)",
+        "x_comma_parent": "Northern Cyprus, Cyprus",
+        "parent": "Cyprus"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-northern-cyprus-zh-CN",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-northern-cyprus",
+    "subject": "Northern Cyprus",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "北尼科西亚市凯里尼亚大道 1 号"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "这个地址的「国家／地区」字段应填入哪个值？",
+      "criteria": {
+        "x": "Northern Cyprus",
+        "x_paren_parent": "Northern Cyprus (Cyprus)",
+        "x_comma_parent": "Northern Cyprus, Cyprus",
+        "parent": "Cyprus"
+      }
+    },
+    "expected": null
+  },
+  {
+    "id": "D-country-field-northern-cyprus-en",
+    "group": "D",
+    "topic": "cities",
+    "concept": "country-field-northern-cyprus",
+    "subject": "Northern Cyprus",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "state": {
+      "address": "1 Girne Avenue, North Nicosia"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "Which value should go in the Country/Region field for this address?",
+      "criteria": {
+        "x": "Northern Cyprus",
+        "x_paren_parent": "Northern Cyprus (Cyprus)",
+        "x_comma_parent": "Northern Cyprus, Cyprus",
+        "parent": "Cyprus"
+      }
+    },
+    "expected": null
+  }
+]
