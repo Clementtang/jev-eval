@@ -258,16 +258,22 @@
           transform: scale(1);
         }
       }
+      /* The scoreboard replaces the focus card and bins instead of overlaying them, so a
+         screenshot of the final frame never shows the last question as if it were a verdict. */
+      #stage.summary .focus,
+      #stage.summary .bins {
+        display: none;
+      }
       .done {
-        position: absolute;
-        inset: 250px 0 0 0;
-        background: rgba(247, 245, 240, 0.98);
+        grid-row: 2 / 4;
+        background: var(--panel);
+        box-shadow: 0 0 0 1px var(--line);
         border-radius: 12px;
         padding: 26px 24px;
         display: none;
         flex-direction: column;
-        gap: 18px;
-        border: 1px solid var(--line);
+        gap: 26px;
+        justify-content: center;
       }
       #stage.summary .done {
         display: flex;
