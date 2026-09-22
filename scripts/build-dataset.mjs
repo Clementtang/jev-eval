@@ -264,7 +264,7 @@ addChoice({ group: "K", topic: "control", concept: "country-field-bangkok", subj
 // ---------- Robustness variants (derived from the base items above) ----------
 // Base items carry no `variant` field; analysis treats a missing variant as "base".
 
-// Option order: position bias is a known confound for choice questions (Zheng et al. 2308.11483).
+// Option order: position bias is a known confound for choice questions (Pezeshkpour & Hruschka, arXiv 2308.11483).
 // The shuffle is seeded by id so re-running the builder yields the same order.
 function seededShuffle(keys, seed) {
   let h = [...seed].reduce((a, c) => (Math.imul(a, 31) + c.charCodeAt(0)) >>> 0, 7);
