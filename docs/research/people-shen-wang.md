@@ -44,6 +44,8 @@ Puma Shen 本人的學術著作（Google Scholar 個人頁）集中在法律社�
 
 ## 第二位：姓王（Wang）、X 帳號 handle 疑似以「weary」開頭的美國教授
 
+**使用者已確認第二位是王宏恩（Austin Horng-En Wang），見文末新增章節。**
+
 ### 搜尋結果
 
 用「weary」開頭、姓王、美國教授、中國政治／審查／AI 模型偏向等線索多次搜尋（包含 X 站內搜尋、Google 搜尋各種拼法如 wearywang、weary_wang、wearyxwang，以及「@weary」+ professor／China 等組合），**沒有找到任何符合「X handle 以 weary 開頭」的姓王教授**。這條線索本身查無結果，如實告知：可能是使用者記錯 handle 拼法、記錯姓氏，或該帳號已改名／刪除。
@@ -113,3 +115,85 @@ Puma Shen 本人的學術著作（Google Scholar 個人頁）集中在法律社�
 2. Doublethink Lab 的 GoLaxy 報告原始頁面因平台反爬蟲機制無法直接開啟驗證，僅以三個獨立轉載／引用來源交叉確認標題與內容一致，建議使用者引用前親自點開連結複核一次。
 3. Yaqiu Wang 的 X 帳號內容以搜尋引擎摘要確認，未逐則開啟原始貼文頁面，標記為 [UNVERIFIED] 的部分不建議直接引用其貼文文字，只引用其公開發表的評論文章較安全。
 4. arXiv 2602.06371（Ju-Chun Ko）與使用者正在寫的報告主題高度重疊，建議使用者親自確認兩者研究問題、方法、時間點的先後與異同，避免報告被視為重複既有研究。
+
+---
+
+## 王宏恩（Austin Horng-En Wang）
+
+調查日期：2026-09-22
+
+### 身分確認
+
+王宏恩（Austin Horng-En Wang），美國內華達大學拉斯維加斯分校（UNLV）政治系副教授，杜克大學政治學博士（2018），台大電機系學士、公共事務研究所碩士。研究興趣包含台灣政治、美中台關係、民意調查、實驗法、社群媒體、假訊息、政治心理學、認知作戰。現亦為 RAND Corporation 兼任政治學家（Associate Political Scientist）。個人網站：https://austinwang.faculty.unlv.edu/。Threads 帳號 @wearytolove 已開啟並確認可存取，追蹤者約 19K，個人簡介與置頂貼文確認為王宏恩本人（學經歷、可授課主題與其公開身分吻合）；瀏覽當下可見的近期貼文（自我介紹、學術投稿進度、日常心得）中**未見到與 AI／LLM 相關的內容**，Threads 站內搜尋功能受限，無法確認是否有更早期或需要搜尋才能找到的 AI 相關貼文，如實告知未查到而非猜測。
+
+### 找到什麼
+
+王宏恩本人有多筆與 AI／LLM 直接相關的研究與專欄產出，橫跨 RAND 政策報告、Friedrich Naumann Foundation 委託研究、思想坦克（Voicettank）與菜市場政治學（whogovernstw.org）專欄。其中 RAND 的 LLM 全球採用模式報告與本報告的「跨語言比較 AI 模型立場」主題方法論可互相參照，但研究對象不同（他研究的是「哪些國家用哪國的 LLM」，本報告研究的是「LLM 對台灣主權議題回答什麼立場」），是互補而非重複。
+
+### 未找到什麼
+
+- 沒有找到王宏恩本人做過「多個 LLM 對台灣主權／兩岸議題以繁中、簡中、英文三語提問，比較拒答率或立場差異」這種與 Jev／Claude 測試方法直接相同的研究。他的 AI 相關研究偏向「AI 如何被用於認知作戰／假訊息」與「美中 LLM 市場競爭與各國採用模式」，不是「對 LLM 本身做政治立場基準測試」。
+- Threads 貼文中沒有查到他公開測試過特定 LLM（如 DeepSeek、ChatGPT、Claude）在台灣議題上的具體回答內容。
+
+### 相關研究清單
+
+1. **U.S.-China Competition for Artificial Intelligence Markets: Analyzing Global Use Patterns of Large Language Models**
+   作者：Wang, Austin H. E., Siler-Evans, Kyle
+   單位：RAND Corporation（報告編號 RRA4355-1）
+   日期：2026-01-14
+   URL：https://www.rand.org/pubs/research_reports/RRA4355-1.html
+   摘要：分析美國與中國 LLM 的全球採用模式，探討定價策略、多語能力、政府主導的外交推廣三項驅動國際 LLM 採用的因素；發現美系模型因先行者優勢與能力較強而持續領先，但中國 DeepSeek R1 等模型能快速侵蝕市佔率。據稱曾被美國國會 USCC（US-China Economic and Security Review Commission）引用。
+   驗證備註：RAND 官網頁面對本工具直接 WebFetch 回傳 403（RAND 站台對自動化存取有限制），但透過三個獨立搜尋結果（含法國媒體轉載的 PDF、Conversable Economist 部落格摘要）交叉確認標題、作者、日期與摘要內容一致，判斷可信；建議使用者引用前親自開啟連結複核。
+   與本報告的關聯：方法可借鏡。這篇談的是「各國選用哪個 LLM」的市場面，本報告談的是「LLM 對台灣議題怎麼回答」的立場面，主題相關但問題不同，可作為背景文獻說明「為什麼 LLM 產地重要」。
+
+2. **The People's Liberation Army's Perspectives on Artificial Intelligence Highlighting Integration as Key to "Intelligentization" Goals**
+   作者：Wang, A. H. E., Lathrop, Emily, Chase, Michael S., Marcellino, William
+   單位：RAND Corporation（報告編號 PEA4574-1）
+   日期：2026-03-14
+   URL：https://www.rand.org/pubs/perspectives/PEA4574-1.html
+   摘要：分析中國人民解放軍對 AI 的看法，AI 整合是其「智能化」目標的核心。
+   驗證備註：內容摘要來自本工具對 austinwang.faculty.unlv.edu/publication/ 頁面的擷取（該頁本身已成功開啟），未逐一以 WebFetch 開啟 RAND 原始頁面（RAND 站台對本工具回傳 403），標題與作者資訊來自作者本人著作清單頁，可信度高，但摘要細節建議使用者親自複核。
+   與本報告的關聯：關聯弱。談的是解放軍對 AI 的軍事觀點，不涉及 LLM 政治立場測試，僅作背景認識中國國家對 AI 定位的參考。
+
+3. **AI-Generated Disinformation in the 2024 Taiwan Presidential Election**
+   作者：Wang, Austin H.（王宏恩）
+   單位：Friedrich Naumann Foundation for Freedom（FNF Global Innovation Hub）
+   日期：2024 年
+   URL：https://shop.freiheit.org/download/P2@1825/942814/AI%20Election%20Paper_EN-%200107_final.pdf （出版頁：https://www.freiheit.org/taiwan/fnf-global-innovation-hub-released-ai-generated-disinformation-2024-taiwan-presidential）
+   摘要：分析 2024 年台灣總統大選期間 AI 生成的假訊息，包括深偽影片、假社群帳號、AI 生成的新聞主播散布不實敘事；針對特定候選人的深偽疑雲以及中國背景機器人網路放大親中訊息的案例。雖未對選舉結果造成決定性影響，但成功吸引公眾關注特定假新聞、影響演算法並分散選民對政策辯論的注意力。
+   驗證備註：PDF 已成功下載但本工具無法解析其文字內容（PDF 為壓縮字型嵌入格式），標題與內容摘要改以出版頁與三則獨立媒體／學術轉述（Thomson Foundation、Stanford FSI 活動頁）交叉確認一致，判斷可信；PDF 原始檔案已存於本機暫存供使用者親自查閱。
+   與本報告的關聯：背景引用。談的是「AI 生成內容如何被用來散布假訊息影響台灣選舉」，不是「LLM 本身在台灣主權議題上的回答立場」，角度與 Puma Shen／Doublethink Lab 的 GoLaxy 報告類似，可作背景但非直接對照。
+
+4. **ChatGPT可能說服選民改變立場嗎？**
+   作者：王宏恩
+   出處：菜市場政治學（whogovernstw.org）
+   日期：2026-01-11
+   URL：https://whogovernstw.org/2026/01/11/austinwang90/
+   摘要：綜述《Nature》與《Science》期刊研究，檢驗 AI 對話是否能改變受試者政治立場。發現「多提供事實、數字與新聞連結」的說服策略最有效，但 AI 在被要求多舉事實時容易編造數字或假資訊來源；模型參數規模越大，說服力越強。文章提醒若政治勢力大規模部署個人化 AI 說客，將對民主制度構成潛在威脅。
+   與本報告的關聯：方法可借鏡。雖非直接測試台灣主權立場，但討論「LLM 如何在政治說服情境下產出內容、是否會編造事實」，與評估 LLM 政治可信度的問題意識相關，可作為報告討論「LLM 政治內容風險」段落的背景引用。
+
+5. **ChatGPT出世讓對抗資訊操弄的抗體下降九成**
+   作者：王宏恩
+   出處：思想坦克 Voicettank（voicettank.org）
+   日期：2023-03-30
+   URL：https://voicettank.org/chatgpt%E5%87%BA%E4%B8%96%E8%AE%93%E5%B0%8D%E6%8A%97%E8%B3%87%E8%A8%8A%E6%93%8D%E5%BC%84%E7%9A%84%E6%8A%97%E9%AB%94%E4%B8%8B%E9%99%8D%E4%B9%9D%E6%88%90
+   摘要：分析 ChatGPT 問世如何破壞傳統三項識讀技巧（用字本土化檢查、真人帳號驗證、協同行為偵測），使資訊操弄更難被偵測。建議政府推動社群平台透明化、強化緊急時期資訊接收管道研究。
+   與本報告的關聯：關聯弱。談的是 ChatGPT 對「識讀假訊息」能力的衝擊，不是 LLM 本身的政治立場，僅作背景理解王宏恩對 AI 與資訊環境關係的長期關注脈絡。
+
+6. **「中國利用AI擴大網攻　學者：台灣應與美日合作反制」（王宏恩受訪評論）**
+   出處：中央社 CNA
+   日期：2026-02-26
+   URL：https://www.cna.com.tw/news/aipl/202602260363.aspx
+   摘要：王宏恩評論 OpenAI 報告指出中國利用 AI（含 ChatGPT）擴大網路攻擊與認知作戰，以 2024 年總統大選「賴清德私生子」等內容農場案例說明 AI 如何降低認知作戰成本、擴大規模；建議台灣與美日合作施壓社群平台與 AI 公司提高透明度。
+   與本報告的關聯：背景引用。屬於王宏恩對「中國用 AI 做認知作戰」的時事評論，與 Doublethink Lab GoLaxy 報告角度類似，不涉及 LLM 本身在台灣議題上的回答立場測試。
+
+### 是否有直接相關的 LLM 立場研究
+
+**沒有查到王宏恩本人做過與 Jev／Claude 三語（繁中、簡中、英文）台灣主權立場測試方法直接相同或可一對一對照的研究。** 他的 AI 相關產出集中在兩條主線：一是「AI／LLM 如何被用於認知作戰與假訊息（含 2024 台灣大選）」，二是「美中 LLM 的全球市場採用與地緣政治競爭」（RAND 報告）。第 2 點的 RAND 報告雖然也比較美系與中系 LLM，但比較的是「哪國用哪個模型」的採用率，不是「模型對特定政治議題回答什麼立場」，因此方法可借鏡但不能當作既有的「對照組」直接引用其數據。
+
+### 不確定之處
+
+1. RAND 兩份報告（RRA4355-1、PEA4574-1）的官網頁面皆對本工具的 WebFetch 回傳 403，僅透過搜尋引擎摘要與第三方轉載交叉確認，建議使用者親自開啟連結複核標題與摘要細節。
+2. Friedrich Naumann Foundation 的 PDF 下載成功但因格式問題本工具無法解析內文，僅能透過出版頁與媒體轉述確認主題與重點，段落級別的細節（例如是否有具體提及 LLM 對政治立場的分析）未能逐字查證。
+3. Threads 帳號 @wearytolove 僅能看到近期少量貼文，無法搜尋或捲動至更早期貼文，無法排除他在更早期或近期發過與 AI／LLM 相關的貼文；如使用者記得大概時間點，可再協助搜尋。
+4. 未查到王宏恩是否曾直接評論或測試過 Claude（Anthropic）本身，他公開評論的對象以 ChatGPT／OpenAI 與中國模型（DeepSeek 等）為主。
