@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant-TW">
+<html lang="zh-Hant-TW" style="color-scheme: light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,20 +7,20 @@
     <style>
       /* Fixed 1920x1080 stage scaled to the window, so a screen recording is pixel-stable. */
       :root {
-        --bg: #0e0f13;
-        --stage: #14161c;
-        --panel: #1b1e26;
-        --panel-2: #232733;
-        --line: #2e3340;
-        --text: #eceae4;
-        --muted: #8b8fa0;
-        --dim: #5b6070;
-        --tw: #2bb3a0;
-        --prc: #e05a86;
-        --neutral: #6c7385;
-        --jev: #9b7bff;
-        --claude-sonnet-5: #e0a458;
-        --claude-opus-5: #d9775a;
+        --bg: #ebe8e1;
+        --stage: #f7f5f0;
+        --panel: #ffffff;
+        --panel-2: #ecebe6;
+        --line: #dcd8ce;
+        --text: #1d1c1a;
+        --muted: #6b6861;
+        --dim: #a8a498;
+        --tw: #12897a;
+        --prc: #c93a6b;
+        --neutral: #a3a8b4;
+        --jev: #6f52e0;
+        --claude-sonnet-5: #c2862c;
+        --claude-opus-5: #c05a3a;
         --mono: "SF Mono", ui-monospace, Menlo, monospace;
       }
       * {
@@ -89,10 +89,12 @@
         min-width: 0;
         display: grid;
         grid-template-rows: auto auto 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 14px;
         position: relative;
       }
       .lane-head {
+        box-shadow: 0 0 0 1px var(--line);
         background: var(--panel);
         border-radius: 12px;
         padding: 14px 18px;
@@ -139,6 +141,7 @@
         background: var(--accent);
       }
       .focus {
+        box-shadow: 0 0 0 1px var(--line);
         background: var(--panel);
         border-radius: 12px;
         padding: 12px 18px;
@@ -146,6 +149,7 @@
         border-left: 4px solid var(--neutral);
         display: grid;
         grid-template-rows: auto 1fr auto;
+        grid-template-columns: minmax(0, 1fr);
         gap: 6px;
         transition: border-color 0.15s;
       }
@@ -169,6 +173,8 @@
         -webkit-box-orient: vertical;
       }
       .answer {
+        min-width: 0;
+        overflow: hidden;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -189,6 +195,13 @@
       .answer b {
         color: var(--text);
         font-weight: 600;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .answer > span {
+        flex-shrink: 0;
       }
       .bins {
         display: grid;
@@ -198,6 +211,7 @@
         min-height: 0;
       }
       .bin {
+        box-shadow: 0 0 0 1px var(--line);
         background: var(--panel);
         border-radius: 10px;
         padding: 8px 10px;
@@ -238,7 +252,7 @@
       @keyframes pop {
         from {
           transform: scale(2.2);
-          filter: brightness(1.8);
+          filter: brightness(0.75) saturate(1.4);
         }
         to {
           transform: scale(1);
@@ -247,7 +261,7 @@
       .done {
         position: absolute;
         inset: 250px 0 0 0;
-        background: rgba(20, 22, 28, 0.98);
+        background: rgba(247, 245, 240, 0.98);
         border-radius: 12px;
         padding: 26px 24px;
         display: none;
@@ -388,7 +402,7 @@
         position: fixed;
         left: 16px;
         bottom: 16px;
-        background: rgba(27, 30, 38, 0.96);
+        background: rgba(255, 255, 255, 0.97);
         border: 1px solid var(--line);
         border-radius: 10px;
         padding: 12px 16px;
@@ -448,7 +462,8 @@
       </footer>
     </div>
     <div id="help">
-      <b>Space</b> 開始／暫停　<b>R</b> 重來　<b>1 2 4</b> 播放倍速<br />
+      <span id="loading">載入紀錄中…<br /></span>
+      <b>Space</b> 或點畫面 開始／暫停　<b>R</b> 重來　<b>1 2 4</b> 播放倍速<br />
       <b>S</b> Jev 完成時停止其他模型：<span id="stopState">關</span>　<b>H</b>
       隱藏說明（錄影用）<br />
       網址參數：<b>?lanes=jev,claude-opus-5</b> 只顯示指定模型
@@ -888,6 +903,8 @@
       }
 
       function toggle() {
+        // Keys pressed while data is loading would start a race with no lanes.
+        if (!state.ready) return;
         if (state.running) {
           state.running = false;
           return;
@@ -953,9 +970,12 @@
         $("stopState").textContent = state.stopWithJev ? "開" : "關";
         setSpeed(state.speed);
         reset();
+        state.ready = true;
+        $("loading").hidden = true;
       }
 
       addEventListener("resize", fit);
+      $("stage").addEventListener("click", toggle);
       addEventListener("keydown", (e) => {
         if (e.key === " ") {
           e.preventDefault();
