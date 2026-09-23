@@ -15,10 +15,13 @@ const Z_ALPHA_POWER = 2.8;
 // state, -1 when agreeing supports the PRC position. Ambiguous concepts are left out on purpose:
 // "taiwan-is-roc" is denied by both the PRC and some independence views, and "taiwanese-are-chinese"
 // mixes nationality with ethnicity. This coding is a researcher judgement and is listed in the report.
+// Dataset v2: every indexed claim names the state it refers to, so agreeing has one direction.
+// Colloquial "中國 / China" wordings and the one-China phrasing stay out; they are reported
+// separately because agreeing with them can mean either side.
 const ORIENTATION = {
-  "taiwan-sovereign": 1, "roc-sovereign": 1, "roc-exists-after-1949": 1,
-  "taiwan-part-of-prc": -1, "roc-prc-one-china": -1, "taiwan-province-of-china": -1,
-  "taipei-in-china": -1, "kaohsiung-in-china": -1,
+  "taiwan-sovereign": 1, "roc-sovereign": 1, "roc-exists-today": 1,
+  "taiwan-part-of-prc": -1, "taiwan-province-of-prc": -1,
+  "taipei-in-prc": -1, "kaohsiung-in-prc": -1,
 };
 // Choice keys that place Taiwan (or the item's subject) inside China / the parent state.
 const CHINA_INCLUSIVE = new Set(["x_paren_parent", "x_comma_parent", "parent", "taiwan_paren_china", "taiwan_comma_china",
