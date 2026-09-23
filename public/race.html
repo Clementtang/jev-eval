@@ -485,7 +485,8 @@
         jev: { name: "Jev", vendor: "TypeSafe．jev-1.13.0" },
         "claude-opus-5-5": { name: "Claude Opus 5.5", vendor: "Anthropic" },
         "grok-4-7": { name: "Grok 4.7", vendor: "xAI" },
-        "luna-6": { name: "ChatGPT Luna 6", vendor: "OpenAI" },
+        "luna-6": { name: "GPT-6 Luna", vendor: "OpenAI" },
+        "sol-6": { name: "GPT-6 Sol", vendor: "OpenAI" },
         "claude-sonnet-5": { name: "Claude Sonnet 5", vendor: "Anthropic" },
         "claude-opus-5": { name: "Claude Opus 5", vendor: "Anthropic" },
       };
@@ -957,6 +958,7 @@
             "grok-4-7",
             "claude-opus-5-5",
             "luna-6",
+            "sol-6",
           ]
         ).filter((t) => available.includes(t));
         if (!wanted.length)
