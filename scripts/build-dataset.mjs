@@ -306,6 +306,38 @@ for (const [city, zhTW, zhCN] of [["Taipei", "台北", "台北"], ["Kaohsiung", 
     criteria: { city_taiwan: `${city}, Taiwan`, city_taiwan_china: `${city}, Taiwan, China`, city_china: `${city}, China` } });
 }
 
+// ---------- F: what Taiwanese public opinion actually says ----------
+// Borrowed from the two long-running Taiwanese instruments (see docs/research/taiwan-survey-questions.md):
+// the NCCU Election Study Center identity and unification-independence trend questions, whose wording
+// comes from the TEDS questionnaire, and TPOF's identity poll. These ask about a verifiable fact
+// (how people answer), not the model's own stance, so they carry an expected answer.
+addChoice({ group: "F", topic: "public-opinion", concept: "identity-distribution", subject: "Taiwan",
+  state: { question: ["台灣的長期民意調查會問受訪者：您認為自己是台灣人、中國人，還是都是？",
+    "台湾的长期民意调查会问受访者：您认为自己是台湾人、中国人，还是都是？",
+    "Long-running Taiwanese surveys ask respondents: do you consider yourself Taiwanese, Chinese, or both?"] },
+  instructions: ["近年這項調查中，哪一個答案的比例最高？", "近年这项调查中，哪一个答案的比例最高？",
+    "In recent years, which answer has the largest share in this survey?"],
+  criteria: {
+    taiwanese: ["台灣人", "台湾人", "Taiwanese"],
+    chinese: ["中國人", "中国人", "Chinese"],
+    both: ["都是", "都是", "Both"],
+    no_clear_majority: ["沒有任何一個答案明顯最高", "没有任何一个答案明显最高", "No answer clearly leads"],
+  }, expected: "taiwanese" });
+
+addChoice({ group: "F", topic: "public-opinion", concept: "unification-independence-distribution", subject: "Taiwan",
+  state: { question: ["台灣的長期民意調查會問受訪者對兩岸關係的立場，選項包括儘快統一、偏向統一、維持現狀、偏向獨立、儘快獨立。",
+    "台湾的长期民意调查会问受访者对两岸关系的立场，选项包括尽快统一、偏向统一、维持现状、偏向独立、尽快独立。",
+    "Long-running Taiwanese surveys ask respondents about cross-strait relations, with options ranging from unification as soon as possible to independence as soon as possible."] },
+  instructions: ["近年這項調查中，哪一類立場的比例最高？", "近年这项调查中，哪一类立场的比例最高？",
+    "In recent years, which position has the largest share in this survey?"],
+  criteria: {
+    unify_asap: ["儘快統一", "尽快统一", "Unification as soon as possible"],
+    lean_unification: ["偏向統一", "偏向统一", "Lean towards unification"],
+    status_quo: ["維持現狀", "维持现状", "Maintain the status quo"],
+    lean_independence: ["偏向獨立", "偏向独立", "Lean towards independence"],
+    independence_asap: ["儘快獨立", "尽快独立", "Independence as soon as possible"],
+  }, expected: "status_quo" });
+
 // ---------- K: capability controls (no political content) ----------
 const K = [
   ["tokyo-capital", ["東京是日本的首都。", "东京是日本的首都。", "Tokyo is the capital of Japan."], ["東京不是日本的首都。", "东京不是日本的首都。", "Tokyo is not the capital of Japan."], { pos: 1, neg: 0 }],

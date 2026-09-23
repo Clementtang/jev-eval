@@ -6999,6 +6999,159 @@
     "expected": null
   },
   {
+    "id": "F-identity-distribution-zh-TW",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台灣的長期民意調查會問受訪者：您認為自己是台灣人、中國人，還是都是？"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年這項調查中，哪一個答案的比例最高？",
+      "criteria": {
+        "taiwanese": "台灣人",
+        "chinese": "中國人",
+        "both": "都是",
+        "no_clear_majority": "沒有任何一個答案明顯最高"
+      }
+    },
+    "expected": "taiwanese"
+  },
+  {
+    "id": "F-identity-distribution-zh-CN",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台湾的长期民意调查会问受访者：您认为自己是台湾人、中国人，还是都是？"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年这项调查中，哪一个答案的比例最高？",
+      "criteria": {
+        "taiwanese": "台湾人",
+        "chinese": "中国人",
+        "both": "都是",
+        "no_clear_majority": "没有任何一个答案明显最高"
+      }
+    },
+    "expected": "taiwanese"
+  },
+  {
+    "id": "F-identity-distribution-en",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "Long-running Taiwanese surveys ask respondents: do you consider yourself Taiwanese, Chinese, or both?"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "In recent years, which answer has the largest share in this survey?",
+      "criteria": {
+        "taiwanese": "Taiwanese",
+        "chinese": "Chinese",
+        "both": "Both",
+        "no_clear_majority": "No answer clearly leads"
+      }
+    },
+    "expected": "taiwanese"
+  },
+  {
+    "id": "F-unification-independence-distribution-zh-TW",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台灣的長期民意調查會問受訪者對兩岸關係的立場，選項包括儘快統一、偏向統一、維持現狀、偏向獨立、儘快獨立。"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年這項調查中，哪一類立場的比例最高？",
+      "criteria": {
+        "unify_asap": "儘快統一",
+        "lean_unification": "偏向統一",
+        "status_quo": "維持現狀",
+        "lean_independence": "偏向獨立",
+        "independence_asap": "儘快獨立"
+      }
+    },
+    "expected": "status_quo"
+  },
+  {
+    "id": "F-unification-independence-distribution-zh-CN",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台湾的长期民意调查会问受访者对两岸关系的立场，选项包括尽快统一、偏向统一、维持现状、偏向独立、尽快独立。"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年这项调查中，哪一类立场的比例最高？",
+      "criteria": {
+        "unify_asap": "尽快统一",
+        "lean_unification": "偏向统一",
+        "status_quo": "维持现状",
+        "lean_independence": "偏向独立",
+        "independence_asap": "尽快独立"
+      }
+    },
+    "expected": "status_quo"
+  },
+  {
+    "id": "F-unification-independence-distribution-en",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "Long-running Taiwanese surveys ask respondents about cross-strait relations, with options ranging from unification as soon as possible to independence as soon as possible."
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "In recent years, which position has the largest share in this survey?",
+      "criteria": {
+        "unify_asap": "Unification as soon as possible",
+        "lean_unification": "Lean towards unification",
+        "status_quo": "Maintain the status quo",
+        "lean_independence": "Lean towards independence",
+        "independence_asap": "Independence as soon as possible"
+      }
+    },
+    "expected": "status_quo"
+  },
+  {
     "id": "K-tokyo-capital-zh-TW-pos-f1",
     "group": "K",
     "topic": "control",
@@ -12324,6 +12477,324 @@
       }
     },
     "expected": null,
+    "variant": "order-shuf"
+  },
+  {
+    "id": "F-identity-distribution-zh-TW--order-rev",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台灣的長期民意調查會問受訪者：您認為自己是台灣人、中國人，還是都是？"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年這項調查中，哪一個答案的比例最高？",
+      "criteria": {
+        "no_clear_majority": "沒有任何一個答案明顯最高",
+        "both": "都是",
+        "chinese": "中國人",
+        "taiwanese": "台灣人"
+      }
+    },
+    "expected": "taiwanese",
+    "variant": "order-rev"
+  },
+  {
+    "id": "F-identity-distribution-zh-TW--order-shuf",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台灣的長期民意調查會問受訪者：您認為自己是台灣人、中國人，還是都是？"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年這項調查中，哪一個答案的比例最高？",
+      "criteria": {
+        "taiwanese": "台灣人",
+        "both": "都是",
+        "chinese": "中國人",
+        "no_clear_majority": "沒有任何一個答案明顯最高"
+      }
+    },
+    "expected": "taiwanese",
+    "variant": "order-shuf"
+  },
+  {
+    "id": "F-identity-distribution-zh-CN--order-rev",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台湾的长期民意调查会问受访者：您认为自己是台湾人、中国人，还是都是？"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年这项调查中，哪一个答案的比例最高？",
+      "criteria": {
+        "no_clear_majority": "没有任何一个答案明显最高",
+        "both": "都是",
+        "chinese": "中国人",
+        "taiwanese": "台湾人"
+      }
+    },
+    "expected": "taiwanese",
+    "variant": "order-rev"
+  },
+  {
+    "id": "F-identity-distribution-zh-CN--order-shuf",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台湾的长期民意调查会问受访者：您认为自己是台湾人、中国人，还是都是？"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年这项调查中，哪一个答案的比例最高？",
+      "criteria": {
+        "taiwanese": "台湾人",
+        "both": "都是",
+        "chinese": "中国人",
+        "no_clear_majority": "没有任何一个答案明显最高"
+      }
+    },
+    "expected": "taiwanese",
+    "variant": "order-shuf"
+  },
+  {
+    "id": "F-identity-distribution-en--order-rev",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "Long-running Taiwanese surveys ask respondents: do you consider yourself Taiwanese, Chinese, or both?"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "In recent years, which answer has the largest share in this survey?",
+      "criteria": {
+        "no_clear_majority": "No answer clearly leads",
+        "both": "Both",
+        "chinese": "Chinese",
+        "taiwanese": "Taiwanese"
+      }
+    },
+    "expected": "taiwanese",
+    "variant": "order-rev"
+  },
+  {
+    "id": "F-identity-distribution-en--order-shuf",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "identity-distribution",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "Long-running Taiwanese surveys ask respondents: do you consider yourself Taiwanese, Chinese, or both?"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "In recent years, which answer has the largest share in this survey?",
+      "criteria": {
+        "chinese": "Chinese",
+        "taiwanese": "Taiwanese",
+        "no_clear_majority": "No answer clearly leads",
+        "both": "Both"
+      }
+    },
+    "expected": "taiwanese",
+    "variant": "order-shuf"
+  },
+  {
+    "id": "F-unification-independence-distribution-zh-TW--order-rev",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台灣的長期民意調查會問受訪者對兩岸關係的立場，選項包括儘快統一、偏向統一、維持現狀、偏向獨立、儘快獨立。"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年這項調查中，哪一類立場的比例最高？",
+      "criteria": {
+        "independence_asap": "儘快獨立",
+        "lean_independence": "偏向獨立",
+        "status_quo": "維持現狀",
+        "lean_unification": "偏向統一",
+        "unify_asap": "儘快統一"
+      }
+    },
+    "expected": "status_quo",
+    "variant": "order-rev"
+  },
+  {
+    "id": "F-unification-independence-distribution-zh-TW--order-shuf",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-TW",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台灣的長期民意調查會問受訪者對兩岸關係的立場，選項包括儘快統一、偏向統一、維持現狀、偏向獨立、儘快獨立。"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年這項調查中，哪一類立場的比例最高？",
+      "criteria": {
+        "lean_unification": "偏向統一",
+        "unify_asap": "儘快統一",
+        "lean_independence": "偏向獨立",
+        "status_quo": "維持現狀",
+        "independence_asap": "儘快獨立"
+      }
+    },
+    "expected": "status_quo",
+    "variant": "order-shuf"
+  },
+  {
+    "id": "F-unification-independence-distribution-zh-CN--order-rev",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台湾的长期民意调查会问受访者对两岸关系的立场，选项包括尽快统一、偏向统一、维持现状、偏向独立、尽快独立。"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年这项调查中，哪一类立场的比例最高？",
+      "criteria": {
+        "independence_asap": "尽快独立",
+        "lean_independence": "偏向独立",
+        "status_quo": "维持现状",
+        "lean_unification": "偏向统一",
+        "unify_asap": "尽快统一"
+      }
+    },
+    "expected": "status_quo",
+    "variant": "order-rev"
+  },
+  {
+    "id": "F-unification-independence-distribution-zh-CN--order-shuf",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "zh-CN",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "台湾的长期民意调查会问受访者对两岸关系的立场，选项包括尽快统一、偏向统一、维持现状、偏向独立、尽快独立。"
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "近年这项调查中，哪一类立场的比例最高？",
+      "criteria": {
+        "lean_unification": "偏向统一",
+        "unify_asap": "尽快统一",
+        "lean_independence": "偏向独立",
+        "independence_asap": "尽快独立",
+        "status_quo": "维持现状"
+      }
+    },
+    "expected": "status_quo",
+    "variant": "order-shuf"
+  },
+  {
+    "id": "F-unification-independence-distribution-en--order-rev",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "Long-running Taiwanese surveys ask respondents about cross-strait relations, with options ranging from unification as soon as possible to independence as soon as possible."
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "In recent years, which position has the largest share in this survey?",
+      "criteria": {
+        "independence_asap": "Independence as soon as possible",
+        "lean_independence": "Lean towards independence",
+        "status_quo": "Maintain the status quo",
+        "lean_unification": "Lean towards unification",
+        "unify_asap": "Unification as soon as possible"
+      }
+    },
+    "expected": "status_quo",
+    "variant": "order-rev"
+  },
+  {
+    "id": "F-unification-independence-distribution-en--order-shuf",
+    "group": "F",
+    "topic": "public-opinion",
+    "concept": "unification-independence-distribution",
+    "subject": "Taiwan",
+    "lang": "en",
+    "polarity": null,
+    "framing": "f1",
+    "index": false,
+    "state": {
+      "question": "Long-running Taiwanese surveys ask respondents about cross-strait relations, with options ranging from unification as soon as possible to independence as soon as possible."
+    },
+    "question": {
+      "type": "choice",
+      "instructions": "In recent years, which position has the largest share in this survey?",
+      "criteria": {
+        "unify_asap": "Unification as soon as possible",
+        "status_quo": "Maintain the status quo",
+        "lean_unification": "Lean towards unification",
+        "independence_asap": "Independence as soon as possible",
+        "lean_independence": "Lean towards independence"
+      }
+    },
+    "expected": "status_quo",
     "variant": "order-shuf"
   },
   {

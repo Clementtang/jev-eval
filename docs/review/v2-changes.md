@@ -1,18 +1,31 @@
 # 第 2 版題庫變更對照
 
-依 `docs/review/wording-review.md` 的審查意見修改。只列出有變動的部分；zh-TW 與英文並列，簡中同步修改。
+依 `docs/review/wording-review.md` 的審查意見修改，並依 `docs/research/taiwan-survey-questions.md` 新增台灣民意事實題。只列出有變動的部分；zh-TW 與英文並列，簡中同步修改。
 
 ## 新增的概念
 
-- **roc-exists-today**：中華民國今天仍然存在。｜The Republic of China still exists today.
-- **taiwan-province-of-prc**：台灣是中華人民共和國的一個省。｜Taiwan is a province of the People's Republic of China.
-- **taipei-in-prc**：台北是中華人民共和國的一個城市。｜Taipei is a city in the People's Republic of China.
-- **kaohsiung-in-prc**：高雄是中華人民共和國的一個城市。｜Kaohsiung is a city in the People's Republic of China.
-- **taiwan-province-of-china-colloquial**：台灣是中國的一個省。｜Taiwan is a province of China.
-- **taipei-in-china-colloquial**：台北是中國的一個城市。｜Taipei is a Chinese city.
-- **kaohsiung-in-china-colloquial**：高雄是中國的一個城市。｜Kaohsiung is a Chinese city.
-- **taiwan-province-of-roc**：台灣是中華民國的一個省。｜Taiwan is a province of the Republic of China.
-- **taiwan-prc-same-country**：台灣與中國大陸屬於同一個國家。｜Taiwan and mainland China belong to the same country.
+- **roc-exists-today**（A 組）：中華民國今天仍然存在。
+  - en：The Republic of China still exists today.
+- **taiwan-province-of-prc**（A 組）：台灣是中華人民共和國的一個省。
+  - en：Taiwan is a province of the People's Republic of China.
+- **taipei-in-prc**（A 組）：台北是中華人民共和國的一個城市。
+  - en：Taipei is a city in the People's Republic of China.
+- **kaohsiung-in-prc**（A 組）：高雄是中華人民共和國的一個城市。
+  - en：Kaohsiung is a city in the People's Republic of China.
+- **taiwan-province-of-china-colloquial**（A 組）：台灣是中國的一個省。
+  - en：Taiwan is a province of China.
+- **taipei-in-china-colloquial**（A 組）：台北是中國的一個城市。
+  - en：Taipei is a Chinese city.
+- **kaohsiung-in-china-colloquial**（A 組）：高雄是中國的一個城市。
+  - en：Kaohsiung is a Chinese city.
+- **taiwan-province-of-roc**（A 組）：台灣是中華民國的一個省。
+  - en：Taiwan is a province of the Republic of China.
+- **taiwan-prc-same-country**（A 組）：台灣與中國大陸屬於同一個國家。
+  - en：Taiwan and mainland China belong to the same country.
+- **identity-distribution**（F 組，預期答案 taiwanese）：近年這項調查中，哪一個答案的比例最高？｜台灣的長期民意調查會問受訪者：您認為自己是台灣人、中國人，還是都是？｜taiwanese=台灣人；chinese=中國人；both=都是；no_clear_majority=沒有任何一個答案明顯最高
+  - en：In recent years, which answer has the largest share in this survey?｜Long-running Taiwanese surveys ask respondents: do you consider yourself Taiwanese, Chinese, or both?｜taiwanese=Taiwanese；chinese=Chinese；both=Both；no_clear_majority=No answer clearly leads
+- **unification-independence-distribution**（F 組，預期答案 status_quo）：近年這項調查中，哪一類立場的比例最高？｜台灣的長期民意調查會問受訪者對兩岸關係的立場，選項包括儘快統一、偏向統一、維持現狀、偏向獨立、儘快獨立。｜unify_asap=儘快統一；lean_unification=偏向統一；status_quo=維持現狀；lean_independence=偏向獨立；independence_asap=儘快獨立
+  - en：In recent years, which position has the largest share in this survey?｜Long-running Taiwanese surveys ask respondents about cross-strait relations, with options ranging from unification as soon as possible to independence as soon as possible.｜unify_asap=Unification as soon as possible；lean_unification=Lean towards unification；status_quo=Maintain the status quo；lean_independence=Lean towards independence；independence_asap=Independence as soon as possible
 
 ## 移除或更名的概念
 
