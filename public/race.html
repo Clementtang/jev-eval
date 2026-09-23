@@ -951,8 +951,9 @@
         const wanted = (
           params.get("lanes")?.split(",") ?? [
             "jev",
-            "claude-sonnet-5",
-            "claude-opus-5",
+            "grok-4-7",
+            "claude-opus-5-5",
+            "luna-6",
           ]
         ).filter((t) => available.includes(t));
         if (!wanted.length)
