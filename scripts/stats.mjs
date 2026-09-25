@@ -5,7 +5,7 @@
 import { writeFileSync } from "node:fs";
 import { listRuns, readRun } from "../lib/results.mjs";
 import { bootstrap, design, holm, mean, quantile, residualSS, sd, signFlipTest } from "../lib/stats.mjs";
-import { PRICING } from "../lib/providers.mjs";
+import { PRICING, TARGETS } from "../lib/providers.mjs";
 
 const LANGS = ["zh-TW", "zh-CN", "en"];
 // Repeats differ by target (Grok 4.7 ran 3 because of cost), so they are read from the data.
@@ -41,6 +41,8 @@ const variant = (r) => r.variant ?? "base";
 const targets = [...new Set(records.map((r) => r.target))].sort((a, b) => (a === "jev" ? -1 : b === "jev" ? 1 : a.localeCompare(b)));
 const f2 = (x) => (x == null ? "-" : x.toFixed(2));
 const f3 = (x) => (x == null ? "-" : x.toFixed(3));
+// Exact p-values have a floor of 2/2^n, so "0.000" would read as p = 0.
+const fp = (x) => (x == null ? "-" : x < 0.001 ? "< 0.001" : x.toFixed(3));
 const ci = (b) => `${f2(b.estimate)} [${f2(b.low)}, ${f2(b.high)}]`;
 const out = ["# 統計分析", "", `產出時間：${new Date().toISOString()}；資料：${records.length} 筆成功呼叫，模型 ${targets.join("、")}`, ""];
 
@@ -99,7 +101,7 @@ const neutralAdjusted = holm(neutralTests.map((x) => x.p));
 out.push("### 1b. 與中立值 0.5 的比較（精確符號翻轉檢定，Holm 校正）", "",
   `以每個概念的指數值減 0.5 做單樣本精確符號翻轉檢定，${neutralTests.length} 格自成一組做 Holm 校正。「低於 0.5 的概念數」表示偏向中華人民共和國立場的概念有幾個。`, "",
   "| 模型 | 語言 | 指數 | 低於 0.5 的概念數 | 精確 p | Holm 校正後 p |", "| --- | --- | --- | --- | --- | --- |",
-  ...neutralTests.map((x, i) => `| ${x.t} | ${x.l} | ${f2(x.mean)} | ${x.below}/${x.n} | ${f3(x.p)} | ${f3(neutralAdjusted[i])}${neutralAdjusted[i] < 0.05 ? " *" : ""} |`),
+  ...neutralTests.map((x, i) => `| ${x.t} | ${x.l} | ${f2(x.mean)} | ${x.below}/${x.n} | ${fp(x.p)} | ${fp(neutralAdjusted[i])}${neutralAdjusted[i] < 0.05 ? " *" : ""} |`),
   "");
 
 // ---------- 2. comparisons with Holm correction ----------
@@ -136,7 +138,7 @@ const adjusted = holm(comparisons.map((c) => c.p));
 out.push("## 2. 成對比較（精確符號翻轉檢定，Holm 校正）", "",
   `共 ${comparisons.length} 組比較。差值為主權傾向指數相減，負值代表前者較偏中華人民共和國立場。p 值來自以概念為單位的精確符號翻轉檢定（列舉全部 2^n 種正負號組合），再對全部比較做 Holm 校正；區間為概念層級的 bootstrap。「前者較低的概念數」表示在 n 個概念中有幾個概念的差值為負。`, "",
   "| 比較 | 差值 [95% CI] | 前者較低的概念數 | 精確 p | Holm 校正後 p |", "| --- | --- | --- | --- | --- |",
-  ...comparisons.map((c, i) => `| ${c.label} | ${ci(c)} | ${c.negative}/${c.n} | ${f3(c.p)} | ${f3(adjusted[i])}${adjusted[i] < 0.05 ? " *" : ""} |`),
+  ...comparisons.map((c, i) => `| ${c.label} | ${ci(c)} | ${c.negative}/${c.n} | ${fp(c.p)} | ${fp(adjusted[i])}${adjusted[i] < 0.05 ? " *" : ""} |`),
   "", "* 表示校正後 p < 0.05。", "");
 
 // ---------- 3. data-driven inconsistency threshold and MDE ----------
@@ -158,7 +160,7 @@ for (const t of targets) {
   out.push(`| ${t} | ${noise.length} | ${f2(threshold)} | ${f2(mean(taiwan.map((g) => (g > threshold ? 1 : 0))))} | ${f3(mean(taiwan))} | ${repeats} | ${f3(medianSd)} | ${f3(Z_ALPHA_POWER * medianSd * Math.sqrt(2 / repeats))} |`);
 }
 out.push("", "無爭議題的門檻非常緊（模型對這類題目的正反句幾乎完全互補），台灣題有很高比例超過門檻，代表模型在爭議題上的正反回答本身就比較不自洽（文獻稱為附和偏誤，acquiescence）。立場值取正反句平均可以抵銷一部分，但個別題目的立場值仍要搭配差距一起解讀。", "",
-  "「超過門檻的比例」以各模型自己的門檻計算，門檻寬的模型（例如 Jev 0.12）會顯得比較自洽；跨模型比較自洽程度時，應看「台灣題平均 |差距|」這個絕對值。", "","MDE 是單一題目在兩種條件間，以該模型的重複次數可偵測的最小平均差（α = 0.05，檢定力 80%）。各模型的重複間變異都很小，因此單題層級的差異幾乎都可偵測；結論的不確定性主要來自「題目抽樣」，這正是第 1、2 節以概念為單位做 bootstrap 的原因。", "");
+  "「超過門檻的比例」以各模型自己的門檻計算，門檻寬的模型（例如 Jev 0.12）會顯得比較自洽；跨模型比較自洽程度時，應看「台灣題平均 |差距|」這個絕對值。", "","MDE 是單一題目在兩種條件間，以該模型的重複次數可偵測的最小平均差（α = 0.05，檢定力 80%）。各模型的重複間變異都很小，因此單題層級的差異幾乎都可偵測；結論的不確定性主要來自「題目抽樣」，這是第 1、2 節以概念（主張）為推論單位的原因。", "");
 
 // ---------- 4. language spread per concept ----------
 out.push("## 4. 語言一致性：各概念三語立場值的最大差距", "", "數值越大代表同一個概念換語言後立場變化越大。只列台灣概念（含方向歧義的概念）。", "",
@@ -329,13 +331,14 @@ out.push("");
 
 // ---------- 12. latency and cost ----------
 out.push("## 12. 延遲與成本（基準題）", "",
-  "成本依各廠商公開定價計算（每百萬 token），推理 token 計入輸出。延遲為本機（河內）實測，含網路往返。", "",
+  "成本依各廠商公開定價計算（每百萬 token）。OpenAI 的 completion_tokens 已含推理 token，只取 completion_tokens；xAI 的推理 token 另外回報，加進輸出。延遲為本機（河內）實測，含網路往返。", "",
   "| 模型 | 呼叫數 | 延遲 p50 ms | 延遲 p95 ms | 平均 input | 平均 output（含推理） | 每 1,000 次成本 USD |", "| --- | --- | --- | --- | --- | --- | --- |");
 for (const t of targets) {
   const rs = records.filter((r) => r.target === t && variant(r) === "base");
   const ms = rs.map((r) => r.ms).sort((a, b) => a - b);
   const input = mean(rs.map((r) => r.usage?.input_tokens ?? 0));
-  const output = mean(rs.map((r) => (r.usage?.output_tokens ?? 0) + (r.usage?.reasoning_tokens ?? 0)));
+  const separate = TARGETS[t]?.reasoningOutsideOutput;
+  const output = mean(rs.map((r) => (r.usage?.output_tokens ?? 0) + (separate ? r.usage?.reasoning_tokens ?? 0 : 0)));
   const [inPrice, outPrice] = PRICING[t] ?? [0, 0];
   const perThousand = ((input * inPrice + output * outPrice) / 1e6) * 1000;
   out.push(`| ${t} | ${rs.length} | ${quantile(ms, 0.5)} | ${quantile(ms, 0.95)} | ${Math.round(input)} | ${Math.round(output)} | ${perThousand.toFixed(perThousand < 0.1 ? 4 : 2)} |`);
@@ -403,6 +406,58 @@ for (const c of PER_CONCEPT) for (const f of framingsOf(c)) {
   out.push(`| ${c} | ${f} | ${cells.join(" | ")} |`);
 }
 out.push("");
+
+// ---------- 17. alternative unit sets (review round 2: C2, M1, M2, M3) ----------
+// Each unit is a list of concepts averaged into one score, so correlated claims can be merged.
+// The seven original concepts were fixed before any run; the eight added after review round 1
+// ran six hours later and serve as an out-of-sample replication of the original comparisons.
+const CITY_CONCEPTS = ["taipei-in-prc", "kaohsiung-in-prc", "taichung-in-prc"];
+const ORIGINAL_CONCEPTS = ["taiwan-sovereign", "roc-sovereign", "roc-exists-today", "taiwan-part-of-prc", "taiwan-province-of-prc", "taipei-in-prc", "kaohsiung-in-prc"];
+const NORMATIVE_CONCEPTS = ["taiwan-future-by-its-people", "taiwan-may-join-intl-orgs"];
+const singles = (cs) => cs.map((c) => [c]);
+const UNIT_SETS = [
+  ["全部 15 個主張（主分析）", singles(CONCEPTS)],
+  ["不含城市主張（12）", singles(CONCEPTS.filter((c) => !CITY_CONCEPTS.includes(c)))],
+  ["只含城市主張（3）", singles(CITY_CONCEPTS)],
+  ["城市主張合併為一個單位（13）", [...singles(CONCEPTS.filter((c) => !CITY_CONCEPTS.includes(c))), CITY_CONCEPTS]],
+  ["原 7 個主張（事先定義）", singles(ORIGINAL_CONCEPTS)],
+  ["第一輪審查後新增的 8 個主張（複製）", singles(CONCEPTS.filter((c) => !ORIGINAL_CONCEPTS.includes(c)))],
+  ["不含規範題與國際組織題（13）", singles(CONCEPTS.filter((c) => !NORMATIVE_CONCEPTS.includes(c)))],
+];
+const unitScore = (t, unit, l) => {
+  const xs = unit.map((c) => conceptScore(t, "base", c, l)).filter((x) => x != null);
+  return xs.length ? mean(xs) : null;
+};
+out.push("## 17. 替代單位集合（第二輪審查 C2、M1、M2、M3）", "",
+  "同一套檢定換不同的主張集合。17a 為各模型指數與中立檢定（每個集合內 18 格自成一組做 Holm 校正）；17b 為 Jev 與其他模型的比較（每個集合內 15 組自成一組做 Holm 校正）。單位數少於 6 時，精確檢定最小 p 大於 0.03，校正後不可能顯著，只看點估計。", "");
+for (const [label, units] of UNIT_SETS) {
+  const cells = [];
+  for (const t of targets) for (const l of LANGS) {
+    const diffs = units.map((u) => unitScore(t, u, l)).filter((x) => x != null).map((x) => x - 0.5);
+    cells.push({ t, l, index: mean(diffs) + 0.5, below: diffs.filter((d) => d < 0).length, n: diffs.length, p: signFlipTest(diffs).p });
+  }
+  const cellAdjusted = holm(cells.map((x) => x.p));
+  out.push(`### 17a. ${label}：指數與中立檢定`, "", `| 模型 | ${LANGS.map((l) => `${l} 指數（低於 0.5 數，校正後 p）`).join(" | ")} |`, `| --- | ${LANGS.map(() => "---").join(" | ")} |`);
+  for (const t of targets) {
+    out.push(`| ${t} | ${LANGS.map((l) => {
+      const i = cells.findIndex((x) => x.t === t && x.l === l);
+      const x = cells[i];
+      return `${f2(x.index)}（${x.below}/${x.n}，${fp(cellAdjusted[i])}${cellAdjusted[i] < 0.05 ? " *" : ""}）`;
+    }).join(" | ")} |`);
+  }
+  const pairs = [];
+  for (const l of LANGS) for (const t of targets.filter((x) => x !== "jev")) {
+    const diffs = units.map((u) => {
+      const a = unitScore("jev", u, l);
+      const b = unitScore(t, u, l);
+      return a == null || b == null ? null : a - b;
+    }).filter((d) => d != null);
+    pairs.push({ l, t, diff: mean(diffs), negative: diffs.filter((d) => d < 0).length, n: diffs.length, p: signFlipTest(diffs).p });
+  }
+  const pairAdjusted = holm(pairs.map((x) => x.p));
+  out.push("", `### 17b. ${label}：Jev − 其他模型`, "", "| 語言 | 模型 | 差值 | Jev 較低的單位數 | 精確 p | Holm 校正後 p |", "| --- | --- | --- | --- | --- | --- |",
+    ...pairs.map((x, i) => `| ${x.l} | ${x.t} | ${f2(x.diff)} | ${x.negative}/${x.n} | ${fp(x.p)} | ${fp(pairAdjusted[i])}${pairAdjusted[i] < 0.05 ? " *" : ""} |`), "");
+}
 
 writeFileSync(new URL("../results/stats.md", import.meta.url), out.join("\n") + "\n");
 console.log(`wrote results/stats.md (${comparisons.length} comparisons, thresholds ${JSON.stringify(Object.fromEntries(Object.entries(thresholds).map(([k, v]) => [k, +v.toFixed(2)])))})`);
