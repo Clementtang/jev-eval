@@ -37,12 +37,12 @@
       }
       #stage {
         position: absolute;
-        width: 1920px;
-        height: 1080px;
+        width: var(--stage-w);
+        height: var(--stage-h);
         transform-origin: 0 0;
         background: var(--stage);
         display: grid;
-        grid-template-rows: 96px 1fr 56px;
+        grid-template-rows: 96px auto 1fr 56px;
         padding: 0 32px;
       }
       header {
@@ -404,6 +404,57 @@
         margin-right: 6px;
         vertical-align: -1px;
       }
+      /* Five or more lanes: drop the per-lane focus card and show one shared ticker instead. */
+      #stage.compact .focus {
+        display: none;
+      }
+      #stage.compact .lane-name b {
+        font-size: 20px;
+      }
+      #stage.compact .metric b {
+        font-size: 18px;
+      }
+      #stage.compact .metrics {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 4px;
+      }
+      #stage.compact .bin-head {
+        font-size: 11px;
+      }
+      #stage.compact .bin.focus-bin .cell {
+        width: 10px;
+        height: 10px;
+      }
+      #ticker {
+        display: none;
+        gap: 14px;
+        align-items: center;
+        padding: 10px 14px;
+        background: var(--panel);
+        border-radius: 10px;
+        box-shadow: 0 0 0 1px var(--line);
+        margin-bottom: 14px;
+        font-size: 17px;
+      }
+      #stage.compact #ticker {
+        display: flex;
+      }
+      #ticker .who {
+        font-weight: 600;
+        flex: 0 0 auto;
+      }
+      #ticker .what {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--muted);
+      }
+      #ticker .verdict {
+        flex: 0 0 auto;
+        font-family: var(--mono);
+      }
       #help {
         position: fixed;
         left: 16px;
@@ -438,7 +489,7 @@
     <div id="stage">
       <header>
         <h1>
-          台灣主權 351 題：同一份題目，三個模型同時作答<small
+          <span id="title">台灣主權題目</span><small
             >繁中、簡中、英文三語．含對照組地區與能力基準題</small
           >
         </h1>
@@ -446,6 +497,11 @@
           <b id="clock">00:00.0</b><span id="clockNote">2× 重播實測紀錄</span>
         </div>
       </header>
+      <div id="ticker">
+        <span class="who" id="tickerWho"></span>
+        <span class="what" id="tickerWhat">等待開始</span>
+        <span class="verdict" id="tickerVerdict"></span>
+      </div>
       <div id="lanes"></div>
       <footer>
         <div class="legend">
@@ -481,6 +537,10 @@
       const LANGS = ["zh-TW", "zh-CN", "en"];
       const CONCURRENCY = 8;
       const SUMMARY_DELAY_MS = 1500;
+      // Must match the stage padding and #lanes gap in the stylesheet.
+      const STAGE_PADDING = 32;
+      const LANE_GAP = 20;
+      const MIN_FULL_LANE_WIDTH = 330;
       const LANE_INFO = {
         jev: { name: "Jev", vendor: "TypeSafe．jev-1.13.0" },
         "claude-opus-5-5": { name: "Claude Opus 5.5", vendor: "Anthropic" },
@@ -488,6 +548,7 @@
         "luna-6": { name: "GPT-6 Luna", vendor: "OpenAI" },
         "sol-6": { name: "GPT-6 Sol", vendor: "OpenAI" },
         "claude-sonnet-5": { name: "Claude Sonnet 5", vendor: "Anthropic" },
+        "claude-haiku-4-5": { name: "Claude Haiku 4.5", vendor: "Anthropic" },
         "claude-opus-5": { name: "Claude Opus 5", vendor: "Anthropic" },
       };
       const BINS = [
@@ -784,6 +845,8 @@
               this.finish(elapsed);
           },
           showFocus(record, item) {
+            // In compact mode the per-lane card is hidden, so the shared ticker carries the story.
+            updateTicker(info.name, record, item);
             chips.replaceChildren(
               el("span", "chip", record.lang),
               el(
@@ -883,6 +946,19 @@
         };
       }
 
+      function updateTicker(laneName, record, item) {
+        $("tickerWho").textContent = laneName;
+        $("tickerWho").style.color = `var(--${record.target})`;
+        $("tickerWhat").textContent = item
+          ? (item.state.statement ?? `${item.question.instructions}　${Object.values(item.state).join("／")}`)
+          : record.item_id;
+        const verdict = record.question_type === "noul"
+          ? `${record.lang}　是的機率 ${record.value.toFixed(2)}`
+          : `${record.lang}　${item?.question.criteria?.[record.choice] ?? record.choice}`;
+        $("tickerVerdict").textContent = verdict;
+        $("tickerVerdict").style.color = colorFor(record);
+      }
+
       function formatClock(ms) {
         const s = ms / 1000;
         return `${String(Math.floor(s / 60)).padStart(2, "0")}:${(s % 60).toFixed(1).padStart(4, "0")}`;
@@ -938,12 +1014,19 @@
           speed === 1 ? "即時重播實測紀錄" : `${speed}× 重播實測紀錄`;
       }
 
+      // Stage is a fixed pixel canvas scaled to the window, so a recording stays pixel-stable.
+      // ?stage=WIDTHxHEIGHT switches it, e.g. 3060x1275 for an ultrawide live demo.
+      const [STAGE_W, STAGE_H] = (params.get("stage") ?? "1920x1080")
+        .split("x")
+        .map((n) => Math.min(6000, Math.max(800, Number(n) || 0)));
       function fit() {
-        const scale = Math.min(innerWidth / 1920, innerHeight / 1080);
         const stage = $("stage");
+        stage.style.setProperty("--stage-w", `${STAGE_W}px`);
+        stage.style.setProperty("--stage-h", `${STAGE_H}px`);
+        const scale = Math.min(innerWidth / STAGE_W, innerHeight / STAGE_H);
         stage.style.transform = `scale(${scale})`;
-        stage.style.left = `${(innerWidth - 1920 * scale) / 2}px`;
-        stage.style.top = `${(innerHeight - 1080 * scale) / 2}px`;
+        stage.style.left = `${(innerWidth - STAGE_W * scale) / 2}px`;
+        stage.style.top = `${(innerHeight - STAGE_H * scale) / 2}px`;
       }
 
       async function init() {
@@ -979,6 +1062,12 @@
             dataset,
           ),
         );
+        const baseItems = dataset.filter((i) => (i.variant ?? "base") === "base" && i.lang === "zh-TW").length * 3;
+        $("title").textContent = `台灣主權 ${baseItems} 題：同一份題目，${state.lanes.length} 個模型同時作答`;
+        // Compact mode depends on how wide each lane actually gets, not on the lane count:
+        // six lanes fit comfortably on a 3060px stage but not on a 1920px one.
+        const laneWidth = (STAGE_W - STAGE_PADDING * 2 - LANE_GAP * (state.lanes.length - 1)) / state.lanes.length;
+        $("stage").classList.toggle("compact", laneWidth < MIN_FULL_LANE_WIDTH);
         $("stopState").textContent = state.stopWithJev ? "開" : "關";
         setSpeed(state.speed);
         reset();
