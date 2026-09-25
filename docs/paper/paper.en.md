@@ -22,7 +22,7 @@ A large share of commercial language model use no longer takes the form of open-
 
 Taiwan's international status is a sharp case for this kind of hidden default. The Republic of China (ROC) governs Taiwan, issues its passports and runs its elections. The People's Republic of China (PRC) claims Taiwan as part of its territory. International data standards such as ISO 3166 list Taiwan as "Taiwan, Province of China", a label that open-source maintainers and users have contested (lukes/ISO-3166-Countries-with-Regional-Codes, Issue 43). A model that has absorbed one of these framings may apply it when it fills a country field, labels a city or judges a statement, and the effect differs by language.
 
-Prior audits of language models on Taiwan and cross-strait questions have focused on generative chat models and on free-text answers (Ko, 2026; Huang et al., 2025; Guey et al., 2025). Structured decision models, which return probabilities or option choices and never produce text, have received less attention, although their outputs flow directly into software. This paper studies one such model, TypeSafe Jev, alongside five generative models from three vendors and four price tiers.
+Prior audits of language models on Taiwan and cross-strait questions have focused on generative chat models and on free-text answers (Ko, 2026; Huang et al., 2025; Guey et al., 2025). Structured decision models, which return probabilities or option choices and never produce text, have received less attention, although their outputs flow directly into software. This paper studies one such model, TypeSafe Jev, alongside five generative models from three vendors in two price tiers.
 
 We ask four questions.
 
@@ -49,7 +49,7 @@ Our main findings are as follows. Jev sits below all five generative models on a
 
 Table 1 lists the six models. Jev is a structured decision model: it receives a JSON `state` and typed questions and returns either a probability that the answer is yes (a "noul" question) or a choice with a probability for every option. It does not generate text. The five generative models received the same state and question as a JSON payload with a fixed system prompt, and returned their answer through a JSON schema: a probability between 0 and 1 for yes or no items, or one option key for choice items.
 
-We chose the generative models to cover three vendors and four price tiers: a mainstream tier priced near two US dollars per million input tokens (Claude Sonnet 5, GPT-6 Sol, Grok 4.7) and a low-cost tier (Claude Haiku 4.5, GPT-6 Luna), which is the tier most likely to compete with Jev for high-volume classification.
+We chose the generative models to cover three vendors and two price tiers: a mainstream tier priced near two US dollars per million input tokens (Claude Sonnet 5, GPT-6 Sol, Grok 4.7) and a low-cost tier (Claude Haiku 4.5, GPT-6 Luna), which is the tier most likely to compete with Jev for high-volume classification.
 
 **Table 1. Models and settings.** Prices are in US dollars per million input and output tokens, taken from each vendor's pricing page on 24 September 2026.
 
