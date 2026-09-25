@@ -12,6 +12,7 @@ const { values } = parseArgs({
     concurrency: { type: "string", default: "8" },
     group: { type: "string" },
     variant: { type: "string" },
+    concept: { type: "string" },
     limit: { type: "string" },
   },
 });
@@ -27,6 +28,7 @@ if (missing.length) {
 let items = JSON.parse(readFileSync(new URL("../data/dataset.json", import.meta.url), "utf8"));
 if (values.group) items = items.filter((i) => values.group.split(",").includes(i.group));
 if (values.variant) items = items.filter((i) => values.variant.split(",").includes(i.variant ?? "base"));
+if (values.concept) items = items.filter((i) => values.concept.split(",").includes(i.concept));
 if (values.limit) items = items.slice(0, Number(values.limit));
 const repeats = Number(values.repeats);
 const concurrency = Number(values.concurrency);
