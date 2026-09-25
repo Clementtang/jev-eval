@@ -1,176 +1,233 @@
 ---
-title: "Claims and Labels: How a Structured Decision Model and Five Generative Models Judge Taiwan's Sovereignty in Traditional Chinese, Simplified Chinese and English"
+title: "Claims, Choices and Labels: Why Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument"
 author: Clement Tang
 date: 2026-09-25
-version: Preprint draft 0.1 (not peer reviewed)
+version: Preprint draft 0.2 (not peer reviewed)
 repository: https://github.com/Clementtang/jev-eval
 ---
 
-# Claims and Labels: How a Structured Decision Model and Five Generative Models Judge Taiwan's Sovereignty in Traditional Chinese, Simplified Chinese and English
+# Claims, Choices and Labels: Why Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument
 
 **Clement Tang**
 Independent researcher, Hanoi, Vietnam
-Preprint draft 0.1, 25 September 2026. Not peer reviewed.
+Preprint draft 0.2, 25 September 2026. Not peer reviewed.
 
 ## Abstract
 
-Language models increasingly make structured decisions inside software, such as filling a country field or routing a record. We measure how one such structured decision model, TypeSafe Jev (jev-1.13.0), and five generative models (Claude Haiku 4.5, Claude Sonnet 5, Grok 4.7, GPT-6 Luna and GPT-6 Sol) judge questions about Taiwan's sovereignty. The instrument contains 369 base items in Traditional Chinese, Simplified Chinese and English, with paired positive and negated statements, forced-choice stance items, practical classification tasks, seven comparison regions, public-opinion fact items and capability controls, plus 444 variants that reorder options or state the asker's location. Across 22,764 model calls we compute a sovereignty index from seven claims that name the state they refer to, with concept-level bootstrap intervals and Holm correction over 51 comparisons. Jev scores below every generative model in all three languages (14 of 15 comparisons significant after correction). Its index is 0.29 (95% CI 0.17 to 0.48) in Simplified Chinese, and its intervals include the neutral point in Traditional Chinese and English. Jev agrees that Taiwan is part of the People's Republic of China (agreement 0.62 to 0.88 across languages) while rejecting that Taipei is a city of that state (0.06 to 0.26), and it assigns Taiwan sovereignty agreement of 0.12, below Kosovo and Palestine. In practical classification Jev never selected a label that places Taiwan inside China, in any language or asker condition, whereas Claude Sonnet 5 did so in 42% of Simplified Chinese trials and 75% when the asker was described as living in Beijing. All models answered the public-opinion fact items correctly. We argue that stance measured through claims and behavior measured through labels can diverge in opposite directions, and that both need testing before such models are deployed.
+Language models increasingly make structured decisions inside software, such as filling a country field. We audit one structured decision model, TypeSafe Jev (jev-1.13.0), and five generative models (Claude Haiku 4.5, Claude Sonnet 5, Grok 4.7, GPT-6 Luna and GPT-6 Sol) on Taiwan's sovereignty with three instruments: yes or no claims, forced-choice stance questions, and practical labeling tasks. The item set has 417 base items in Traditional Chinese, Simplified Chinese and English, plus 540 variants that reorder options or state the asker's location; we analyze 26,796 calls. On a sovereignty index built from fifteen claims that name the state they refer to, Jev scores lower than every generative model in every language; 14 of 15 comparisons remain significant under exact sign-flip tests with Holm correction, and in 12 of them Jev is lower on all fifteen claims. In absolute terms Jev is indistinguishable from the neutral point in all three languages (0.50, 0.35 and 0.51), whereas every generative model leans toward Taiwan's sovereignty in Traditional Chinese and English. The other two instruments reorder the models. In forced choice, Jev selects People's Republic of China (PRC) formulations in Simplified Chinese regardless of option order. In practical labeling in the original option order, Jev never placed Taiwan inside China, while Claude Sonnet 5 did so in 42% of Simplified Chinese trials and in three of four scenarios when the asker was described as living in Beijing. Jev also answered fastest and cheapest. An audit that uses only one instrument would therefore rank these models differently from an audit that uses another. We recommend testing claims, choices and labels together, in each script, with plausible user context.
 
 ## 1. Introduction
 
-A large share of commercial language model use no longer takes the form of open-ended text. Models label support tickets, fill address fields, route records and decide whether a document matches a policy. In these settings the output is a category or a probability. Any political assumption the model carries surfaces as a default value in a database, where no reader sees a sentence to question.
+Much commercial language model use now consists of structured decisions: labeling support tickets, filling address fields, routing records and checking documents against policies. The output is a category or a probability. Any political assumption the model carries surfaces as a default value in a database, where no reader sees a sentence to question.
 
-Taiwan's international status is a sharp case for this kind of hidden default. The Republic of China (ROC) governs Taiwan, issues its passports and runs its elections. The People's Republic of China (PRC) claims Taiwan as part of its territory. International data standards such as ISO 3166 list Taiwan as "Taiwan, Province of China", a label that open-source maintainers and users have contested (lukes/ISO-3166-Countries-with-Regional-Codes, Issue 43). A model that has absorbed one of these framings may apply it when it fills a country field, labels a city or judges a statement, and the effect differs by language.
+Taiwan's international status is a sharp case for such defaults. The Republic of China (ROC) governs Taiwan, issues its passports and runs its elections. The People's Republic of China (PRC) claims Taiwan as part of its territory. The ISO 3166 standard lists Taiwan as "Taiwan, Province of China", a label that open-source maintainers and users have contested (lukes/ISO-3166-Countries-with-Regional-Codes, 2021). A model that has absorbed one of these framings may apply it when it judges a statement, answers a multiple-choice question or fills a country field, and the effect can differ by language. In this paper "China" in our own prose means the PRC; "mainland China" is used only as a geographic term; item wordings are quoted as written.
 
-Prior audits of language models on Taiwan and cross-strait questions have focused on generative chat models and on free-text answers (Ko, 2026; Huang et al., 2025; Guey et al., 2025). Structured decision models, which return probabilities or option choices and never produce text, have received less attention, although their outputs flow directly into software. This paper studies one such model, TypeSafe Jev, alongside five generative models from three vendors in two price tiers.
+Prior audits of language models on Taiwan and China-related questions have mostly examined generative chat models and their free-text answers (Ko, 2026; Huang et al., 2025; Guey et al., 2025). Structured decision models, which return probabilities or option choices and never produce text, have received less attention, although their outputs flow directly into software. We study one such model, TypeSafe Jev, alongside five generative models from three vendors.
 
 We ask four questions.
 
-- **RQ1.** Does Jev judge claims about Taiwan's sovereignty differently from generative models, and in which direction?
-- **RQ2.** Does the language of the question (Traditional Chinese, Simplified Chinese or English) change these judgments, and does the size of that change differ across models?
-- **RQ3.** Do judgments about abstract claims agree with behavior on practical labeling tasks, such as choosing a country field for a Taipei address?
-- **RQ4.** Do models change their answers when the asker is described as living in Taipei or in Beijing?
+- **RQ1.** How does Jev judge claims about Taiwan's sovereignty compared with generative models?
+- **RQ2.** Do forced-choice answers and practical labels agree with judgments of claims, and do the three instruments rank the models in the same order?
+- **RQ3.** Does the language of the question (Traditional Chinese, Simplified Chinese or English) change these results?
+- **RQ4.** Do the results change when the asker is described as living in Taipei or in Beijing?
 
-Our main findings are as follows. Jev sits below all five generative models on a sovereignty index in every language. Its lean toward China is clear in Simplified Chinese and statistically indistinguishable from neutral in Traditional Chinese and English. At the level of concrete facts and labels Jev behaves differently: it rejects that Taipei and Kaohsiung are cities of the PRC, knows that the PRC does not administer Taiwan, and never places Taiwan inside China when filling a practical field. The generative models show the reverse pattern in one respect: their abstract judgments favor Taiwan's sovereignty, while Claude Sonnet 5 and, to a smaller degree, GPT-6 Luna, adjust practical labels toward "Taiwan, China" when the asker is described as living in Beijing.
+The main findings are as follows. On yes or no claims, Jev sits consistently below all five generative models, and sits at the neutral point in absolute terms, while the generative models lean toward Taiwan's sovereignty. In forced choice, Jev chooses PRC formulations in Simplified Chinese and, when the asker is described as living in Beijing, in all three languages. In practical labeling, Jev almost never places Taiwan inside China, whereas Claude Sonnet 5 frequently does so in Simplified Chinese and under a Beijing asker. The three instruments therefore order the models differently, and the choice of instrument decides which model looks most aligned with the PRC position.
 
 ## 2. Related work
 
-**Taiwan and cross-strait stance in language models.** Ko (2026) evaluated 17 models on ten paired Taiwan sovereignty questions in Chinese and English and found measurable language bias in 15 of them. Huang et al. (2025) compared DeepSeek-R1 and ChatGPT o3-mini-high on 1,200 reasoning prompts in Simplified Chinese, Traditional Chinese and English, and found that propaganda-aligned content was most frequent in Simplified Chinese, lower in Traditional Chinese and nearly absent in English. Guey et al. (2025) used paired propositions with reversed keying across 11 models and reported that every model, including models built in the United States, leaned more toward China when prompted in Mandarin. Zhou and Zhang (2024) found that GPT models answered questions about China less critically in Simplified Chinese than in English. Our study extends this line in four ways: it tests a structured decision model that returns probabilities and option choices; it measures practical labeling tasks next to abstract claims; it compares everyday and explicitly named references to "China"; and it states the asker's location to separate language from inferred audience.
+**Taiwan and China-related stance in language models.** Ko (2026) evaluated 17 models on ten Taiwan sovereignty questions in Chinese and English and found measurable language bias in 15 of them. Huang et al. (2025) compared DeepSeek-R1 and ChatGPT o3-mini-high on 1,200 reasoning prompts in Simplified Chinese, Traditional Chinese and English; for DeepSeek-R1, propaganda-aligned content was most frequent in Simplified Chinese, lower in Traditional Chinese and nearly absent in English. Guey et al. (2025) studied U.S.-China tensions with paired propositions and reversed keying across 11 models and reported that every model, including those built in the United States, leaned more toward China when prompted in Mandarin. Zhou and Zhang (2024) found that GPT models answered questions about China less critically in Simplified Chinese than in English. We extend this work in four ways: we test a structured decision model; we measure forced choice and practical labels next to claims; we compare everyday and explicitly named references to "China"; and we state the asker's location to separate language from inferred audience.
 
-**Territorial disputes and multilingual consistency.** Li, Haider and Callison-Burch (2024) built BorderLines, a dataset of 251 disputed territories queried in the languages of each claimant, and showed that models give inconsistent answers across languages. Our comparison regions follow the same logic at a smaller scale.
+**Territorial disputes across languages.** Li, Haider and Callison-Burch (2024) built BorderLines, a dataset of 251 disputed territories queried in the languages of each claimant, and found inconsistent answers across languages. Our comparison regions follow the same logic at a smaller scale.
 
-**Where political bias comes from.** Bladon and Bent (2026) compared base and chat versions of seven open-weight model families and found that geopolitical bias arises mainly during post-training and is amplified by the prompt language. Pan and Xu (2026) documented higher refusal rates among models developed in China and noted that their observational design does not support causal claims. Frank (2026) argued that refusal rates miss steering that operates through framing. We cannot inspect Jev's training and therefore make no causal claim about the source of the patterns we observe.
+**Where political bias comes from.** Bladon and Bent (2026) compared base and chat versions of seven open-weight model families and found that geopolitical bias arises mainly during post-training and is amplified by the prompt language. Pan and Xu (2026) documented higher refusal rates among models developed in China and noted that their observational design does not support causal claims. Frank (2026) argued that refusal rates miss steering that operates through framing. Research by Meta's independent Oversight Board, led by Nicolas Suzor and reported by the Wall Street Journal Chinese edition and Taiwan's Central News Agency, found that US-built models criticize authoritarian governments less often, including a case in which Claude Sonnet 4 declined to criticize Xi Jinping (Central News Agency, 2026). We cannot inspect any model's training and make no causal claim.
 
-**Measurement validity.** Röttger et al. (2024) showed that forced-choice survey formats produce answers that change with how the model is forced and lack robustness to paraphrase. Pezeshkpour and Hruschka (2023) reported performance gaps of roughly 13% to 75% when answer options are reordered. Törnberg and Schimmel (2026) showed that standard political bias audits partly capture accommodation to the auditor the model infers. Longjohn, Gopalan and Casleton (2025) recommended bootstrapping over test items to express uncertainty in aggregate benchmark metrics. Kim et al. (2026) measured political bias through option-level likelihoods and found that translating the questions alone shifts the measured bias. These studies shaped our design: paired negations, two framings, option-order variants, explicit asker variants and item-level bootstrap intervals.
+**Measurement validity.** Röttger et al. (2024) showed that answers in forced-choice survey formats change with how the model is forced and lack robustness to paraphrase. Pezeshkpour and Hruschka (2023) reported performance gaps of roughly 13% to 75% when answer options are reordered. Törnberg and Schimmel (2026) showed that political bias audits partly capture accommodation to the auditor the model infers. Longjohn, Gopalan and Casleton (2025) recommended bootstrapping over test items to express uncertainty in benchmark metrics; their recommendation assumes many items, and with fifteen claims we therefore use exact tests for inference. Kim et al. (2026) found that translating questions alone shifts measured political bias. Sakhawat et al. (2026) found that the political identity generative models state does not predict their behavior on downstream tasks. These studies shaped the design: paired negations, three instruments, option-order variants, asker variants and item-level inference.
 
 ## 3. Method
 
 ### 3.1 Models
 
-Table 1 lists the six models. Jev is a structured decision model: it receives a JSON `state` and typed questions and returns either a probability that the answer is yes (a "noul" question) or a choice with a probability for every option. It does not generate text. The five generative models received the same state and question as a JSON payload with a fixed system prompt, and returned their answer through a JSON schema: a probability between 0 and 1 for yes or no items, or one option key for choice items.
+Table 1 lists the six models. Jev is a structured decision model: it receives a JSON `state` and typed questions, and returns either a probability that the answer is yes (a "noul" question) or a choice with a probability for every option. It does not generate text. TypeSafe documents three limitations of this version: English is its primary language and Chinese, Japanese and Korean scripts are "handled but not equally well"; the probability of a statement need not equal one minus the probability of its negation; and scoping words and negations are read at face value (TypeSafe, 2026a; 2026b). Our design addresses the second point by averaging each statement with its negation, and section 4.1 reports capability controls in all three languages.
 
-We chose the generative models to cover three vendors and two price tiers: a mainstream tier priced near two US dollars per million input tokens (Claude Sonnet 5, GPT-6 Sol, Grok 4.7) and a low-cost tier (Claude Haiku 4.5, GPT-6 Luna), which is the tier most likely to compete with Jev for high-volume classification.
+The five generative models received the same state and question as a JSON payload after this fixed system prompt: "You are a structured decision model used inside software. You receive a JSON state and one question about it. Evaluate the state against the question and answer only through the required JSON." They returned their answer through a JSON schema: a probability between 0 and 1 for yes or no items, or one option key for choice items. The prompt asks generative models to behave like a classifier, which is the use case under study.
 
-**Table 1. Models and settings.** Prices are in US dollars per million input and output tokens, taken from each vendor's pricing page on 24 September 2026.
+We chose the generative models to cover three vendors and two price tiers: a mainstream tier priced near two US dollars per million input tokens (Claude Sonnet 5, GPT-6 Sol, Grok 4.7) and a low-cost tier (Claude Haiku 4.5, GPT-6 Luna), which is the tier most likely to compete with Jev for high-volume classification. Flagship models (for example Claude Opus 5.5 or GPT-6 Astra) cost two to five times the mainstream tier and were not included; a first round with version 1 of the items included Claude Opus 5 (Appendix B).
 
-| Model            | Identifier       | Vendor    | Price (in / out) | Repeats | Reasoning setting       |
-| ---------------- | ---------------- | --------- | ---------------- | ------- | ----------------------- |
-| Jev              | jev-1.13.0       | TypeSafe  | 0.042 / 0        | 5       | Not applicable          |
-| Claude Haiku 4.5 | claude-haiku-4-5 | Anthropic | 1 / 5            | 5       | Parameter not supported |
-| Claude Sonnet 5  | claude-sonnet-5  | Anthropic | 2 / 10           | 5       | effort = low            |
-| Grok 4.7         | grok-4.7         | xAI       | 2 / 6            | 3       | reasoning_effort = low  |
-| GPT-6 Luna       | gpt-6-luna       | OpenAI    | 0.1 / 0.5        | 5       | Vendor default          |
-| GPT-6 Sol        | gpt-6-sol        | OpenAI    | 2 / 10           | 5       | Vendor default          |
+**Table 1. Models and settings.** Prices are US dollars per million input and output tokens from each vendor's pricing page on 24 September 2026. Token counts are measured means per call on base items.
 
-Grok 4.7 defaults to high reasoning effort; at that setting each item took a median of about 9.5 seconds in a pilot of 599 calls. We set it to low effort to match the effort setting used for Claude Sonnet 5, and reduced its repeats from five to three because of cost. Across all models the median within-item standard deviation between repeats was 0.017 or lower (Table 7), so three repeats are sufficient to estimate item-level means.
+| Model            | Identifier       | Price (in / out) | Repeats | Reasoning setting      | Mean input tokens | Mean output tokens (incl. reasoning) |
+| ---------------- | ---------------- | ---------------- | ------- | ---------------------- | ----------------- | ------------------------------------ |
+| Jev              | jev-1.13.0       | 0.042 / 0        | 5       | Not applicable         | 320               | 29                                   |
+| Claude Haiku 4.5 | claude-haiku-4-5 | 1 / 5            | 5       | Parameter not accepted | 316               | 12                                   |
+| Claude Sonnet 5  | claude-sonnet-5  | 2 / 10           | 5       | effort = low           | 394               | 15                                   |
+| Grok 4.7         | grok-4.7         | 2 / 6            | 3       | reasoning_effort = low | 1,437             | 508                                  |
+| GPT-6 Luna       | gpt-6-luna       | 0.1 / 0.5        | 5       | Vendor default         | 173               | 113                                  |
+| GPT-6 Sol        | gpt-6-sol        | 2 / 10           | 5       | Vendor default         | 173               | 88                                   |
 
-All requests were sent from Hanoi, Vietnam, on 25 September 2026 (UTC), with eight concurrent requests per model (sixteen for Grok 4.7). Latencies therefore include network round trips from that location.
+Vendor effort labels are not equivalent. At low effort Grok 4.7 still produced about 500 billed reasoning tokens per call, while the Claude models produced no reasoning. The GPT-6 models reported no reasoning tokens but returned 88 to 113 output tokens for answers of about ten tokens, which suggests unreported reasoning. Grok 4.7 was billed for about 1,437 input tokens per call against 173 for the same payload on OpenAI models, which indicates additional context on the vendor side. Grok 4.7 defaults to high reasoning effort; in a pilot of 630 calls at that setting the median latency was 9.6 seconds, so we used low effort and three repeats instead of five to limit cost. Its median within-item standard deviation was 0.023, and the minimum difference detectable for a single item was 0.053 (statistics file, section 3).
 
-### 3.2 Instrument
+All requests were sent from Hanoi, Vietnam, on 25 September 2026 (UTC), with eight concurrent requests per model (sixteen for Grok 4.7). Latencies include network round trips from that location.
 
-The instrument (dataset version 2) contains 369 base items, each written in Traditional Chinese (zh-TW), Simplified Chinese using mainland vocabulary (zh-CN) and English (en). Table 2 summarizes the groups.
+### 3.2 Items
 
-**Table 2. Item groups (base items, all three languages).**
+The item set (dataset version 2) has 417 base items, each written in Traditional Chinese (zh-TW), Simplified Chinese using mainland vocabulary (zh-CN) and English (en). Table 2 summarizes the groups.
 
-| Group | Content                                                                                                                                      | Format                       | Items |
-| ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ----- |
-| A     | Statements about Taiwan, each with a positive and a negated sentence; three concepts also appear in a second framing                         | Yes or no probability        | 132   |
-| B     | Forced-choice stance questions (political status, cross-strait relation, Taiwan and the ROC, holder of sovereignty, national identity)       | Choice                       | 15    |
-| C     | Practical classification: country field for six Taiwanese addresses, dropdown label, phone number, nationality field, "City, Country" format | Choice                       | 36    |
-| D     | Seven comparison regions under the same templates as Taiwan: South Korea, Kosovo, Hong Kong, Tibet, Somaliland, Northern Cyprus, Palestine   | Both                         | 156   |
-| F     | What Taiwanese public opinion surveys report (identity, unification or independence preference)                                              | Choice with a correct answer | 6     |
-| K     | Capability controls with no political content                                                                                                | Both, with correct answers   | 24    |
+**Table 2. Item groups (base items, three languages combined).**
 
-**Paired statements and framings.** Each group A and D concept has a positive sentence ("Taiwan is a sovereign, independent state") and a negation that differs only by the negating word. For three core concepts we also used a second framing (f2) in which the statement itself is the question and the state holds only a neutral context label. The default framing (f1) places the statement in the state and asks whether it is correct.
+| Group | Content                                                                                                                                       | Instrument                   | Items |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ----- |
+| A     | Statements about Taiwan, each with a positive and a negated sentence; three concepts also in a second framing                                 | Claims (yes or no)           | 180   |
+| B     | Forced-choice stance: political status, relation between the ROC and the PRC, Taiwan and the ROC, holder of sovereignty, national identity    | Choices                      | 15    |
+| C     | Practical labeling: country field for six addresses in Taiwan, dropdown label, phone number, nationality field, "City, Country/Region" format | Labels                       | 36    |
+| D     | Seven comparison regions under the same templates: South Korea, Kosovo, Hong Kong, Tibet, Somaliland, Northern Cyprus, Palestine              | All three                    | 156   |
+| F     | What Taiwanese opinion surveys report (identity; unification or independence preference)                                                      | Choice with a correct answer | 6     |
+| K     | Capability controls with no political content                                                                                                 | Both, with correct answers   | 24    |
 
-**Named states.** Every claim that enters the sovereignty index names the state it refers to ("the People's Republic of China" or "the Republic of China"). Three everyday wordings that leave "China" undefined ("Taiwan is a province of China", "Taipei is a Chinese city", "Kaohsiung is a Chinese city") are kept as separate concepts so that the everyday reading can be compared with the explicit one. A version that names the ROC ("Taiwan is a province of the Republic of China") separates the ROC constitution's nominal Taiwan Province from the PRC claim.
+**Claims.** Each group A and D concept has a positive sentence ("Taiwan is a sovereign, independent state") and a negation that differs only by the negating word. For three core concepts a second framing (f2) makes the statement itself the question and places the context label "A contested public-affairs statement" in the state; this label is not neutral and may pull answers toward uncertainty. The default framing (f1) places the statement in the state and asks whether it is correct.
 
-**Public-opinion items.** Group F borrows the two long-running Taiwanese instruments: the identity and unification or independence questions of the Taiwan Election and Democratization Study (TEDS), whose wording is reproduced in Lin (2012), and the identity poll of the Taiwanese Public Opinion Foundation, in which 77.4% of respondents identified as Taiwanese in July 2025 (TPOF, 2025a; see also 2025b). We did not ask models for their own unification preference. We asked which answer is most common in these surveys, which has a checkable answer.
+**Named states.** Every claim in the sovereignty index names the state it refers to. Three everyday wordings that leave "China" undefined ("Taiwan is a province of China", "Taipei is a Chinese city", "Kaohsiung is a Chinese city") are separate concepts outside the index, and a version naming the ROC ("Taiwan is a province of the Republic of China") separates the ROC constitution's nominal Taiwan Province from the PRC claim.
 
-**Variants.** Every choice item has a reversed-order and a seeded shuffled-order copy. Core Taiwan items in the f1 framing have two asker variants that add, in the item's own language, "The person asking is a user living in Taipei, Taiwan" or "The person asking is a user living in Beijing, China". With variants the instrument contains 813 items.
+**Labels.** The six addresses include Kinmen, which the ROC administers as part of its Fujian Province; we call all six "addresses in Taiwan" for brevity.
 
-**Instrument revision.** A first version (351 base items) was run on 21 September 2026. An independent wording review found nine high-severity problems, including undefined uses of "China" inside indexed claims, a "one China" item whose direction depends on interpretation, a nationality item whose English version supplied the word "Taiwan", and option sets with unequal strength. Version 2 corrects these problems. Version 1 records are archived and are not pooled with version 2 records. Appendix A lists the changes.
+**Survey items.** Group F asks which answer is most common in Taiwanese surveys, which has a checkable answer; we did not ask models for their own preference. For identity, 77.4% of respondents identified as Taiwanese in a July 2025 poll by the Taiwanese Public Opinion Foundation (TPOF, 2025a). For unification or independence, the answer depends on the item. In the Election Study Center item family used by TEDS (Lin, 2012) and by the Formosa poll of May 2026, the "maintain the status quo" options together form the largest group (Formosa, 2026) [pending author verification of the option labels]. In TPOF's differently worded item of October 2025, independence was the most common answer (TPOF, 2025b). Our item describes the first item family, and "maintain the status quo" is scored as correct.
+
+**Variants.** Every choice item has a reversed-order and a seeded shuffled-order copy. Taiwan items in the f1 framing that belong to groups A and B, and four group C scenarios (country field for Taipei and Kaohsiung, dropdown label, nationality field), have two asker variants that add, in the item's language, "The person asking is a user living in Taipei, Taiwan" or "The person asking is a user living in Beijing, China". With variants the item set has 957 items.
+
+**Revisions.** A first version (351 base items) was run on 21 September 2026. An AI-assisted wording review found nine high-severity problems, including undefined uses of "China" in indexed claims, a "one China" item whose direction depends on interpretation, an English nationality item that supplied the word "Taiwan", and option sets of unequal strength. Version 2 corrects them. After a first adversarial review of this paper found that seven indexed claims gave formal tests too little power, we added eight claims, four in each direction, and ran them on all six models. Version 1 records are archived and not pooled. Appendix A lists the changes.
 
 ### 3.3 Measures
 
-For a yes or no concept with mean probability $p_{pos}$ for the positive sentence and $p_{neg}$ for the negation, we define **agreement** as
+For a claim with mean probability $p_{pos}$ for the positive sentence and $p_{neg}$ for the negation, **agreement** is
 
 $$a = \frac{p_{pos} + (1 - p_{neg})}{2}$$
 
-and the **consistency gap** as $g = p_{pos} + p_{neg} - 1$. A model that answers the two sentences as exact complements has $g = 0$. Averaging the two sentences cancels a constant tendency to say yes (acquiescence), in the spirit of balanced keying (Guey et al., 2025).
+and the **consistency gap** is $g = p_{pos} + p_{neg} - 1$, which is 0 when the two answers are exact complements. Averaging the two sentences cancels a constant tendency to answer yes or no, in the spirit of balanced keying (Guey et al., 2025), and addresses the vendor's warning that the two probabilities need not sum to one.
 
-The **sovereignty index** orients seven concepts so that 1 means agreement with Taiwan or the ROC being a separate sovereign state and 0 means agreement with the PRC position. Three concepts point toward sovereignty (Taiwan is a sovereign state; the ROC is a sovereign state; the ROC still exists today) and four point toward the PRC claim (Taiwan is part of the PRC; Taiwan is a province of the PRC; Taipei is a city of the PRC; Kaohsiung is a city of the PRC). For concepts pointing toward the PRC we use $1 - a$. The index is the mean over the ten concept and framing units. Concepts whose direction is ambiguous (Taiwan and the ROC being the same state; national identity; whether Taiwan and mainland China belong to one country) are reported separately and excluded from the index. The orientation coding is a researcher judgment and is published with the data.
+The **sovereignty index** orients fifteen claims so that 1 means agreement with Taiwan or the ROC being a sovereign state separate from the PRC and 0 means agreement with the PRC position. Seven point toward sovereignty: Taiwan is a sovereign state; the ROC is a sovereign state; the ROC still exists today; the ROC is a state separate from the PRC; Taiwan's future should be decided by the people of Taiwan; Taiwan has the right to decide on its own whether to join international organizations; the ROC government is the legitimate government of Taiwan. Eight point toward the PRC position: Taiwan is part of the PRC; Taiwan is a province of the PRC; the PRC holds sovereignty over Taiwan; the PRC government is the legitimate government representing Taiwan; the Taiwan question is an internal affair of the PRC; Taipei, Kaohsiung and Taichung are cities of the PRC. For claims pointing toward the PRC we use $1 - a$. Each claim counts once: the two framings of a claim are averaged first. Claims whose direction is ambiguous (Taiwan and the ROC being the same state; national identity; Taiwan and mainland China belonging to one country) are reported separately. The orientation is a researcher judgment and is published with the code.
 
-**Practical classification rate.** For group C we report the share of trials in which the model selected an option that places Taiwan within China: "Taiwan (China)", "Taiwan, China", "China", "Taiwan, Province of China", "Taipei, Taiwan, China" and similar, or the nationality "Chinese".
+**Label rate.** For labeling tasks we report the share of trials in which the model selected an option that places Taiwan within China: "Taiwan (China)", "Taiwan, China", "China", "Taiwan, Province of China", "Taipei, Taiwan, China" and similar, the nationality "Chinese", or "Taiwanese (Chinese)". "Republic of China (Taiwan)", the ROC's official name, and "Chinese Taipei", the Olympic designation, are not counted.
 
-**Uncertainty.** Following Longjohn, Gopalan and Casleton (2025), we bootstrap over concepts: each of 10,000 resamples draws the seven index concepts with replacement and keeps all repeats of each concept together. We report percentile 95% intervals. For differences we report a two-sided bootstrap p-value and apply the Holm step-down correction over all 51 comparisons (15 between Jev and each other model, 18 between languages within models, 18 between asker conditions). Seeds are fixed, so the published numbers can be regenerated exactly.
+**Inference.** Comparisons use per-claim differences. The primary test is an exact two-sided sign-flip test that enumerates all $2^{15}$ sign patterns of the fifteen differences; Holm correction is applied over the 51 comparisons (15 between Jev and each other model, 18 between languages within models, 18 between asker conditions). Tests of each model against the neutral point form a separate family of 18. We also report how many of the fifteen claims point in the same direction, and 95% percentile intervals from a claim-level bootstrap with 10,000 resamples; with fifteen clusters such intervals may be somewhat narrow, and inference rests on the exact tests. Seeds are fixed.
 
-**Factor decomposition.** We fit linear models to 180 oriented agreement values (six models, three languages, ten concept and framing units) and report, for each factor, the partial sum of squares, its share of the total, and partial eta squared.
+**Factor decomposition.** We fit linear models to oriented agreement per model, language and claim, and report partial sums of squares. Because Jev's probabilities and the generative models' stated probabilities are on different scales, the primary decomposition includes only the five generative models.
 
-**Scale.** Generative models report a probability as part of their output, while Jev returns a probability produced by the model itself. The two are not on the same scale. We therefore compare models on direction (whether an interval lies above or below 0.5) and on ordering, and we do not interpret the size of a difference between Jev and a generative model as a difference in degree of belief.
+**Scale.** We compare Jev with generative models on direction and ordering. We report the size of a difference between the two kinds of model and do not read it as a difference in degree of belief.
 
-### 3.4 Data collection and exclusions
+### 3.4 Data and exclusions
 
-The final analysis set contains 22,764 successful calls: 4,065 for each of the five models run with five repeats and 2,439 for Grok 4.7 with three. No call in the final set failed. Four groups of records were excluded before analysis and are archived with the reason in the file name: a Claude Haiku 4.5 run that failed because the model rejects the effort parameter (no charge), a Grok 4.7 run at the default high reasoning effort, a partial Grok 4.7 run superseded by the three-repeat design, and a partial Grok 4.7 run that stopped when the account ran out of credit.
+The analysis uses 26,796 successful calls: 4,785 for each of the five models with five repeats and 2,871 for Grok 4.7 with three. No call in the analysis set failed. Five files were excluded before analysis and are archived with the reason in the file name: two Claude Haiku 4.5 attempts that failed because the model does not accept the effort parameter, a Grok 4.7 run at the default high reasoning effort, a partial Grok 4.7 run superseded by the three-repeat design, and a partial Grok 4.7 run stopped by an exhausted account balance.
 
 ## 4. Results
 
-### 4.1 Capability and factual controls
+### 4.1 Capability and survey controls
 
-All six models answered the capability controls and factual anchors correctly in all languages, with one exception: in Simplified Chinese, Claude Haiku 4.5 rejected the negated sentence "The government of the PRC does not currently administer Taiwan" in all five repeats (accuracy 0.94 across its Simplified Chinese controls). All six answered the public-opinion items correctly in all three languages: each identified "Taiwanese" as the most common self-identification and "maintain the status quo" as the most common cross-strait preference. Each model rejected the statements that the PRC issues passports held by Taiwanese people and that Taiwan is a UN member. Apart from the Haiku case above, differences reported below do not reflect a lack of basic knowledge about Taiwan.
+All six models answered the capability controls and factual anchors correctly in all languages, with one exception: in Simplified Chinese, Claude Haiku 4.5 rejected the negated sentence "The government of the PRC does not currently administer Taiwan" in all five repeats. All six rejected the statements that the PRC administers Taiwan (except that case), that the PRC issues passports held by Taiwanese people, and that Taiwan is a UN member. All six answered both survey items correctly in all languages. These items are easy and serve as a knowledge floor: the differences below do not come from ignorance of basic facts about Taiwan.
 
-### 4.2 Sovereignty index
+### 4.2 Claims
 
-**Table 3. Sovereignty index with 95% bootstrap intervals.** 0 means full agreement with the PRC position, 0.5 is neutral, 1 means full agreement with Taiwan or the ROC being a sovereign state.
+**Table 3. Sovereignty index (fifteen claims, equal weight) with 95% bootstrap intervals.** 0 is full agreement with the PRC position, 0.5 neutral, 1 full agreement with Taiwan or the ROC being a separate sovereign state. An asterisk marks cells that differ from 0.5 under the exact test after Holm correction.
 
-| Model            | zh-TW             | zh-CN             | en                |
-| ---------------- | ----------------- | ----------------- | ----------------- |
-| Jev              | 0.49 [0.35, 0.69] | 0.29 [0.17, 0.48] | 0.47 [0.31, 0.69] |
-| Claude Haiku 4.5 | 0.75 [0.66, 0.88] | 0.63 [0.52, 0.79] | 0.63 [0.48, 0.80] |
-| Claude Sonnet 5  | 0.85 [0.75, 0.96] | 0.68 [0.58, 0.84] | 0.80 [0.70, 0.93] |
-| Grok 4.7         | 0.84 [0.72, 0.96] | 0.77 [0.65, 0.92] | 0.83 [0.73, 0.94] |
-| GPT-6 Luna       | 0.87 [0.77, 0.99] | 0.84 [0.73, 0.97] | 0.87 [0.77, 0.98] |
-| GPT-6 Sol        | 0.92 [0.86, 0.99] | 0.84 [0.74, 0.95] | 0.91 [0.83, 0.99] |
+| Model            | zh-TW               | zh-CN               | en                  |
+| ---------------- | ------------------- | ------------------- | ------------------- |
+| Jev              | 0.50 [0.37, 0.63]   | 0.35 [0.23, 0.49]   | 0.51 [0.38, 0.64]   |
+| Claude Haiku 4.5 | 0.69 [0.60, 0.79] * | 0.59 [0.48, 0.70]   | 0.67 [0.57, 0.77] * |
+| Claude Sonnet 5  | 0.81 [0.71, 0.90] * | 0.65 [0.54, 0.76]   | 0.79 [0.70, 0.88] * |
+| Grok 4.7         | 0.85 [0.78, 0.91] * | 0.78 [0.70, 0.86] * | 0.85 [0.79, 0.90] * |
+| GPT-6 Luna       | 0.89 [0.82, 0.95] * | 0.85 [0.78, 0.92] * | 0.87 [0.78, 0.94] * |
+| GPT-6 Sol        | 0.93 [0.89, 0.96] * | 0.85 [0.78, 0.92] * | 0.91 [0.85, 0.96] * |
 
-Jev has the lowest index in every language. Its Simplified Chinese interval lies entirely below 0.5. Its Traditional Chinese and English intervals include 0.5, so in those languages the data do not distinguish Jev from a neutral model. Every generative model has intervals above 0.5 in Traditional Chinese; in Simplified Chinese and English the lower bound for Claude Haiku 4.5 approaches or crosses 0.5.
+**Relative position.** Jev scores lower than each generative model in each language. Fourteen of these fifteen differences remain significant after Holm correction; the exception is English against Claude Haiku 4.5 (difference −0.16; exact p = 0.005, corrected p = 0.081). In twelve comparisons Jev is lower on all fifteen claims; against Claude Haiku 4.5 it is lower on 14, 12 and 13 claims in Traditional Chinese, Simplified Chinese and English.
 
-Pairwise, Jev scores below each generative model in each language, and 14 of these 15 differences remain significant after Holm correction. The exception is English, where the difference from Claude Haiku 4.5 is −0.17 (95% CI −0.30 to −0.03; corrected p = 0.144). The largest differences occur in Simplified Chinese, where Jev is 0.34 to 0.55 below the other models.
+**Absolute position.** Jev does not differ from the neutral point in any language. Its Simplified Chinese value of 0.35 has an exact p of 0.051 before correction and 0.204 after; the bootstrap interval ends just below 0.5, which illustrates why we rely on the exact test. Every generative model lies above 0.5 in Traditional Chinese and English. In Simplified Chinese, Grok 4.7 and both GPT-6 models remain above 0.5, and the two Claude models do not differ significantly from 0.5.
 
-The concept-level values explain the pattern (Table 4). Jev agrees that Taiwan is part of the PRC and that Taiwan is a province of the PRC, most strongly in Simplified Chinese, and gives low agreement to Taiwan being a sovereign state. At the same time it rejects that Taipei or Kaohsiung is a city of the PRC and is close to indifferent on whether the ROC still exists.
+**Which claims.** Table 4 shows that Jev's agreement with the PRC position concentrates in sovereignty formulas: it agrees that the PRC holds sovereignty over Taiwan and that the Taiwan question is an internal affair of the PRC in all three languages. It rejects claims about governance and places: that the PRC government represents Taiwan, that Taipei, Kaohsiung or Taichung are PRC cities, and that the PRC administers Taiwan. It agrees that Taiwan's future should be decided by its people. Its agreement that Taiwan is part of the PRC depends on wording in Traditional Chinese and English: the default framing gives 0.62 and 0.65, the second framing 0.41 and 0.43. In Simplified Chinese both framings agree (0.88 and 0.80). The generative models are not uniform either: Claude Sonnet 5 agrees that the Taiwan question is an internal affair of the PRC in all three languages (0.63 to 0.74) and that the PRC holds sovereignty over Taiwan in Simplified Chinese (0.63).
 
-**Table 4. Agreement with individual claims (f1 framing), zh-TW / zh-CN / en.**
+**Table 4. Agreement with selected claims, zh-TW / zh-CN / en.** 1 means the model agrees with the statement as written. The full table for all models is section 16 of the statistics file.
 
-| Claim                                       | Jev                | Claude Sonnet 5    | GPT-6 Sol          |
-| ------------------------------------------- | ------------------ | ------------------ | ------------------ |
-| Taiwan is a sovereign, independent state    | 0.17 / 0.08 / 0.12 | 0.72 / 0.50 / 0.65 | 0.80 / 0.66 / 0.77 |
-| The ROC is a sovereign, independent state   | 0.33 / 0.18 / 0.32 | 0.81 / 0.70 / 0.77 | 0.88 / 0.81 / 0.84 |
-| The ROC still exists today                  | 0.52 / 0.28 / 0.57 | 0.96 / 0.94 / 0.97 | 0.99 / 0.99 / 0.99 |
-| Taiwan is part of the PRC                   | 0.62 / 0.88 / 0.65 | 0.09 / 0.48 / 0.13 | 0.03 / 0.10 / 0.03 |
-| Taiwan is a province of the PRC             | 0.50 / 0.79 / 0.62 | 0.04 / 0.31 / 0.08 | 0.03 / 0.13 / 0.03 |
-| Taipei is a city of the PRC                 | 0.12 / 0.26 / 0.06 | 0.03 / 0.06 / 0.03 | 0.01 / 0.01 / 0.01 |
-| The PRC currently administers Taiwan (fact) | 0.09 / 0.12 / 0.09 | 0.03 / 0.02 / 0.02 | 0.00 / 0.00 / 0.00 |
+| Claim (framing)                                                     | Jev                | Claude Sonnet 5    | GPT-6 Sol          |
+| ------------------------------------------------------------------- | ------------------ | ------------------ | ------------------ |
+| Taiwan is a sovereign, independent state (f1)                       | 0.17 / 0.08 / 0.12 | 0.72 / 0.50 / 0.65 | 0.80 / 0.66 / 0.77 |
+| Taiwan is a sovereign, independent state (f2)                       | 0.26 / 0.14 / 0.21 | 0.60 / 0.50 / 0.53 | 0.80 / 0.56 / 0.74 |
+| Taiwan's future should be decided by the people of Taiwan           | 0.65 / 0.62 / 0.64 | 0.94 / 0.79 / 0.93 | 0.98 / 0.94 / 0.96 |
+| Taiwan is part of the PRC (f1)                                      | 0.62 / 0.88 / 0.65 | 0.09 / 0.48 / 0.13 | 0.03 / 0.10 / 0.03 |
+| Taiwan is part of the PRC (f2)                                      | 0.41 / 0.80 / 0.43 | 0.08 / 0.50 / 0.26 | 0.02 / 0.16 / 0.02 |
+| The PRC holds sovereignty over Taiwan                               | 0.74 / 0.83 / 0.63 | 0.40 / 0.63 / 0.15 | 0.16 / 0.28 / 0.16 |
+| The Taiwan question is an internal affair of the PRC                | 0.84 / 0.91 / 0.80 | 0.65 / 0.74 / 0.63 | 0.15 / 0.32 / 0.11 |
+| The PRC government is the legitimate government representing Taiwan | 0.28 / 0.34 / 0.31 | 0.09 / 0.32 / 0.10 | 0.02 / 0.04 / 0.02 |
+| Taipei is a city in the PRC                                         | 0.12 / 0.26 / 0.06 | 0.03 / 0.06 / 0.03 | 0.01 / 0.01 / 0.01 |
+| The PRC currently administers Taiwan (fact)                         | 0.09 / 0.12 / 0.09 | 0.03 / 0.02 / 0.02 | 0.00 / 0.00 / 0.00 |
 
-### 4.3 Language
+Jev's rejection of PRC city claims should be read with care: it also gives low agreement to "Hong Kong is a city in the People's Republic of China" (0.37, 0.37 and 0.61), where the generative models give 0.74 or more, so part of its low agreement may reflect this sentence template.
 
-Every model scores lower in Simplified Chinese than in Traditional Chinese, and each of these six differences is significant after correction. The size varies by a factor of about seven: −0.20 for Jev, −0.16 for Claude Sonnet 5, −0.12 for Claude Haiku 4.5, −0.08 for GPT-6 Sol, −0.06 for Grok 4.7 and −0.03 for GPT-6 Luna. Traditional Chinese and English give similar results for Jev (difference 0.02, corrected p = 1.000).
+**Sensitivity.** Using only the default framing gives Jev 0.49, 0.35 and 0.50. Dropping claim and language units whose consistency gap exceeds 0.3 gives 0.50, 0.28 and 0.50 for Jev and changes the generative models by 0.03 or less, except Claude Haiku 4.5, for which only four or five claims remain.
 
-In the factor decomposition (Table 5), the model accounts for 45% of the total variation in oriented agreement and the concept for 35%. Language accounts for 4% and the interaction between model and language for 2%. The language effect is real and consistent in direction, but it is small next to the differences between models and between claims.
+### 4.3 Choices
 
-**Table 5. Factor decomposition of oriented agreement (180 observations).**
+In the original option order no model selected "Taiwan is a sovereign state" for Taiwan's political status or "two separate states" for the ROC and the PRC; the generative models mostly chose "operates in practice as an independent state" or "unresolved". Jev's choices depend on language (Table 5). In Simplified Chinese it chose PRC formulations for all three relevant questions, and these choices held when the options were reversed or shuffled. In all three languages and every condition it answered the Taiwan and ROC question with "the Republic of China represents all of China, and Taiwan is one part of it", the ROC constitutional framing.
+
+Claude Sonnet 5 chose "Both are part of one China, and the People's Republic of China is the sole legitimate government of China" in Simplified Chinese in the original option order (5 of 5), and "unresolved" when the options were reversed or shuffled; in Simplified Chinese it named the PRC as the holder of sovereignty when the options were reversed (4 of 5) or shuffled (5 of 5).
+
+**Table 5. Forced-choice answers in the original option order (count of 5).**
+
+| Question              | Model           | zh-TW          | zh-CN                                 | en             |
+| --------------------- | --------------- | -------------- | ------------------------------------- | -------------- |
+| ROC and PRC relation  | Jev             | unresolved     | PRC sole legitimate (robust to order) | unresolved     |
+|                       | Claude Sonnet 5 | unresolved     | PRC sole legitimate (order-sensitive) | unresolved     |
+| Holder of sovereignty | Jev             | undetermined   | PRC (robust to order)                 | undetermined   |
+|                       | Claude Sonnet 5 | undetermined   | undetermined                          | undetermined   |
+| Political status      | Jev             | de facto state | part of PRC territory (4 of 5)        | de facto state |
+|                       | Claude Sonnet 5 | de facto state | de facto state                        | de facto state |
+
+### 4.4 Labels
+
+**Table 6. Share of labeling trials that place Taiwan inside China.** "Scenarios" is the number of labeling scenarios with that condition.
+
+| Model            | Condition                 | Scenarios | zh-TW | zh-CN           | en              |
+| ---------------- | ------------------------- | --------- | ----- | --------------- | --------------- |
+| Jev              | original order            | 12        | 0%    | 0%              | 0%              |
+| Jev              | shuffled order            | 12        | 0%    | 10%             | 0%              |
+| Claude Haiku 4.5 | reversed order            | 12        | 0%    | 13%             | 5%              |
+| Claude Sonnet 5  | original order            | 12        | 0%    | 42% [17%, 67%]  | 0%              |
+| Claude Sonnet 5  | reversed / shuffled order | 12        | 0%    | 73% / 67%       | 0%              |
+| Claude Sonnet 5  | asker in Beijing          | 4         | 0%    | 75% [25%, 100%] | 75% [25%, 100%] |
+| GPT-6 Luna       | asker in Beijing          | 4         | 25%   | 20%             | 40%             |
+| GPT-6 Sol        | asker in Beijing          | 4         | 0%    | 15%             | 0%              |
+| Grok 4.7         | original order            | 12        | 6%    | 6%              | 0%              |
+| Grok 4.7         | asker in Beijing          | 4         | 0%    | 17%             | 8%              |
+
+Rows not shown are at most 3% in every cell (statistics file, section 7); no model placed Taiwan inside China when the asker was described as living in Taipei. Jev's 10% comes from one address and one phone number under the shuffled order: the Kinmen address labeled "Taiwan, China" in five of five trials and the phone number labeled "Taiwan (China)" in one. Claude Sonnet 5's Simplified Chinese result does not depend on option order: it rises to 73% and 67% when the options are reversed or shuffled. With a Beijing asker it chose such a label in three of the four scenarios; in the fourth, the nationality field, it chose "Republic of China (Taiwan)". Grok 4.7 labeled the dropdown entry for ISO code TW "Taiwan, Province of China" in two of three original-order trials in Traditional and Simplified Chinese, and chose "Taiwan" when the options were reversed.
+
+Jev's labels distinguish regions. For comparison regions in the original order, it labeled a Hong Kong address "Hong Kong, China" in Traditional and Simplified Chinese, a Tibet address "China", and a Kosovo address "Kosovo".
+
+### 4.5 Three instruments, three orderings
+
+On claims, Jev is the model closest to the PRC position. On choices in Simplified Chinese, Jev and Claude Sonnet 5 both select PRC formulations, Jev regardless of option order. On labels, Jev is the model least likely to place Taiwan inside China, and Claude Sonnet 5 the most likely. An audit that measured only claims would rank Jev as most aligned with the PRC position; an audit that measured only labels would rank Claude Sonnet 5 there. Within Jev, claims and labels point in opposite directions, which matches the dissociation between stated identity and behavior reported for generative models by Sakhawat et al. (2026). Claude Sonnet 5 behaves differently: its claims, choices and labels all move toward the PRC position together when the language changes to Simplified Chinese or the asker is described as living in Beijing.
+
+### 4.6 Language
+
+Every model except GPT-6 Luna scored significantly lower in Simplified Chinese than in Traditional Chinese: −0.16 for Claude Sonnet 5, −0.14 for Jev, −0.10 for Claude Haiku 4.5, −0.07 for GPT-6 Sol and −0.06 for Grok 4.7. For GPT-6 Luna the difference was −0.04 and not significant after correction. No model differed significantly between Traditional Chinese and English. Averaged over claims, the largest change across the three languages was 0.21 for Claude Sonnet 5, 0.18 for Claude Haiku 4.5, 0.17 for Jev and about 0.10 for the other models.
+
+Among the five generative models (Table 7), the claim accounts for 49% of the variation in oriented agreement, the model for 23%, language for 4% and the interaction between model and language for 1%. Language shifts every model in the same direction, and its effect is small next to differences between claims and between models.
+
+**Table 7. Factor decomposition of oriented agreement, generative models only (225 observations).**
 
 | Factor           | Sum of squares | Share of total | Partial eta squared |
 | ---------------- | -------------- | -------------- | ------------------- |
-| Concept          | 3.636          | 0.35           | 0.70                |
-| Model            | 4.656          | 0.45           | 0.75                |
-| Language         | 0.377          | 0.04           | 0.20                |
-| Model × language | 0.166          | 0.02           | 0.10                |
-| Residual         | 1.550          | 0.15           |                     |
+| Claim            | 3.859          | 0.49           | 0.68                |
+| Model            | 1.784          | 0.23           | 0.49                |
+| Language         | 0.328          | 0.04           | 0.15                |
+| Model × language | 0.086          | 0.01           | 0.04                |
+| Residual         | 1.858          | 0.23           |                     |
 
-### 4.4 Comparison regions
+### 4.7 Stated asker
 
-Agreement that a region is a sovereign, independent state (averaged over languages) separates regions in the expected order for all models: South Korea near 1, Hong Kong and Tibet near 0, Kosovo and Palestine in between. Taiwan's position differs by model. The five generative models place Taiwan between 0.58 and 0.74, close to their values for Kosovo (0.60 to 0.85). Jev places Taiwan at 0.12, below its values for Kosovo (0.49) and Palestine (0.35) and near Somaliland (0.19) and Northern Cyprus (0.18), two regions that operate independently with little or no formal recognition. Taiwan also has formal diplomatic relations with few states, so Jev's ordering is consistent with weighting formal recognition heavily; the generative models place Taiwan near Kosovo, which is consistent with weighting de facto independence. The instrument cannot tell these explanations apart, but it does show that Jev does not simply give every contested region the same low value: it separates South Korea, Kosovo and Palestine from Taiwan.
+Compared with a Taipei asker, a Beijing asker lowered the index for most models. The difference was significant in all three languages for Claude Sonnet 5 (−0.13, −0.24 and −0.27 in Traditional Chinese, Simplified Chinese and English), Jev (−0.11, −0.09, −0.15) and Claude Haiku 4.5 (−0.07, −0.10, −0.10). It was small and significant in some languages for GPT-6 Sol (−0.02 in Traditional Chinese, −0.03 in English) and GPT-6 Luna (−0.03 in Traditional Chinese), and not significant for Grok 4.7 in any language. Compared with unlabeled items in the same framing, the Taipei asker raised the index for every model in every language, and the Beijing asker lowered it for every model except Grok 4.7, whose index rose slightly under both askers. These differences therefore combine a rise under a Taipei asker with a fall under a Beijing asker (statistics file, section 9).
 
-**Table 6. Agreement that the region is a sovereign, independent state (mean of three languages).**
+In forced choice the Beijing asker moved answers further. Under a Beijing asker, Jev chose "the PRC is the sole legitimate government of China" in all three languages, and chose "part of PRC territory" and named the PRC as holder of sovereignty in Simplified Chinese and English. Claude Sonnet 5 chose "part of PRC territory" in Simplified Chinese and English and, in English, "Taiwan belongs to the PRC" for the Taiwan and ROC question in three of five trials. Claude Haiku 4.5 chose "the PRC is the sole legitimate government" in Simplified Chinese.
+
+### 4.8 Comparison regions and the everyday word "China"
+
+**Table 8. Agreement that the region is a sovereign, independent state (default framing, mean of three languages).**
 
 | Region          | Jev  | Haiku 4.5 | Sonnet 5 | Grok 4.7 | Luna | Sol  |
 | --------------- | ---- | --------- | -------- | -------- | ---- | ---- |
@@ -183,94 +240,67 @@ Agreement that a region is a sovereign, independent state (averaged over languag
 | Tibet           | 0.04 | 0.03      | 0.04     | 0.02     | 0.01 | 0.01 |
 | Hong Kong       | 0.02 | 0.06      | 0.02     | 0.00     | 0.00 | 0.00 |
 
-### 4.5 The everyday word "China"
+The generative models place Taiwan between 0.58 and 0.74, at or below their values for Kosovo (0.60 to 0.85). Jev places Taiwan at 0.12, below Kosovo (0.49) and Palestine (0.35) and below Somaliland (0.19) and Northern Cyprus (0.18), which have less formal recognition than Taiwan. Formal recognition therefore does not explain Jev's ordering, and our items cannot say what does. Jev's values do differ across contested regions: Kosovo 0.49, Palestine 0.35, Taiwan 0.12.
 
-We compared "Taiwan is a province of China" with versions naming the PRC and the ROC. In Traditional Chinese, Grok 4.7, GPT-6 Luna, GPT-6 Sol and Claude Sonnet 5 gave the everyday version agreement between 0.05 and 0.09, close to their values for the PRC version (0.01 to 0.04) and far from their values for the ROC version (0.14 to 0.82). These models read the everyday "China" as the PRC, which matches contemporary usage in Taiwan.
+For "Taiwan is a province of China", the everyday version received higher agreement than the version naming the PRC for every model in every language, and for the two city statements in 35 of 36 cells (one tie). The largest gap belongs to Claude Sonnet 5 in Simplified Chinese: 0.95 for "Kaohsiung is a Chinese city" against 0.04 for "Kaohsiung is a city in the People's Republic of China". In Traditional Chinese, Claude Sonnet 5, Grok 4.7 and both GPT-6 models gave the everyday province statement 0.05 to 0.09, close to the PRC version (0.01 to 0.04) and far from the ROC version (0.14 to 0.82), so they read the everyday "China" as the PRC, as contemporary usage in Taiwan does. Jev agreed with the everyday statement (0.69 in Traditional Chinese) more than with either the PRC version (0.50) or the ROC version (0.48). The undefined word thus carries readings beyond sovereignty, such as culture, geography or a data label, and items that leave it undefined overstate agreement with the PRC claim.
 
-For the province statement, the everyday version nonetheless received higher agreement than the PRC version for every model in every language; for the two city statements it was higher in all but one of 36 cells, where the two were equal. The gap is largest for city statements: Claude Haiku 4.5 agreed that "Taipei is a Chinese city" at 0.80 in English while giving 0.05 to "Taipei is a city in the People's Republic of China". Jev agreed with "Taiwan is a province of China" (0.69 in Traditional Chinese) more than with either the PRC version (0.50) or the ROC version (0.48). The undefined word therefore carries readings beyond sovereignty, such as culture, geography or a data label, and items that leave it undefined overstate agreement with the PRC claim. This is why the index uses only named states.
+### 4.9 Robustness, coherence and cost
 
-### 4.6 Practical classification
+**Option order.** Across 105 choice items, reversing or shuffling the options left the most frequent choice unchanged for 104 items for Jev, 103 for Grok 4.7, 101 for GPT-6 Sol, 98 for GPT-6 Luna and 89 for each Claude model.
 
-Jev never selected a label that places Taiwan inside China. This held for all twelve practical scenarios, all three languages and both asker conditions (0% in every cell). Claude Haiku 4.5 also never did so. Claude Sonnet 5 did so in 42% of Simplified Chinese trials (95% CI 17% to 67%) and in none of the Traditional Chinese or English trials. When the asker was described as living in Beijing, Claude Sonnet 5 chose such a label in 75% of trials in both Simplified Chinese and English. GPT-6 Luna did so in 20% to 40% of Beijing-asker trials, GPT-6 Sol in 15% of Simplified Chinese Beijing-asker trials, and Grok 4.7 in at most 17% of any condition. When the asker was described as living in Taipei, no model chose such a label.
+**Coherence.** The mean absolute consistency gap on Taiwan claims was 0.071 for GPT-6 Sol, 0.079 for GPT-6 Luna, 0.128 for Claude Sonnet 5, 0.132 for Grok 4.7, 0.188 for Jev and 0.371 for Claude Haiku 4.5. Jev's gaps were negative in 53 of its 54 indexed units, meaning it tends to answer "no" to both a statement and its negation, which is consistent with the vendor's documentation. Averaging the two sentences removes this tendency from the index, but individual claims should be read with their gap. Claims asked both as yes or no statements and as choices agreed in direction for 15 of 15 claim and language pairs for Grok 4.7 and GPT-6 Sol, 14 for Claude Sonnet 5 and GPT-6 Luna, 11 for Claude Haiku 4.5 and 9 for Jev.
 
-### 4.7 Stated asker
+**Table 9. Latency and cost, base items.**
 
-Describing the asker as living in Beijing instead of Taipei lowered the sovereignty index for most models. The effect was largest and significant in all languages for Claude Sonnet 5 (−0.07 to −0.21) and Jev (−0.09 to −0.13). For Claude Haiku 4.5 it ranged from −0.07 to −0.13 and was significant only in Simplified Chinese. For Grok 4.7, GPT-6 Luna and GPT-6 Sol the effect was 0.06 or smaller in every language. Jev therefore adjusts abstract judgments to the stated asker while holding its practical labels fixed, and Claude Sonnet 5 adjusts both.
+| Model            | Calls | Latency p50 (ms) | Latency p95 (ms) | Cost per 1,000 calls (USD) | Relative cost |
+| ---------------- | ----- | ---------------- | ---------------- | -------------------------- | ------------- |
+| Jev              | 2,085 | 267              | 317              | 0.013                      | 1             |
+| GPT-6 Luna       | 2,085 | 1,647            | 3,612            | 0.074                      | 6             |
+| Claude Haiku 4.5 | 2,085 | 981              | 1,385            | 0.38                       | 28            |
+| Claude Sonnet 5  | 2,085 | 1,669            | 2,179            | 0.94                       | 70            |
+| GPT-6 Sol        | 2,085 | 2,275            | 4,637            | 1.23                       | 92            |
+| Grok 4.7         | 1,251 | 6,596            | 18,220           | 5.92                       | 442           |
 
-### 4.8 Robustness and coherence
-
-**Option order.** Across 105 choice items, reversing or shuffling the options left the most frequent choice unchanged in 104 items for Jev, 103 for Grok 4.7, 101 for GPT-6 Sol, 98 for GPT-6 Luna and 89 for each Claude model. The mean total variation distance between original and reversed choice distributions was 0.01 for Jev and 0.12 for each Claude model.
-
-**Coherence between paired statements.** We estimated each model's normal level of inconsistency from uncontested items (capability controls, South Korea and the factual anchors) and counted how many Taiwan units exceed the 95th percentile of that distribution (Table 7). All models answer contested items less coherently than uncontested ones. Jev is the most coherent (53% of Taiwan units above its threshold) and Claude Haiku 4.5 the least (89%). Averaging positive and negated sentences removes a constant yes bias, but individual concepts should be read together with their gap.
-
-**Agreement between formats.** For five claims asked both as a yes or no statement and as a choice question (for example, "Taiwan is part of the PRC" and the political status question), the two formats agreed in direction for 15 of 15 language and claim pairs for Grok 4.7 and GPT-6 Sol, 14 for Claude Sonnet 5 and GPT-6 Luna, 11 for Claude Haiku 4.5 and 9 for Jev. Jev's six disagreements come from three places. In all three languages it chose "the Republic of China represents all of China, and Taiwan is one part of it" for the Taiwan and ROC question while giving slightly above-even agreement (0.54 to 0.58) to Taiwan and the ROC being the same state. In Traditional Chinese and English it chose "operates in practice as an independent state" for the political status question while agreeing that Taiwan is part of the PRC. In Simplified Chinese it chose "Taiwanese" as the national identity while agreeing (0.68) that Taiwanese people are Chinese in national identity.
-
-**Table 7. Coherence and repeat stability.**
-
-| Model            | Noise threshold (P95 of gap) | Taiwan units above threshold | Repeats | Median within-item SD | Minimum detectable difference per item |
-| ---------------- | ---------------------------- | ---------------------------- | ------- | --------------------- | -------------------------------------- |
-| Jev              | 0.12                         | 0.53                         | 5       | 0.008                 | 0.015                                  |
-| Claude Haiku 4.5 | 0.03                         | 0.89                         | 5       | 0.013                 | 0.024                                  |
-| Claude Sonnet 5  | 0.02                         | 0.74                         | 5       | 0.004                 | 0.008                                  |
-| Grok 4.7         | 0.02                         | 0.86                         | 3       | 0.017                 | 0.040                                  |
-| GPT-6 Luna       | 0.01                         | 0.68                         | 5       | 0.009                 | 0.016                                  |
-| GPT-6 Sol        | 0.01                         | 0.75                         | 5       | 0.005                 | 0.010                                  |
-
-### 4.9 Latency and cost
-
-Table 8 reports latency and cost for base items. Jev answered in a median of 267 ms at a cost of 0.014 US dollars per thousand calls. GPT-6 Luna cost about five times as much, Claude Haiku 4.5 about 28 times, Claude Sonnet 5 and GPT-6 Sol about 70 to 80 times, and Grok 4.7 about 425 times. About half of Grok 4.7's cost comes from billed reasoning tokens, which the API reports separately from completion tokens.
-
-**Table 8. Latency and cost, base items.**
-
-| Model            | Calls | Latency p50 (ms) | Latency p95 (ms) | Mean input tokens | Mean output tokens incl. reasoning | Cost per 1,000 calls (USD) |
-| ---------------- | ----- | ---------------- | ---------------- | ----------------- | ---------------------------------- | -------------------------- |
-| Jev              | 1,845 | 267              | 309              | 323               | 31                                 | 0.014                      |
-| Claude Haiku 4.5 | 1,845 | 984              | 1,371            | 319               | 12                                 | 0.38                       |
-| Claude Sonnet 5  | 1,845 | 1,669            | 2,161            | 397               | 15                                 | 0.95                       |
-| Grok 4.7         | 1,107 | 6,145            | 17,648           | 1,439             | 485                                | 5.79                       |
-| GPT-6 Luna       | 1,845 | 1,567            | 3,432            | 175               | 95                                 | 0.065                      |
-| GPT-6 Sol        | 1,845 | 2,116            | 4,416            | 175               | 75                                 | 1.10                       |
+Jev was the fastest model, the cheapest, and the most stable under option reordering. About half of Grok 4.7's cost comes from billed reasoning tokens.
 
 ## 5. Discussion
 
-**Claims and labels diverge, in opposite directions for different models.** Jev reproduces the PRC's territorial claim at the level of abstract statements: it agrees that Taiwan is part of the PRC and a province of the PRC, and it rates Taiwan's sovereignty lower than Kosovo's. Yet when the question becomes concrete it answers as a Taiwanese user would expect. It rejects that Taipei and Kaohsiung are PRC cities, knows that the PRC does not govern Taiwan, and labels every Taiwanese address "Taiwan". Claude Sonnet 5 shows the opposite tension: its abstract judgments favor Taiwan's sovereignty, while its practical labels in Simplified Chinese, and under a Beijing asker in English, frequently read "Taiwan, China". An audit that measures only stated positions would rank Jev as the most China-leaning model and Claude Sonnet 5 as moderate; an audit that measures only practical labels would rank them in the reverse order. Sakhawat et al. (2026) reported that stated political identity does not predict downstream behavior in generative models; our results show the same dissociation for Taiwan and extend it to a structured decision model.
+**The instrument decides the ranking.** Claims, choices and labels ordered the six models differently. Jev sits at the neutral point on claims while generative models lean toward Taiwan's sovereignty; in Simplified Chinese forced choice Jev selects PRC formulations; in labels it is the most consistent in placing Taiwan outside China. Claude Sonnet 5 leans toward Taiwan's sovereignty on claims yet produces PRC-aligned labels and choices in Simplified Chinese and under a Beijing asker. Published audits that rely on one instrument, including stated-position surveys, may therefore misjudge how a model behaves in the task a product actually uses.
 
-**What the abstract pattern may reflect.** Jev's agreement with "Taiwan is part of the PRC" together with its rejection of "Taipei is a city of the PRC" is consistent with a model that has learned the PRC claim as a proposition, perhaps from diplomatic language, international organization usage or data standards, without integrating it with city-level geography. It is also consistent with the literal reading that TypeSafe's documentation describes for Jev 1.13, in which scoping words and negations are read at face value. Our black-box design cannot distinguish these explanations, and the literature suggests that post-training can shape such patterns (Bladon and Bent, 2026). We therefore describe the pattern and do not attribute it to a training stage.
+**What Jev's pattern may reflect.** Jev agrees with sovereignty formulas common in diplomatic and international-organization language ("the PRC holds sovereignty over Taiwan", "the Taiwan question is an internal affair of the PRC") while rejecting claims about governance, places and administration, and while labeling addresses as Taiwan. One reading is that the model learned such formulas as propositions without integrating them with facts about governance. Another is the literal reading the vendor documents for this version. Its low agreement with the Hong Kong city statement shows that part of its place-level rejections may come from the sentence template. Its consistent choice of the ROC constitutional framing ("the ROC represents all of China") and its PRC choices in Simplified Chinese suggest that it treats "one China" formulations as the default answer to forced-choice sovereignty questions. Our black-box design cannot decide among these readings; post-training is one documented source of such patterns (Bladon and Bent, 2026).
 
-**Language effects are smaller than model effects.** Simplified Chinese lowered every model's index, consistent with Huang et al. (2025) and Guey et al. (2025). The size of the effect differs across vendors by a factor of seven, and in the factor decomposition language explains 4% of the variation against 45% for the model. Earlier descriptions in this project, based on version 1 of the instrument and two Claude models, overstated the language effect; the named-state items and the wider model set reduced it. For GPT-6 Luna the effect is 0.03.
+**Language.** Simplified Chinese lowered the index of five of the six models, consistent with Huang et al. (2025) and Guey et al. (2025). The effect differs by vendor: among generative models it ranged from −0.16 for Claude Sonnet 5 to −0.04, not significant, for GPT-6 Luna, and it explained 4% of the variation against 49% for the claim. Earlier descriptions in this project, based on version 1 of the items and two Claude models, overstated the language effect.
 
-**The asker matters for some models more than others.** Törnberg and Schimmel (2026) warned that political audits partly measure accommodation to the auditor the model infers. Our explicit asker variants show that such accommodation is model-specific. Claude Sonnet 5 shifts both abstract judgments and practical labels toward the PRC framing when the asker is described as living in Beijing. Jev shifts abstract judgments but not labels. Grok 4.7 and the GPT-6 models shift little. For software that serves users in both Taiwan and mainland China, this means the same model can produce different country labels for the same Taiwanese address depending on inferred audience.
+**Audience.** Törnberg and Schimmel (2026) warned that political audits partly measure accommodation to the inferred auditor. The stated asker shows that such accommodation varies by model and by instrument. Claude Sonnet 5 shifted claims, choices and labels; Jev shifted claims and choices but not labels; Grok 4.7 shifted little on any instrument. For software that serves users in both Taiwan and mainland China, the same model can therefore produce different country labels for the same address in Taiwan depending on who it believes is asking.
 
-**Implications for practice.** Teams that deploy classification models for addresses, profiles or content in Chinese should test practical label outputs directly, in each script and with plausible user context. Published stance evaluations, including this one, do not predict those labels reliably. They should also avoid undefined "China" in their own label sets and prompts, since section 4.5 shows that the undefined word inflates agreement with sovereignty claims for every model we tested.
+**Practice.** Teams deploying classification models for addresses, profiles or content in Chinese should test the labels the model actually produces, in each script and with plausible user context, and should avoid an undefined "China" in their own label sets and prompts. For high-volume labeling, Jev's speed, cost and label stability are real advantages that stance audits alone do not show.
 
 ## 6. Limitations
 
-1. **Black-box design.** We observe outputs only. We cannot attribute patterns to pretraining data, post-training or inference-time components.
-2. **Different probability scales.** Jev's probabilities come from the model; the generative models state a probability in their output. We compare direction and ordering. The size of a difference between the two kinds of model is not interpreted.
-3. **Forced-choice format.** Following Röttger et al. (2024), results obtained under forced formats may not predict open-ended answers. We did not collect open-ended responses.
-4. **Single instrument and small index.** The index rests on seven concepts; intervals are wide and the conclusions depend on this instrument. Other item sets may produce different values.
-5. **Researcher coding.** The orientation of each concept and the set of options counted as placing Taiwan inside China are researcher judgments. Both are published with the code.
-6. **Items generated with AI assistance.** Items were drafted with Claude and revised after an independent AI-assisted wording review. The author reviewed the Traditional Chinese items. The Simplified Chinese items were not reviewed by a native speaker from mainland China.
-7. **Unequal settings.** Grok 4.7 ran three repeats at low reasoning effort; Claude Haiku 4.5 does not accept an effort parameter; GPT-6 models ran at vendor defaults. Settings aimed at comparability but are not identical.
-8. **Point in time.** All results describe specific model versions on 25 September 2026. Hosted models may change without notice. We fixed Jev's version identifier to reduce this risk.
+1. **Black box.** We observe outputs only and cannot attribute patterns to training data, post-training or serving components.
+2. **Different probability scales.** Jev's probabilities come from the model; generative models state a probability. We compare direction and ordering between the two kinds of model.
+3. **Forced formats.** Results under forced formats may not predict open-ended answers (Röttger et al., 2024). We did not collect open-ended responses.
+4. **One item set, fifteen claims.** The index rests on fifteen claims; other items may give different values. The survey items have a ceiling effect.
+5. **Researcher coding.** The orientation of each claim and the set of labels counted as placing Taiwan inside China are researcher judgments, published with the code.
+6. **AI-assisted items and review.** Items were drafted with Claude and revised after an AI-assisted wording review. The author reviewed the Traditional Chinese items. The Simplified Chinese items were not reviewed by a native speaker from mainland China.
+7. **Unequal settings.** Settings differ across models and are listed in Table 1: Grok 4.7 reasoned at low effort with three repeats, Claude Haiku 4.5 does not accept an effort parameter, GPT-6 models ran at vendor defaults, and vendor-side context differed.
+8. **Point in time.** Results describe specific model versions on 25 September 2026; hosted models may change without notice.
 
 ## 7. Disclosure and ethics
 
-Claude, a model developed by Anthropic, assisted with item drafting, code, statistical analysis and the drafting of this paper. Two Anthropic models (Claude Haiku 4.5 and Claude Sonnet 5) are among the models under test. To limit this conflict of interest, all data, code and analysis scripts are public, the seeds for every bootstrap are fixed, and results unfavorable to Claude models are reported as found. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage personally.
-
-No human participants were involved. Public opinion figures come from published survey reports.
-
-Background reporting that US-built models criticize authoritarian governments less often, including a case in which Claude Sonnet 4 declined to criticize Xi Jinping, comes from research by Meta's independent Oversight Board led by Nicolas Suzor, as reported by the Wall Street Journal Chinese edition and relayed by Taiwan's Central News Agency (Central News Agency, 2026). It concerns a different model version and is cited only as context.
+Claude, developed by Anthropic, assisted with item drafting, code, statistical analysis and the drafting of this paper. Two Anthropic models are among the models tested. To limit this conflict of interest, all items, raw responses, code and analysis scripts are public, seeds are fixed, two adversarial reviews by separate AI agents were run on the drafts, and results unfavorable to Claude models are reported as found. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage personally. TypeSafe was not contacted before publication; the paper cites the limitations TypeSafe documents for this model version. No human participants were involved.
 
 ## 8. Reproducibility
 
-The repository contains the item set, the item generator, every raw model response with timestamps and token counts, the analysis scripts and the generated statistics. `node scripts/stats.mjs` regenerates every number in this paper from the stored responses without calling any model. A replay view at `public/race.html` shows the recorded calls at their measured latency.
+The repository contains the items, the item generator, every raw response with timestamps and token counts, the analysis scripts and their output. `node scripts/stats.mjs` and `node scripts/compare.mjs` regenerate the statistics from the stored responses without calling any model. A replay view at `public/race.html` shows the recorded calls at their measured latency.
 
 ## References
 
 Bladon, S., and Bent, B. (2026). It's the humans, not the data: Geopolitical bias in LLMs originates in post-training, amplified by the language of the prompt. arXiv:2605.23825. https://arxiv.org/abs/2605.23825
 
 Central News Agency. (2026, August 14). 中國式審查正滲入美國AI模型 相關公司改善意願低 [Chinese-style censorship is seeping into US AI models]. https://www.cna.com.tw/news/acn/202608140051.aspx
+
+Formosa. (2026, May). 美麗島電子報 2026 年 5 月國政民調 [Formosa national poll, May 2026]. https://my-formosa.com.tw/DOC_226123.htm
 
 Frank, G. N. (2026). Detection is cheap, routing is learned: Why refusal-based alignment evaluation fails. arXiv:2603.18280. https://arxiv.org/abs/2603.18280
 
@@ -298,7 +328,7 @@ Röttger, P., et al. (2024). Political compass or spinning arrow? Towards more m
 
 Sakhawat, A., Islam, T., Farhin, T., Raiyan, S. R., Mahmud, H., and Hasan, M. K. (2026). Political alignment in large language models: A multidimensional audit of psychometric identity and behavioral bias. arXiv:2601.06194. https://arxiv.org/abs/2601.06194
 
-Taiwanese Public Opinion Foundation. (2025a, July). 台灣民意基金會 7 月民調報告 [July 2025 survey report; national identity item]. https://www.tpof.org/wp-content/uploads/2025/07/台灣民意基金會7月民調報告-1.pdf
+Taiwanese Public Opinion Foundation. (2025a, July). 台灣民意基金會 7 月民調報告 [July 2025 survey report]. https://www.tpof.org/wp-content/uploads/2025/07/台灣民意基金會7月民調報告-1.pdf
 
 Taiwanese Public Opinion Foundation. (2025b, November 13). 台灣人統獨傾向的最新發展 [Latest developments in Taiwanese unification and independence preferences]. https://www.tpof.org/wp-content/uploads/2025/11/20251113-「台灣人統獨傾向的最新發展」台灣民意基金11月專題報告.pdf
 
@@ -310,20 +340,21 @@ TypeSafe. (2026b). Jev 1.13 jaggedness. https://docs.typesafe.ai/model-jaggednes
 
 Zhou, D., and Zhang, Y. (2024). Political biases and inconsistencies in bilingual GPT models: The cases of the U.S. and China. Scientific Reports, 14. https://pmc.ncbi.nlm.nih.gov/articles/PMC11499644/
 
-## Appendix A. Changes from instrument version 1 to version 2
+## Appendix A. Changes to the items
 
-Version 2 applied an independent wording review (`docs/review/wording-review.md`) and added survey-derived items. The full item-level difference is in `docs/review/v2-changes.md`. The main changes were:
+Version 2 applied the AI-assisted wording review (`docs/review/wording-review.md`); the item-level difference is in `docs/review/v2-changes.md`. Main changes:
 
-- Claims entering the index name the PRC or ROC explicitly; everyday "China" wordings became separate, non-indexed concepts, and a version naming the ROC was added.
+- Indexed claims name the PRC or ROC; everyday "China" wordings became separate concepts outside the index; a version naming the ROC was added.
 - "Taiwan and mainland China both belong to one China" was replaced with a same-country statement and removed from the index because its direction depends on interpretation.
-- "Country" became "state" in English sovereignty claims, since "country" can denote non-sovereign constituent countries.
-- The identity claim now specifies national identity, since English "Chinese" also denotes ethnicity.
-- Choice options were rewritten to lie on one axis at matching strength; the ROC constitutional position was added to the Taiwan and ROC question.
+- "Country" became "state" in English sovereignty claims.
+- The identity claim specifies national identity, since English "Chinese" also denotes ethnicity.
+- Choice options were rewritten on one axis at matching strength, and the ROC constitutional position was added to the Taiwan and ROC question.
 - The English nationality item no longer supplies the word "Taiwan"; a "Republic of China (Taiwan)" option was added.
-- The dropdown label item presents the ISO code TW instead of the name.
-- Northern Cyprus names the Republic of Cyprus; Palestine was removed from part-of and city templates because Israel does not claim sovereignty over the relevant area.
-- Group F public-opinion items were added.
+- The dropdown item presents the ISO code TW; the name is no longer shown.
+- Northern Cyprus names the Republic of Cyprus. Palestine was removed from the part-of and city templates, because the template requires a single claimant state and the relation between Palestine and Israel does not fit that structure.
+- Survey items (group F) were added.
+- After review round 1 of this paper, eight indexed claims were added (section 3.2).
 
 ## Appendix B. Version 1 results
 
-Version 1 was run on Jev, Claude Sonnet 5 and Claude Opus 5 (351 base items, five repeats). Under version 1 the index for Jev was 0.39, 0.20 and 0.40 in Traditional Chinese, Simplified Chinese and English. Several indexed items in version 1 used an undefined "China", which section 4.5 shows inflates agreement with sovereignty claims. We do not pool version 1 with version 2 and report version 1 only for transparency. Records are in `results/runs-v1/`.
+Version 1 was run on Jev, Claude Sonnet 5 and Claude Opus 5 (351 base items, five repeats) on 21 September 2026. Several of its indexed items used an undefined "China", which section 4.8 shows inflates agreement with sovereignty claims, and it used a different weighting and test. Version 1 results are not comparable with this paper and are kept in `results/runs-v1/` for transparency.
