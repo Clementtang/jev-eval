@@ -57,7 +57,7 @@ const get = (target, v, concept, framing, lang, polarity = "-") => index.get([ta
 const stanceOf = (target, v, concept, framing, lang) => {
   const pos = mean(get(target, v, concept, framing, lang, "pos").map((r) => r.value));
   const neg = mean(get(target, v, concept, framing, lang, "neg").map((r) => r.value));
-  return pos == null || neg == null ? null : { stance: (pos + 1 - neg) / 2, gap: pos + neg - 1 };
+  return pos == null || neg == null ? null : { stance: (pos + 1 - neg) / 2, gap: pos + neg - 1, pos, neg };
 };
 // A unit is one oriented Taiwan concept with every framing that exists for it.
 const framingCache = new Map();
@@ -260,7 +260,7 @@ out.push("");
 
 // ---------- 8. option order ----------
 if (records.some((r) => variant(r).startsWith("order-"))) {
-  out.push("## 8. 選項順序穩健性", "", "同一題選擇題以原順序、反序、隨機序各跑 5 次，比較最常選的選項是否改變。", "",
+  out.push("## 8. 選項順序穩健性", "", "同一題選擇題以原順序、反序、隨機序各跑 5 次（Grok 4.7 為 3 次），比較最常選的選項是否改變。", "",
     "| 模型 | 題數 | 三種順序最常選的選項都相同 | 原序與反序的選擇分布總變異距離（平均） |", "| --- | --- | --- | --- |");
   const flips = [];
   for (const t of targets) {
@@ -409,11 +409,13 @@ out.push("");
 
 // ---------- 17. alternative unit sets (review round 2: C2, M1, M2, M3) ----------
 // Each unit is a list of concepts averaged into one score, so correlated claims can be merged.
-// The seven original concepts were fixed before any run; the eight added after review round 1
-// ran six hours later and serve as an out-of-sample replication of the original comparisons.
+// The seven original concepts were fixed before any run. The eight added after review round 1 were
+// chosen after seeing the first results and ran in a later batch, so they are a post-hoc
+// directional consistency check, not an independent replication (review round 3).
 const CITY_CONCEPTS = ["taipei-in-prc", "kaohsiung-in-prc", "taichung-in-prc"];
 const ORIGINAL_CONCEPTS = ["taiwan-sovereign", "roc-sovereign", "roc-exists-today", "taiwan-part-of-prc", "taiwan-province-of-prc", "taipei-in-prc", "kaohsiung-in-prc"];
 const NORMATIVE_CONCEPTS = ["taiwan-future-by-its-people", "taiwan-may-join-intl-orgs"];
+const PART_OF_CONCEPTS = ["taiwan-part-of-prc", "taiwan-province-of-prc"];
 const singles = (cs) => cs.map((c) => [c]);
 const UNIT_SETS = [
   ["全部 15 個主張（主分析）", singles(CONCEPTS)],
@@ -421,15 +423,16 @@ const UNIT_SETS = [
   ["只含城市主張（3）", singles(CITY_CONCEPTS)],
   ["城市主張合併為一個單位（13）", [...singles(CONCEPTS.filter((c) => !CITY_CONCEPTS.includes(c))), CITY_CONCEPTS]],
   ["原 7 個主張（事先定義）", singles(ORIGINAL_CONCEPTS)],
-  ["第一輪審查後新增的 8 個主張（複製）", singles(CONCEPTS.filter((c) => !ORIGINAL_CONCEPTS.includes(c)))],
+  ["第一輪審查後新增的 8 個主張（事後擴充，方向一致性檢查）", singles(CONCEPTS.filter((c) => !ORIGINAL_CONCEPTS.includes(c)))],
   ["不含規範題與國際組織題（13）", singles(CONCEPTS.filter((c) => !NORMATIVE_CONCEPTS.includes(c)))],
+  ["城市合併、「一部分／一個省」合併（12）", [...singles(CONCEPTS.filter((c) => !CITY_CONCEPTS.includes(c) && !PART_OF_CONCEPTS.includes(c))), CITY_CONCEPTS, PART_OF_CONCEPTS]],
 ];
-const unitScore = (t, unit, l) => {
-  const xs = unit.map((c) => conceptScore(t, "base", c, l)).filter((x) => x != null);
+const unitScore = (t, unit, l, v = "base") => {
+  const xs = unit.map((c) => conceptScore(t, v, c, l)).filter((x) => x != null);
   return xs.length ? mean(xs) : null;
 };
 out.push("## 17. 替代單位集合（第二輪審查 C2、M1、M2、M3）", "",
-  "同一套檢定換不同的主張集合。17a 為各模型指數與中立檢定（每個集合內 18 格自成一組做 Holm 校正）；17b 為 Jev 與其他模型的比較（每個集合內 15 組自成一組做 Holm 校正）。單位數少於 6 時，精確檢定最小 p 大於 0.03，校正後不可能顯著，只看點估計。", "");
+  "同一套檢定換不同的主張集合，屬探索性的敏感度分析：集合是事後選定的，跨集合挑選結果沒有校正。17a 為各模型指數與中立檢定（每個集合內 18 格自成一組做 Holm 校正，與第 1b 節相同）；17b 為 Jev 與其他模型的比較，每個集合都重算與第 2 節相同的 51 組比較（Jev 對其他模型、語言、提問者）並對 51 組做 Holm 校正，只列出 Jev 的 15 組。單位數少於 6 時，精確檢定最小 p 大於 0.03，校正後不可能顯著，只看點估計。", "");
 for (const [label, units] of UNIT_SETS) {
   const cells = [];
   for (const t of targets) for (const l of LANGS) {
@@ -445,19 +448,42 @@ for (const [label, units] of UNIT_SETS) {
       return `${f2(x.index)}（${x.below}/${x.n}，${fp(cellAdjusted[i])}${cellAdjusted[i] < 0.05 ? " *" : ""}）`;
     }).join(" | ")} |`);
   }
-  const pairs = [];
+  // Same 51-comparison family as section 2, so corrected p-values are comparable across sets.
+  const family = [];
+  const unitDiffs = (a, b) => units.map((u) => {
+    const x = a(u);
+    const y = b(u);
+    return x == null || y == null ? null : x - y;
+  }).filter((d) => d != null);
+  const addTest = (diffs, meta) => family.push({ ...meta, diff: mean(diffs), negative: diffs.filter((d) => d < 0).length, n: diffs.length, p: signFlipTest(diffs).p });
   for (const l of LANGS) for (const t of targets.filter((x) => x !== "jev")) {
-    const diffs = units.map((u) => {
-      const a = unitScore("jev", u, l);
-      const b = unitScore(t, u, l);
-      return a == null || b == null ? null : a - b;
-    }).filter((d) => d != null);
-    pairs.push({ l, t, diff: mean(diffs), negative: diffs.filter((d) => d < 0).length, n: diffs.length, p: signFlipTest(diffs).p });
+    addTest(unitDiffs((u) => unitScore("jev", u, l), (u) => unitScore(t, u, l)), { jev: true, l, t });
   }
-  const pairAdjusted = holm(pairs.map((x) => x.p));
+  for (const t of targets) for (const [a, b] of [["zh-CN", "zh-TW"], ["zh-CN", "en"], ["zh-TW", "en"]]) {
+    addTest(unitDiffs((u) => unitScore(t, u, a), (u) => unitScore(t, u, b)), {});
+  }
+  if (hasAsker) for (const t of targets) for (const l of LANGS) {
+    // Asker variants exist only in the f1 framing, as in section 2.
+    const askerScore = (v) => (u) => { const xs = u.map((c) => conceptScore(t, v, c, l)).filter((x) => x != null); return xs.length ? mean(xs) : null; };
+    addTest(unitDiffs(askerScore("asker-cn"), askerScore("asker-tw")), {});
+  }
+  const familyAdjusted = holm(family.map((x) => x.p));
+  const pairs = family.map((x, i) => ({ ...x, adjusted: familyAdjusted[i] })).filter((x) => x.jev);
+  const pairAdjusted = pairs.map((x) => x.adjusted);
   out.push("", `### 17b. ${label}：Jev − 其他模型`, "", "| 語言 | 模型 | 差值 | Jev 較低的單位數 | 精確 p | Holm 校正後 p |", "| --- | --- | --- | --- | --- | --- |",
     ...pairs.map((x, i) => `| ${x.l} | ${x.t} | ${f2(x.diff)} | ${x.negative}/${x.n} | ${fp(x.p)} | ${fp(pairAdjusted[i])}${pairAdjusted[i] < 0.05 ? " *" : ""} |`), "");
 }
+
+// ---------- 18. what a negative gap means (review round 3, M4) ----------
+// A negative gap only says P(pos) + P(neg) < 1; answering "no" to both needs both below 0.5.
+out.push("## 18. 指數單位的正反句回答型態", "",
+  "單位為指數內的「主張 × 措辭 × 語言」。差距為負只表示正反句機率總和小於 1；「雙否」要求正句與反句的平均機率都低於 0.5，「雙是」要求都高於 0.5。", "",
+  "| 模型 | 單位數 | 差距為負 | 雙否 | 雙是 |", "| --- | --- | --- | --- | --- |");
+for (const t of targets) {
+  const units = CONCEPTS.flatMap((c) => framingsOf(c).flatMap((f) => LANGS.map((l) => stanceOf(t, "base", c, f, l)))).filter(Boolean);
+  out.push(`| ${t} | ${units.length} | ${units.filter((u) => u.gap < 0).length} | ${units.filter((u) => u.pos < 0.5 && u.neg < 0.5).length} | ${units.filter((u) => u.pos > 0.5 && u.neg > 0.5).length} |`);
+}
+out.push("");
 
 writeFileSync(new URL("../results/stats.md", import.meta.url), out.join("\n") + "\n");
 console.log(`wrote results/stats.md (${comparisons.length} comparisons, thresholds ${JSON.stringify(Object.fromEntries(Object.entries(thresholds).map(([k, v]) => [k, +v.toFixed(2)])))})`);
