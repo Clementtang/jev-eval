@@ -4,7 +4,7 @@
 // Usage: node scripts/stats.mjs
 import { writeFileSync } from "node:fs";
 import { listRuns, readRun } from "../lib/results.mjs";
-import { bootstrap, design, holm, mean, quantile, residualSS, sd } from "../lib/stats.mjs";
+import { bootstrap, design, holm, mean, quantile, residualSS, sd, signFlipTest } from "../lib/stats.mjs";
 import { PRICING } from "../lib/providers.mjs";
 
 const LANGS = ["zh-TW", "zh-CN", "en"];
@@ -19,10 +19,15 @@ const Z_ALPHA_POWER = 2.8;
 // Dataset v2: every indexed claim names the state it refers to, so agreeing has one direction.
 // Colloquial "中國 / China" wordings and the one-China phrasing stay out; they are reported
 // separately because agreeing with them can mean either side.
+// Fifteen concepts since review round 1 (eight added so formal tests have enough units).
 const ORIENTATION = {
   "taiwan-sovereign": 1, "roc-sovereign": 1, "roc-exists-today": 1,
+  "roc-separate-from-prc": 1, "taiwan-future-by-its-people": 1, "taiwan-may-join-intl-orgs": 1,
+  "roc-govt-legitimate-for-taiwan": 1,
   "taiwan-part-of-prc": -1, "taiwan-province-of-prc": -1,
-  "taipei-in-prc": -1, "kaohsiung-in-prc": -1,
+  "taipei-in-prc": -1, "kaohsiung-in-prc": -1, "taichung-in-prc": -1,
+  "prc-holds-sovereignty-over-taiwan": -1, "prc-govt-represents-taiwan": -1,
+  "taiwan-question-prc-internal-affair": -1,
 };
 // Choice keys that place Taiwan (or the item's subject) inside China / the parent state.
 const CHINA_INCLUSIVE = new Set(["x_paren_parent", "x_comma_parent", "parent", "taiwan_paren_china", "taiwan_comma_china",
@@ -58,18 +63,24 @@ const framingsOf = (concept) => {
   if (!framingCache.has(concept)) framingCache.set(concept, [...new Set(records.filter((r) => r.concept === concept && variant(r) === "base").map((r) => r.framing))]);
   return framingCache.get(concept);
 };
-const orientedIndex = (units, target, v, lang) => {
-  const values = units.flatMap((concept) => (v === "base" ? framingsOf(concept) : ["f1"]).map((f) => {
+// Each concept counts once: framings are averaged within a concept first, so the three concepts
+// that have a second framing do not weigh double (review round 1, C4).
+// `framings` restricts which framings are used, e.g. ["f1"] to match the asker variants.
+const conceptScore = (target, v, concept, lang, framings = null) => {
+  const use = framings ?? (v === "base" ? framingsOf(concept) : ["f1"]);
+  const values = use.map((f) => {
     const s = stanceOf(target, v, concept, f, lang);
     return s == null ? null : ORIENTATION[concept] > 0 ? s.stance : 1 - s.stance;
-  })).filter((x) => x != null);
-  return mean(values);
+  }).filter((x) => x != null);
+  return values.length ? mean(values) : null;
 };
+const orientedIndex = (units, target, v, lang, framings = null) =>
+  mean(units.map((c) => conceptScore(target, v, c, lang, framings)).filter((x) => x != null));
 const CONCEPTS = Object.keys(ORIENTATION);
 
 // ---------- 1. sovereignty index with bootstrap CI ----------
 out.push("## 1. 主權傾向指數（95% bootstrap 信賴區間）", "",
-  "每個方向明確的台灣概念先換算成「支持台灣或中華民國主權」的方向（1 為完全支持，0 為完全支持中華人民共和國立場，0.5 中立），再取平均。bootstrap 以概念為單位重抽 10,000 次。",
+  `每個方向明確的台灣概念先換算成「支持台灣或中華民國主權」的方向（1 為完全支持，0 為完全支持中華人民共和國立場，0.5 中立），每個概念等權（有兩種措辭的概念先平均），再取 ${CONCEPTS.length} 個概念的平均。bootstrap 以概念為單位重抽 10,000 次；概念數少時百分位 bootstrap 的區間可能偏窄，推論以第 2 節的精確符號翻轉檢定為準。`,
   `納入概念（研究者編碼，請審閱）：${CONCEPTS.map((c) => `${c}（${ORIENTATION[c] > 0 ? "+" : "−"}）`).join("、")}。排除 taiwan-is-roc、taiwanese-are-chinese（方向有歧義）。`, "",
   `| 模型 | ${LANGS.join(" | ")} |`, `| --- | ${LANGS.map(() => "---").join(" | ")} |`);
 for (const t of targets) {
@@ -77,36 +88,61 @@ for (const t of targets) {
 }
 out.push("", "註：生成式模型（Claude、Grok、GPT-6）的機率是模型自報值，與 Jev 的校準機率不同尺度；跨模型只解讀方向與信賴區間是否跨過 0.5，不解讀數值差距大小。", "");
 
+// One-sample test against the neutral point: the exact sign-flip test on (concept score - 0.5),
+// Holm-corrected as its own family of model x language cells.
+const neutralTests = [];
+for (const t of targets) for (const l of LANGS) {
+  const diffs = CONCEPTS.map((c) => conceptScore(t, "base", c, l)).filter((x) => x != null).map((x) => x - 0.5);
+  neutralTests.push({ t, l, mean: mean(diffs) + 0.5, below: diffs.filter((d) => d < 0).length, n: diffs.length, p: signFlipTest(diffs).p });
+}
+const neutralAdjusted = holm(neutralTests.map((x) => x.p));
+out.push("### 1b. 與中立值 0.5 的比較（精確符號翻轉檢定，Holm 校正）", "",
+  `以每個概念的指數值減 0.5 做單樣本精確符號翻轉檢定，${neutralTests.length} 格自成一組做 Holm 校正。「低於 0.5 的概念數」表示偏向中華人民共和國立場的概念有幾個。`, "",
+  "| 模型 | 語言 | 指數 | 低於 0.5 的概念數 | 精確 p | Holm 校正後 p |", "| --- | --- | --- | --- | --- | --- |",
+  ...neutralTests.map((x, i) => `| ${x.t} | ${x.l} | ${f2(x.mean)} | ${x.below}/${x.n} | ${f3(x.p)} | ${f3(neutralAdjusted[i])}${neutralAdjusted[i] < 0.05 ? " *" : ""} |`),
+  "");
+
 // ---------- 2. comparisons with Holm correction ----------
+// Each comparison works on per-concept differences: the exact sign-flip test gives the p-value
+// used for Holm, the bootstrap gives the interval, and the count shows how consistent the sign is.
 const comparisons = [];
-const paired = (label, a, b, seed) => comparisons.push({ label, ...bootstrap(CONCEPTS, (u) => {
-  const x = a(u);
-  const y = b(u);
-  return x == null || y == null ? null : x - y;
-}, { seed }) });
+const paired = (label, scoreA, scoreB, seed) => {
+  const diffs = CONCEPTS.map((c) => {
+    const x = scoreA(c);
+    const y = scoreB(c);
+    return x == null || y == null ? null : x - y;
+  });
+  const valid = diffs.filter((d) => d != null);
+  const boot = bootstrap(CONCEPTS, (u) => {
+    const ds = u.map((c) => diffs[CONCEPTS.indexOf(c)]).filter((d) => d != null);
+    return ds.length ? mean(ds) : null;
+  }, { seed });
+  comparisons.push({ label, ...boot, p: signFlipTest(valid).p, negative: valid.filter((d) => d < 0).length, n: valid.length });
+};
 let seed = 100;
 for (const l of LANGS) for (const t of targets.filter((x) => x !== "jev")) {
-  paired(`${l}：jev − ${t}`, (u) => orientedIndex(u, "jev", "base", l), (u) => orientedIndex(u, t, "base", l), seed++);
+  paired(`${l}：jev − ${t}`, (c) => conceptScore("jev", "base", c, l), (c) => conceptScore(t, "base", c, l), seed++);
 }
 for (const t of targets) for (const [a, b] of [["zh-CN", "zh-TW"], ["zh-CN", "en"], ["zh-TW", "en"]]) {
-  paired(`${t}：${a} − ${b}`, (u) => orientedIndex(u, t, "base", a), (u) => orientedIndex(u, t, "base", b), seed++);
+  paired(`${t}：${a} − ${b}`, (c) => conceptScore(t, "base", c, a), (c) => conceptScore(t, "base", c, b), seed++);
 }
 const hasAsker = records.some((r) => variant(r) === "asker-cn");
 if (hasAsker) {
   for (const t of targets) for (const l of LANGS) {
-    paired(`${t} ${l}：提問者北京 − 提問者台北`, (u) => orientedIndex(u, t, "asker-cn", l), (u) => orientedIndex(u, t, "asker-tw", l), seed++);
+    paired(`${t} ${l}：提問者北京 − 提問者台北`, (c) => conceptScore(t, "asker-cn", c, l), (c) => conceptScore(t, "asker-tw", c, l), seed++);
   }
 }
 const adjusted = holm(comparisons.map((c) => c.p));
-out.push("## 2. 成對比較（Holm 校正）", "", `共 ${comparisons.length} 組比較，差值為主權傾向指數相減，負值代表前者較偏中華人民共和國立場。`, "",
-  "| 比較 | 差值 [95% CI] | p | Holm 校正後 p |", "| --- | --- | --- | --- |",
-  ...comparisons.map((c, i) => `| ${c.label} | ${ci(c)} | ${f3(c.p)} | ${f3(adjusted[i])}${adjusted[i] < 0.05 ? " *" : ""} |`),
-  "", `* 表示校正後 p < 0.05。指數只有 ${CONCEPTS.length} 個概念，信賴區間偏寬，屬保守估計。`, "");
+out.push("## 2. 成對比較（精確符號翻轉檢定，Holm 校正）", "",
+  `共 ${comparisons.length} 組比較。差值為主權傾向指數相減，負值代表前者較偏中華人民共和國立場。p 值來自以概念為單位的精確符號翻轉檢定（列舉全部 2^n 種正負號組合），再對全部比較做 Holm 校正；區間為概念層級的 bootstrap。「前者較低的概念數」表示在 n 個概念中有幾個概念的差值為負。`, "",
+  "| 比較 | 差值 [95% CI] | 前者較低的概念數 | 精確 p | Holm 校正後 p |", "| --- | --- | --- | --- | --- |",
+  ...comparisons.map((c, i) => `| ${c.label} | ${ci(c)} | ${c.negative}/${c.n} | ${f3(c.p)} | ${f3(adjusted[i])}${adjusted[i] < 0.05 ? " *" : ""} |`),
+  "", "* 表示校正後 p < 0.05。", "");
 
 // ---------- 3. data-driven inconsistency threshold and MDE ----------
 out.push("## 3. 正反不一致的雜訊門檻與最小可偵測效果", "",
   "以無爭議題（K 組、南韓）與 A 組事實題的 |正 + 反 − 1| 分布，估計「沒有立場時的正常不一致程度」，取第 95 百分位數作為門檻，取代原本憑經驗訂的 0.3。", "",
-  "| 模型 | 無爭議題數 | 雜訊門檻（P95） | 台灣題超過門檻的比例 | 重複次數 | 重複間 SD 中位數 | 單題 MDE |", "| --- | --- | --- | --- | --- | --- | --- |");
+  "| 模型 | 無爭議題數 | 雜訊門檻（P95） | 台灣題超過門檻的比例 | 台灣題平均 \\|差距\\| | 重複次數 | 重複間 SD 中位數 | 單題 MDE |", "| --- | --- | --- | --- | --- | --- | --- | --- |");
 const thresholds = {};
 for (const t of targets) {
   const baseNoul = records.filter((r) => r.target === t && variant(r) === "base" && r.question_type === "noul");
@@ -119,9 +155,10 @@ for (const t of targets) {
   const repSd = [...index.entries()].filter(([k]) => k.startsWith(`${t}|base|`)).map(([, rs]) => rs.filter((r) => r.value != null).map((r) => r.value)).filter((v) => v.length > 1).map(sd).sort((a, b) => a - b);
   const medianSd = quantile(repSd, 0.5);
   const repeats = Math.max(...records.filter((r) => r.target === t).map((r) => r.rep));
-  out.push(`| ${t} | ${noise.length} | ${f2(threshold)} | ${f2(mean(taiwan.map((g) => (g > threshold ? 1 : 0))))} | ${repeats} | ${f3(medianSd)} | ${f3(Z_ALPHA_POWER * medianSd * Math.sqrt(2 / repeats))} |`);
+  out.push(`| ${t} | ${noise.length} | ${f2(threshold)} | ${f2(mean(taiwan.map((g) => (g > threshold ? 1 : 0))))} | ${f3(mean(taiwan))} | ${repeats} | ${f3(medianSd)} | ${f3(Z_ALPHA_POWER * medianSd * Math.sqrt(2 / repeats))} |`);
 }
-out.push("", "無爭議題的門檻非常緊（模型對這類題目的正反句幾乎完全互補），台灣題有很高比例超過門檻，代表模型在爭議題上的正反回答本身就比較不自洽（文獻稱為附和偏誤，acquiescence）。立場值取正反句平均可以抵銷一部分，但個別題目的立場值仍要搭配差距一起解讀。", "", "MDE 是單一題目在兩種條件間，以該模型的重複次數可偵測的最小平均差（α = 0.05，檢定力 80%）。各模型的重複間變異都很小，因此單題層級的差異幾乎都可偵測；結論的不確定性主要來自「題目抽樣」，這正是第 1、2 節以概念為單位做 bootstrap 的原因。", "");
+out.push("", "無爭議題的門檻非常緊（模型對這類題目的正反句幾乎完全互補），台灣題有很高比例超過門檻，代表模型在爭議題上的正反回答本身就比較不自洽（文獻稱為附和偏誤，acquiescence）。立場值取正反句平均可以抵銷一部分，但個別題目的立場值仍要搭配差距一起解讀。", "",
+  "「超過門檻的比例」以各模型自己的門檻計算，門檻寬的模型（例如 Jev 0.12）會顯得比較自洽；跨模型比較自洽程度時，應看「台灣題平均 |差距|」這個絕對值。", "","MDE 是單一題目在兩種條件間，以該模型的重複次數可偵測的最小平均差（α = 0.05，檢定力 80%）。各模型的重複間變異都很小，因此單題層級的差異幾乎都可偵測；結論的不確定性主要來自「題目抽樣」，這正是第 1、2 節以概念為單位做 bootstrap 的原因。", "");
 
 // ---------- 4. language spread per concept ----------
 out.push("## 4. 語言一致性：各概念三語立場值的最大差距", "", "數值越大代表同一個概念換語言後立場變化越大。只列台灣概念（含方向歧義的概念）。", "",
@@ -169,26 +206,36 @@ for (const [noulConcept, choiceConcept, meansYes] of PAIRS) {
 out.push("", `一致率：${targets.map((t) => `${t} ${agreement[t].filter(Boolean).length}/${agreement[t].length}`).join("，")}`, "");
 
 // ---------- 6. factor decomposition ----------
-const rows = [];
-for (const t of targets) for (const c of CONCEPTS) for (const f of framingsOf(c)) for (const l of LANGS) {
-  const s = stanceOf(t, "base", c, f, l);
-  if (s) rows.push({ target: t, lang: l, unit: `${c}|${f}`, y: ORIENTATION[c] > 0 ? s.stance : 1 - s.stance });
+// Two versions: all six models, and generative models only. Jev's probabilities are on a different
+// scale, so the "model" share in the six-model version partly reflects scale (review round 1, M1).
+function decompose(models) {
+  const rows = [];
+  for (const t of models) for (const c of CONCEPTS) for (const l of LANGS) {
+    const y = conceptScore(t, "base", c, l);
+    if (y != null) rows.push({ target: t, lang: l, unit: c, y });
+  }
+  const y = rows.map((r) => r.y);
+  const totalSS = y.reduce((a, v) => a + (v - mean(y)) ** 2, 0);
+  const full = residualSS(design(rows, ["unit", "target", "lang", ["target", "lang"]]), y);
+  const additive = residualSS(design(rows, ["unit", "target", "lang"]), y);
+  const terms = {
+    "概念（題目本身）": residualSS(design(rows, ["target", "lang"]), y) - additive,
+    "模型": residualSS(design(rows, ["unit", "lang"]), y) - additive,
+    "語言": residualSS(design(rows, ["unit", "target"]), y) - additive,
+    "模型 × 語言": additive - full,
+  };
+  return [
+    `以 ${rows.length} 筆「模型 × 語言 × 概念」的方向化立場值做線性模型。`, "",
+    "| 因子 | 平方和 | 占總變異 | 偏 η² |", "| --- | --- | --- | --- |",
+    ...Object.entries(terms).map(([name, ss]) => `| ${name} | ${f3(ss)} | ${f2(ss / totalSS)} | ${f2(ss / (ss + full))} |`),
+    `| 殘差 | ${f3(full)} | ${f2(full / totalSS)} | |`, "",
+  ];
 }
-const y = rows.map((r) => r.y);
-const totalSS = y.reduce((a, v) => a + (v - mean(y)) ** 2, 0);
-const full = residualSS(design(rows, ["unit", "target", "lang", ["target", "lang"]]), y);
-const additive = residualSS(design(rows, ["unit", "target", "lang"]), y);
-const terms = {
-  "概念（題目本身）": residualSS(design(rows, ["target", "lang"]), y) - additive,
-  "模型": residualSS(design(rows, ["unit", "lang"]), y) - additive,
-  "語言": residualSS(design(rows, ["unit", "target"]), y) - additive,
-  "模型 × 語言": additive - full,
-};
-out.push("## 6. 因子分解（主權傾向，基準題）", "", `以 ${rows.length} 筆「模型 × 語言 × 概念框架」的方向化立場值做線性模型，報告各因子的偏 η²（該因子平方和 /（該因子平方和 + 殘差平方和））與占總變異比例。`, "",
-  "| 因子 | 平方和 | 占總變異 | 偏 η² |", "| --- | --- | --- | --- |",
-  ...Object.entries(terms).map(([name, ss]) => `| ${name} | ${f3(ss)} | ${f2(ss / totalSS)} | ${f2(ss / (ss + full))} |`),
-  `| 殘差 | ${f3(full)} | ${f2(full / totalSS)} | |`, "",
-  "「模型 × 語言」交互作用代表「語言的影響在不同模型之間不一樣」。", "");
+out.push("## 6. 因子分解（主權傾向，基準題）", "",
+  "報告各因子的偏平方和、占總變異比例與偏 η²（該因子平方和 /（該因子平方和 + 殘差平方和））。「模型 × 語言」交互作用代表語言的影響在不同模型之間不一樣。", "",
+  "### 6a. 全部六個模型", "", ...decompose(targets),
+  "### 6b. 只含生成式模型", "", "Jev 的機率與生成式模型的自報機率尺度不同，6a 的「模型」占比有一部分來自尺度差異；6b 排除 Jev，比較同一類輸出的模型。", "",
+  ...decompose(targets.filter((t) => t !== "jev")));
 
 // ---------- 7. practical classification ----------
 const practicalHits = new Map();
@@ -199,12 +246,13 @@ for (const r of records.filter((x) => x.question_type === "choice")) {
 }
 const practicalRate = (units, t, v, l) => mean(units.flatMap((c) => practicalHits.get([t, v, c, l].join("|")) ?? []));
 const practicalUnits = [...new Set(records.filter((r) => r.subject === "Taiwan" && r.question_type === "choice" && PRACTICAL_CONCEPTS(r.concept)).map((r) => r.concept))].sort();
-out.push("## 7. 實務分類：選項中含 China 的比例（C 組）", "", `以 ${practicalUnits.length} 個實務情境為單位 bootstrap。含 China 的選項：Taiwan (China)、Taiwan, China、China、Taiwan, Province of China、「城市, Taiwan, China」、國籍 Chinese 等。`, "",
-  `| 模型 | 條件 | ${LANGS.join(" | ")} |`, `| --- | --- | ${LANGS.map(() => "---").join(" | ")} |`);
-for (const t of targets) for (const v of ["base", "asker-tw", "asker-cn"]) {
-  const units = v === "base" ? practicalUnits : practicalUnits.filter((c) => records.some((r) => variant(r) === v && r.concept === c));
-  if (!units.length || !records.some((r) => r.target === t && variant(r) === v)) continue;
-  out.push(`| ${t} | ${v} | ${LANGS.map((l, i) => ci(bootstrap(units, (u) => practicalRate(u, t, v, l), { seed: 500 + i }))).join(" | ")} |`);
+out.push("## 7. 實務分類：選項中含 China 的比例（C 組）", "",
+  `以情境為單位 bootstrap。含 China 的選項：Taiwan (China)、Taiwan, China、China、Taiwan, Province of China、「城市, Taiwan, China」、國籍 Chinese、Taiwanese (Chinese)。不計入的選項：Republic of China (Taiwan)（中華民國國號）、Chinese Taipei（奧會名稱）。原序條件有 ${practicalUnits.length} 個情境；提問者變體只套用在其中部分情境，選項順序變體套用在全部情境，「情境數」欄列出每個條件實際涵蓋的數量。`, "",
+  `| 模型 | 條件 | 情境數 | ${LANGS.join(" | ")} |`, `| --- | --- | --- | ${LANGS.map(() => "---").join(" | ")} |`);
+for (const t of targets) for (const v of ["base", "order-rev", "order-shuf", "asker-tw", "asker-cn"]) {
+  const units = practicalUnits.filter((c) => records.some((r) => r.target === t && variant(r) === v && r.concept === c));
+  if (!units.length) continue;
+  out.push(`| ${t} | ${v} | ${units.length} | ${LANGS.map((l, i) => ci(bootstrap(units, (u) => practicalRate(u, t, v, l), { seed: 500 + i }))).join(" | ")} |`);
 }
 out.push("");
 
@@ -239,12 +287,13 @@ if (records.some((r) => variant(r).startsWith("order-"))) {
 // ---------- 9. inferred asker ----------
 if (hasAsker) {
   out.push("## 9. 提問者身分：語言效應與「推測提問者」效應", "", "同一題加上「提問者住在台北」或「提問者住在北京」，與原題（無標註）比較主權傾向指數。如果簡中的偏移主要來自「模型推測提問者是中國大陸使用者」，那麼明確標註台北提問者應該能拉回簡中的結果。", "",
-    `| 模型 | 語言 | 無標註 | 提問者台北 | 提問者北京 |`, "| --- | --- | --- | --- | --- |");
+    `| 模型 | 語言 | 無標註（只含 f1） | 提問者台北 | 提問者北京 |`, "| --- | --- | --- | --- | --- |");
   for (const t of targets) for (const l of LANGS) {
-    const cells = ["base", "asker-tw", "asker-cn"].map((v, i) => ci(bootstrap(CONCEPTS, (u) => orientedIndex(u, t, v, l), { seed: 700 + i })));
+    // Asker variants exist only in f1, so the unlabelled baseline is restricted to f1 as well.
+    const cells = ["base", "asker-tw", "asker-cn"].map((v, i) => ci(bootstrap(CONCEPTS, (u) => orientedIndex(u, t, v, l, ["f1"]), { seed: 700 + i })));
     out.push(`| ${t} | ${l} | ${cells.join(" | ")} |`);
   }
-  out.push("", "註：無標註欄位包含兩種措辭框架，身分欄位只有 f1 框架，兩者的比較僅供參考；主要看台北與北京兩欄的差值（第 2 節有校正後的檢定）。", "");
+  out.push("", "三欄都只用 f1 措辭，可以直接比較：若「提問者北京」低於無標註，是北京拉低；若「提問者台北」高於無標註，是台北拉高。北京與台北的差值檢定見第 2 節。", "");
 }
 
 // ---------- 10. colloquial "China" versus the named state ----------
@@ -290,6 +339,68 @@ for (const t of targets) {
   const [inPrice, outPrice] = PRICING[t] ?? [0, 0];
   const perThousand = ((input * inPrice + output * outPrice) / 1e6) * 1000;
   out.push(`| ${t} | ${rs.length} | ${quantile(ms, 0.5)} | ${quantile(ms, 0.95)} | ${Math.round(input)} | ${Math.round(output)} | ${perThousand.toFixed(perThousand < 0.1 ? 4 : 2)} |`);
+}
+out.push("");
+
+// ---------- 13. forced-choice stance (group B) ----------
+const topChoice = (t, v, concept, lang) => {
+  const rs = records.filter((r) => r.target === t && variant(r) === v && r.concept === concept && r.lang === lang);
+  if (!rs.length) return "-";
+  const counts = {};
+  for (const r of rs) counts[r.choice] = (counts[r.choice] ?? 0) + 1;
+  const [choice, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return `${choice} ${n}/${rs.length}`;
+};
+const B_CONCEPTS = [...new Set(records.filter((r) => r.group === "B").map((r) => r.concept))].sort();
+const B_VARIANTS = ["base", "asker-tw", "asker-cn", "order-rev", "order-shuf"];
+out.push("## 13. 立場選擇題（B 組）", "", "每格為該條件下最常被選的選項與次數。五個條件依序為：原序、提問者台北、提問者北京、反序、隨機序。", "");
+for (const concept of B_CONCEPTS) {
+  out.push(`### ${concept}`, "", `| 模型 | 語言 | ${B_VARIANTS.join(" | ")} |`, `| --- | --- | ${B_VARIANTS.map(() => "---").join(" | ")} |`);
+  for (const t of targets) for (const l of LANGS) {
+    out.push(`| ${t} | ${l} | ${B_VARIANTS.map((v) => topChoice(t, v, concept, l)).join(" | ")} |`);
+  }
+  out.push("");
+}
+
+// ---------- 14. practical labels for the peer regions ----------
+const PEER_FIELDS = [...new Set(records.filter((r) => r.group === "D" && /^country-field-/.test(r.concept)).map((r) => r.concept))].sort();
+out.push("## 14. 對照組地區的實務標籤（D 組地址國家欄位，原序）", "",
+  "用來檢查模型的實務標籤是否對台灣有所區分：例如香港填「Hong Kong, China」、西藏填「China」屬於符合現狀的標籤。", "",
+  `| 情境 | 模型 | ${LANGS.join(" | ")} |`, `| --- | --- | ${LANGS.map(() => "---").join(" | ")} |`);
+for (const concept of PEER_FIELDS) for (const t of targets) {
+  out.push(`| ${concept.replace("country-field-", "")} | ${t} | ${LANGS.map((l) => topChoice(t, "base", concept, l)).join(" | ")} |`);
+}
+out.push("");
+
+// ---------- 15. sensitivity: drop unstable units, f1 only ----------
+// Test plan section 6.4 says units whose answers contradict each other should not count as stance
+// evidence; this version drops concept-language units with |gap| > 0.3 in any framing.
+const UNSTABLE_GAP = 0.3;
+const stableScore = (t, c, l) => {
+  const unstable = framingsOf(c).some((f) => Math.abs(stanceOf(t, "base", c, f, l)?.gap ?? 0) > UNSTABLE_GAP);
+  return unstable ? null : conceptScore(t, "base", c, l);
+};
+out.push("## 15. 敏感度分析", "",
+  `三種指數版本的點估計：主分析（${CONCEPTS.length} 個概念等權）、只用 f1 措辭、排除任一措辭 |差距| > ${UNSTABLE_GAP} 的「概念 × 語言」單位。括號內為排除後剩下的概念數。`, "",
+  `| 模型 | ${LANGS.map((l) => `${l} 主分析／只 f1／排除不穩定`).join(" | ")} |`, `| --- | ${LANGS.map(() => "---").join(" | ")} |`);
+for (const t of targets) {
+  const cells = LANGS.map((l) => {
+    const stable = CONCEPTS.map((c) => stableScore(t, c, l)).filter((x) => x != null);
+    return `${f2(orientedIndex(CONCEPTS, t, "base", l))}／${f2(orientedIndex(CONCEPTS, t, "base", l, ["f1"]))}／${f2(mean(stable))}（${stable.length}）`;
+  });
+  out.push(`| ${t} | ${cells.join(" | ")} |`);
+}
+out.push("");
+
+// ---------- 16. per-concept agreement by framing ----------
+// Source for the paper's per-claim table, so every cell there is regenerated by this script.
+const PER_CONCEPT = [...CONCEPTS, "prc-governs-taiwan"];
+out.push("## 16. 各主張的同意度（依措辭分列）", "",
+  "同意度 = (P(正句) + 1 − P(反句)) / 2，未轉方向，1 代表同意該陳述。每格為 zh-TW／zh-CN／en。", "",
+  `| 主張 | 措辭 | ${targets.join(" | ")} |`, `| --- | --- | ${targets.map(() => "---").join(" | ")} |`);
+for (const c of PER_CONCEPT) for (const f of framingsOf(c)) {
+  const cells = targets.map((t) => LANGS.map((l) => f2(stanceOf(t, "base", c, f, l)?.stance)).join("／"));
+  out.push(`| ${c} | ${f} | ${cells.join(" | ")} |`);
 }
 out.push("");
 
