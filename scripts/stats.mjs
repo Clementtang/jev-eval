@@ -5,9 +5,10 @@
 import { writeFileSync } from "node:fs";
 import { listRuns, readRun } from "../lib/results.mjs";
 import { bootstrap, design, holm, mean, quantile, residualSS, sd } from "../lib/stats.mjs";
+import { PRICING } from "../lib/providers.mjs";
 
 const LANGS = ["zh-TW", "zh-CN", "en"];
-const REPEATS = 5;
+// Repeats differ by target (Grok 4.7 ran 3 because of cost), so they are read from the data.
 // z(0.975) + z(0.8): two-sided alpha 0.05 at 80% power.
 const Z_ALPHA_POWER = 2.8;
 
@@ -74,7 +75,7 @@ out.push("## 1. 主權傾向指數（95% bootstrap 信賴區間）", "",
 for (const t of targets) {
   out.push(`| ${t} | ${LANGS.map((l, i) => ci(bootstrap(CONCEPTS, (u) => orientedIndex(u, t, "base", l), { seed: 11 + i }))).join(" | ")} |`);
 }
-out.push("", "註：Claude 的機率是自報值，與 Jev 的校準機率不同尺度；跨模型只解讀方向與信賴區間是否跨過 0.5，不解讀數值差距大小。", "");
+out.push("", "註：生成式模型（Claude、Grok、GPT-6）的機率是模型自報值，與 Jev 的校準機率不同尺度；跨模型只解讀方向與信賴區間是否跨過 0.5，不解讀數值差距大小。", "");
 
 // ---------- 2. comparisons with Holm correction ----------
 const comparisons = [];
@@ -100,12 +101,12 @@ const adjusted = holm(comparisons.map((c) => c.p));
 out.push("## 2. 成對比較（Holm 校正）", "", `共 ${comparisons.length} 組比較，差值為主權傾向指數相減，負值代表前者較偏中華人民共和國立場。`, "",
   "| 比較 | 差值 [95% CI] | p | Holm 校正後 p |", "| --- | --- | --- | --- |",
   ...comparisons.map((c, i) => `| ${c.label} | ${ci(c)} | ${f3(c.p)} | ${f3(adjusted[i])}${adjusted[i] < 0.05 ? " *" : ""} |`),
-  "", "* 表示校正後 p < 0.05。概念只有 8 個，信賴區間偏寬，屬保守估計。", "");
+  "", `* 表示校正後 p < 0.05。指數只有 ${CONCEPTS.length} 個概念，信賴區間偏寬，屬保守估計。`, "");
 
 // ---------- 3. data-driven inconsistency threshold and MDE ----------
 out.push("## 3. 正反不一致的雜訊門檻與最小可偵測效果", "",
   "以無爭議題（K 組、南韓）與 A 組事實題的 |正 + 反 − 1| 分布，估計「沒有立場時的正常不一致程度」，取第 95 百分位數作為門檻，取代原本憑經驗訂的 0.3。", "",
-  "| 模型 | 無爭議題數 | 雜訊門檻（P95） | 台灣題超過門檻的比例 | 重複間 SD 中位數 | 單題 MDE（n=5） |", "| --- | --- | --- | --- | --- | --- |");
+  "| 模型 | 無爭議題數 | 雜訊門檻（P95） | 台灣題超過門檻的比例 | 重複次數 | 重複間 SD 中位數 | 單題 MDE |", "| --- | --- | --- | --- | --- | --- | --- |");
 const thresholds = {};
 for (const t of targets) {
   const baseNoul = records.filter((r) => r.target === t && variant(r) === "base" && r.question_type === "noul");
@@ -117,9 +118,10 @@ for (const t of targets) {
   const taiwan = gaps((r) => r.subject === "Taiwan" && r.expected == null);
   const repSd = [...index.entries()].filter(([k]) => k.startsWith(`${t}|base|`)).map(([, rs]) => rs.filter((r) => r.value != null).map((r) => r.value)).filter((v) => v.length > 1).map(sd).sort((a, b) => a - b);
   const medianSd = quantile(repSd, 0.5);
-  out.push(`| ${t} | ${noise.length} | ${f2(threshold)} | ${f2(mean(taiwan.map((g) => (g > threshold ? 1 : 0))))} | ${f3(medianSd)} | ${f3(Z_ALPHA_POWER * medianSd * Math.sqrt(2 / REPEATS))} |`);
+  const repeats = Math.max(...records.filter((r) => r.target === t).map((r) => r.rep));
+  out.push(`| ${t} | ${noise.length} | ${f2(threshold)} | ${f2(mean(taiwan.map((g) => (g > threshold ? 1 : 0))))} | ${repeats} | ${f3(medianSd)} | ${f3(Z_ALPHA_POWER * medianSd * Math.sqrt(2 / repeats))} |`);
 }
-out.push("", "無爭議題的門檻非常緊（模型對這類題目的正反句幾乎完全互補），台灣題有很高比例超過門檻，代表模型在爭議題上的正反回答本身就比較不自洽（文獻稱為附和偏誤，acquiescence）。立場值取正反句平均可以抵銷一部分，但個別題目的立場值仍要搭配差距一起解讀。", "", "MDE 是單一題目在兩種條件間，以 5 次重複可偵測的最小平均差（α = 0.05，檢定力 80%）。三個模型的重複間變異都很小，因此單題層級的差異幾乎都可偵測；結論的不確定性主要來自「題目抽樣」，這正是第 1、2 節以概念為單位做 bootstrap 的原因。", "");
+out.push("", "無爭議題的門檻非常緊（模型對這類題目的正反句幾乎完全互補），台灣題有很高比例超過門檻，代表模型在爭議題上的正反回答本身就比較不自洽（文獻稱為附和偏誤，acquiescence）。立場值取正反句平均可以抵銷一部分，但個別題目的立場值仍要搭配差距一起解讀。", "", "MDE 是單一題目在兩種條件間，以該模型的重複次數可偵測的最小平均差（α = 0.05，檢定力 80%）。各模型的重複間變異都很小，因此單題層級的差異幾乎都可偵測；結論的不確定性主要來自「題目抽樣」，這正是第 1、2 節以概念為單位做 bootstrap 的原因。", "");
 
 // ---------- 4. language spread per concept ----------
 out.push("## 4. 語言一致性：各概念三語立場值的最大差距", "", "數值越大代表同一個概念換語言後立場變化越大。只列台灣概念（含方向歧義的概念）。", "",
@@ -144,8 +146,8 @@ const PAIRS = [
   ["taiwan-part-of-prc", "taiwan-status", (c) => c === "part_of_parent"],
   ["taiwanese-are-chinese", "taiwanese-national-identity", (c) => c === "chinese" || c === "both"],
   ["taiwan-is-roc", "taiwan-roc-relation", (c) => c === "same_state"],
-  ["taipei-in-china", "country-field-taipei", (c) => CHINA_INCLUSIVE.has(c)],
-  ["kaohsiung-in-china", "country-field-kaohsiung", (c) => CHINA_INCLUSIVE.has(c)],
+  ["taipei-in-prc", "country-field-taipei", (c) => CHINA_INCLUSIVE.has(c)],
+  ["kaohsiung-in-prc", "country-field-kaohsiung", (c) => CHINA_INCLUSIVE.has(c)],
 ];
 out.push("## 5. 是非題與選擇題的方向一致性", "", "同一個問題分別用是非題（noul）和選擇題（choice）問，看方向是否一致。格式：是非題回答「是」的程度 / 選擇題最常選的選項，✓ 一致、✗ 不一致。", "",
   `| 是非題 | 選擇題 | ${targets.flatMap((t) => LANGS.map((l) => `${t} ${l}`)).join(" | ")} |`, `| --- | --- | ${targets.flatMap(() => LANGS.map(() => "---")).join(" | ")} |`);
@@ -244,6 +246,52 @@ if (hasAsker) {
   }
   out.push("", "註：無標註欄位包含兩種措辭框架，身分欄位只有 f1 框架，兩者的比較僅供參考；主要看台北與北京兩欄的差值（第 2 節有校正後的檢定）。", "");
 }
+
+// ---------- 10. colloquial "China" versus the named state ----------
+// Agreement is the probability of agreeing with the positive statement after averaging the
+// positive and negated items: (P(pos) + 1 - P(neg)) / 2. Not oriented, so 1 means "agrees".
+const READINGS = [
+  ["台灣是……的一個省", ["taiwan-province-of-china-colloquial", "taiwan-province-of-prc", "taiwan-province-of-roc"]],
+  ["台北是……的一個城市", ["taipei-in-china-colloquial", "taipei-in-prc", null]],
+  ["高雄是……的一個城市", ["kaohsiung-in-china-colloquial", "kaohsiung-in-prc", null]],
+];
+out.push("## 10. 日常用語「中國」與明確指名的比較", "",
+  "同一句話分別用「中國」（未定義）、「中華人民共和國」、「中華民國」表述，比較模型同意該陳述的程度（0 到 1，正反句平均）。若日常用語版的數值接近「中華人民共和國」版，代表模型把「中國」讀成中華人民共和國。", "",
+  `| 陳述 | 模型 | ${LANGS.map((l) => `${l} 中國／中華人民共和國／中華民國`).join(" | ")} |`, `| --- | --- | ${LANGS.map(() => "---").join(" | ")} |`);
+for (const [label, [colloquial, prc, roc]] of READINGS) {
+  for (const t of targets) {
+    const cells = LANGS.map((l) => [colloquial, prc, roc].map((c) => (c ? f2(stanceOf(t, "base", c, "f1", l)?.stance) : "-")).join("／"));
+    out.push(`| ${label} | ${t} | ${cells.join(" | ")} |`);
+  }
+}
+out.push("");
+
+// ---------- 11. Taiwan versus the peer regions ----------
+const SOVEREIGN_CONCEPTS = [...new Set(records.filter((r) => /-sovereign$/.test(r.concept) && r.concept !== "roc-sovereign").map((r) => `${r.subject}|${r.concept}`))].sort();
+out.push("## 11. 主權陳述同意度：台灣與對照組地區", "",
+  "「X 是一個主權獨立的國家」的同意度（f1，正反句平均），三語平均。用來確認模型對台灣的判斷是否只是對所有爭議地區一視同仁。", "",
+  `| 地區 | ${targets.join(" | ")} |`, `| --- | ${targets.map(() => "---").join(" | ")} |`);
+for (const key of SOVEREIGN_CONCEPTS) {
+  const [subject, concept] = key.split("|");
+  const cells = targets.map((t) => f2(mean(LANGS.map((l) => stanceOf(t, "base", concept, "f1", l)?.stance).filter((x) => x != null))));
+  out.push(`| ${subject} | ${cells.join(" | ")} |`);
+}
+out.push("");
+
+// ---------- 12. latency and cost ----------
+out.push("## 12. 延遲與成本（基準題）", "",
+  "成本依各廠商公開定價計算（每百萬 token），推理 token 計入輸出。延遲為本機（河內）實測，含網路往返。", "",
+  "| 模型 | 呼叫數 | 延遲 p50 ms | 延遲 p95 ms | 平均 input | 平均 output（含推理） | 每 1,000 次成本 USD |", "| --- | --- | --- | --- | --- | --- | --- |");
+for (const t of targets) {
+  const rs = records.filter((r) => r.target === t && variant(r) === "base");
+  const ms = rs.map((r) => r.ms).sort((a, b) => a - b);
+  const input = mean(rs.map((r) => r.usage?.input_tokens ?? 0));
+  const output = mean(rs.map((r) => (r.usage?.output_tokens ?? 0) + (r.usage?.reasoning_tokens ?? 0)));
+  const [inPrice, outPrice] = PRICING[t] ?? [0, 0];
+  const perThousand = ((input * inPrice + output * outPrice) / 1e6) * 1000;
+  out.push(`| ${t} | ${rs.length} | ${quantile(ms, 0.5)} | ${quantile(ms, 0.95)} | ${Math.round(input)} | ${Math.round(output)} | ${perThousand.toFixed(perThousand < 0.1 ? 4 : 2)} |`);
+}
+out.push("");
 
 writeFileSync(new URL("../results/stats.md", import.meta.url), out.join("\n") + "\n");
 console.log(`wrote results/stats.md (${comparisons.length} comparisons, thresholds ${JSON.stringify(Object.fromEntries(Object.entries(thresholds).map(([k, v]) => [k, +v.toFixed(2)])))})`);
