@@ -1,6 +1,6 @@
 # 統計分析
 
-產出時間：2026-09-25T03:54:07.096Z；資料：20325 筆成功呼叫，模型 jev、claude-haiku-4-5、claude-sonnet-5、luna-6、sol-6
+產出時間：2026-09-25T07:35:20.942Z；資料：22764 筆成功呼叫，模型 jev、claude-haiku-4-5、claude-sonnet-5、grok-4-7、luna-6、sol-6
 
 ## 1. 主權傾向指數（95% bootstrap 信賴區間）
 
@@ -12,6 +12,7 @@
 | jev | 0.49 [0.35, 0.69] | 0.29 [0.17, 0.48] | 0.47 [0.31, 0.69] |
 | claude-haiku-4-5 | 0.75 [0.66, 0.88] | 0.63 [0.52, 0.79] | 0.63 [0.48, 0.80] |
 | claude-sonnet-5 | 0.85 [0.75, 0.96] | 0.68 [0.58, 0.84] | 0.80 [0.70, 0.93] |
+| grok-4-7 | 0.84 [0.72, 0.96] | 0.77 [0.65, 0.92] | 0.83 [0.73, 0.94] |
 | luna-6 | 0.87 [0.77, 0.99] | 0.84 [0.73, 0.97] | 0.87 [0.77, 0.98] |
 | sol-6 | 0.92 [0.86, 0.99] | 0.84 [0.74, 0.95] | 0.91 [0.83, 0.99] |
 
@@ -19,51 +20,60 @@
 
 ## 2. 成對比較（Holm 校正）
 
-共 42 組比較，差值為主權傾向指數相減，負值代表前者較偏中華人民共和國立場。
+共 51 組比較，差值為主權傾向指數相減，負值代表前者較偏中華人民共和國立場。
 
 | 比較 | 差值 [95% CI] | p | Holm 校正後 p |
 | --- | --- | --- | --- |
 | zh-TW：jev − claude-haiku-4-5 | -0.26 [-0.36, -0.16] | 0.000 | 0.000 * |
 | zh-TW：jev − claude-sonnet-5 | -0.36 [-0.43, -0.25] | 0.000 | 0.000 * |
+| zh-TW：jev − grok-4-7 | -0.35 [-0.42, -0.24] | 0.000 | 0.000 * |
 | zh-TW：jev − luna-6 | -0.38 [-0.46, -0.27] | 0.000 | 0.000 * |
-| zh-TW：jev − sol-6 | -0.43 [-0.52, -0.28] | 0.000 | 0.000 * |
+| zh-TW：jev − sol-6 | -0.43 [-0.52, -0.30] | 0.000 | 0.000 * |
 | zh-CN：jev − claude-haiku-4-5 | -0.34 [-0.43, -0.26] | 0.000 | 0.000 * |
 | zh-CN：jev − claude-sonnet-5 | -0.40 [-0.48, -0.32] | 0.000 | 0.000 * |
+| zh-CN：jev − grok-4-7 | -0.49 [-0.62, -0.37] | 0.000 | 0.000 * |
 | zh-CN：jev − luna-6 | -0.55 [-0.68, -0.42] | 0.000 | 0.000 * |
 | zh-CN：jev − sol-6 | -0.55 [-0.65, -0.43] | 0.000 | 0.000 * |
-| en：jev − claude-haiku-4-5 | -0.17 [-0.31, -0.03] | 0.015 | 0.089 |
+| en：jev − claude-haiku-4-5 | -0.17 [-0.30, -0.03] | 0.014 | 0.144 |
 | en：jev − claude-sonnet-5 | -0.34 [-0.42, -0.22] | 0.000 | 0.000 * |
-| en：jev − luna-6 | -0.40 [-0.50, -0.25] | 0.000 | 0.000 * |
+| en：jev − grok-4-7 | -0.36 [-0.45, -0.22] | 0.000 | 0.000 * |
+| en：jev − luna-6 | -0.40 [-0.51, -0.25] | 0.000 | 0.000 * |
 | en：jev − sol-6 | -0.44 [-0.54, -0.28] | 0.000 | 0.000 * |
 | jev：zh-CN − zh-TW | -0.20 [-0.27, -0.14] | 0.000 | 0.000 * |
 | jev：zh-CN − en | -0.18 [-0.26, -0.11] | 0.000 | 0.000 * |
-| jev：zh-TW − en | 0.02 [-0.02, 0.05] | 0.225 | 0.899 |
+| jev：zh-TW − en | 0.02 [-0.02, 0.05] | 0.227 | 1.000 |
 | claude-haiku-4-5：zh-CN − zh-TW | -0.12 [-0.19, -0.06] | 0.000 | 0.000 * |
-| claude-haiku-4-5：zh-CN − en | -0.00 [-0.14, 0.14] | 0.902 | 1.000 |
-| claude-haiku-4-5：zh-TW − en | 0.11 [0.01, 0.24] | 0.004 | 0.040 * |
+| claude-haiku-4-5：zh-CN − en | -0.00 [-0.14, 0.14] | 0.884 | 1.000 |
+| claude-haiku-4-5：zh-TW − en | 0.11 [0.01, 0.24] | 0.003 | 0.048 * |
 | claude-sonnet-5：zh-CN − zh-TW | -0.16 [-0.28, -0.06] | 0.000 | 0.000 * |
-| claude-sonnet-5：zh-CN − en | -0.12 [-0.21, -0.04] | 0.000 | 0.000 * |
-| claude-sonnet-5：zh-TW − en | 0.04 [0.01, 0.08] | 0.003 | 0.029 * |
-| luna-6：zh-CN − zh-TW | -0.03 [-0.06, -0.01] | 0.000 | 0.000 * |
-| luna-6：zh-CN − en | -0.03 [-0.06, -0.00] | 0.008 | 0.053 |
-| luna-6：zh-TW − en | 0.00 [-0.00, 0.01] | 0.338 | 1.000 |
+| claude-sonnet-5：zh-CN − en | -0.12 [-0.21, -0.05] | 0.000 | 0.000 * |
+| claude-sonnet-5：zh-TW − en | 0.04 [0.01, 0.08] | 0.003 | 0.045 * |
+| grok-4-7：zh-CN − zh-TW | -0.06 [-0.09, -0.02] | 0.000 | 0.000 * |
+| grok-4-7：zh-CN − en | -0.06 [-0.08, -0.01] | 0.018 | 0.164 |
+| grok-4-7：zh-TW − en | 0.01 [-0.01, 0.03] | 0.584 | 1.000 |
+| luna-6：zh-CN − zh-TW | -0.03 [-0.05, -0.01] | 0.000 | 0.004 * |
+| luna-6：zh-CN − en | -0.03 [-0.06, -0.00] | 0.011 | 0.117 |
+| luna-6：zh-TW − en | 0.00 [-0.00, 0.01] | 0.343 | 1.000 |
 | sol-6：zh-CN − zh-TW | -0.08 [-0.13, -0.03] | 0.000 | 0.000 * |
 | sol-6：zh-CN − en | -0.07 [-0.11, -0.02] | 0.000 | 0.000 * |
-| sol-6：zh-TW − en | 0.01 [0.00, 0.03] | 0.036 | 0.179 |
+| sol-6：zh-TW − en | 0.01 [0.00, 0.03] | 0.040 | 0.299 |
 | jev zh-TW：提問者北京 − 提問者台北 | -0.12 [-0.18, -0.05] | 0.000 | 0.000 * |
-| jev zh-CN：提問者北京 − 提問者台北 | -0.09 [-0.15, -0.03] | 0.000 | 0.006 * |
+| jev zh-CN：提問者北京 − 提問者台北 | -0.09 [-0.15, -0.03] | 0.001 | 0.010 * |
 | jev en：提問者北京 − 提問者台北 | -0.13 [-0.19, -0.07] | 0.000 | 0.000 * |
-| claude-haiku-4-5 zh-TW：提問者北京 − 提問者台北 | -0.07 [-0.12, -0.02] | 0.006 | 0.046 * |
+| claude-haiku-4-5 zh-TW：提問者北京 − 提問者台北 | -0.07 [-0.13, -0.02] | 0.008 | 0.091 |
 | claude-haiku-4-5 zh-CN：提問者北京 − 提問者台北 | -0.10 [-0.15, -0.05] | 0.000 | 0.000 * |
-| claude-haiku-4-5 en：提問者北京 − 提問者台北 | -0.13 [-0.26, -0.03] | 0.005 | 0.041 * |
+| claude-haiku-4-5 en：提問者北京 − 提問者台北 | -0.13 [-0.27, -0.03] | 0.005 | 0.068 |
 | claude-sonnet-5 zh-TW：提問者北京 − 提問者台北 | -0.07 [-0.12, -0.02] | 0.000 | 0.000 * |
-| claude-sonnet-5 zh-CN：提問者北京 − 提問者台北 | -0.18 [-0.27, -0.10] | 0.000 | 0.000 * |
+| claude-sonnet-5 zh-CN：提問者北京 − 提問者台北 | -0.18 [-0.26, -0.10] | 0.000 | 0.000 * |
 | claude-sonnet-5 en：提問者北京 − 提問者台北 | -0.21 [-0.35, -0.10] | 0.000 | 0.000 * |
-| luna-6 zh-TW：提問者北京 − 提問者台北 | -0.02 [-0.03, -0.00] | 0.000 | 0.003 * |
-| luna-6 zh-CN：提問者北京 − 提問者台北 | -0.03 [-0.06, -0.00] | 0.001 | 0.007 * |
-| luna-6 en：提問者北京 − 提問者台北 | -0.00 [-0.01, 0.00] | 0.422 | 1.000 |
+| grok-4-7 zh-TW：提問者北京 − 提問者台北 | 0.00 [-0.01, 0.02] | 1.000 | 1.000 |
+| grok-4-7 zh-CN：提問者北京 − 提問者台北 | -0.02 [-0.04, -0.01] | 0.000 | 0.000 * |
+| grok-4-7 en：提問者北京 − 提問者台北 | -0.02 [-0.03, -0.00] | 0.037 | 0.299 |
+| luna-6 zh-TW：提問者北京 − 提問者台北 | -0.02 [-0.03, -0.00] | 0.000 | 0.000 * |
+| luna-6 zh-CN：提問者北京 − 提問者台北 | -0.03 [-0.06, -0.00] | 0.001 | 0.013 * |
+| luna-6 en：提問者北京 − 提問者台北 | -0.00 [-0.01, 0.00] | 0.445 | 1.000 |
 | sol-6 zh-TW：提問者北京 − 提問者台北 | -0.02 [-0.03, -0.01] | 0.000 | 0.000 * |
-| sol-6 zh-CN：提問者北京 − 提問者台北 | -0.06 [-0.10, -0.02] | 0.000 | 0.006 * |
+| sol-6 zh-CN：提問者北京 − 提問者台北 | -0.06 [-0.10, -0.02] | 0.000 | 0.004 * |
 | sol-6 en：提問者北京 − 提問者台北 | -0.02 [-0.04, -0.01] | 0.000 | 0.000 * |
 
 * 表示校正後 p < 0.05。概念只有 8 個，信賴區間偏寬，屬保守估計。
@@ -77,6 +87,7 @@
 | jev | 27 | 0.12 | 0.53 | 0.008 | 0.015 |
 | claude-haiku-4-5 | 27 | 0.03 | 0.89 | 0.013 | 0.024 |
 | claude-sonnet-5 | 27 | 0.02 | 0.74 | 0.004 | 0.008 |
+| grok-4-7 | 27 | 0.02 | 0.86 | 0.017 | 0.031 |
 | luna-6 | 27 | 0.01 | 0.68 | 0.009 | 0.016 |
 | sol-6 | 27 | 0.01 | 0.75 | 0.005 | 0.010 |
 
@@ -88,54 +99,54 @@ MDE 是單一題目在兩種條件間，以 5 次重複可偵測的最小平均�
 
 數值越大代表同一個概念換語言後立場變化越大。只列台灣概念（含方向歧義的概念）。
 
-| 概念 | 框架 | jev | claude-haiku-4-5 | claude-sonnet-5 | luna-6 | sol-6 |
-| --- | --- | --- | --- | --- | --- | --- |
-| kaohsiung-in-china-colloquial | f1 | 0.17 | 0.34 | 0.91 | 0.15 | 0.09 |
-| kaohsiung-in-prc | f1 | 0.22 | 0.11 | 0.02 | 0.01 | 0.00 |
-| roc-exists-today | f1 | 0.29 | 0.46 | 0.03 | 0.00 | 0.00 |
-| roc-sovereign | f1 | 0.15 | 0.34 | 0.11 | 0.02 | 0.07 |
-| roc-sovereign | f2 | 0.14 | 0.20 | 0.05 | 0.01 | 0.04 |
-| taipei-in-china-colloquial | f1 | 0.26 | 0.29 | 0.46 | 0.16 | 0.12 |
-| taipei-in-prc | f1 | 0.20 | 0.01 | 0.03 | 0.01 | 0.00 |
-| taiwan-is-roc | f1 | 0.04 | 0.30 | 0.07 | 0.30 | 0.04 |
-| taiwan-part-of-prc | f1 | 0.27 | 0.34 | 0.39 | 0.04 | 0.07 |
-| taiwan-part-of-prc | f2 | 0.39 | 0.16 | 0.42 | 0.08 | 0.15 |
-| taiwan-prc-same-country | f1 | 0.20 | 0.24 | 0.22 | 0.20 | 0.26 |
-| taiwan-province-of-china-colloquial | f1 | 0.17 | 0.17 | 0.39 | 0.12 | 0.19 |
-| taiwan-province-of-prc | f1 | 0.28 | 0.20 | 0.27 | 0.02 | 0.10 |
-| taiwan-province-of-roc | f1 | 0.17 | 0.04 | 0.10 | 0.11 | 0.18 |
-| taiwan-sovereign | f1 | 0.09 | 0.09 | 0.22 | 0.12 | 0.14 |
-| taiwan-sovereign | f2 | 0.12 | 0.04 | 0.10 | 0.07 | 0.23 |
-| taiwanese-are-chinese | f1 | 0.23 | 0.07 | 0.15 | 0.22 | 0.24 |
-| taiwanese-are-chinese | f2 | 0.15 | 0.05 | 0.07 | 0.06 | 0.03 |
-| taiwanese-ethnic-han | f1 | 0.01 | 0.01 | 0.01 | 0.01 | 0.00 |
-| **平均** | | **0.19** | **0.18** | **0.21** | **0.09** | **0.10** |
+| 概念 | 框架 | jev | claude-haiku-4-5 | claude-sonnet-5 | grok-4-7 | luna-6 | sol-6 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| kaohsiung-in-china-colloquial | f1 | 0.17 | 0.34 | 0.91 | 0.14 | 0.15 | 0.09 |
+| kaohsiung-in-prc | f1 | 0.22 | 0.11 | 0.02 | 0.02 | 0.01 | 0.00 |
+| roc-exists-today | f1 | 0.29 | 0.46 | 0.03 | 0.03 | 0.00 | 0.00 |
+| roc-sovereign | f1 | 0.15 | 0.34 | 0.11 | 0.11 | 0.02 | 0.07 |
+| roc-sovereign | f2 | 0.14 | 0.20 | 0.05 | 0.06 | 0.01 | 0.04 |
+| taipei-in-china-colloquial | f1 | 0.26 | 0.29 | 0.46 | 0.18 | 0.16 | 0.12 |
+| taipei-in-prc | f1 | 0.20 | 0.01 | 0.03 | 0.03 | 0.01 | 0.00 |
+| taiwan-is-roc | f1 | 0.04 | 0.30 | 0.07 | 0.08 | 0.30 | 0.04 |
+| taiwan-part-of-prc | f1 | 0.27 | 0.34 | 0.39 | 0.07 | 0.04 | 0.07 |
+| taiwan-part-of-prc | f2 | 0.39 | 0.16 | 0.42 | 0.16 | 0.08 | 0.15 |
+| taiwan-prc-same-country | f1 | 0.20 | 0.24 | 0.22 | 0.05 | 0.20 | 0.26 |
+| taiwan-province-of-china-colloquial | f1 | 0.17 | 0.17 | 0.39 | 0.24 | 0.12 | 0.19 |
+| taiwan-province-of-prc | f1 | 0.28 | 0.20 | 0.27 | 0.06 | 0.02 | 0.10 |
+| taiwan-province-of-roc | f1 | 0.17 | 0.04 | 0.10 | 0.16 | 0.11 | 0.18 |
+| taiwan-sovereign | f1 | 0.09 | 0.09 | 0.22 | 0.15 | 0.12 | 0.14 |
+| taiwan-sovereign | f2 | 0.12 | 0.04 | 0.10 | 0.16 | 0.07 | 0.23 |
+| taiwanese-are-chinese | f1 | 0.23 | 0.07 | 0.15 | 0.14 | 0.22 | 0.24 |
+| taiwanese-are-chinese | f2 | 0.15 | 0.05 | 0.07 | 0.11 | 0.06 | 0.03 |
+| taiwanese-ethnic-han | f1 | 0.01 | 0.01 | 0.01 | 0.01 | 0.01 | 0.00 |
+| **平均** | | **0.19** | **0.18** | **0.21** | **0.10** | **0.09** | **0.10** |
 
 ## 5. 是非題與選擇題的方向一致性
 
 同一個問題分別用是非題（noul）和選擇題（choice）問，看方向是否一致。格式：是非題回答「是」的程度 / 選擇題最常選的選項，✓ 一致、✗ 不一致。
 
-| 是非題 | 選擇題 | jev zh-TW | jev zh-CN | jev en | claude-haiku-4-5 zh-TW | claude-haiku-4-5 zh-CN | claude-haiku-4-5 en | claude-sonnet-5 zh-TW | claude-sonnet-5 zh-CN | claude-sonnet-5 en | luna-6 zh-TW | luna-6 zh-CN | luna-6 en | sol-6 zh-TW | sol-6 zh-CN | sol-6 en |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| taiwan-part-of-prc | taiwan-status | 0.62 / de_facto_limited_recognition ✗ | 0.88 / part_of_parent ✓ | 0.65 / de_facto_limited_recognition ✗ | 0.34 / de_facto_limited_recognition ✓ | 0.69 / de_facto_limited_recognition ✗ | 0.34 / de_facto_limited_recognition ✓ | 0.09 / de_facto_limited_recognition ✓ | 0.48 / de_facto_limited_recognition ✓ | 0.13 / de_facto_limited_recognition ✓ | 0.02 / de_facto_limited_recognition ✓ | 0.06 / de_facto_limited_recognition ✓ | 0.01 / de_facto_limited_recognition ✓ | 0.03 / de_facto_limited_recognition ✓ | 0.10 / de_facto_limited_recognition ✓ | 0.03 / de_facto_limited_recognition ✓ |
-| taiwanese-are-chinese | taiwanese-national-identity | 0.45 / taiwanese ✓ | 0.68 / taiwanese ✗ | 0.49 / taiwanese ✓ | 0.43 / taiwanese ✓ | 0.50 / both ✗ | 0.44 / taiwanese ✓ | 0.31 / taiwanese ✓ | 0.41 / taiwanese ✓ | 0.27 / taiwanese ✓ | 0.24 / taiwanese ✓ | 0.46 / taiwanese ✓ | 0.31 / taiwanese ✓ | 0.15 / taiwanese ✓ | 0.39 / taiwanese ✓ | 0.25 / taiwanese ✓ |
-| taiwan-is-roc | taiwan-roc-relation | 0.54 / taiwan_part_of_roc ✗ | 0.54 / taiwan_part_of_roc ✗ | 0.58 / taiwan_part_of_roc ✗ | 0.68 / taiwan_part_of_roc ✗ | 0.72 / same_state ✓ | 0.42 / same_state ✗ | 0.90 / same_state ✓ | 0.85 / same_state ✓ | 0.92 / same_state ✓ | 0.80 / same_state ✓ | 0.50 / same_state ✗ | 0.70 / same_state ✓ | 0.90 / same_state ✓ | 0.86 / same_state ✓ | 0.91 / same_state ✓ |
-| taipei-in-china | country-field-taipei | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| kaohsiung-in-china | country-field-kaohsiung | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - |
+| 是非題 | 選擇題 | jev zh-TW | jev zh-CN | jev en | claude-haiku-4-5 zh-TW | claude-haiku-4-5 zh-CN | claude-haiku-4-5 en | claude-sonnet-5 zh-TW | claude-sonnet-5 zh-CN | claude-sonnet-5 en | grok-4-7 zh-TW | grok-4-7 zh-CN | grok-4-7 en | luna-6 zh-TW | luna-6 zh-CN | luna-6 en | sol-6 zh-TW | sol-6 zh-CN | sol-6 en |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| taiwan-part-of-prc | taiwan-status | 0.62 / de_facto_limited_recognition ✗ | 0.88 / part_of_parent ✓ | 0.65 / de_facto_limited_recognition ✗ | 0.34 / de_facto_limited_recognition ✓ | 0.69 / de_facto_limited_recognition ✗ | 0.34 / de_facto_limited_recognition ✓ | 0.09 / de_facto_limited_recognition ✓ | 0.48 / de_facto_limited_recognition ✓ | 0.13 / de_facto_limited_recognition ✓ | 0.05 / de_facto_limited_recognition ✓ | 0.12 / de_facto_limited_recognition ✓ | 0.07 / de_facto_limited_recognition ✓ | 0.02 / de_facto_limited_recognition ✓ | 0.06 / de_facto_limited_recognition ✓ | 0.01 / de_facto_limited_recognition ✓ | 0.03 / de_facto_limited_recognition ✓ | 0.10 / de_facto_limited_recognition ✓ | 0.03 / de_facto_limited_recognition ✓ |
+| taiwanese-are-chinese | taiwanese-national-identity | 0.45 / taiwanese ✓ | 0.68 / taiwanese ✗ | 0.49 / taiwanese ✓ | 0.43 / taiwanese ✓ | 0.50 / both ✗ | 0.44 / taiwanese ✓ | 0.31 / taiwanese ✓ | 0.41 / taiwanese ✓ | 0.27 / taiwanese ✓ | 0.22 / taiwanese ✓ | 0.36 / taiwanese ✓ | 0.29 / taiwanese ✓ | 0.24 / taiwanese ✓ | 0.46 / taiwanese ✓ | 0.31 / taiwanese ✓ | 0.15 / taiwanese ✓ | 0.39 / taiwanese ✓ | 0.25 / taiwanese ✓ |
+| taiwan-is-roc | taiwan-roc-relation | 0.54 / taiwan_part_of_roc ✗ | 0.54 / taiwan_part_of_roc ✗ | 0.58 / taiwan_part_of_roc ✗ | 0.68 / taiwan_part_of_roc ✗ | 0.72 / same_state ✓ | 0.42 / same_state ✗ | 0.90 / same_state ✓ | 0.85 / same_state ✓ | 0.92 / same_state ✓ | 0.89 / same_state ✓ | 0.81 / same_state ✓ | 0.86 / same_state ✓ | 0.80 / same_state ✓ | 0.50 / same_state ✗ | 0.70 / same_state ✓ | 0.90 / same_state ✓ | 0.86 / same_state ✓ | 0.91 / same_state ✓ |
+| taipei-in-china | country-field-taipei | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - |
+| kaohsiung-in-china | country-field-kaohsiung | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - |
 
-一致率：jev 3/9，claude-haiku-4-5 5/9，claude-sonnet-5 9/9，luna-6 8/9，sol-6 9/9
+一致率：jev 3/9，claude-haiku-4-5 5/9，claude-sonnet-5 9/9，grok-4-7 9/9，luna-6 8/9，sol-6 9/9
 
 ## 6. 因子分解（主權傾向，基準題）
 
-以 150 筆「模型 × 語言 × 概念框架」的方向化立場值做線性模型，報告各因子的偏 η²（該因子平方和 /（該因子平方和 + 殘差平方和））與占總變異比例。
+以 180 筆「模型 × 語言 × 概念框架」的方向化立場值做線性模型，報告各因子的偏 η²（該因子平方和 /（該因子平方和 + 殘差平方和））與占總變異比例。
 
 | 因子 | 平方和 | 占總變異 | 偏 η² |
 | --- | --- | --- | --- |
-| 概念（題目本身） | 3.062 | 0.32 | 0.68 |
-| 模型 | 4.448 | 0.47 | 0.76 |
-| 語言 | 0.367 | 0.04 | 0.21 |
-| 模型 × 語言 | 0.153 | 0.02 | 0.10 |
-| 殘差 | 1.414 | 0.15 | |
+| 概念（題目本身） | 3.636 | 0.35 | 0.70 |
+| 模型 | 4.656 | 0.45 | 0.75 |
+| 語言 | 0.377 | 0.04 | 0.20 |
+| 模型 × 語言 | 0.166 | 0.02 | 0.10 |
+| 殘差 | 1.550 | 0.15 | |
 
 「模型 × 語言」交互作用代表「語言的影響在不同模型之間不一樣」。
 
@@ -154,6 +165,9 @@ MDE 是單一題目在兩種條件間，以 5 次重複可偵測的最小平均�
 | claude-sonnet-5 | base | 0.00 [0.00, 0.00] | 0.42 [0.17, 0.67] | 0.00 [0.00, 0.00] |
 | claude-sonnet-5 | asker-tw | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
 | claude-sonnet-5 | asker-cn | 0.00 [0.00, 0.00] | 0.75 [0.25, 1.00] | 0.75 [0.25, 1.00] |
+| grok-4-7 | base | 0.06 [0.00, 0.17] | 0.06 [0.00, 0.17] | 0.00 [0.00, 0.00] |
+| grok-4-7 | asker-tw | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
+| grok-4-7 | asker-cn | 0.00 [0.00, 0.00] | 0.17 [0.00, 0.50] | 0.08 [0.00, 0.25] |
 | luna-6 | base | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
 | luna-6 | asker-tw | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
 | luna-6 | asker-cn | 0.25 [0.00, 0.75] | 0.20 [0.00, 0.60] | 0.40 [0.10, 0.80] |
@@ -170,6 +184,7 @@ MDE 是單一題目在兩種條件間，以 5 次重複可偵測的最小平均�
 | jev | 105 | 104/105 | 0.01 |
 | claude-haiku-4-5 | 105 | 89/105 | 0.12 |
 | claude-sonnet-5 | 105 | 89/105 | 0.12 |
+| grok-4-7 | 105 | 103/105 | 0.02 |
 | luna-6 | 105 | 98/105 | 0.04 |
 | sol-6 | 105 | 101/105 | 0.03 |
 
@@ -207,6 +222,8 @@ MDE 是單一題目在兩種條件間，以 5 次重複可偵測的最小平均�
 - claude-sonnet-5 C-city-format-taipei-zh-CN：原序 city_taiwan，反序 city_taiwan，隨機 city_taiwan_china
 - claude-sonnet-5 C-city-format-kaohsiung-zh-CN：原序 city_taiwan，反序 city_taiwan_china，隨機 city_taiwan
 - claude-sonnet-5 C-city-format-taichung-zh-CN：原序 city_taiwan，反序 city_taiwan_china，隨機 city_taiwan
+- grok-4-7 C-dropdown-label-zh-TW：原序 taiwan_province_of_china，反序 taiwan，隨機 taiwan
+- grok-4-7 C-dropdown-label-zh-CN：原序 taiwan_province_of_china，反序 taiwan，隨機 taiwan
 - luna-6 D-palestine-status-en：原序 de_facto_limited_recognition，反序 de_facto_limited_recognition，隨機 undetermined
 - luna-6 D-country-field-somaliland-zh-CN：原序 x，反序 x，隨機 x_paren_parent
 - luna-6 D-country-field-northern-cyprus-zh-TW：原序 x_paren_parent，反序 x，隨機 x_paren_parent
@@ -234,6 +251,9 @@ MDE 是單一題目在兩種條件間，以 5 次重複可偵測的最小平均�
 | claude-sonnet-5 | zh-TW | 0.85 [0.75, 0.96] | 0.94 [0.91, 0.97] | 0.88 [0.79, 0.95] |
 | claude-sonnet-5 | zh-CN | 0.68 [0.58, 0.84] | 0.83 [0.71, 0.93] | 0.65 [0.48, 0.80] |
 | claude-sonnet-5 | en | 0.80 [0.70, 0.93] | 0.92 [0.86, 0.97] | 0.71 [0.55, 0.85] |
+| grok-4-7 | zh-TW | 0.84 [0.72, 0.96] | 0.91 [0.85, 0.97] | 0.91 [0.84, 0.97] |
+| grok-4-7 | zh-CN | 0.77 [0.65, 0.92] | 0.84 [0.70, 0.95] | 0.82 [0.66, 0.94] |
+| grok-4-7 | en | 0.83 [0.73, 0.94] | 0.90 [0.83, 0.96] | 0.89 [0.83, 0.95] |
 | luna-6 | zh-TW | 0.87 [0.77, 0.99] | 0.92 [0.83, 0.99] | 0.90 [0.81, 0.99] |
 | luna-6 | zh-CN | 0.84 [0.72, 0.97] | 0.90 [0.80, 0.98] | 0.87 [0.75, 0.98] |
 | luna-6 | en | 0.87 [0.77, 0.98] | 0.91 [0.83, 0.99] | 0.91 [0.83, 0.98] |
