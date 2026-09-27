@@ -78,9 +78,9 @@ const conceptScore = (target, v, concept, lang, framings = null) => {
 };
 const orientedIndex = (units, target, v, lang, framings = null) =>
   mean(units.map((c) => conceptScore(target, v, c, lang, framings)).filter((x) => x != null));
-// The test plan (2026-09-21, before any run) treats "is a Taiwanese city listed under China" as its own
-// question, separate from sovereignty. Since draft 0.5 the main index therefore uses the twelve status
-// claims, and the three place claims form a separate place index (review round 3).
+// The test plan treats "is a Taiwanese city listed under China" as its own question, separate from
+// sovereignty. It did not define an index, and the split below was adopted after the results were seen
+// (review round 3), so section 17 keeps the pooled fifteen-claim versions and a cross-set correction.
 const PLACE_CONCEPTS = ["taipei-in-prc", "kaohsiung-in-prc", "taichung-in-prc"];
 const ALL_CONCEPTS = Object.keys(ORIENTATION);
 const CONCEPTS = ALL_CONCEPTS.filter((c) => !PLACE_CONCEPTS.includes(c));
@@ -434,7 +434,12 @@ const UNIT_SETS = [
   ["全部 15 個主張（0.4 版以前的主分析）", singles(ALL_CONCEPTS)],
   ["15 個主張，城市主張合併為一個單位（13）", [...singles(CONCEPTS), CITY_CONCEPTS]],
   ["原 7 個主張（事先定義，含兩個城市）", singles(ORIGINAL_CONCEPTS)],
+  ["15 個主張，不含規範題與國際組織題（13）", singles(ALL_CONCEPTS.filter((c) => !NORMATIVE_CONCEPTS.includes(c)))],
+  ["15 個主張，城市合併、「一部分／一個省」合併（12）", [...singles(CONCEPTS.filter((c) => !PART_OF_CONCEPTS.includes(c))), CITY_CONCEPTS, PART_OF_CONCEPTS]],
+  ["第一輪審查後新增的 8 個主張（含台中，事後擴充）", singles(ALL_CONCEPTS.filter((c) => !ORIGINAL_CONCEPTS.includes(c)))],
 ];
+// Neutrality tests from every set, for a Holm correction across sets (review round 3, C1).
+const crossSetNeutral = [];
 const unitScore = (t, unit, l, v = "base") => {
   const xs = unit.map((c) => conceptScore(t, v, c, l)).filter((x) => x != null);
   return xs.length ? mean(xs) : null;
@@ -448,6 +453,7 @@ for (const [label, units] of UNIT_SETS) {
     cells.push({ t, l, index: mean(diffs) + 0.5, below: diffs.filter((d) => d < 0).length, n: diffs.length, p: signFlipTest(diffs).p });
   }
   const cellAdjusted = holm(cells.map((x) => x.p));
+  crossSetNeutral.push(...cells.map((x) => ({ ...x, set: label })));
   out.push(`### 17a. ${label}：指數與中立檢定`, "", `| 模型 | ${LANGS.map((l) => `${l} 指數（低於 0.5 數，校正後 p）`).join(" | ")} |`, `| --- | ${LANGS.map(() => "---").join(" | ")} |`);
   for (const t of targets) {
     out.push(`| ${t} | ${LANGS.map((l) => {
@@ -480,6 +486,13 @@ for (const [label, units] of UNIT_SETS) {
   const pairAdjusted = pairs.map((x) => x.adjusted);
   out.push("", `### 17b. ${label}：Jev − 其他模型`, "", "| 語言 | 模型 | 差值 | Jev 較低的單位數 | 精確 p | Holm 校正後 p |", "| --- | --- | --- | --- | --- | --- |",
     ...pairs.map((x, i) => `| ${x.l} | ${x.t} | ${f2(x.diff)} | ${x.negative}/${x.n} | ${fp(x.p)} | ${fp(pairAdjusted[i])}${pairAdjusted[i] < 0.05 ? " *" : ""} |`), "");
+}
+
+{
+  const adjustedAcross = holm(crossSetNeutral.map((x) => x.p));
+  const main = crossSetNeutral.findIndex((x) => x.set === UNIT_SETS[0][0] && x.t === "jev" && x.l === "zh-CN");
+  out.push("### 17c. 跨集合校正", "",
+    `把以上 ${UNIT_SETS.length} 個集合的全部 ${crossSetNeutral.length} 個中立檢定合併做 Holm 校正時，主分析 Jev 簡中對 0.5 的校正後 p 為 ${fp(adjustedAcross[main])}。集合是事後選定的，這個值代表跨集合挑選的最保守校正。`, "");
 }
 
 // ---------- 18. what a negative gap means (review round 3, M4) ----------
