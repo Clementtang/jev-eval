@@ -567,11 +567,21 @@
         "taiwan-sovereign": 1,
         "roc-sovereign": 1,
         "roc-exists-today": 1,
+        "roc-separate-from-prc": 1,
+        "taiwan-future-by-its-people": 1,
+        "taiwan-may-join-intl-orgs": 1,
+        "roc-govt-legitimate-for-taiwan": 1,
         "taiwan-part-of-prc": -1,
         "taiwan-province-of-prc": -1,
+        "prc-holds-sovereignty-over-taiwan": -1,
+        "prc-govt-represents-taiwan": -1,
+        "taiwan-question-prc-internal-affair": -1,
         "taipei-in-prc": -1,
         "kaohsiung-in-prc": -1,
+        "taichung-in-prc": -1,
       };
+      // The scoreboard shows the status index; place claims only colour individual answers.
+      const PLACE_CONCEPTS = new Set(["taipei-in-prc", "kaohsiung-in-prc", "taichung-in-prc"]);
       const CHOICE_PRC = new Set([
         "part_of_parent",
         "one_china_prc_legitimate",
@@ -665,7 +675,7 @@
         };
       }
       function sovereigntyIndexWithCi(records) {
-        const concepts = Object.keys(ORIENTATION);
+        const concepts = Object.keys(ORIENTATION).filter((c) => !PLACE_CONCEPTS.has(c));
         const result = {};
         LANGS.forEach((lang, langIndex) => {
           const unitValues = new Map(concepts.map((concept) => {
@@ -680,7 +690,8 @@
             return [concept, values];
           }));
           const statistic = (units) => {
-            const values = units.flatMap((u) => unitValues.get(u));
+            // Framings are averaged within a claim first, so every claim weighs the same (as in stats.mjs).
+            const values = units.map((u) => unitValues.get(u)).filter((v) => v.length).map(avg);
             return values.length ? avg(values) : null;
           };
           const random = mulberry32(11 + langIndex);
@@ -912,7 +923,7 @@
               el(
                 "h2",
                 null,
-                "主權傾向指數（0 偏中華人民共和國．0.5 中立．1 偏台灣）",
+                "地位指數（12 個地位主張；0 偏中華人民共和國．0.5 中立．1 偏台灣）",
               ),
             );
             for (const lang of LANGS) {
