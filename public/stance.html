@@ -1,0 +1,1928 @@
+<!doctype html>
+<html lang="zh-Hant-TW" style="color-scheme: light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>同題對照重播</title>
+    <style>
+      /* jf 金萱 4.0 is installed locally on the author's Mac; the three weights are mapped to one
+         family so CSS weights pick the right file. The fallbacks cover machines without it. */
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-4.0 Book"), local("jf-jinxuan-4.0-Book");
+        font-weight: 100 450;
+      }
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-4.0 Medium"), local("jf-jinxuan-4.0-Medium");
+        font-weight: 451 650;
+      }
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-4.0 Bold"), local("jf-jinxuan-4.0-Bold");
+        font-weight: 651 900;
+      }
+      body {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Light theme only: the recording must look the same whatever the viewer's OS setting is. */
+      :root {
+        --outside: #e4e7e5;
+        --paper: #f6f7f5;
+        --panel: #ffffff;
+        --ink: #1b1f24;
+        --muted: #646b73;
+        --faint: #9aa0a6;
+        --rule: #d8dcd9;
+        --empty: #e9ecea;
+        --tw: #12897a;
+        --prc: #c93a6b;
+        --neutral: #9aa0ab;
+        --tile-base: #cfd3d8;
+        --serif: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+        --sans: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+        --mono: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+        --side-w: 440px;
+        --label-w: 176px;
+        --row-h: 26px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--outside);
+        color: var(--ink);
+        overflow: hidden;
+        font-family: var(--sans);
+      }
+      #stage {
+        position: absolute;
+        width: var(--stage-w);
+        height: var(--stage-h);
+        transform-origin: 0 0;
+        background: var(--paper);
+        padding: 0 40px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) var(--side-w);
+        grid-template-rows: 88px minmax(0, 1fr) auto 48px;
+        grid-template-areas:
+          "head head"
+          "card side"
+          "matrix matrix"
+          "foot foot";
+        column-gap: 28px;
+      }
+      #stage.wide {
+        --side-w: 620px;
+        --label-w: 210px;
+        --row-h: 30px;
+      }
+
+      /* ---------- header ---------- */
+      header {
+        grid-area: head;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--rule);
+      }
+      header h1 {
+        margin: 0;
+        font: 600 30px/1.2 var(--sans);
+        letter-spacing: 0.5px;
+      }
+      header h1 small {
+        display: block;
+        margin-top: 4px;
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--muted);
+        letter-spacing: 0;
+      }
+      #progress {
+        display: flex;
+        gap: 6px;
+      }
+      .seg {
+        width: 150px;
+        font-size: 14px;
+        color: var(--faint);
+      }
+      .seg i {
+        display: block;
+        height: 4px;
+        margin-bottom: 7px;
+        background: var(--empty);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .seg i b {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--ink);
+      }
+      .seg span {
+        font-family: var(--mono);
+        font-size: 12px;
+        margin-left: 6px;
+      }
+      .seg.active {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .seg.done {
+        color: var(--muted);
+      }
+
+      /* ---------- question card ---------- */
+      #card {
+        grid-area: card;
+        min-height: 0;
+        padding: 26px 0 18px;
+        display: flex;
+        flex-direction: column;
+      }
+      .card-meta {
+        display: flex;
+        gap: 14px;
+        align-items: baseline;
+        font-size: 16px;
+        color: var(--muted);
+      }
+      .card-meta b {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .card-meta .count {
+        font-family: var(--mono);
+        font-size: 14px;
+      }
+      .statement {
+        margin: 14px 0 12px;
+        font: 700 46px/1.3 var(--serif);
+        letter-spacing: 1px;
+        min-height: 60px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      #stage.choice .statement {
+        font-size: 38px;
+      }
+      .context {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 30px;
+        margin-bottom: 14px;
+      }
+      .tag {
+        font-size: 15px;
+        line-height: 1;
+        padding: 7px 10px;
+        border-radius: 4px;
+        background: var(--empty);
+        color: var(--ink);
+      }
+      .tag.tw {
+        background: color-mix(in srgb, var(--tw) 14%, white);
+        color: #0b5c52;
+      }
+      .tag.prc {
+        background: color-mix(in srgb, var(--prc) 12%, white);
+        color: #8e2248;
+      }
+      .tag.control {
+        background: transparent;
+        box-shadow: inset 0 0 0 1px var(--faint);
+        color: var(--muted);
+      }
+      .tag.data {
+        background: transparent;
+        box-shadow: inset 0 0 0 1px var(--rule);
+        font-family: var(--sans);
+      }
+      .verdicts {
+        display: grid;
+        grid-template-columns: var(--label-w) repeat(3, minmax(0, 1fr));
+        grid-auto-rows: minmax(0, 64px);
+        gap: 6px;
+        align-content: start;
+        flex: 1;
+        min-height: 0;
+      }
+      #stage.wide .verdicts {
+        grid-auto-rows: minmax(0, 84px);
+      }
+      .verdicts .lang {
+        font-size: 15px;
+        color: var(--muted);
+        align-self: end;
+        padding: 0 0 2px 2px;
+        height: 26px;
+      }
+      .verdicts .who {
+        align-self: center;
+        font-size: 21px;
+        font-weight: 600;
+      }
+      .tile {
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 0 14px;
+        background: var(--empty);
+        min-width: 0;
+        overflow: hidden;
+      }
+      .tile .num {
+        font: 600 26px/1 var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .tile .label {
+        font-size: 17px;
+        line-height: 1.25;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .tile .times {
+        flex: 0 0 auto;
+        font: 500 16px var(--mono);
+        opacity: 0.85;
+      }
+      #stage.label-chapter .tile .label {
+        font-family: var(--mono);
+        font-size: 18px;
+      }
+      .verdicts.enter .tile {
+        animation: stamp 0.34s ease-out both;
+        animation-delay: calc(var(--i) * 45ms);
+      }
+      @keyframes stamp {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+      }
+      .card-note {
+        margin: 10px 0 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      /* ---------- side gauges ---------- */
+      #side {
+        grid-area: side;
+        min-height: 0;
+        padding: 26px 0 18px;
+        display: flex;
+        flex-direction: column;
+      }
+      #side h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 600;
+      }
+      #side h2 span {
+        font: 400 13px var(--mono);
+        color: var(--muted);
+        margin-left: 6px;
+      }
+      .scale {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        font-size: 12px;
+        color: var(--muted);
+        margin: 8px 0 10px 64px;
+        padding-right: 64px;
+      }
+      .scale :last-child {
+        text-align: right;
+      }
+      .gauges {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .gauge-model {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .gauge-row {
+        display: grid;
+        grid-template-columns: 56px 1fr 64px;
+        align-items: center;
+        gap: 8px;
+        height: 19px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .gauge-row b {
+        font: 600 15px var(--mono);
+        color: var(--ink);
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .track {
+        position: relative;
+        height: 10px;
+        background: var(--empty);
+        border-radius: 2px;
+      }
+      .track::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -3px;
+        bottom: -3px;
+        border-left: 1px dashed var(--faint);
+      }
+      .track.rate::after {
+        display: none;
+      }
+      .track i {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        border-radius: 2px;
+        transition:
+          left 0.4s ease,
+          width 0.4s ease;
+      }
+      .side-note {
+        margin-top: auto;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      /* ---------- matrix: the answer sheet that becomes the conclusion ---------- */
+      #matrix {
+        grid-area: matrix;
+        display: grid;
+        column-gap: 0;
+        row-gap: 4px;
+        padding: 12px 0 10px;
+        border-top: 1px solid var(--rule);
+        position: relative;
+      }
+      .m-chapter {
+        grid-row: 1;
+        font-size: 13px;
+        color: var(--muted);
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .m-chapter.active {
+        color: var(--ink);
+        font-weight: 600;
+        border-bottom-color: var(--ink);
+      }
+      .m-name {
+        font-size: 14px;
+        font-weight: 600;
+        align-self: center;
+        white-space: nowrap;
+      }
+      .m-cell {
+        height: var(--row-h);
+        background: var(--empty);
+        transition: background-color 0.3s ease;
+      }
+      .m-cell.first {
+        border-radius: 3px 0 0 3px;
+      }
+      .m-cell.last {
+        border-radius: 0 3px 3px 0;
+      }
+      .m-cursor {
+        margin: -5px -4px -3px;
+        border: 2px solid var(--ink);
+        border-radius: 5px;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .m-cursor::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -9px;
+        margin-left: -6px;
+        border: 6px solid transparent;
+        border-top-color: var(--ink);
+      }
+      .m-cursor {
+        position: relative;
+      }
+      .m-cursor[hidden] {
+        display: none;
+      }
+      .m-sub {
+        grid-row: 2;
+        height: 12px;
+      }
+
+      /* ---------- chapter title card ---------- */
+      #chapter {
+        grid-row: 2;
+        grid-column: 1 / -1;
+        z-index: 2;
+        background: var(--paper);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 8% 40px;
+      }
+      #stage.mode-chapter #chapter {
+        display: flex;
+        animation: fade 0.4s ease-out both;
+      }
+      #chapter .eyebrow {
+        font: 500 20px var(--sans);
+        color: var(--muted);
+        letter-spacing: 2px;
+      }
+      #chapter h2 {
+        margin: 10px 0 22px;
+        font: 700 84px/1.1 var(--serif);
+        letter-spacing: 6px;
+      }
+      #chapter p {
+        margin: 0;
+        max-width: 1100px;
+        font-size: 26px;
+        line-height: 1.6;
+        color: #3a4048;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+        }
+      }
+
+      /* ---------- finale ---------- */
+      #headline,
+      #summary {
+        display: none;
+      }
+      #stage.finale {
+        grid-template-rows: 88px auto auto minmax(0, 1fr) 48px;
+        grid-template-areas:
+          "head head"
+          "headline headline"
+          "matrix matrix"
+          "summary summary"
+          "foot foot";
+        --row-h: 50px;
+      }
+      #stage.finale.wide {
+        --row-h: 54px;
+      }
+      #stage.finale #card,
+      #stage.finale #side {
+        display: none;
+      }
+      #stage.finale #headline {
+        grid-area: headline;
+        display: block;
+        padding: 24px 0 16px;
+        animation: fade 0.5s ease-out both;
+      }
+      #headline p {
+        margin: 0;
+        font: 700 36px/1.4 var(--serif);
+        letter-spacing: 0.5px;
+      }
+      #headline small {
+        display: block;
+        margin-top: 8px;
+        font-size: 19px;
+        line-height: 1.5;
+        color: #3a4048;
+      }
+      #stage.finale #summary {
+        grid-area: summary;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        padding-top: 14px;
+        animation: fade 0.5s ease-out both;
+      }
+      #summary h3 {
+        margin: 0 0 10px;
+        font-size: 17px;
+        font-weight: 600;
+      }
+      #summary h3 span {
+        font-weight: 400;
+        color: var(--muted);
+        margin-left: 8px;
+      }
+      .ci-table {
+        display: grid;
+        grid-template-columns: var(--label-w) repeat(3, minmax(0, 1fr));
+        column-gap: 28px;
+        row-gap: 12px;
+        align-items: center;
+      }
+      .ci-table .lang {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .ci-table .who {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .ci-cell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 240px;
+        gap: 14px;
+        align-items: center;
+        font: 14px var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .ci-cell b {
+        font-size: 16px;
+      }
+      .ci-cell em {
+        font: 12px var(--sans);
+        color: var(--prc);
+        margin-left: 6px;
+        font-style: normal;
+      }
+      .ci-track {
+        position: relative;
+        height: 14px;
+        background: var(--empty);
+        border-radius: 2px;
+      }
+      .ci-track::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -3px;
+        bottom: -3px;
+        border-left: 1px dashed var(--faint);
+      }
+      .ci-track s {
+        position: absolute;
+        top: 3px;
+        bottom: 3px;
+        border-radius: 2px;
+        opacity: 0.35;
+      }
+      .ci-track i {
+        position: absolute;
+        top: -1px;
+        width: 4px;
+        height: 16px;
+        margin-left: -2px;
+        border-radius: 1px;
+      }
+      .summary-note {
+        margin-top: auto;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+      .cost-table {
+        display: none;
+        border-collapse: collapse;
+        font-size: 17px;
+        width: 760px;
+      }
+      .cost-table th {
+        text-align: right;
+        font-weight: 400;
+        font-size: 14px;
+        color: var(--muted);
+        padding: 0 0 6px 24px;
+        border-bottom: 1px solid var(--rule);
+      }
+      .cost-table th:first-child,
+      .cost-table td:first-child {
+        text-align: left;
+        padding-left: 0;
+      }
+      .cost-table td {
+        text-align: right;
+        padding: 7px 0 7px 24px;
+        border-bottom: 1px solid var(--empty);
+        font-family: var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .cost-table td:first-child {
+        font-family: var(--sans);
+        font-weight: 600;
+      }
+      #stage.mode-cost .ci-block {
+        display: none;
+      }
+      #stage.mode-cost .cost-table {
+        display: table;
+        animation: fade 0.4s ease-out both;
+      }
+
+      /* ---------- footer ---------- */
+      footer {
+        grid-area: foot;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--rule);
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .legend {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .legend .ramp {
+        width: 240px;
+        height: 10px;
+        border-radius: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--prc),
+          color-mix(in srgb, var(--prc) 40%, var(--tile-base)),
+          var(--tile-base),
+          color-mix(in srgb, var(--tw) 40%, var(--tile-base)),
+          var(--tw)
+        );
+      }
+
+      /* ---------- controls (hidden while recording) ---------- */
+      #help {
+        position: fixed;
+        left: 16px;
+        bottom: 16px;
+        max-width: 560px;
+        background: rgba(255, 255, 255, 0.97);
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 13px;
+        line-height: 1.8;
+        color: var(--muted);
+        z-index: 10;
+      }
+      #help b {
+        color: var(--ink);
+        font-family: var(--mono);
+      }
+      #help[hidden],
+      #loading[hidden] {
+        display: none;
+      }
+      #picker {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 14px;
+        margin-top: 4px;
+        color: var(--ink);
+      }
+      #picker label {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+      }
+      #picker input {
+        accent-color: var(--ink);
+      }
+      #picker input:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 2px;
+      }
+      #picker[aria-disabled="true"] {
+        opacity: 0.45;
+      }
+      #error {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: var(--prc);
+        font-size: 20px;
+        background: var(--paper);
+      }
+      #error[hidden] {
+        display: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <header>
+        <h1>
+          <span id="title">同一句話，各模型怎麼判斷</span
+          ><small id="subtitle">台灣主權題目．繁中、簡中、英文各問一次</small>
+        </h1>
+        <div id="progress"></div>
+      </header>
+
+      <section id="card">
+        <div class="card-meta">
+          <b id="cardChapter"></b><span class="count" id="cardCount"></span>
+        </div>
+        <p class="statement" id="cardText"></p>
+        <div class="context" id="cardContext"></div>
+        <div class="verdicts" id="cardTable"></div>
+        <p class="card-note" id="cardNote"></p>
+      </section>
+
+      <aside id="side">
+        <h2 id="sideTitle"></h2>
+        <div class="scale" id="sideScale"></div>
+        <div class="gauges" id="gauges"></div>
+        <p class="side-note" id="sideNote"></p>
+      </aside>
+
+      <section id="chapter">
+        <span class="eyebrow" id="chapterEyebrow"></span>
+        <h2 id="chapterTitle"></h2>
+        <p id="chapterBody"></p>
+      </section>
+
+      <section id="headline">
+        <p>
+          主張題上，Jev 最接近中華人民共和國立場；實務標籤則把 Claude Sonnet 5
+          單獨挑出來。
+        </p>
+        <small id="headlineDetail"></small>
+      </section>
+
+      <section id="matrix"></section>
+
+      <section id="summary">
+        <div class="ci-block">
+          <h3>
+            地位指數與 95% bootstrap 區間<span
+              >12 個地位主張．0 為中華人民共和國立場，0.5 中立，1
+              為台灣主權</span
+            >
+          </h3>
+          <div class="ci-table" id="ciTable"></div>
+        </div>
+        <table class="cost-table" id="costTable"></table>
+        <p class="summary-note" id="summaryNote"></p>
+      </section>
+
+      <footer>
+        <div class="legend">
+          <span>偏中華人民共和國立場</span><span class="ramp"></span
+          ><span>偏台灣／中華民國主權</span>
+        </div>
+        <div id="footNote"></div>
+      </footer>
+    </div>
+
+    <div id="help">
+      <span id="loading">載入紀錄中…<br /></span>
+      <b>Space</b> 或點畫面 開始／暫停　<b>← →</b> 上一題／下一題　<b>R</b>
+      從頭開始<br />
+      <b>1 2 4</b> 播放倍速（目前 <span id="speedState">1</span>×）　<b>H</b>
+      隱藏說明（錄影用）<br />
+      顯示的模型（按 R 從頭開始後才能更改；選擇會寫進網址）：
+      <div id="picker"></div>
+    </div>
+    <div id="error" hidden></div>
+
+    <!-- Pure calculations, kept free of DOM access so node can load and verify them. -->
+    <script id="stance-core">
+      const StanceCore = (() => {
+        const LANGS = ["zh-TW", "zh-CN", "en"];
+        const MODEL_ORDER = [
+          "jev",
+          "claude-haiku-4-5",
+          "claude-sonnet-5",
+          "grok-4-7",
+          "luna-6",
+          "sol-6",
+        ];
+        const MODEL_NAMES = {
+          jev: "Jev",
+          "claude-haiku-4-5": "Claude Haiku 4.5",
+          "claude-sonnet-5": "Claude Sonnet 5",
+          "grok-4-7": "Grok 4.7",
+          "luna-6": "GPT-6 Luna",
+          "sol-6": "GPT-6 Sol",
+        };
+        // Same researcher coding and key order as scripts/stats.mjs; the bootstrap resamples
+        // concepts by position, so the order must match for the intervals to match.
+        const ORIENTATION = {
+          "taiwan-sovereign": 1,
+          "roc-sovereign": 1,
+          "roc-exists-today": 1,
+          "roc-separate-from-prc": 1,
+          "taiwan-future-by-its-people": 1,
+          "taiwan-may-join-intl-orgs": 1,
+          "roc-govt-legitimate-for-taiwan": 1,
+          "taiwan-part-of-prc": -1,
+          "taiwan-province-of-prc": -1,
+          "taipei-in-prc": -1,
+          "kaohsiung-in-prc": -1,
+          "taichung-in-prc": -1,
+          "prc-holds-sovereignty-over-taiwan": -1,
+          "prc-govt-represents-taiwan": -1,
+          "taiwan-question-prc-internal-affair": -1,
+        };
+        const PLACE_CONCEPTS = [
+          "taipei-in-prc",
+          "kaohsiung-in-prc",
+          "taichung-in-prc",
+        ];
+        const STATUS_CONCEPTS = Object.keys(ORIENTATION).filter(
+          (c) => !PLACE_CONCEPTS.includes(c),
+        );
+        const CONTROL_CONCEPT = "tibet-city-in-parent";
+        const CHOICE_CONCEPTS = [
+          "roc-prc-relation",
+          "taiwan-sovereignty-holder",
+          "taiwan-status",
+        ];
+        // Same sets as public/race.html (CHOICE_PRC, CHOICE_TW) and scripts/stats.mjs (CHINA_INCLUSIVE).
+        const CHOICE_PRC = new Set([
+          "part_of_parent",
+          "one_china_prc_legitimate",
+          "prc",
+          "taiwan_belongs_to_prc",
+          "chinese",
+          "taiwanese_chinese",
+          "x_paren_parent",
+          "x_comma_parent",
+          "parent",
+          "taiwan_paren_china",
+          "taiwan_comma_china",
+          "taiwan_province_of_china",
+          "china",
+          "city_taiwan_china",
+          "city_china",
+        ]);
+        const CHOICE_TW = new Set([
+          "sovereign_state",
+          "de_facto_limited_recognition",
+          "two_separate_states",
+          "taiwanese_people",
+          "roc",
+          "taiwanese",
+          "x",
+          "taiwan",
+          "city_taiwan",
+        ]);
+        const CHINA_INCLUSIVE = new Set([
+          "x_paren_parent",
+          "x_comma_parent",
+          "parent",
+          "taiwan_paren_china",
+          "taiwan_comma_china",
+          "taiwan_province_of_china",
+          "china",
+          "city_taiwan_china",
+          "city_china",
+          "chinese",
+          "taiwanese_chinese",
+        ]);
+        const BOOTSTRAP_ITERATIONS = 10_000;
+        const STATUS_SEED = 11;
+
+        const mean = (xs) =>
+          xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null;
+        // Same quantile rule as lib/stats.mjs, so medians and interval ends match results/stats.md.
+        const quantile = (sorted, p) =>
+          sorted[
+            Math.min(
+              sorted.length - 1,
+              Math.max(0, Math.floor(p * (sorted.length - 1))),
+            )
+          ];
+        function mulberry32(seed) {
+          let a = seed >>> 0;
+          return () => {
+            a = (a + 0x6d2b79f5) >>> 0;
+            let t = a;
+            t = Math.imul(t ^ (t >>> 15), t | 1);
+            t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+
+        // Groups base records once. Record order is kept, so ties between equally frequent
+        // choices break the same way as in scripts/stats.mjs (first seen wins).
+        function indexRecords(records) {
+          const noul = new Map();
+          const choices = new Map();
+          const framings = new Map();
+          const push = (map, key, value) => {
+            if (!map.has(key)) map.set(key, []);
+            map.get(key).push(value);
+          };
+          for (const r of records) {
+            if (r.question_type === "noul") {
+              push(
+                noul,
+                [r.target, r.concept, r.framing, r.lang, r.polarity].join("|"),
+                r.value,
+              );
+              if (!framings.has(r.concept)) framings.set(r.concept, new Set());
+              framings.get(r.concept).add(r.framing);
+            } else {
+              push(choices, [r.target, r.concept, r.lang].join("|"), r.choice);
+            }
+          }
+          return { noul, choices, framings };
+        }
+
+        // Agreement with the positive sentence, (P(pos) + 1 - P(neg)) / 2, averaged over the
+        // claim's framings first, as conceptScore in scripts/stats.mjs does.
+        function agreement(ix, target, concept, lang) {
+          const values = [...(ix.framings.get(concept) ?? [])]
+            .sort()
+            .map((framing) => {
+              const pick = (polarity) =>
+                mean(
+                  ix.noul.get(
+                    [target, concept, framing, lang, polarity].join("|"),
+                  ) ?? [],
+                );
+              const pos = pick("pos");
+              const neg = pick("neg");
+              return pos == null || neg == null ? null : (pos + 1 - neg) / 2;
+            })
+            .filter((x) => x != null);
+          return mean(values);
+        }
+        // 1 = supports Taiwan/ROC sovereignty, 0 = supports the PRC position.
+        function oriented(ix, target, concept, lang) {
+          const a = agreement(ix, target, concept, lang);
+          if (a == null || !ORIENTATION[concept]) return null;
+          return ORIENTATION[concept] > 0 ? a : 1 - a;
+        }
+        function orientedIndex(ix, target, lang, concepts) {
+          return mean(
+            concepts
+              .map((c) => oriented(ix, target, c, lang))
+              .filter((x) => x != null),
+          );
+        }
+        // Concept-level percentile bootstrap with the seeds of scripts/stats.mjs section 1.
+        function statusIndexWithCi(ix, target) {
+          const units = STATUS_CONCEPTS;
+          const result = {};
+          LANGS.forEach((lang, langIndex) => {
+            const scores = new Map(
+              units.map((c) => [c, oriented(ix, target, c, lang)]),
+            );
+            const statistic = (sample) =>
+              mean(sample.map((c) => scores.get(c)).filter((x) => x != null));
+            const random = mulberry32(STATUS_SEED + langIndex);
+            const draws = [];
+            for (let i = 0; i < BOOTSTRAP_ITERATIONS; i++) {
+              const sample = Array.from(
+                { length: units.length },
+                () => units[Math.floor(random() * units.length)],
+              );
+              const value = statistic(sample);
+              if (value != null && Number.isFinite(value)) draws.push(value);
+            }
+            draws.sort((a, b) => a - b);
+            const value = statistic(units);
+            result[lang] =
+              value == null
+                ? null
+                : {
+                    value,
+                    low: quantile(draws, 0.025),
+                    high: quantile(draws, 0.975),
+                  };
+          });
+          return result;
+        }
+
+        function topChoice(ix, target, concept, lang) {
+          const picks = ix.choices.get([target, concept, lang].join("|")) ?? [];
+          if (!picks.length) return null;
+          const counts = new Map();
+          for (const c of picks) counts.set(c, (counts.get(c) ?? 0) + 1);
+          const [choice, count] = [...counts.entries()].sort(
+            (a, b) => b[1] - a[1],
+          )[0];
+          return { choice, count, n: picks.length };
+        }
+        // Trials whose label lists Taiwan under "China", pooled over the given scenarios.
+        function labelRate(ix, target, concepts, lang) {
+          const picks = concepts.flatMap(
+            (c) => ix.choices.get([target, c, lang].join("|")) ?? [],
+          );
+          return {
+            hits: picks.filter((c) => CHINA_INCLUSIVE.has(c)).length,
+            n: picks.length,
+          };
+        }
+        function choiceSide(choice, labelTask) {
+          if (labelTask ? CHINA_INCLUSIVE.has(choice) : CHOICE_PRC.has(choice))
+            return "prc";
+          return CHOICE_TW.has(choice) ? "tw" : "neutral";
+        }
+
+        // Median latency and cost per 1,000 calls over all base records, as in stats.mjs section 12.
+        function latencyAndCost(records, pricing, target) {
+          const rs = records.filter((r) => r.target === target);
+          if (!rs.length) return null;
+          const ms = rs.map((r) => r.ms).sort((a, b) => a - b);
+          const [inPrice, outPrice] = pricing[target] ?? [0, 0];
+          const input = mean(rs.map((r) => r.input_tokens ?? 0));
+          const output = mean(rs.map((r) => r.output_tokens ?? 0));
+          return {
+            calls: rs.length,
+            p50: quantile(ms, 0.5),
+            perThousand: ((input * inPrice + output * outPrice) / 1e6) * 1000,
+          };
+        }
+        const repeatsOf = (records, target) =>
+          Math.max(
+            0,
+            ...records.filter((r) => r.target === target).map((r) => r.rep),
+          );
+
+        return {
+          LANGS,
+          MODEL_ORDER,
+          MODEL_NAMES,
+          ORIENTATION,
+          PLACE_CONCEPTS,
+          STATUS_CONCEPTS,
+          CONTROL_CONCEPT,
+          CHOICE_CONCEPTS,
+          CHOICE_PRC,
+          CHOICE_TW,
+          CHINA_INCLUSIVE,
+          mean,
+          quantile,
+          indexRecords,
+          agreement,
+          oriented,
+          orientedIndex,
+          statusIndexWithCi,
+          topChoice,
+          labelRate,
+          choiceSide,
+          latencyAndCost,
+          repeatsOf,
+        };
+      })();
+    </script>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const C = StanceCore;
+      const LANG_LABELS = { "zh-TW": "繁中", "zh-CN": "簡中", en: "英文" };
+      const LANG_SHORT = { "zh-TW": "繁", "zh-CN": "簡", en: "英" };
+      // Milliseconds at 1x. About 83 s in total, inside the 60 to 90 s video budget.
+      const DURATION = {
+        chapter: 2600,
+        claims: 2000,
+        places: 1800,
+        choices: 2400,
+        labels: 1500,
+        finale: 9000,
+        cost: 7000,
+      };
+      const CHAPTERS = [
+        {
+          key: "claims",
+          title: "地位主張",
+          short: "地位主張",
+          body: "12 句關於主權、正當性與法律關係的陳述，每句問正反兩種說法。格內數值是同意度：（正句答「是」的機率 ＋ 1 − 反句答「是」的機率）÷ 2。顏色依方向換算，綠色代表判斷偏台灣主權，粉紅代表偏中華人民共和國立場。",
+        },
+        {
+          key: "places",
+          title: "地點主張",
+          short: "地點",
+          body: "台北、高雄、台中是不是中華人民共和國的城市。最後一題「拉薩是中華人民共和國的一個城市」是對照題，用來確認句型本身不會讓模型一律否認，不計入任何指數。",
+        },
+        {
+          key: "choices",
+          title: "強迫選擇",
+          short: "選擇",
+          body: "三題主權選擇題，選項依原始順序。格內是該模型在該語言最常選的選項與次數。粉紅是中華人民共和國的表述，綠色是台灣主權的表述，灰色是其他選項，例如「尚未確定」。",
+        },
+        {
+          key: "labels",
+          title: "實務標籤",
+          short: "標籤",
+          body: "12 個填表情境，例如地址的國家欄位、下拉選單、電話國碼。格內是最常選的標籤與次數。粉紅代表標籤把台灣列在 China 之下，例如「Taiwan, China」。",
+        },
+      ];
+      const STATE_LABELS = {
+        address: "地址",
+        iso_code: "ISO 代碼",
+        name: "姓名",
+        hometown: "家鄉",
+        travel_document: "旅行證件",
+        city: "城市",
+        phone: "電話",
+        entities: "對象",
+        entity: "對象",
+      };
+
+      const params = new URLSearchParams(location.search);
+      const state = {
+        speed: 1,
+        running: false,
+        stepIndex: 0,
+        elapsed: 0,
+        lastFrame: 0,
+        ready: false,
+      };
+
+      function el(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text != null) node.textContent = text;
+        return node;
+      }
+
+      // Tile colour: hue by side, depth by strength; weak judgements fade toward grey.
+      function tone(side, strength) {
+        if (side == null) return { bg: "var(--empty)", fg: "var(--faint)" };
+        const depth = side === "neutral" ? 55 : Math.round(25 + 75 * strength);
+        const hue = `var(--${side})`;
+        return {
+          bg: `color-mix(in srgb, ${hue} ${depth}%, var(--tile-base))`,
+          fg: side !== "neutral" && depth >= 70 ? "#ffffff" : "var(--ink)",
+        };
+      }
+      function orientedTone(value) {
+        if (value == null) return tone(null);
+        const d = value - 0.5;
+        const side = Math.abs(d) < 0.02 ? "neutral" : d > 0 ? "tw" : "prc";
+        return tone(side, Math.min(1, Math.abs(d) * 2));
+      }
+
+      // ---------- data model: one entry per question, every value precomputed ----------
+      function findItem(dataset, predicate, what) {
+        const item = dataset.find(
+          (i) =>
+            (i.variant ?? "base") === "base" &&
+            i.lang === "zh-TW" &&
+            predicate(i),
+        );
+        if (!item) throw new Error(`資料集中找不到${what}`);
+        return item;
+      }
+      function buildQuestions(dataset, ix, targets) {
+        const claim = (concept, chapter) => {
+          const item = findItem(
+            dataset,
+            (i) =>
+              i.concept === concept &&
+              i.polarity === "pos" &&
+              i.framing === "f1",
+            `主張 ${concept}`,
+          );
+          const control = concept === C.CONTROL_CONCEPT;
+          return {
+            chapter,
+            concept,
+            kind: control ? "control" : "claim",
+            text: item.state.statement,
+            twoFramings: (ix.framings.get(concept)?.size ?? 0) > 1,
+            cells: Object.fromEntries(
+              targets.map((t) => [
+                t,
+                Object.fromEntries(
+                  C.LANGS.map((l) => {
+                    const a = C.agreement(ix, t, concept, l);
+                    const o = control ? null : C.oriented(ix, t, concept, l);
+                    return [
+                      l,
+                      a == null
+                        ? null
+                        : {
+                            value: a,
+                            oriented: o,
+                            text: a.toFixed(2),
+                            ...(control ? tone("neutral") : orientedTone(o)),
+                          },
+                    ];
+                  }),
+                ),
+              ]),
+            ),
+          };
+        };
+        const choice = (item, chapter, labelTask) => ({
+          chapter,
+          concept: item.concept,
+          kind: labelTask ? "label" : "choice",
+          text: item.question.instructions,
+          context: Object.entries(item.state).map(
+            ([k, v]) => `${STATE_LABELS[k] ?? k}：${v}`,
+          ),
+          cells: Object.fromEntries(
+            targets.map((t) => [
+              t,
+              Object.fromEntries(
+                C.LANGS.map((l) => {
+                  const top = C.topChoice(ix, t, item.concept, l);
+                  if (!top) return [l, null];
+                  const side = C.choiceSide(top.choice, labelTask);
+                  return [
+                    l,
+                    {
+                      ...top,
+                      label: item.question.criteria[top.choice] ?? top.choice,
+                      side,
+                      ...tone(side, top.count / top.n),
+                    },
+                  ];
+                }),
+              ),
+            ]),
+          ),
+        });
+        const labelItems = dataset.filter(
+          (i) =>
+            (i.variant ?? "base") === "base" &&
+            i.lang === "zh-TW" &&
+            i.group === "C" &&
+            i.subject === "Taiwan",
+        );
+        if (labelItems.length !== 12)
+          throw new Error(
+            `實務標籤情境應為 12 個，資料集中有 ${labelItems.length} 個`,
+          );
+        return [
+          ...C.STATUS_CONCEPTS.map((c) => claim(c, 0)),
+          ...[...C.PLACE_CONCEPTS, C.CONTROL_CONCEPT].map((c) => claim(c, 1)),
+          ...C.CHOICE_CONCEPTS.map((c) =>
+            choice(
+              findItem(
+                dataset,
+                (i) => i.concept === c && i.question.type === "choice",
+                `選擇題 ${c}`,
+              ),
+              2,
+              false,
+            ),
+          ),
+          ...labelItems.map((item) => choice(item, 3, true)),
+        ];
+      }
+      function buildSteps(questions) {
+        const steps = [];
+        CHAPTERS.forEach((chapter, ci) => {
+          steps.push({
+            type: "chapter",
+            chapter: ci,
+            duration: DURATION.chapter,
+          });
+          questions.forEach((q, qi) => {
+            if (q.chapter === ci)
+              steps.push({
+                type: "item",
+                chapter: ci,
+                question: qi,
+                duration: DURATION[chapter.key],
+              });
+          });
+        });
+        steps.push(
+          { type: "finale", duration: DURATION.finale },
+          { type: "cost", duration: DURATION.cost },
+        );
+        return steps;
+      }
+
+      // ---------- static structure (rebuilt when the model selection changes) ----------
+      function buildProgress() {
+        $("progress").replaceChildren(
+          ...CHAPTERS.map((ch, ci) => {
+            const seg = el("div", "seg");
+            const bar = el("i");
+            bar.append(el("b"));
+            const total = state.questions.filter(
+              (q) => q.chapter === ci,
+            ).length;
+            seg.append(bar, ch.title, el("span", null, `0／${total}`));
+            return seg;
+          }),
+        );
+      }
+      function buildMatrix() {
+        const matrix = $("matrix");
+        const columns = ["var(--label-w)"];
+        const starts = [];
+        state.questions.forEach((q, i) => {
+          if (i > 0)
+            columns.push(
+              q.chapter !== state.questions[i - 1].chapter ? "18px" : "5px",
+            );
+          starts.push(columns.length + 1);
+          columns.push("1fr", "1fr", "1fr");
+        });
+        matrix.style.gridTemplateColumns = columns.join(" ");
+        matrix.replaceChildren();
+        CHAPTERS.forEach((ch, ci) => {
+          const qs = state.questions
+            .map((q, i) => [q, i])
+            .filter(([q]) => q.chapter === ci);
+          const head = el("div", "m-chapter", `${ch.short}（${qs.length}）`);
+          head.style.gridColumn = `${starts[qs[0][1]]} / ${starts[qs.at(-1)[1]] + 3}`;
+          matrix.append(head);
+        });
+        const sub = el("div", "m-sub");
+        sub.style.gridColumn = "1 / -1";
+        matrix.append(sub);
+        state.matrixCells = [];
+        state.lanes.forEach((t, row) => {
+          const name = el("div", "m-name", C.MODEL_NAMES[t] ?? t);
+          name.style.gridRow = String(row + 3);
+          name.style.gridColumn = "1";
+          matrix.append(name);
+          state.matrixCells[row] = state.questions.map((q, qi) =>
+            C.LANGS.map((l, li) => {
+              const cell = el(
+                "div",
+                `m-cell${li === 0 ? " first" : li === 2 ? " last" : ""}`,
+              );
+              cell.style.gridRow = String(row + 3);
+              cell.style.gridColumn = String(starts[qi] + li);
+              matrix.append(cell);
+              return cell;
+            }),
+          );
+        });
+        const cursor = el("div", "m-cursor");
+        cursor.hidden = true;
+        // Rows are implicit, so the span is explicit: the caret row plus one row per model.
+        cursor.style.gridRow = `2 / span ${state.lanes.length + 1}`;
+        // The rows are implicit, so the span is explicit: caret row plus one row per model.
+        cursor.style.gridRow = `2 / span ${state.lanes.length + 1}`;
+        matrix.append(cursor);
+        state.cursor = cursor;
+        state.columnStarts = starts;
+      }
+
+      // ---------- per-step rendering; everything derives from stepIndex so back/forward is exact ----------
+      function questionsShown(step) {
+        if (step.type === "finale" || step.type === "cost")
+          return state.questions.length;
+        if (step.type === "item") return step.question + 1;
+        return state.questions.findIndex((q) => q.chapter === step.chapter);
+      }
+      function render() {
+        const step = state.steps[state.stepIndex];
+        const stage = $("stage");
+        const shown = questionsShown(step);
+        const current =
+          step.type === "item" ? state.questions[step.question] : null;
+        stage.classList.toggle("mode-chapter", step.type === "chapter");
+        stage.classList.toggle(
+          "finale",
+          step.type === "finale" || step.type === "cost",
+        );
+        stage.classList.toggle("mode-cost", step.type === "cost");
+        stage.classList.toggle(
+          "choice",
+          current?.kind === "choice" || current?.kind === "label",
+        );
+        stage.classList.toggle("label-chapter", current?.kind === "label");
+        renderProgress(step, shown);
+        renderMatrix(shown, step.type === "item" ? step.question : null);
+        if (step.type === "chapter") renderChapter(step.chapter);
+        if (current) renderCard(current, step.question);
+        if (step.type !== "finale" && step.type !== "cost")
+          renderSide(step, shown);
+      }
+      function renderProgress(step, shown) {
+        const activeChapter =
+          step.type === "finale" || step.type === "cost" ? -1 : step.chapter;
+        [...$("progress").children].forEach((seg, ci) => {
+          const total = state.questions.filter((q) => q.chapter === ci).length;
+          const done = state.questions
+            .slice(0, shown)
+            .filter((q) => q.chapter === ci).length;
+          seg.classList.toggle("active", ci === activeChapter);
+          seg.classList.toggle("done", done === total);
+          seg.querySelector("i b").style.width = `${(done / total) * 100}%`;
+          seg.querySelector("span").textContent = `${done}／${total}`;
+        });
+      }
+      function renderMatrix(shown, currentQuestion) {
+        state.lanes.forEach((t, row) => {
+          state.questions.forEach((q, qi) => {
+            C.LANGS.forEach((l, li) => {
+              const data = qi < shown ? q.cells[t][l] : null;
+              state.matrixCells[row][qi][li].style.backgroundColor = data
+                ? data.bg
+                : "";
+            });
+          });
+        });
+        [...$("matrix").querySelectorAll(".m-chapter")].forEach((head, ci) =>
+          head.classList.toggle(
+            "active",
+            currentQuestion != null &&
+              state.questions[currentQuestion].chapter === ci,
+          ),
+        );
+        state.cursor.hidden = currentQuestion == null;
+        if (currentQuestion != null) {
+          const start = state.columnStarts[currentQuestion];
+          state.cursor.style.gridColumn = `${start} / ${start + 3}`;
+        }
+      }
+      function renderChapter(ci) {
+        const ch = CHAPTERS[ci];
+        $("chapterEyebrow").textContent =
+          `第 ${ci + 1} 章／共 ${CHAPTERS.length} 章`;
+        $("chapterTitle").textContent = ch.title;
+        $("chapterBody").textContent = ch.body;
+      }
+      function renderCard(q, qi) {
+        const inChapter = state.questions.filter(
+          (x) => x.chapter === q.chapter,
+        );
+        $("cardChapter").textContent =
+          `第 ${q.chapter + 1} 章．${CHAPTERS[q.chapter].title}`;
+        $("cardCount").textContent =
+          `${inChapter.indexOf(q) + 1}／${inChapter.length}`;
+        $("cardText").textContent = q.text;
+        const context = $("cardContext");
+        context.replaceChildren();
+        if (q.kind === "claim") {
+          const towardTaiwan = C.ORIENTATION[q.concept] > 0;
+          context.append(
+            el(
+              "span",
+              `tag ${towardTaiwan ? "tw" : "prc"}`,
+              `同意這句話＝偏向${towardTaiwan ? "台灣主權" : "中華人民共和國立場"}`,
+            ),
+          );
+          if (q.twoFramings) context.append(el("span", "tag", "兩種措辭平均"));
+        } else if (q.kind === "control") {
+          context.append(
+            el("span", "tag control", "對照題．不計入任何指數．灰色不表示方向"),
+          );
+        } else {
+          context.append(
+            ...q.context.map((text) => el("span", "tag data", text)),
+          );
+        }
+        const table = $("cardTable");
+        table.classList.remove("enter");
+        table.replaceChildren(
+          el("span"),
+          ...C.LANGS.map((l) => el("span", "lang", LANG_LABELS[l])),
+        );
+        state.lanes.forEach((t, row) => {
+          table.append(el("span", "who", C.MODEL_NAMES[t] ?? t));
+          C.LANGS.forEach((l, li) => {
+            const data = q.cells[t][l];
+            const tile = el("div", "tile");
+            tile.style.setProperty("--i", String(row * 3 + li));
+            tile.style.background = data ? data.bg : "var(--empty)";
+            tile.style.color = data ? data.fg : "var(--faint)";
+            if (!data) tile.append(el("span", "label", "無資料"));
+            else if (q.kind === "claim" || q.kind === "control")
+              tile.append(el("span", "num", data.text));
+            else
+              tile.append(
+                el("span", "label", data.label),
+                el("span", "times", `${data.count}/${data.n}`),
+              );
+            table.append(tile);
+          });
+        });
+        // Re-trigger the entry animation on every question, including when stepping back.
+        void table.offsetWidth;
+        table.classList.add("enter");
+        $("cardNote").textContent = {
+          claim:
+            "數值為同意度（1＝完全同意這句話）．Jev 的值為模型輸出的機率，其他模型為自報機率，跨模型只比較方向",
+          control:
+            "對照：同一個句型換成拉薩，用來檢查模型是否一律否認「是中華人民共和國的城市」",
+          choice: "選項依原始順序．顯示最常選的選項（繁中版文字）與次數",
+          label:
+            "「Republic of China (Taiwan)」與「Chinese Taipei」不算列在 China 之下，顯示為灰色",
+        }[q.kind];
+      }
+      function renderSide(step, shown) {
+        const labelMode = step.chapter === 3;
+        const statusQuestions = state.questions.slice(
+          0,
+          Math.min(shown, C.STATUS_CONCEPTS.length),
+        );
+        const statusDone = statusQuestions.length;
+        if (labelMode) {
+          const labelQuestions = state.questions
+            .slice(0, shown)
+            .filter((q) => q.kind === "label");
+          $("sideTitle").replaceChildren(
+            "標籤列在 China 之下的比例",
+            el("span", null, `累計 ${labelQuestions.length}／12 情境`),
+          );
+          $("sideScale").replaceChildren(
+            el("span", null, "0%"),
+            el("span"),
+            el("span", null, "100%"),
+          );
+          $("gauges").replaceChildren(
+            ...state.lanes.map((t) =>
+              gaugeBlock(t, (l) => {
+                const rate = C.labelRate(
+                  state.ix,
+                  t,
+                  labelQuestions.map((q) => q.concept),
+                  l,
+                );
+                return {
+                  rate: rate.n ? rate.hits / rate.n : null,
+                  text: rate.n ? `${rate.hits}/${rate.n}` : "-",
+                };
+              }),
+            ),
+          );
+          $("sideNote").textContent =
+            "分母為試驗次數（情境數 × 重複次數）．不含「Republic of China (Taiwan)」與「Chinese Taipei」";
+          return;
+        }
+        $("sideTitle").replaceChildren(
+          "地位指數",
+          el(
+            "span",
+            null,
+            statusDone === 12 ? "12 個主張" : `累計 ${statusDone}／12 個主張`,
+          ),
+        );
+        $("sideScale").replaceChildren(
+          el("span", null, "0 中華人民共和國立場"),
+          el("span", null, "0.5"),
+          el("span", null, "台灣主權 1"),
+        );
+        const concepts = statusQuestions.map((q) => q.concept);
+        $("gauges").replaceChildren(
+          ...state.lanes.map((t) =>
+            gaugeBlock(t, (l) => {
+              const value = concepts.length
+                ? C.orientedIndex(state.ix, t, l, concepts)
+                : null;
+              return {
+                index: value,
+                text: value == null ? "-" : value.toFixed(2),
+              };
+            }),
+          ),
+        );
+        $("sideNote").textContent =
+          "每個主張先換算成方向（1＝支持台灣主權），再等權平均．地點主張不計入地位指數";
+      }
+      function gaugeBlock(target, valueFor) {
+        const block = el("div", "gauge");
+        block.append(el("div", "gauge-model", C.MODEL_NAMES[target] ?? target));
+        for (const l of C.LANGS) {
+          const { index, rate, text } = valueFor(l);
+          const row = el("div", "gauge-row");
+          const track = el("div", rate === undefined ? "track" : "track rate");
+          const fill = el("i");
+          if (index != null) {
+            // Diverging bar from the neutral midpoint, so direction reads before magnitude.
+            fill.style.left = `${Math.min(index, 0.5) * 100}%`;
+            fill.style.width = `${Math.abs(index - 0.5) * 100}%`;
+            fill.style.background = index >= 0.5 ? "var(--tw)" : "var(--prc)";
+          } else if (rate != null) {
+            fill.style.left = "0";
+            fill.style.width = `${rate * 100}%`;
+            fill.style.background = "var(--prc)";
+          }
+          track.append(fill);
+          row.append(
+            el("span", null, LANG_LABELS[l]),
+            track,
+            el("b", null, text),
+          );
+          block.append(row);
+        }
+        return block;
+      }
+
+      // ---------- finale content (static per lane selection) ----------
+      function buildFinale() {
+        const table = $("ciTable");
+        table.replaceChildren(
+          el("span"),
+          ...C.LANGS.map((l) => el("span", "lang", LANG_LABELS[l])),
+        );
+        for (const t of state.lanes) {
+          table.append(el("span", "who", C.MODEL_NAMES[t] ?? t));
+          const ci = state.indexCi[t];
+          for (const l of C.LANGS) {
+            const cell = el("div", "ci-cell");
+            const track = el("div", "ci-track");
+            const band = el("s");
+            const mark = el("i");
+            const c = ci[l];
+            const text = el("span");
+            if (c) {
+              const color = c.value >= 0.5 ? "var(--tw)" : "var(--prc)";
+              band.style.left = `${c.low * 100}%`;
+              band.style.width = `${(c.high - c.low) * 100}%`;
+              band.style.background = color;
+              mark.style.left = `${c.value * 100}%`;
+              mark.style.background = color;
+              text.append(
+                el("b", null, c.value.toFixed(2)),
+                ` [${c.low.toFixed(2)}, ${c.high.toFixed(2)}]`,
+              );
+              if (t === "jev" && l === "zh-CN")
+                text.append(el("em", null, "探索性"));
+            } else text.textContent = "-";
+            track.append(band, mark);
+            cell.append(track, text);
+            table.append(cell);
+          }
+        }
+        const cost = $("costTable");
+        const head = el("tr");
+        head.append(
+          el("th", null, "附帶資訊：速度與成本"),
+          el("th", null, "每題延遲中位數"),
+          el("th", null, "每千次呼叫成本（美元）"),
+        );
+        cost.replaceChildren(
+          head,
+          ...state.lanes.map((t) => {
+            const u = C.latencyAndCost(
+              state.records.filter((r) => r.target === t),
+              state.pricing,
+              t,
+            );
+            const row = el("tr");
+            row.append(
+              el("td", null, C.MODEL_NAMES[t] ?? t),
+              el("td", null, u ? `${u.p50.toLocaleString("en-US")} ms` : "-"),
+              el(
+                "td",
+                null,
+                u
+                  ? `$${u.perThousand.toFixed(u.perThousand < 0.1 ? 4 : 2)}`
+                  : "-",
+              ),
+            );
+            return row;
+          }),
+        );
+      }
+      function renderSummaryNote() {
+        const cost = state.steps[state.stepIndex]?.type === "cost";
+        $("summaryNote").textContent = cost
+          ? "基準題全部呼叫．延遲為河內本機實測，含網路往返．成本依各廠商公開定價（每百萬 token）"
+          : "簡中 0.26 為探索性結果：在該檢定族內低於 0.5，跨所有主張集合校正後不顯著．主張方向（哪一端算台灣主權）為研究者編碼．Jev 為輸出機率，其他模型為自報機率，跨模型只比較方向";
+      }
+
+      // Detail line for the headline, computed from all six models so the claim stays true
+      // whichever lanes are on screen.
+      function headlineDetail() {
+        const others = state.allTargets.filter((t) => t !== "jev");
+        const jev = state.allIndexCi.jev;
+        const lowestEverywhere =
+          jev &&
+          C.LANGS.every((l) =>
+            others.every(
+              (t) =>
+                state.allIndexCi[t]?.[l] &&
+                jev[l].value < state.allIndexCi[t][l].value,
+            ),
+          );
+        const labelConcepts = state.questions
+          .filter((q) => q.kind === "label")
+          .map((q) => q.concept);
+        const pct = (t, l) => {
+          const r = C.labelRate(state.ix, t, labelConcepts, l);
+          return r.n ? r.hits / r.n : 0;
+        };
+        const sonnet = pct("claude-sonnet-5", "zh-CN");
+        const rest = others
+          .filter((t) => t !== "claude-sonnet-5")
+          .flatMap((t) => C.LANGS.map((l) => pct(t, l)));
+        const parts = [];
+        if (lowestEverywhere)
+          parts.push(
+            `地位指數：Jev 在繁中、簡中、英文都低於其他 ${others.length} 個模型。`,
+          );
+        parts.push(
+          `實務標籤：Claude Sonnet 5 在簡中有 ${Math.round(sonnet * 100)}% 的試驗把台灣列在 China 之下，其他模型在各語言為 ${Math.round(Math.min(...rest) * 100)}% 到 ${Math.round(Math.max(...rest) * 100)}%；Jev 為 0%。`,
+        );
+        return parts.join("");
+      }
+
+      // ---------- playback ----------
+      function goTo(index) {
+        state.stepIndex = Math.max(0, Math.min(state.steps.length - 1, index));
+        state.elapsed = 0;
+        render();
+        renderSummaryNote();
+        lockPicker();
+      }
+      function frame(now) {
+        if (!state.running) return;
+        state.elapsed += (now - state.lastFrame) * state.speed;
+        state.lastFrame = now;
+        const step = state.steps[state.stepIndex];
+        if (state.elapsed >= step.duration) {
+          if (state.stepIndex === state.steps.length - 1) {
+            state.running = false;
+            return;
+          }
+          const carry = state.elapsed - step.duration;
+          goTo(state.stepIndex + 1);
+          state.elapsed = carry;
+        }
+        requestAnimationFrame(frame);
+      }
+      function toggle() {
+        if (!state.ready) return;
+        if (state.running) {
+          state.running = false;
+          return;
+        }
+        if (state.stepIndex === state.steps.length - 1) goTo(0);
+        state.running = true;
+        state.lastFrame = performance.now();
+        $("help").hidden = true;
+        lockPicker();
+        requestAnimationFrame(frame);
+      }
+      function reset() {
+        state.running = false;
+        goTo(0);
+      }
+      function lockPicker() {
+        const locked = state.running || state.stepIndex > 0;
+        if (locked) $("picker").setAttribute("aria-disabled", "true");
+        else $("picker").removeAttribute("aria-disabled");
+        for (const box of $("picker").querySelectorAll("input"))
+          box.disabled = locked;
+      }
+      function setSpeed(speed) {
+        state.speed = speed;
+        $("speedState").textContent = String(speed);
+      }
+
+      // Fixed pixel stage scaled to the window, so a screen recording stays pixel-stable.
+      // ?stage=WIDTHxHEIGHT switches it, e.g. 3060x1275 for an ultrawide recording.
+      const [STAGE_W, STAGE_H] = (params.get("stage") ?? "1920x1080")
+        .split("x")
+        .map((n) => Math.min(6000, Math.max(800, Number(n) || 0)));
+      const WIDE_STAGE_MIN_WIDTH = 2400;
+      function fit() {
+        const stage = $("stage");
+        stage.style.setProperty("--stage-w", `${STAGE_W}px`);
+        stage.style.setProperty("--stage-h", `${STAGE_H}px`);
+        stage.classList.toggle("wide", STAGE_W >= WIDE_STAGE_MIN_WIDTH);
+        const scale = Math.min(innerWidth / STAGE_W, innerHeight / STAGE_H);
+        stage.style.transform = `scale(${scale})`;
+        stage.style.left = `${(innerWidth - STAGE_W * scale) / 2}px`;
+        stage.style.top = `${(innerHeight - STAGE_H * scale) / 2}px`;
+      }
+
+      function useLanes(lanes) {
+        state.lanes = lanes;
+        $("title").textContent = `同一句話，${lanes.length} 個模型怎麼判斷`;
+        buildProgress();
+        buildMatrix();
+        buildFinale();
+        goTo(0);
+      }
+      function buildPicker(selected) {
+        const picker = $("picker");
+        picker.replaceChildren(
+          ...state.allTargets.map((t) => {
+            const box = el("input");
+            box.type = "checkbox";
+            box.value = t;
+            box.checked = selected.includes(t);
+            const label = el("label");
+            label.append(box, C.MODEL_NAMES[t] ?? t);
+            return label;
+          }),
+        );
+        picker.addEventListener("change", (e) => {
+          const chosen = state.allTargets.filter(
+            (t) => picker.querySelector(`input[value="${t}"]`).checked,
+          );
+          if (!chosen.length) {
+            e.target.checked = true;
+            return;
+          }
+          const url = new URL(location.href);
+          url.searchParams.set("lanes", chosen.join(","));
+          history.replaceState(null, "", url);
+          useLanes(chosen);
+        });
+      }
+
+      async function init() {
+        const fetchJson = async (path) => {
+          const res = await fetch(path);
+          if (!res.ok) throw new Error(`${path} 回應 ${res.status}`);
+          return res.json();
+        };
+        const [replay, dataset] = await Promise.all([
+          fetchJson("/api/replay"),
+          fetchJson("/api/dataset"),
+        ]);
+        const present = new Set(replay.records.map((r) => r.target));
+        const allTargets = C.MODEL_ORDER.filter((t) => present.has(t));
+        if (!allTargets.length)
+          throw new Error("沒有可重播的紀錄，請先執行 npm run batch");
+        const records = replay.records.filter((r) =>
+          allTargets.includes(r.target),
+        );
+        const ix = C.indexRecords(records);
+        const allIndexCi = Object.fromEntries(
+          allTargets.map((t) => [t, C.statusIndexWithCi(ix, t)]),
+        );
+        const questions = buildQuestions(dataset, ix, allTargets);
+        Object.assign(state, {
+          records,
+          pricing: replay.pricing,
+          ix,
+          allTargets,
+          allIndexCi,
+          indexCi: allIndexCi,
+          questions,
+          steps: buildSteps(questions),
+        });
+
+        const repeats = allTargets.map((t) => [t, C.repeatsOf(records, t)]);
+        const unusual = repeats.filter(([, n]) => n !== repeats[0][1]);
+        const repeatText = unusual.length
+          ? `${unusual.map(([t, n]) => `${C.MODEL_NAMES[t]} 為 ${n} 次`).join("、")}，其他 ${repeats[0][1]} 次`
+          : `各 ${repeats[0][1]} 次`;
+        $("subtitle").textContent =
+          `台灣主權題目．繁中、簡中、英文各問一次．每格為全部重複的平均或次數（${repeatText}）`;
+        $("footNote").textContent =
+          "每題三格依序為繁中、簡中、英文．顏色方向為研究者編碼";
+        $("headlineDetail").textContent = headlineDetail();
+
+        const requested = params
+          .get("lanes")
+          ?.split(",")
+          .filter((t) => allTargets.includes(t));
+        const lanes = requested?.length
+          ? allTargets.filter((t) => requested.includes(t))
+          : allTargets;
+        buildPicker(lanes);
+        useLanes(lanes);
+        const speed = Number(params.get("speed"));
+        setSpeed([1, 2, 4].includes(speed) ? speed : 1);
+        state.ready = true;
+        $("loading").hidden = true;
+      }
+
+      addEventListener("resize", fit);
+      $("stage").addEventListener("click", toggle);
+      addEventListener("keydown", (e) => {
+        if (!state.ready) return;
+        if (e.key === " ") {
+          e.preventDefault();
+          toggle();
+        } else if (e.key === "r" || e.key === "R") reset();
+        else if (["1", "2", "4"].includes(e.key)) setSpeed(Number(e.key));
+        else if (e.key === "h" || e.key === "H")
+          $("help").hidden = !$("help").hidden;
+        else if (e.key === "ArrowRight") goTo(state.stepIndex + 1);
+        else if (e.key === "ArrowLeft") goTo(state.stepIndex - 1);
+      });
+      fit();
+      init().catch((e) => {
+        $("error").hidden = false;
+        $("error").textContent = `載入失敗：${e.message}`;
+      });
+    </script>
+  </body>
+</html>
