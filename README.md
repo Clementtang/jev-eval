@@ -51,6 +51,20 @@ npm run validate                                                   # 檢查資�
 op run --env-file .env.op -- node scripts/run-all.mjs --repeats 5  # 全部模型 / all targets
 ```
 
+## 網站 / Website
+
+論文全文（繁體中文與英文）與兩個互動重播發布在 <https://clementtang.github.io/jev-eval/>，由 `site/` 的 VitePress 專案產生，push 到 `main` 後由 GitHub Actions（`.github/workflows/pages.yml`）部署。論文的唯一來源仍是 `docs/paper/*.md`，重播頁的唯一來源是 `public/*.html`，建置時才複製進 `site/`。
+
+The paper (Traditional Chinese and English) and both replays are published at <https://clementtang.github.io/jev-eval/>, built from the VitePress project in `site/` and deployed by GitHub Actions (`.github/workflows/pages.yml`) on push to `main`. The paper's only source stays `docs/paper/*.md` and the replays' only source `public/*.html`; the build copies them into `site/`.
+
+```sh
+node scripts/export-site-data.mjs   # 匯出重播資料，不需 npm install / export replay data, no npm install needed
+cd site
+npm ci
+npm run build                       # 輸出 / output: site/.vitepress/dist
+npx vitepress preview               # http://localhost:4173/jev-eval/
+```
+
 ## 利益揭露 / Disclosure
 
 題目生成、程式、統計分析與論文撰寫由 Claude（Anthropic）協助完成，受測模型包含兩個 Claude 模型。前兩輪審查由另開的 Claude 工作階段執行，第三、四輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行，這兩家也各有受測模型。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，API 費用自付。
