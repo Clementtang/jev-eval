@@ -5,3 +5,9 @@ node_modules/
 data/*.tmp
 .claude/worktrees/
 social/
+# Static site: generated at build time from docs/paper, public and results
+site/public/replay/
+site/paper.md
+site/en/paper.md
+site/.vitepress/dist/
+site/.vitepress/cache/
