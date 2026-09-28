@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- "server" reads the local API; the site build rewrites this to "static". -->
+    <meta name="jev-data-source" content="server" />
     <title>Jev 立場賽跑</title>
     <style>
       /* jf 金萱 4.0 is installed locally on the author's Mac; the three weights are mapped to one
@@ -890,6 +892,11 @@
 
     <script>
       const $ = (id) => document.getElementById(id);
+      // Explicit per-copy setting instead of guessing from the hostname, so local replays never change.
+      const DATA_URLS =
+        document.querySelector('meta[name="jev-data-source"]').content === "static"
+          ? { replay: "data/replay.json", dataset: "data/dataset.json" }
+          : { replay: "/api/replay", dataset: "/api/dataset" };
       const SUMMARY_DELAY_MS = 1500;
       // Must match the stage padding and #lanes gap in the stylesheet.
       const STAGE_PADDING = 40;
@@ -1828,8 +1835,8 @@
         // Canvas text does not re-render when a font arrives later, so wait for the local font first.
         await Promise.all(["400", "500", "700"].map((w) => document.fonts.load(`${w} 16px "JF Jinxuan"`)));
         const [replay, dataset] = await Promise.all([
-          fetch("/api/replay").then((r) => r.json()),
-          fetch("/api/dataset").then((r) => r.json()),
+          fetch(DATA_URLS.replay).then((r) => r.json()),
+          fetch(DATA_URLS.dataset).then((r) => r.json()),
         ]);
         // Lane order is fixed so a recording always lists the models the same way.
         const present = new Set(replay.records.map((r) => r.target));
