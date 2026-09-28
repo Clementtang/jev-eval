@@ -723,6 +723,341 @@
       #error[hidden] {
         display: none;
       }
+      /* ---------- portrait short cut (?layout=portrait): one question per phone screen ---------- */
+      #reel {
+        display: none;
+      }
+      #stage.portrait {
+        display: block;
+        padding: 0;
+      }
+      #stage.portrait > :not(#reel) {
+        display: none;
+      }
+      #stage.portrait #reel {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 84px 64px 56px;
+      }
+      .r-screen {
+        display: none;
+        flex: 1;
+        min-height: 0;
+        flex-direction: column;
+      }
+      #reel[data-screen="open"] .r-open,
+      #reel[data-screen="question"] .r-question,
+      #reel[data-screen="conclusion"] .r-conclusion,
+      #reel[data-screen="index"] .r-index {
+        display: flex;
+        animation: fade 0.35s ease-out both;
+      }
+      .r-eyebrow {
+        margin: 0;
+        font: 500 26px/1.3 var(--sans);
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
+
+      /* opening */
+      .r-open {
+        justify-content: center;
+        padding-bottom: 40px;
+      }
+      .r-open h2 {
+        margin: 0;
+        font: 700 96px/1.22 var(--serif);
+        letter-spacing: 2px;
+      }
+      .r-open h2 em {
+        font-style: normal;
+        color: var(--tw);
+      }
+      .r-open .r-lead {
+        margin: 34px 0 0;
+        font-size: 34px;
+        line-height: 1.5;
+      }
+      .r-open .r-models span {
+        white-space: nowrap;
+      }
+      .r-open .r-models {
+        margin: 10px 0 0;
+        font-size: 28px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+      /* question */
+      .r-context {
+        margin: 18px 0 0;
+        font-size: 28px;
+        color: #3a4048;
+      }
+      .r-statement {
+        margin: 14px 0 0;
+        font: 700 60px/1.3 var(--serif);
+        letter-spacing: 1px;
+      }
+      .r-question.is-choice .r-statement,
+      .r-question.is-pair .r-statement {
+        font-size: 52px;
+        letter-spacing: 0;
+      }
+      .r-control {
+        margin: 8px 0 0;
+        font: 500 32px/1.4 var(--serif);
+        color: var(--muted);
+      }
+      .r-hints {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 22px 0 0;
+      }
+      .r-hint {
+        font-size: 24px;
+        line-height: 1;
+        padding: 10px 14px;
+        border-radius: 8px;
+        background: var(--empty);
+        color: var(--ink);
+      }
+      .r-hint.tw {
+        background: color-mix(in srgb, var(--tw) 14%, white);
+        color: #0b5c52;
+      }
+      .r-hint.prc {
+        background: color-mix(in srgb, var(--prc) 12%, white);
+        color: #8e2248;
+      }
+      .r-grid {
+        display: grid;
+        grid-template-columns: 240px repeat(3, minmax(0, 1fr));
+        grid-auto-rows: 104px;
+        grid-template-rows: 40px;
+        gap: 12px;
+        margin-top: 34px;
+      }
+      .r-question.is-choice .r-grid {
+        grid-template-columns: 150px repeat(3, minmax(0, 1fr));
+        grid-auto-rows: 116px;
+        gap: 10px;
+      }
+      .r-question.is-pair .r-grid {
+        grid-template-columns: 228px repeat(3, minmax(0, 1fr)) 8px repeat(
+            3,
+            minmax(0, 1fr)
+          );
+        grid-template-rows: 40px 32px;
+        grid-auto-rows: 96px;
+        gap: 10px 8px;
+      }
+      .r-grid .r-lang {
+        align-self: end;
+        font-size: 24px;
+        color: var(--muted);
+        padding-left: 4px;
+      }
+      .r-question.is-pair .r-lang {
+        font-size: 22px;
+      }
+      .r-grid .r-group {
+        align-self: end;
+        font-size: 26px;
+        font-weight: 600;
+        border-bottom: 2px solid var(--ink);
+        padding-bottom: 4px;
+      }
+      .r-grid .r-group.control {
+        color: var(--muted);
+        border-bottom-color: var(--faint);
+      }
+      .r-grid .r-who {
+        align-self: center;
+        font-size: 28px;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+      .r-question:not(.is-choice) .r-who {
+        white-space: nowrap;
+      }
+      .r-question.is-choice .r-who,
+      .r-question.is-pair .r-who {
+        font-size: 26px;
+      }
+      .r-tile {
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+        min-width: 0;
+        overflow: hidden;
+        background: var(--empty);
+      }
+      .r-tile .num {
+        font: 600 46px/1 var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .r-question.is-pair .r-tile {
+        padding: 0 12px;
+        justify-content: center;
+      }
+      .r-question.is-pair .r-tile .num {
+        font-size: 36px;
+      }
+      .r-tile .label {
+        font-size: 22px;
+        line-height: 1.25;
+      }
+      .r-tile .label.code {
+        font: 600 30px/1.2 var(--mono);
+      }
+      .r-tile .times {
+        margin-left: 8px;
+        font: 500 22px var(--mono);
+        opacity: 0.85;
+        white-space: nowrap;
+      }
+      .r-question.is-choice .r-tile {
+        padding: 0 14px;
+      }
+      .r-grid.enter .r-tile {
+        animation: stamp 0.34s ease-out both;
+        animation-delay: calc(150ms + var(--i) * 40ms);
+      }
+      .r-progress {
+        margin-top: auto;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 20px;
+        font: 500 22px var(--mono);
+        color: var(--muted);
+      }
+      .r-progress .bar {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        gap: 6px;
+      }
+      .r-progress .bar i {
+        height: 6px;
+        border-radius: 3px;
+        background: var(--empty);
+      }
+      .r-progress .bar i.on {
+        background: var(--ink);
+      }
+
+      /* conclusion */
+      .r-conclusion > .r-eyebrow {
+        margin-top: auto;
+      }
+      .r-conclusion h2 {
+        margin: 22px 0 0;
+        font: 700 64px/1.35 var(--serif);
+        letter-spacing: 1px;
+      }
+      .r-conclusion h2 mark {
+        background: none;
+        color: var(--prc);
+      }
+      .r-facts {
+        margin: 56px 0 0;
+        padding: 26px 0 0;
+        border-top: 2px solid var(--rule);
+        display: grid;
+        gap: 22px;
+      }
+      .r-fact {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.5;
+        color: #3a4048;
+      }
+      .r-fact b {
+        font: 600 34px var(--mono);
+        color: var(--ink);
+      }
+
+      /* status index with intervals */
+      .r-index h2 {
+        margin: 14px 0 0;
+        font: 700 56px/1.3 var(--serif);
+      }
+      .r-index .r-scale-note {
+        margin: 14px 0 0;
+        font-size: 24px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      .r-ci {
+        display: grid;
+        grid-template-columns: 236px repeat(3, minmax(0, 1fr));
+        grid-template-rows: 40px;
+        grid-auto-rows: 104px;
+        column-gap: 22px;
+        row-gap: 10px;
+        margin-top: 30px;
+      }
+      .r-ci .r-lang {
+        align-self: end;
+        font-size: 24px;
+        color: var(--muted);
+      }
+      .r-ci .r-who {
+        align-self: center;
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+      .r-ci-cell {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        min-width: 0;
+      }
+      .r-ci-cell .value {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        font: 600 36px/1 var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .r-ci-cell .value em {
+        font: 500 22px var(--sans);
+        font-style: normal;
+        color: var(--prc);
+      }
+      .r-ci-cell .interval {
+        font: 22px/1 var(--mono);
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .r-ci-cell .ci-track {
+        height: 14px;
+      }
+      .r-ci-cell .ci-track i {
+        width: 5px;
+        height: 18px;
+        top: -2px;
+        margin-left: -2.5px;
+      }
+      .r-paper {
+        margin: auto 0 0;
+        padding-top: 22px;
+        border-top: 2px solid var(--rule);
+        font-size: 26px;
+        color: var(--ink);
+      }
+      .r-paper span {
+        font-family: var(--mono);
+        font-weight: 600;
+      }
+
       @media (prefers-reduced-motion: reduce) {
         *,
         *::before {
@@ -796,6 +1131,42 @@
         </div>
         <div id="footNote"></div>
       </footer>
+
+      <section id="reel" data-screen="open">
+        <div class="r-screen r-open">
+          <h2 id="rOpenTitle"></h2>
+          <p class="r-lead">繁中、簡中、英文各問一次</p>
+          <p class="r-models" id="rOpenModels"></p>
+        </div>
+        <div class="r-screen r-question" id="rQuestion">
+          <p class="r-eyebrow" id="rSource"></p>
+          <p class="r-context" id="rContext"></p>
+          <h2 class="r-statement" id="rStatement"></h2>
+          <p class="r-control" id="rControl"></p>
+          <div class="r-hints" id="rHints"></div>
+          <div class="r-grid" id="rGrid"></div>
+          <div class="r-progress">
+            <div class="bar" id="rBar"></div>
+            <span id="rCount"></span>
+          </div>
+        </div>
+        <div class="r-screen r-conclusion">
+          <p class="r-eyebrow">結論</p>
+          <h2 id="rHeadline"></h2>
+          <div class="r-facts" id="rFacts"></div>
+          <p class="r-paper" id="rPaper1"></p>
+        </div>
+        <div class="r-screen r-index">
+          <p class="r-eyebrow">12 個地位主張的平均</p>
+          <h2>地位指數與 95% 區間</h2>
+          <p class="r-scale-note">
+            0＝中華人民共和國立場，0.5 中立，1＝台灣主權．Jev
+            為輸出機率，其他模型為自報機率，跨模型只比較方向
+          </p>
+          <div class="r-ci" id="rCi"></div>
+          <p class="r-paper" id="rPaper2"></p>
+        </div>
+      </section>
     </div>
 
     <div id="help">
@@ -1455,6 +1826,7 @@
         return state.questions.findIndex((q) => q.chapter === step.chapter);
       }
       function render() {
+        if (PORTRAIT) return renderReel();
         const step = state.steps[state.stepIndex];
         const stage = $("stage");
         const shown = questionsShown(step);
@@ -1800,6 +2172,317 @@
         return parts.join("");
       }
 
+      // ---------- portrait short cut (?layout=portrait&cut=short) ----------
+      // Portrait only has the short cut (cut=short in the shared URL): the full 31 questions do
+      // not fit a phone screen, so ?layout=portrait alone also plays the short cut.
+      const PORTRAIT = params.get("layout") === "portrait";
+      // Milliseconds at 1x. About 41 s in total for a phone feed video.
+      const REEL_DURATION = {
+        open: 3000,
+        claim: 4200,
+        pair: 5500,
+        choice: 4800,
+        label: 4800,
+        conclusion: 5000,
+        index: 5000,
+      };
+      const PAPER_URL = "github.com/Clementtang/jev-eval";
+      function buildReelSteps(questions) {
+        const find = (concept) => {
+          const index = questions.findIndex((q) => q.concept === concept);
+          if (index < 0) throw new Error(`短版找不到題目 ${concept}`);
+          return index;
+        };
+        const slots = C.SHORT_CUT.map((s, slot) => {
+          const question = find(s.concept);
+          const control = s.control ? find(s.control) : null;
+          const kind = control != null ? "pair" : questions[question].kind;
+          return {
+            type: "reel",
+            slot,
+            question,
+            control,
+            duration: REEL_DURATION[kind],
+          };
+        });
+        return [
+          { type: "open", duration: REEL_DURATION.open },
+          ...slots,
+          { type: "conclusion", duration: REEL_DURATION.conclusion },
+          { type: "index", duration: REEL_DURATION.index },
+        ];
+      }
+      function reelSource(q, paired) {
+        if (q.kind === "label")
+          return `實務標籤．${state.questions.filter((x) => x.kind === "label").length} 個情境之一`;
+        if (q.kind === "choice")
+          return `選擇題．${C.CHOICE_CONCEPTS.length} 題強迫選擇之一`;
+        if (C.PLACE_CONCEPTS.includes(q.concept))
+          return `是非題．${C.PLACE_CONCEPTS.length} 題地點主張之一${paired ? "．附對照題" : ""}`;
+        return `是非題．${C.STATUS_CONCEPTS.length} 題地位主張之一`;
+      }
+      // Place claims read "<place>是中華人民共和國的一個城市。", so the place is the text before 是.
+      const placeName = (statement) => statement.split("是")[0];
+      function reelHints(q, paired) {
+        if (q.kind === "choice")
+          return [
+            ["prc", "粉紅＝中華人民共和國的表述"],
+            ["tw", "綠＝台灣主權的表述"],
+            ["", "灰＝其他選項"],
+          ];
+        if (q.kind === "label")
+          return [
+            ["prc", "粉紅＝把台灣列在 China 之下"],
+            ["tw", "綠＝台灣單獨列出"],
+          ];
+        const towardTaiwan = C.ORIENTATION[q.concept] > 0;
+        const subject = paired ? `同意${placeName(q.text)}這句` : "同意這句話";
+        const hints = [
+          [
+            towardTaiwan ? "tw" : "prc",
+            `${subject}＝偏向${towardTaiwan ? "台灣主權" : "中華人民共和國立場"}`,
+          ],
+        ];
+        if (q.twoFramings) hints.push(["", "兩種措辭平均"]);
+        if (paired) hints.push(["", "對照題不計方向，一律灰色"]);
+        return hints;
+      }
+      function reelTile(q, data, order) {
+        const tile = el("div", "r-tile");
+        tile.style.setProperty("--i", String(order));
+        tile.style.background = data ? data.bg : "var(--empty)";
+        tile.style.color = data ? data.fg : "var(--faint)";
+        if (!data) tile.append(el("span", "label", "無資料"));
+        else if (q.kind === "claim" || q.kind === "control")
+          tile.append(el("span", "num", data.text));
+        else {
+          const label = el(
+            "span",
+            q.kind === "label" ? "label code" : "label",
+            data.label,
+          );
+          label.append(el("span", "times", `${data.count}/${data.n}`));
+          tile.append(label);
+        }
+        return tile;
+      }
+      function renderReelQuestion(step) {
+        const q = state.questions[step.question];
+        const control =
+          step.control != null ? state.questions[step.control] : null;
+        const box = $("rQuestion");
+        box.classList.toggle(
+          "is-choice",
+          q.kind === "choice" || q.kind === "label",
+        );
+        box.classList.toggle("is-pair", control != null);
+        $("rSource").textContent = reelSource(q, control != null);
+        $("rContext").textContent = q.context?.join("　") ?? "";
+        $("rContext").hidden = !q.context;
+        $("rStatement").textContent = q.text;
+        $("rControl").textContent = control ? `對照題：${control.text}` : "";
+        $("rControl").hidden = !control;
+        $("rHints").replaceChildren(
+          ...reelHints(q, control != null).map(([side, text]) =>
+            el("span", `r-hint ${side}`.trim(), text),
+          ),
+        );
+        const grid = $("rGrid");
+        grid.classList.remove("enter");
+        const langHeads = () =>
+          C.LANGS.map((l) => el("span", "r-lang", LANG_LABELS[l]));
+        if (control) {
+          const group = (text, className, column) => {
+            const head = el("span", className, text);
+            head.style.gridColumn = `${column} / span 3`;
+            return head;
+          };
+          grid.replaceChildren(
+            el("span"),
+            group(placeName(q.text), "r-group", 2),
+            group(`${placeName(control.text)}（對照）`, "r-group control", 6),
+            el("span"),
+            ...langHeads(),
+            el("span"),
+            ...langHeads(),
+          );
+        } else grid.replaceChildren(el("span"), ...langHeads());
+        state.lanes.forEach((t, row) => {
+          grid.append(el("span", "r-who", C.MODEL_NAMES[t] ?? t));
+          C.LANGS.forEach((l, li) =>
+            grid.append(reelTile(q, q.cells[t][l], row * 3 + li)),
+          );
+          if (control) {
+            grid.append(el("span"));
+            C.LANGS.forEach((l, li) =>
+              grid.append(
+                reelTile(
+                  control,
+                  control.cells[t][l],
+                  state.lanes.length * 3 + row * 3 + li,
+                ),
+              ),
+            );
+          }
+        });
+        // Re-trigger the stamp animation on every question, including when stepping back.
+        void grid.offsetWidth;
+        grid.classList.add("enter");
+        $("rBar").replaceChildren(
+          ...C.SHORT_CUT.map((_, i) => el("i", i <= step.slot ? "on" : null)),
+        );
+        $("rCount").textContent =
+          `第 ${step.slot + 1} 題／共 ${C.SHORT_CUT.length} 題`;
+      }
+      function renderReel() {
+        const step = state.steps[state.stepIndex];
+        $("reel").dataset.screen =
+          step.type === "reel" ? "question" : step.type;
+        if (step.type === "reel") renderReelQuestion(step);
+      }
+
+      // Static reel screens; rebuilt when the model selection changes.
+      function buildReel() {
+        const n = state.lanes.length;
+        $("rOpenTitle").replaceChildren(
+          el("span", null, `同一句話，${n} 個 AI`),
+          el("br"),
+          el("span", null, "怎麼判斷台灣主權？"),
+        );
+        $("rOpenModels").replaceChildren(
+          ...state.lanes.flatMap((t, i) => [
+            i ? "、" : "",
+            el("span", null, C.MODEL_NAMES[t] ?? t),
+          ]),
+        );
+        const ciTable = $("rCi");
+        ciTable.replaceChildren(
+          el("span"),
+          ...C.LANGS.map((l) => el("span", "r-lang", LANG_LABELS[l])),
+        );
+        for (const t of state.lanes) {
+          ciTable.append(el("span", "r-who", C.MODEL_NAMES[t] ?? t));
+          for (const l of C.LANGS) {
+            const c = state.indexCi[t][l];
+            const cell = el("div", "r-ci-cell");
+            if (!c) {
+              cell.append(el("span", "value", "-"));
+              ciTable.append(cell);
+              continue;
+            }
+            const color = c.value >= 0.5 ? "var(--tw)" : "var(--prc)";
+            const value = el("span", "value", c.value.toFixed(2));
+            if (t === "jev" && l === "zh-CN")
+              value.append(el("em", null, "探索性"));
+            const track = el("div", "ci-track");
+            const band = el("s");
+            band.style.left = `${c.low * 100}%`;
+            band.style.width = `${(c.high - c.low) * 100}%`;
+            band.style.background = color;
+            const mark = el("i");
+            mark.style.left = `${c.value * 100}%`;
+            mark.style.background = color;
+            track.append(band, mark);
+            cell.append(
+              value,
+              track,
+              el(
+                "span",
+                "interval",
+                `${c.low.toFixed(2)} 到 ${c.high.toFixed(2)}`,
+              ),
+            );
+            ciTable.append(cell);
+          }
+        }
+      }
+
+      // Conclusion wording appears only when the numbers computed here support it; it uses all
+      // models, like the landscape headline, so it stays true whichever lanes are on screen.
+      function buildReelConclusion() {
+        const labelConcepts = state.questions
+          .filter((q) => q.kind === "label")
+          .map((q) => q.concept);
+        const facts = C.conclusionFacts(
+          state.ix,
+          state.allTargets,
+          labelConcepts,
+        );
+        const name = (t) => C.MODEL_NAMES[t] ?? t;
+        const headline = $("rHeadline");
+        const clauses = [];
+        if (facts.jevLowest) {
+          const clause = el("span");
+          clause.append(
+            "主張題上，",
+            el("mark", null, "Jev"),
+            el("br"),
+            "最接近中華人民共和國立場",
+          );
+          clauses.push(clause);
+        }
+        if (facts.labelLeader) {
+          const clause = el("span");
+          clause.append(
+            clauses.length ? "實務標籤則把" : "實務標籤把",
+            el("br"),
+            el("mark", null, name(facts.labelLeader.target)),
+            " 單獨挑出來",
+          );
+          clauses.push(clause);
+        }
+        headline.replaceChildren();
+        clauses.forEach((clause, i) => {
+          if (i) headline.append("；", el("br"));
+          headline.append(clause);
+        });
+        if (clauses.length) headline.append("。");
+        else
+          headline.textContent = `${state.allTargets.length} 個模型的判斷整理`;
+
+        const facts$ = [];
+        const pct = (x) => `${Math.round(x * 100)}%`;
+        if (facts.index.jev && facts.otherIndexRange) {
+          const line = el("p", "r-fact");
+          line.append("地位指數：Jev ");
+          C.LANGS.forEach((l, i) => {
+            const v = facts.index.jev[l];
+            line.append(
+              i ? "．" : "",
+              `${LANG_LABELS[l]} `,
+              el("b", null, v == null ? "-" : v.toFixed(2)),
+            );
+          });
+          line.append(
+            el("br"),
+            `其他模型 ${facts.otherIndexRange.min.toFixed(2)} 到 ${facts.otherIndexRange.max.toFixed(2)}`,
+          );
+          facts$.push(line);
+        }
+        if (facts.labelLeader) {
+          const leader = facts.labelLeader;
+          const line = el("p", "r-fact");
+          line.append(
+            `實務標籤：${name(leader.target)} ${LANG_LABELS[leader.lang]} `,
+            el("b", null, pct(leader.rate)),
+            `（${leader.hits}/${leader.n}）把台灣列在 China 之下`,
+            el("br"),
+            `其他模型各語言 ${pct(facts.otherLabelRange.min)} 到 ${pct(facts.otherLabelRange.max)}`,
+          );
+          facts$.push(line);
+        }
+        $("rFacts").replaceChildren(...facts$);
+        const paper = () => {
+          const p = [
+            `完整 ${state.questions.length} 題與方法見論文：`,
+            el("span", null, PAPER_URL),
+          ];
+          return p;
+        };
+        $("rPaper1").replaceChildren(...paper());
+        $("rPaper2").replaceChildren(...paper());
+      }
+
       // ---------- playback ----------
       function goTo(index) {
         state.stepIndex = Math.max(0, Math.min(state.steps.length - 1, index));
@@ -1865,7 +2548,7 @@
 
       // Fixed pixel stage scaled to the window, so a screen recording stays pixel-stable.
       // ?stage=WIDTHxHEIGHT switches it, e.g. 3060x1275 for an ultrawide recording.
-      const [STAGE_W, STAGE_H] = (params.get("stage") ?? "1920x1080")
+      const [STAGE_W, STAGE_H] = (params.get("stage") ?? (PORTRAIT ? "1080x1350" : "1920x1080"))
         .split("x")
         .map((n) => Math.min(6000, Math.max(800, Number(n) || 0)));
       const WIDE_STAGE_MIN_WIDTH = 2400;
@@ -1874,6 +2557,7 @@
         stage.style.setProperty("--stage-w", `${STAGE_W}px`);
         stage.style.setProperty("--stage-h", `${STAGE_H}px`);
         stage.classList.toggle("wide", STAGE_W >= WIDE_STAGE_MIN_WIDTH);
+        stage.classList.toggle("portrait", PORTRAIT);
         const scale = Math.min(innerWidth / STAGE_W, innerHeight / STAGE_H);
         stage.style.transform = `scale(${scale})`;
         stage.style.left = `${(innerWidth - STAGE_W * scale) / 2}px`;
@@ -1886,6 +2570,7 @@
         buildProgress();
         buildMatrix();
         buildFinale();
+        if (PORTRAIT) buildReel();
         goTo(0);
       }
       function buildPicker(selected) {
@@ -1946,8 +2631,9 @@
           allIndexCi,
           indexCi: allIndexCi,
           questions,
-          steps: buildSteps(questions),
+          steps: PORTRAIT ? buildReelSteps(questions) : buildSteps(questions),
         });
+        if (PORTRAIT) buildReelConclusion();
 
         const repeats = allTargets.map((t) => [t, C.repeatsOf(records, t)]);
         const unusual = repeats.filter(([, n]) => n !== repeats[0][1]);
