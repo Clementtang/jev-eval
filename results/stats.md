@@ -1,6 +1,6 @@
 # 統計分析
 
-產出時間：2026-09-27T18:28:02.182Z；資料：26796 筆成功呼叫，模型 jev、claude-haiku-4-5、claude-sonnet-5、grok-4-7、luna-6、sol-6
+產出時間：2026-09-28T16:41:02.258Z；資料：26796 筆成功呼叫，模型 jev、claude-haiku-4-5、claude-sonnet-5、grok-4-7、luna-6、sol-6
 
 ## 1. 地位指數（95% bootstrap 信賴區間）
 

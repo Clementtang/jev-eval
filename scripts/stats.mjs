@@ -1,6 +1,6 @@
 // Inferential analysis across all runs: bootstrap CIs, Holm-corrected comparisons, a data-driven
 // consistency threshold, language spread, noul/choice agreement, factor decomposition, and the
-// option-order and inferred-asker robustness checks. Writes results/stats.md.
+// option-order and inferred-asker robustness checks. Writes results/stats.md and results/summary.json.
 // Usage: node scripts/stats.mjs
 import { writeFileSync } from "node:fs";
 import { listRuns, readRun } from "../lib/results.mjs";
@@ -507,4 +507,74 @@ for (const t of targets) {
 out.push("");
 
 writeFileSync(new URL("../results/stats.md", import.meta.url), out.join("\n") + "\n");
-console.log(`wrote results/stats.md (${comparisons.length} comparisons, thresholds ${JSON.stringify(Object.fromEntries(Object.entries(thresholds).map(([k, v]) => [k, +v.toFixed(2)])))})`);
+
+// ---------- machine-readable summary (results/summary.json) ----------
+// The intervals are recomputed with the same seeds as the report sections above instead of being
+// captured from them, so the code that writes stats.md stays exactly as it was.
+const INDEX_SEED = 11;
+const PRACTICAL_SEED = 500;
+const byLang = (fn) => Object.fromEntries(LANGS.map((l, i) => [l, fn(l, i)]));
+const byTarget = (fn) => Object.fromEntries(targets.map((t) => [t, fn(t)]));
+const interval = ({ estimate, low, high }) => ({ estimate, low, high });
+const indexIntervals = (concepts) => byTarget((t) => byLang((l, i) => interval(bootstrap(concepts, (u) => orientedIndex(u, t, "base", l), { seed: INDEX_SEED + i }))));
+const basePracticalUnits = (t) => practicalUnits.filter((c) => records.some((r) => r.target === t && variant(r) === "base" && r.concept === c));
+const summary = {
+  schema: {
+    generated_at: "ISO 8601 time this file and results/stats.md were written.",
+    calls: "Number of successful, non-refused calls analyzed.",
+    langs: "Item languages: zh-TW Traditional Chinese, zh-CN Simplified Chinese, en English.",
+    models: "Target ids in report order; Jev first.",
+    "definitions.orientation": "Researcher coding per claim: +1 when agreeing supports Taiwan or the ROC being a separate sovereign state, -1 when agreeing supports the PRC position.",
+    "definitions.status_concepts": "The twelve claims of the status index (main analysis). The split from the place claims was adopted after the results were seen.",
+    "definitions.place_concepts": "The three city claims of the place index.",
+    "definitions.original_concepts": "The seven claims fixed before any run (stats.md section 17).",
+    "definitions.normative_concepts": "Normative and international-organization claims dropped in one sensitivity set (stats.md section 17).",
+    "definitions.part_of_concepts": "The 'part of' and 'province of' claims merged into one unit in one sensitivity set (stats.md section 17).",
+    "definitions.china_inclusive_choice_keys": "Choice keys counted as listing Taiwan, or the item's subject, under China or the parent state.",
+    "definitions.bootstrap": "Cluster bootstrap settings: units resampled, iterations, and the seed per language (lib/stats.mjs, mulberry32).",
+    status_index: "model -> lang -> { estimate, low, high }: status index on a 0 to 1 scale (0 fully PRC position, 0.5 neutral, 1 fully Taiwan or ROC sovereign) with its 95% percentile bootstrap interval. Same as stats.md section 1.",
+    place_index: "model -> lang -> { estimate, low, high }: place index, same scale. stats.md section 1c reports only the estimate; with three units the interval is descriptive at best.",
+    pooled_index: "model -> lang -> { estimate, low, high }: index over all fifteen claims (main analysis before version 0.5), same scale.",
+    neutral_tests: "One row per model and language: status index, claims below 0.5 of n, exact two-sided sign-flip p against 0.5, and Holm-adjusted p within these 18 tests. Same as stats.md section 1b.",
+    practical_labels: "model -> { scenarios, lang -> { estimate, low, high } }: share of group C labeling trials (original option order) choosing a China-inclusive label, 0 to 1, with its 95% scenario bootstrap interval. Same as stats.md section 7, base rows.",
+    latency_cost: "model -> { calls, latency_ms_median, cost_usd_per_1000_calls }: base items only; latency in milliseconds measured from Hanoi including network round trip; cost in US dollars from list prices. Same as stats.md section 12.",
+    claim_agreement: "model -> lang -> claim -> framing -> agreement: (P(positive) + 1 - P(negated)) / 2 on base items, 0 to 1, not oriented (1 agrees with the claim as worded). Framings f1 and f2 are the two wordings. Inputs for recomputing any index; same as stats.md section 16.",
+  },
+  generated_at: out[2].match(/產出時間：([^；]+)/)[1],
+  calls: records.length,
+  langs: LANGS,
+  models: targets,
+  definitions: {
+    orientation: ORIENTATION,
+    status_concepts: CONCEPTS,
+    place_concepts: PLACE_CONCEPTS,
+    original_concepts: ORIGINAL_CONCEPTS,
+    normative_concepts: NORMATIVE_CONCEPTS,
+    part_of_concepts: PART_OF_CONCEPTS,
+    china_inclusive_choice_keys: [...CHINA_INCLUSIVE],
+    bootstrap: {
+      index: { unit: "claim", iterations: 10_000, seed: byLang((l, i) => INDEX_SEED + i) },
+      practical_labels: { unit: "scenario", iterations: 10_000, seed: byLang((l, i) => PRACTICAL_SEED + i) },
+    },
+  },
+  status_index: indexIntervals(CONCEPTS),
+  place_index: indexIntervals(PLACE_CONCEPTS),
+  pooled_index: indexIntervals(ALL_CONCEPTS),
+  neutral_tests: neutralTests.map((x, i) => ({ model: x.t, lang: x.l, index: x.mean, below: x.below, n: x.n, p: x.p, p_holm: neutralAdjusted[i] })),
+  practical_labels: byTarget((t) => {
+    const units = basePracticalUnits(t);
+    return { scenarios: units.length, ...byLang((l, i) => interval(bootstrap(units, (u) => practicalRate(u, t, "base", l), { seed: PRACTICAL_SEED + i }))) };
+  }),
+  latency_cost: byTarget((t) => {
+    const rs = records.filter((r) => r.target === t && variant(r) === "base");
+    const input = mean(rs.map((r) => r.usage?.input_tokens ?? 0));
+    const separate = TARGETS[t]?.reasoningOutsideOutput;
+    const output = mean(rs.map((r) => (r.usage?.output_tokens ?? 0) + (separate ? r.usage?.reasoning_tokens ?? 0 : 0)));
+    const [inPrice, outPrice] = PRICING[t] ?? [0, 0];
+    return { calls: rs.length, latency_ms_median: quantile(rs.map((r) => r.ms).sort((a, b) => a - b), 0.5), cost_usd_per_1000_calls: ((input * inPrice + output * outPrice) / 1e6) * 1000 };
+  }),
+  claim_agreement: byTarget((t) => byLang((l) => Object.fromEntries(ALL_CONCEPTS.map((c) => [c,
+    Object.fromEntries(framingsOf(c).map((f) => [f, stanceOf(t, "base", c, f, l)?.stance ?? null]))])))),
+};
+writeFileSync(new URL("../results/summary.json", import.meta.url), JSON.stringify(summary, null, 2) + "\n");
+console.log(`wrote results/stats.md and results/summary.json (${comparisons.length} comparisons, thresholds ${JSON.stringify(Object.fromEntries(Object.entries(thresholds).map(([k, v]) => [k, +v.toFixed(2)])))})`);
