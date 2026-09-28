@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this paper, item set or results, please cite them as below."
+type: dataset
+title: "Claims, Choices and Labels: How Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument"
+authors:
+  - given-names: "Clement"
+    family-names: "Tang"
+version: "0.6"
+date-released: "2026-09-28"
+url: "https://clementtang.github.io/jev-eval/"
+repository-code: "https://github.com/Clementtang/jev-eval"
+license: CC-BY-4.0
+keywords:
+  - language models
+  - audit
+  - Taiwan
+  - sovereignty
+  - multilingual evaluation
+preferred-citation:
+  type: report
+  title: "Claims, Choices and Labels: How Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument"
+  authors:
+    - given-names: "Clement"
+      family-names: "Tang"
+  status: preprint
+  version: "0.6"
+  date-published: "2026-09-28"
+  year: 2026
+  month: 9
+  url: "https://clementtang.github.io/jev-eval/"
+  repository-code: "https://github.com/Clementtang/jev-eval"
+  license: CC-BY-4.0
