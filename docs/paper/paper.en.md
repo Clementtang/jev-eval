@@ -148,18 +148,18 @@ All six models answered the capability controls and factual anchors correctly in
 
 **Table 4. Agreement with selected claims, zh-TW / zh-CN / en.** 1 means the model agrees with the statement as written. The full table for all models is section 16 of the statistics file.
 
-| Claim (framing)                                                      | Jev                | Claude Haiku 4.5   | Claude Sonnet 5    | GPT-6 Sol          |
-| -------------------------------------------------------------------- | ------------------ | ------------------ | ------------------ | ------------------ |
-| Taiwan is a sovereign, independent state (f1)                        | 0.17 / 0.08 / 0.12 | 0.63 / 0.54 / 0.60 | 0.72 / 0.50 / 0.65 | 0.80 / 0.66 / 0.77 |
-| Taiwan is a sovereign, independent state (f2)                        | 0.26 / 0.14 / 0.21 | 0.67 / 0.63 / 0.64 | 0.60 / 0.50 / 0.53 | 0.80 / 0.56 / 0.74 |
-| Taiwan's future should be decided by the people of Taiwan            | 0.65 / 0.62 / 0.64 | 0.72 / 0.71 / 0.87 | 0.94 / 0.79 / 0.93 | 0.98 / 0.94 / 0.96 |
-| Taiwan is part of the PRC (f1)                                       | 0.62 / 0.88 / 0.65 | 0.34 / 0.69 / 0.34 | 0.09 / 0.48 / 0.13 | 0.03 / 0.10 / 0.03 |
-| Taiwan is part of the PRC (f2)                                       | 0.41 / 0.80 / 0.43 | 0.32 / 0.48 / 0.32 | 0.08 / 0.50 / 0.26 | 0.02 / 0.16 / 0.02 |
-| The PRC holds sovereignty over Taiwan                                | 0.74 / 0.83 / 0.63 | 0.67 / 0.91 / 0.50 | 0.40 / 0.63 / 0.15 | 0.16 / 0.28 / 0.16 |
-| The Taiwan question is an internal affair of the PRC                 | 0.84 / 0.91 / 0.80 | 0.52 / 0.64 / 0.49 | 0.65 / 0.74 / 0.63 | 0.15 / 0.32 / 0.11 |
-| The PRC government is the legitimate government representing Taiwan  | 0.28 / 0.34 / 0.31 | 0.49 / 0.51 / 0.49 | 0.09 / 0.32 / 0.10 | 0.02 / 0.04 / 0.02 |
-| Taipei is a city in the PRC                                          | 0.12 / 0.26 / 0.06 | 0.05 / 0.04 / 0.05 | 0.03 / 0.06 / 0.03 | 0.01 / 0.01 / 0.01 |
-| The PRC currently administers Taiwan (fact)                          | 0.09 / 0.12 / 0.09 | 0.05 / 0.48 / 0.05 | 0.03 / 0.02 / 0.02 | 0.00 / 0.00 / 0.00 |
+| Claim (framing)                                                     | Jev                | Claude Haiku 4.5   | Claude Sonnet 5    | GPT-6 Sol          |
+| ------------------------------------------------------------------- | ------------------ | ------------------ | ------------------ | ------------------ |
+| Taiwan is a sovereign, independent state (f1)                       | 0.17 / 0.08 / 0.12 | 0.63 / 0.54 / 0.60 | 0.72 / 0.50 / 0.65 | 0.80 / 0.66 / 0.77 |
+| Taiwan is a sovereign, independent state (f2)                       | 0.26 / 0.14 / 0.21 | 0.67 / 0.63 / 0.64 | 0.60 / 0.50 / 0.53 | 0.80 / 0.56 / 0.74 |
+| Taiwan's future should be decided by the people of Taiwan           | 0.65 / 0.62 / 0.64 | 0.72 / 0.71 / 0.87 | 0.94 / 0.79 / 0.93 | 0.98 / 0.94 / 0.96 |
+| Taiwan is part of the PRC (f1)                                      | 0.62 / 0.88 / 0.65 | 0.34 / 0.69 / 0.34 | 0.09 / 0.48 / 0.13 | 0.03 / 0.10 / 0.03 |
+| Taiwan is part of the PRC (f2)                                      | 0.41 / 0.80 / 0.43 | 0.32 / 0.48 / 0.32 | 0.08 / 0.50 / 0.26 | 0.02 / 0.16 / 0.02 |
+| The PRC holds sovereignty over Taiwan                               | 0.74 / 0.83 / 0.63 | 0.67 / 0.91 / 0.50 | 0.40 / 0.63 / 0.15 | 0.16 / 0.28 / 0.16 |
+| The Taiwan question is an internal affair of the PRC                | 0.84 / 0.91 / 0.80 | 0.52 / 0.64 / 0.49 | 0.65 / 0.74 / 0.63 | 0.15 / 0.32 / 0.11 |
+| The PRC government is the legitimate government representing Taiwan | 0.28 / 0.34 / 0.31 | 0.49 / 0.51 / 0.49 | 0.09 / 0.32 / 0.10 | 0.02 / 0.04 / 0.02 |
+| Taipei is a city in the PRC                                         | 0.12 / 0.26 / 0.06 | 0.05 / 0.04 / 0.05 | 0.03 / 0.06 / 0.03 | 0.01 / 0.01 / 0.01 |
+| The PRC currently administers Taiwan (fact)                         | 0.09 / 0.12 / 0.09 | 0.05 / 0.48 / 0.05 | 0.03 / 0.02 / 0.02 | 0.00 / 0.00 / 0.00 |
 
 Jev's rejection of the Taiwanese city claims does not come from the sentence template alone: it agrees that "Lhasa is a city in the People's Republic of China" (0.89, 0.88 and 0.97). It appears to judge the place claims by who administers the city, which is why we report them apart from the status claims.
 
@@ -178,28 +178,28 @@ Claude Sonnet 5 chose "Both are part of one China, and the People's Republic of 
 | Question              | Model           | zh-TW          | zh-CN                                 | en             |
 | --------------------- | --------------- | -------------- | ------------------------------------- | -------------- |
 | ROC and PRC relation  | Jev             | unresolved     | PRC sole legitimate (robust to order) | unresolved     |
-|                       | Claude Sonnet 5 | unresolved     | PRC sole legitimate (order-sensitive) | unresolved     |
+| ROC and PRC relation  | Claude Sonnet 5 | unresolved     | PRC sole legitimate (order-sensitive) | unresolved     |
 | Holder of sovereignty | Jev             | undetermined   | PRC (robust to order)                 | undetermined   |
-|                       | Claude Sonnet 5 | undetermined   | undetermined                          | undetermined   |
+| Holder of sovereignty | Claude Sonnet 5 | undetermined   | undetermined                          | undetermined   |
 | Political status      | Jev             | de facto state | part of PRC territory (4 of 5)        | de facto state |
-|                       | Claude Sonnet 5 | de facto state | de facto state                        | de facto state |
+| Political status      | Claude Sonnet 5 | de facto state | de facto state                        | de facto state |
 
 ### 4.4 Labels
 
 **Table 6. Share of labeling trials that list Taiwan under "China".** "Scenarios" is the number of labeling scenarios with that condition. Brackets give 95% scenario-level bootstrap intervals for nonzero cells in Claude Sonnet 5 and the asker rows; with four scenarios they are wide.
 
-| Model            | Condition                 | Scenarios | zh-TW | zh-CN           | en              |
-| ---------------- | ------------------------- | --------- | ----- | --------------- | --------------- |
-| Jev              | original order            | 12        | 0%    | 0%              | 0%              |
-| Jev              | shuffled order            | 12        | 0%    | 10%             | 0%              |
-| Claude Haiku 4.5 | reversed order            | 12        | 0%    | 13%             | 5%              |
-| Claude Sonnet 5  | original order            | 12        | 0%    | 42% [17%, 67%]  | 0%              |
-| Claude Sonnet 5  | reversed / shuffled order | 12        | 0%    | 73% / 67%       | 0%              |
-| Claude Sonnet 5  | asker in Beijing          | 4         | 0%    | 75% [25%, 100%] | 75% [25%, 100%] |
-| GPT-6 Luna       | asker in Beijing          | 4         | 25% [0%, 75%] | 20% [0%, 60%] | 40% [10%, 80%] |
-| GPT-6 Sol        | asker in Beijing          | 4         | 0%    | 15% [0%, 45%]   | 0%              |
-| Grok 4.7         | original order            | 12        | 6%    | 6%              | 0%              |
-| Grok 4.7         | asker in Beijing          | 4         | 0%    | 17% [0%, 50%]   | 8% [0%, 25%]    |
+| Model            | Condition                 | Scenarios | zh-TW         | zh-CN           | en              |
+| ---------------- | ------------------------- | --------- | ------------- | --------------- | --------------- |
+| Jev              | original order            | 12        | 0%            | 0%              | 0%              |
+| Jev              | shuffled order            | 12        | 0%            | 10%             | 0%              |
+| Claude Haiku 4.5 | reversed order            | 12        | 0%            | 13%             | 5%              |
+| Claude Sonnet 5  | original order            | 12        | 0%            | 42% [17%, 67%]  | 0%              |
+| Claude Sonnet 5  | reversed / shuffled order | 12        | 0%            | 73% / 67%       | 0%              |
+| Claude Sonnet 5  | asker in Beijing          | 4         | 0%            | 75% [25%, 100%] | 75% [25%, 100%] |
+| GPT-6 Luna       | asker in Beijing          | 4         | 25% [0%, 75%] | 20% [0%, 60%]   | 40% [10%, 80%]  |
+| GPT-6 Sol        | asker in Beijing          | 4         | 0%            | 15% [0%, 45%]   | 0%              |
+| Grok 4.7         | original order            | 12        | 6%            | 6%              | 0%              |
+| Grok 4.7         | asker in Beijing          | 4         | 0%            | 17% [0%, 50%]   | 8% [0%, 25%]    |
 
 Rows not shown are at most 3% in every cell (statistics file, section 7); no model placed Taiwan inside China when the asker was described as living in Taipei. Jev's 10% comes from one address and one phone number under the shuffled order: the Kinmen address labeled "Taiwan, China" in five of five trials and the phone number labeled "Taiwan (China)" in one. Claude Sonnet 5's Simplified Chinese rate is high under every option order and varies with it: 42% in the original order, 73% reversed and 67% shuffled. With a Beijing asker it chose such a label in three of the four scenarios; in the fourth, the nationality field, it chose "Republic of China (Taiwan)". Grok 4.7 labeled the dropdown entry for ISO code TW "Taiwan, Province of China" in two of three original-order trials in Traditional and Simplified Chinese, and chose "Taiwan" when the options were reversed; since that is the ISO 3166-1 short name for the code shown, the choice may reflect the data standard. Jev's Kinmen label also has a non-PRC reading, since the ROC administers Kinmen as part of its Fujian Province. Pooling every condition (original, reversed and shuffled order, both askers), the share of such labels was 0.5% for GPT-6 Sol (3 of 660 trials, all under a Beijing asker), 0.9% for Jev (6 of 660, all under the shuffled order), 1.7% for Claude Haiku 4.5, 2.0% for Grok 4.7, 2.9% for GPT-6 Luna and 21.1% for Claude Sonnet 5.
 
