@@ -3,8 +3,9 @@
 import { createServer } from "node:http";
 import { readFileSync, writeFileSync, renameSync } from "node:fs";
 import { validateItem } from "./lib/schema.mjs";
-import { availableTargets, TARGETS, JEV_MODEL, PRICING } from "./lib/providers.mjs";
+import { availableTargets, TARGETS, JEV_MODEL } from "./lib/providers.mjs";
 import { listRuns, readRun, runAndRecord } from "./lib/results.mjs";
+import { buildReplay, loadDataset } from "./lib/replay.mjs";
 
 const HOST = "127.0.0.1";
 const PORT = Number(process.env.PORT ?? 4173);
@@ -14,7 +15,6 @@ const RACE = new URL("./public/race.html", import.meta.url);
 const STANCE = new URL("./public/stance.html", import.meta.url);
 const MAX_BODY_BYTES = 1_000_000;
 
-const loadDataset = () => JSON.parse(readFileSync(DATASET, "utf8"));
 function saveDataset(items) {
   // Write-then-rename so a crash mid-write cannot truncate the dataset.
   const tmp = new URL("./data/dataset.json.tmp", import.meta.url);
@@ -85,16 +85,7 @@ const routes = {
   },
   "GET /race": (req, res) => send(res, 200, readFileSync(RACE), "text/html; charset=utf-8"),
   "GET /stance": (req, res) => send(res, 200, readFileSync(STANCE), "text/html; charset=utf-8"),
-  // Base-item records from every run, trimmed to what the race replay needs.
-  "GET /api/replay": (req, res) => {
-    const FIELDS = ["target", "run_id", "item_id", "rep", "ms", "value", "choice", "lang", "group", "topic", "concept", "subject", "polarity", "framing", "question_type"];
-    const records = listRuns().flatMap((r) => readRun(r.run_id) ?? [])
-      .filter((r) => r.ok && !r.refusal && (r.variant ?? "base") === "base")
-      .map((r) => ({ ...Object.fromEntries(FIELDS.map((f) => [f, r[f]])), input_tokens: r.usage?.input_tokens ?? 0,
-        // xAI bills reasoning tokens outside output tokens; OpenAI already includes them (same rule as stats.mjs).
-        output_tokens: (r.usage?.output_tokens ?? 0) + (TARGETS[r.target]?.reasoningOutsideOutput ? r.usage?.reasoning_tokens ?? 0 : 0) }));
-    send(res, 200, { pricing: PRICING, records });
-  },
+  "GET /api/replay": (req, res) => send(res, 200, buildReplay()),
   "GET /api/runs": (req, res) => send(res, 200, listRuns()),
   "GET /api/runs/:id": (req, res, id) => {
     const records = readRun(id);

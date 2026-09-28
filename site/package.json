@@ -1,0 +1,15 @@
+{
+  "name": "jev-eval-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare-content": "node scripts/prepare-content.mjs",
+    "dev": "npm run prepare-content && vitepress dev",
+    "build": "npm run prepare-content && vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "markdown-it-mathjax3": "^4.3.2",
+    "vitepress": "^1.6.4"
+  }
+}

@@ -1,0 +1,164 @@
+/* jf 金萱 4.0 is referenced only through local(): it is a commercial font without a web license,
+   so no font file is shipped. Readers without it get the fallbacks. */
+@font-face {
+  font-family: "JF Jinxuan";
+  src: local("jf-jinxuan-4.0 Book"), local("jf-jinxuan-4.0-Book");
+  font-weight: 100 450;
+}
+@font-face {
+  font-family: "JF Jinxuan";
+  src: local("jf-jinxuan-4.0 Medium"), local("jf-jinxuan-4.0-Medium");
+  font-weight: 451 650;
+}
+@font-face {
+  font-family: "JF Jinxuan";
+  src: local("jf-jinxuan-4.0 Bold"), local("jf-jinxuan-4.0-Bold");
+  font-weight: 651 900;
+}
+
+/* Same palette as the replay pages: green leans toward Taiwan's sovereignty, pink toward the PRC
+   position, grey is neutral. */
+:root {
+  --jev-green: #1f8a78;
+  --jev-green-dark: #176b5d;
+  --jev-pink: #c4406f;
+  --jev-grey: #b9bcc4;
+  --jev-paper: #f5f4f0;
+  --jev-panel: #fbfaf7;
+  --jev-rule: #dedbd3;
+
+  --vp-font-family-base:
+    "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+  --vp-c-bg: var(--jev-paper);
+  --vp-c-bg-alt: #eeede8;
+  --vp-c-bg-elv: var(--jev-panel);
+  --vp-c-bg-soft: #ecebe5;
+  --vp-c-divider: var(--jev-rule);
+  --vp-c-gutter: var(--jev-rule);
+  --vp-c-text-1: #1b1f24;
+  --vp-c-text-2: #4d545c;
+  --vp-c-brand-1: var(--jev-green);
+  --vp-c-brand-2: var(--jev-green-dark);
+  --vp-c-brand-3: var(--jev-green);
+  --vp-c-brand-soft: rgba(31, 138, 120, 0.12);
+  --vp-nav-bg-color: var(--jev-paper);
+  --vp-local-nav-bg-color: var(--jev-paper);
+  --vp-layout-max-width: 1280px;
+}
+
+body {
+  background: var(--vp-c-bg);
+}
+
+.vp-doc {
+  line-height: 1.85;
+}
+.vp-doc p,
+.vp-doc li {
+  text-align: justify;
+  text-justify: inter-character;
+}
+.vp-doc h1 {
+  font-size: 30px;
+  line-height: 1.35;
+}
+.vp-doc h2 {
+  border-top-color: var(--jev-rule);
+}
+.vp-doc a {
+  text-underline-offset: 3px;
+}
+
+/* Tables and display math scroll sideways inside the text column on phones. */
+.vp-doc table {
+  font-size: 14px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.vp-doc th,
+.vp-doc td {
+  padding: 6px 12px;
+}
+.vp-doc tr:nth-child(2n) {
+  background-color: var(--jev-panel);
+}
+.vp-doc th {
+  background-color: #e9e7e0;
+}
+.vp-doc mjx-container[display="true"] {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+.paper-page .vp-doc h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+.paper-source {
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+}
+
+/* Home page */
+.home-meta {
+  color: var(--vp-c-text-2);
+  font-size: 15px;
+}
+.home-subtitle {
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--vp-c-text-2);
+  margin-top: 8px;
+}
+.vp-doc .result-table td {
+  white-space: nowrap;
+}
+.vp-doc .result-table td:first-child {
+  font-weight: 500;
+}
+.vp-doc .result-table .jev td {
+  background: #e6f1ee;
+}
+.vp-doc .result-table .num {
+  text-align: right;
+}
+.vp-doc .result-table .low {
+  color: var(--jev-pink);
+  font-weight: 700;
+}
+.vp-doc .result-table .high {
+  color: var(--jev-green);
+}
+.table-note {
+  font-size: 13.5px;
+  color: var(--vp-c-text-2);
+  line-height: 1.7;
+}
+.vp-doc .link-list {
+  list-style: none;
+  padding-left: 0;
+}
+.vp-doc .link-list li {
+  margin: 10px 0;
+  text-align: left;
+}
+.link-list .desc {
+  display: block;
+  color: var(--vp-c-text-2);
+  font-size: 14.5px;
+}
+
+@media (max-width: 640px) {
+  .vp-doc h1 {
+    font-size: 24px;
+  }
+  .paper-page .vp-doc h1 {
+    font-size: 21px;
+  }
+  .vp-doc p,
+  .vp-doc li {
+    text-align: left;
+  }
+}

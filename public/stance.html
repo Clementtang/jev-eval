@@ -2,7 +2,10 @@
 <html lang="zh-Hant-TW" style="color-scheme: light">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- minimum-scale keeps phone browsers from widening the layout viewport to the unscaled stage. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <!-- "server" reads the local API; the site build rewrites this to "static". -->
+    <meta name="jev-data-source" content="server" />
     <title>同題對照重播</title>
     <style>
       /* jf 金萱 4.0 is installed locally on the author's Mac; the three weights are mapped to one
@@ -1529,6 +1532,11 @@
 
     <script>
       const $ = (id) => document.getElementById(id);
+      // Explicit per-copy setting instead of guessing from the hostname, so local replays never change.
+      const DATA_URLS =
+        document.querySelector('meta[name="jev-data-source"]').content === "static"
+          ? { replay: "data/replay.json", dataset: "data/dataset.json" }
+          : { replay: "/api/replay", dataset: "/api/dataset" };
       const C = StanceCore;
       const LANG_LABELS = { "zh-TW": "繁中", "zh-CN": "簡中", en: "英文" };
       const LANG_SHORT = { "zh-TW": "繁", "zh-CN": "簡", en: "英" };
@@ -2608,8 +2616,8 @@
           return res.json();
         };
         const [replay, dataset] = await Promise.all([
-          fetchJson("/api/replay"),
-          fetchJson("/api/dataset"),
+          fetchJson(DATA_URLS.replay),
+          fetchJson(DATA_URLS.dataset),
         ]);
         const present = new Set(replay.records.map((r) => r.target));
         const allTargets = C.MODEL_ORDER.filter((t) => present.has(t));
