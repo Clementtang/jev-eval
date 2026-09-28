@@ -15,7 +15,7 @@ const PAPERS = [
   { source: "paper.en.md", target: "en/paper.md", sourceNote: "This page is generated from the paper source in the repository:" },
 ];
 const REPLAYS = ["stance.html", "race.html"];
-const REPLAY_DATA = ["replay.json", "dataset.json"];
+const EXPORTED_DATA = ["replay/data/replay.json", "replay/data/dataset.json", "data/items.json"];
 const DATA_SOURCE_META = '<meta name="jev-data-source" content="server" />';
 
 // Relative links resolve against docs/paper/ in the repo but would 404 on the site.
@@ -65,14 +65,14 @@ function prepareReplay(name) {
   console.log(`replay: public/${name} -> site/public/replay/${name} (data source: static)`);
 }
 
-function checkReplayData() {
-  const missing = REPLAY_DATA.filter((name) => !existsSync(new URL(`public/replay/data/${name}`, SITE)));
+function checkExportedData() {
+  const missing = EXPORTED_DATA.filter((path) => !existsSync(new URL(`public/${path}`, SITE)));
   if (missing.length) {
-    throw new Error(`site/public/replay/data is missing ${missing.join(", ")}; run node scripts/export-site-data.mjs from the repo root first`);
+    throw new Error(`site/public is missing ${missing.join(", ")}; run node scripts/export-site-data.mjs from the repo root first`);
   }
 }
 
 const papers = PAPERS.map(preparePaper);
 REPLAYS.forEach(prepareReplay);
-checkReplayData();
+checkExportedData();
 writeAgentFiles({ repo: REPO, site: SITE, papers });

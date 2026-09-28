@@ -36,7 +36,7 @@ jobs:
           cache: npm
           cache-dependency-path: site/package-lock.json
       # The export imports only SDK-free modules, so the repo root needs no npm ci.
-      - name: Export replay data
+      - name: Export replay and item browser data
         run: node scripts/export-site-data.mjs
       - name: Install site dependencies
         working-directory: site
