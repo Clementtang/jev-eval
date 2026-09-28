@@ -68,6 +68,7 @@ Text, items and results are licensed under CC BY 4.0: reuse, adaptation and redi
 ## Optional
 
 - [Item browser](${url("en/explore")}): search and filter every item and see the six models' answers; each item has a link of the form ${url("en/explore")}#item=<id>.
+- [Sensitivity lab](${url("en/lab")}): choose which claims enter the index and recompute it in the browser with the paper's bootstrap; exploratory, no p-values.
 
 - [Replay: stance comparison](${url("replay/stance.html")}): the six models' judgments, item by item (Traditional Chinese interface).
 - [Source repository](${REPO_URL}): item generator, analysis scripts and site source.

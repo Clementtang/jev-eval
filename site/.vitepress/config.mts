@@ -92,6 +92,8 @@ export default defineConfig({
     return tags;
   },
   sitemap: { hostname: SITE_URL },
+  // The sensitivity lab imports lib/lab.mjs from the repo root, outside site/.
+  vite: { server: { fs: { allow: [".."] } } },
   locales: {
     root: {
       label: "繁體中文",
@@ -104,6 +106,7 @@ export default defineConfig({
         nav: [
           { text: "論文", link: "/paper" },
           { text: "題庫", link: "/explore" },
+          { text: "實驗室", link: "/lab" },
           replayNav({ menu: "互動重播", stance: "同題對照", portrait: "同題對照（直式短版）", race: "速度對照" }),
         ],
         outline: { label: "本頁目錄", level: [2, 3] },
@@ -130,6 +133,7 @@ export default defineConfig({
         nav: [
           { text: "Paper", link: "/en/paper" },
           { text: "Items", link: "/en/explore" },
+          { text: "Lab", link: "/en/lab" },
           replayNav({ menu: "Replays", stance: "Stance comparison", portrait: "Stance comparison (portrait, short)", race: "Speed race" }),
         ],
         outline: { label: "On this page", level: [2, 3] },

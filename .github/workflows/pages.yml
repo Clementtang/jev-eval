@@ -11,6 +11,7 @@ on:
       - "data/**"
       - "lib/**"
       - "scripts/export-site-data.mjs"
+      - "scripts/verify-*.mjs"
       - "CITATION.cff"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -38,6 +39,11 @@ jobs:
       # The export imports only SDK-free modules, so the repo root needs no npm ci.
       - name: Export replay and item browser data
         run: node scripts/export-site-data.mjs
+      # Stops the deploy if the item browser or the lab would disagree with results/stats.md.
+      - name: Check site data
+        run: |
+          node scripts/verify-items.mjs
+          node scripts/verify-lab.mjs
       - name: Install site dependencies
         working-directory: site
         run: npm ci
