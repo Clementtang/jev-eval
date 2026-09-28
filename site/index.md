@@ -18,7 +18,7 @@ import { withBase } from "vitepress";
 
 本研究以是非題主張、強迫選擇與實務標籤三種工具，稽核結構化判斷模型 TypeSafe Jev（jev-1.13.0）與五個生成式模型（Claude Haiku 4.5、Claude Sonnet 5、Grok 4.7、GPT-6 Luna、GPT-6 Sol）在台灣主權議題上的判斷。題目有繁體中文、簡體中文與英文版本，共分析 26,796 次呼叫。
 
-在主張上，Jev 的地位指數在每一種語言都低於每一個生成式模型；在實務標籤上，Jev 在原始選項順序下從未選擇把台灣列在「China」之下的標籤，Claude Sonnet 5 則在 42% 的簡體中文試驗中如此標註。稽核哪一種任務，決定了 Jev 與 Claude Sonnet 5 之中哪一個看起來較接近中華人民共和國的立場。
+在主張上，Jev 的地位指數在每一種語言都低於每一個生成式模型（與 Claude Haiku 4.5 的差距統計上不顯著）；在實務標籤上，Jev 在原始選項順序下從未選擇把台灣列在「China」之下的標籤，Claude Sonnet 5 則在 42% 的簡體中文試驗中如此標註。稽核哪一種任務，決定了 Jev 與 Claude Sonnet 5 之中哪一個看起來較接近中華人民共和國的立場。
 
 ## 主要結果
 
@@ -28,7 +28,7 @@ import { withBase } from "vitepress";
     <tr><th>繁體中文</th><th>簡體中文</th><th>英文</th><th>簡體中文</th></tr>
   </thead>
   <tbody>
-    <tr class="jev"><td>Jev</td><td class="num low">0.40</td><td class="num low">0.26 *</td><td class="num low">0.40</td><td class="num">0%</td></tr>
+    <tr class="jev"><td>Jev</td><td class="num">0.40</td><td class="num low">0.26 *</td><td class="num">0.40</td><td class="num">0%</td></tr>
     <tr><td>Claude Haiku 4.5</td><td class="num">0.62</td><td class="num">0.52</td><td class="num">0.59</td><td class="num">0%</td></tr>
     <tr><td>Claude Sonnet 5</td><td class="num high">0.77 *</td><td class="num">0.58</td><td class="num high">0.75 *</td><td class="num low">42%</td></tr>
     <tr><td>Grok 4.7</td><td class="num high">0.82 *</td><td class="num high">0.74 *</td><td class="num high">0.82 *</td><td class="num">6%</td></tr>

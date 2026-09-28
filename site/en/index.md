@@ -18,7 +18,7 @@ import { withBase } from "vitepress";
 
 We audit one structured decision model, TypeSafe Jev (jev-1.13.0), and five generative models (Claude Haiku 4.5, Claude Sonnet 5, Grok 4.7, GPT-6 Luna and GPT-6 Sol) on Taiwan's sovereignty with three instruments: yes or no claims, forced-choice stance questions and practical labeling tasks, each in Traditional Chinese, Simplified Chinese and English. We analyze 26,796 calls.
 
-On the claims, Jev's status index is lower than every generative model's in every language. In practical labeling, Jev never chose a label that lists Taiwan under "China" in the original option order, while Claude Sonnet 5 did so in 42% of Simplified Chinese trials. Which task an audit measures decides which of the two looks closer to the PRC position.
+On the claims, Jev's status index is lower than every generative model's in every language (the gap to Claude Haiku 4.5 is not statistically significant). In practical labeling, Jev never chose a label that lists Taiwan under "China" in the original option order, while Claude Sonnet 5 did so in 42% of Simplified Chinese trials. Which task an audit measures decides which of the two looks closer to the PRC position.
 
 ## Main results
 
@@ -28,7 +28,7 @@ On the claims, Jev's status index is lower than every generative model's in ever
     <tr><th>Traditional Chinese</th><th>Simplified Chinese</th><th>English</th><th>Simplified Chinese</th></tr>
   </thead>
   <tbody>
-    <tr class="jev"><td>Jev</td><td class="num low">0.40</td><td class="num low">0.26 *</td><td class="num low">0.40</td><td class="num">0%</td></tr>
+    <tr class="jev"><td>Jev</td><td class="num">0.40</td><td class="num low">0.26 *</td><td class="num">0.40</td><td class="num">0%</td></tr>
     <tr><td>Claude Haiku 4.5</td><td class="num">0.62</td><td class="num">0.52</td><td class="num">0.59</td><td class="num">0%</td></tr>
     <tr><td>Claude Sonnet 5</td><td class="num high">0.77 *</td><td class="num">0.58</td><td class="num high">0.75 *</td><td class="num low">42%</td></tr>
     <tr><td>Grok 4.7</td><td class="num high">0.82 *</td><td class="num high">0.74 *</td><td class="num high">0.82 *</td><td class="num">6%</td></tr>
