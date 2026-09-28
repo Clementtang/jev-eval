@@ -88,7 +88,9 @@ const routes = {
     const FIELDS = ["target", "run_id", "item_id", "rep", "ms", "value", "choice", "lang", "group", "topic", "concept", "subject", "polarity", "framing", "question_type"];
     const records = listRuns().flatMap((r) => readRun(r.run_id) ?? [])
       .filter((r) => r.ok && !r.refusal && (r.variant ?? "base") === "base")
-      .map((r) => ({ ...Object.fromEntries(FIELDS.map((f) => [f, r[f]])), input_tokens: r.usage?.input_tokens ?? 0, output_tokens: r.usage?.output_tokens ?? 0 }));
+      .map((r) => ({ ...Object.fromEntries(FIELDS.map((f) => [f, r[f]])), input_tokens: r.usage?.input_tokens ?? 0,
+        // xAI bills reasoning tokens outside output tokens; OpenAI already includes them (same rule as stats.mjs).
+        output_tokens: (r.usage?.output_tokens ?? 0) + (TARGETS[r.target]?.reasoningOutsideOutput ? r.usage?.reasoning_tokens ?? 0 : 0) }));
     send(res, 200, { pricing: PRICING, records });
   },
   "GET /api/runs": (req, res) => send(res, 200, listRuns()),

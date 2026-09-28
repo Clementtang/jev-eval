@@ -20,7 +20,12 @@
         --neutral: #a3a8b4;
         --jev: #6f52e0;
         --claude-sonnet-5: #c2862c;
+        --claude-haiku-4-5: #8c6d46;
         --claude-opus-5: #c05a3a;
+        --claude-opus-5-5: #c05a3a;
+        --grok-4-7: #454545;
+        --luna-6: #4a8fe0;
+        --sol-6: #1d4f91;
         --mono: "SF Mono", ui-monospace, Menlo, monospace;
       }
       * {
@@ -472,6 +477,25 @@
         color: var(--text);
         font-family: var(--mono);
       }
+      #picker {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
+        margin-top: 6px;
+        color: var(--text);
+      }
+      #picker label {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+      }
+      #picker input {
+        accent-color: var(--jev);
+      }
+      #picker[aria-disabled="true"] {
+        opacity: 0.5;
+      }
       #help[hidden] {
         display: none;
       }
@@ -519,7 +543,7 @@
           >
         </div>
         <div id="footNote">
-          重播 2026-09-21 實測紀錄．每題延遲為實際量測．每個模型並行 8 個請求
+          重播 2026-09-25 實測紀錄．每題延遲為實際量測．重播時每個模型並行 8 個請求
         </div>
       </footer>
     </div>
@@ -528,7 +552,8 @@
       <b>Space</b> 或點畫面 開始／暫停　<b>R</b> 重來　<b>1 2 4</b> 播放倍速<br />
       <b>S</b> Jev 完成時停止其他模型：<span id="stopState">關</span>　<b>H</b>
       隱藏說明（錄影用）<br />
-      網址參數：<b>?lanes=jev,claude-opus-5</b> 只顯示指定模型
+      顯示的模型（按 R 重來後才能更改；選擇會寫進網址，重新整理後保留）：
+      <div id="picker"></div>
     </div>
     <div id="error" hidden></div>
 
@@ -1007,12 +1032,14 @@
           return;
         }
         state.running = true;
+        $("picker").setAttribute("aria-disabled", "true");
         state.lastFrame = performance.now();
         $("help").hidden = true;
         requestAnimationFrame(frame);
       }
       function reset() {
         state.running = false;
+        $("picker").removeAttribute("aria-disabled");
         state.virtualMs = 0;
         clearTimeout(state.summaryTimer);
         $("stage").classList.remove("summary");
@@ -1040,22 +1067,68 @@
         stage.style.top = `${(innerHeight - STAGE_H * scale) / 2}px`;
       }
 
+      const MODEL_ORDER = ["jev", "claude-haiku-4-5", "claude-sonnet-5", "grok-4-7", "luna-6", "sol-6"];
+
+      function buildLanes(wanted) {
+        $("lanes").replaceChildren();
+        state.lanes = wanted.map((t) =>
+          buildLane(
+            t,
+            state.replay.records.filter((r) => r.target === t),
+            state.order,
+            state.replay.pricing,
+            state.dataset,
+          ),
+        );
+        const baseItems = state.dataset.filter((i) => (i.variant ?? "base") === "base" && i.lang === "zh-TW").length * 3;
+        $("title").textContent = `台灣主權 ${baseItems} 題：同一份題目，${state.lanes.length} 個模型同時作答`;
+        // Compact mode depends on how wide each lane actually gets, not on the lane count:
+        // six lanes fit comfortably on a 3060px stage but not on a 1920px one.
+        const laneWidth = (STAGE_W - STAGE_PADDING * 2 - LANE_GAP * (state.lanes.length - 1)) / state.lanes.length;
+        $("stage").classList.toggle("compact", laneWidth < MIN_FULL_LANE_WIDTH);
+        reset();
+      }
+
+      // Checkbox per recorded model. Changing lanes mid-race would mix two replays, so the
+      // picker only acts after a reset; the choice is mirrored into ?lanes= for reloads.
+      function buildPicker(selected) {
+        const picker = $("picker");
+        picker.replaceChildren(
+          ...state.available.map((t) => {
+            const box = el("input");
+            box.type = "checkbox";
+            box.value = t;
+            box.checked = selected.includes(t);
+            const label = el("label");
+            label.append(box, (LANE_INFO[t] ?? { name: t }).name);
+            return label;
+          }),
+        );
+        picker.addEventListener("change", (e) => {
+          const chosen = [...picker.querySelectorAll("input:checked")].map((b) => b.value);
+          if (state.running || state.virtualMs > 0 || !chosen.length) {
+            e.target.checked = !e.target.checked;
+            return;
+          }
+          const url = new URL(location.href);
+          url.searchParams.set("lanes", chosen.join(","));
+          history.replaceState(null, "", url);
+          buildLanes(chosen);
+        });
+      }
+
       async function init() {
         const [replay, dataset] = await Promise.all([
           fetch("/api/replay").then((r) => r.json()),
           fetch("/api/dataset").then((r) => r.json()),
         ]);
-        const available = [...new Set(replay.records.map((r) => r.target))];
-        const wanted = (
-          params.get("lanes")?.split(",") ?? [
-            "jev",
-            "grok-4-7",
-            "claude-opus-5-5",
-            "luna-6",
-            "sol-6",
-          ]
-        ).filter((t) => available.includes(t));
-        if (!wanted.length)
+        // Lane order is fixed so a recording always lists the models the same way.
+        const present = new Set(replay.records.map((r) => r.target));
+        const available = [
+          ...MODEL_ORDER.filter((t) => present.has(t)),
+          ...[...present].filter((t) => !MODEL_ORDER.includes(t)).sort(),
+        ];
+        if (!available.length)
           throw new Error("沒有可重播的紀錄，請先執行 npm run batch");
         const order = seededOrder([
           ...new Set(
@@ -1064,24 +1137,12 @@
               .map((i) => i.id),
           ),
         ]);
-        state.lanes = wanted.map((t) =>
-          buildLane(
-            t,
-            replay.records.filter((r) => r.target === t),
-            order,
-            replay.pricing,
-            dataset,
-          ),
-        );
-        const baseItems = dataset.filter((i) => (i.variant ?? "base") === "base" && i.lang === "zh-TW").length * 3;
-        $("title").textContent = `台灣主權 ${baseItems} 題：同一份題目，${state.lanes.length} 個模型同時作答`;
-        // Compact mode depends on how wide each lane actually gets, not on the lane count:
-        // six lanes fit comfortably on a 3060px stage but not on a 1920px one.
-        const laneWidth = (STAGE_W - STAGE_PADDING * 2 - LANE_GAP * (state.lanes.length - 1)) / state.lanes.length;
-        $("stage").classList.toggle("compact", laneWidth < MIN_FULL_LANE_WIDTH);
+        Object.assign(state, { replay, dataset, order, available });
+        const requested = params.get("lanes")?.split(",").filter((t) => available.includes(t));
+        buildPicker(requested?.length ? requested : available);
+        buildLanes(requested?.length ? requested : available);
         $("stopState").textContent = state.stopWithJev ? "開" : "關";
         setSpeed(state.speed);
-        reset();
         state.ready = true;
         $("loading").hidden = true;
       }
