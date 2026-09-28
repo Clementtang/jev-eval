@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Jev 立場測試台</title>
     <style>
+      /* jf 金萱 3.1 is installed locally on the author's Mac; the three weights are mapped to one
+         family so CSS weights pick the right file. The fallbacks cover machines without it. */
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Book"), local("jf-jinxuan-3.1-Book");
+        font-weight: 100 450;
+      }
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Medium"), local("jf-jinxuan-3.1-Medium");
+        font-weight: 451 650;
+      }
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Bold"), local("jf-jinxuan-3.1-Bold");
+        font-weight: 651 900;
+      }
+      body {
+        font-variant-numeric: tabular-nums;
+      }
+
       :root {
         --bg: #f6f5f1;
         --surface: #ffffff;
@@ -19,7 +40,7 @@
         --err: #b3261e;
         --yes: #2e7d4f;
         --no: #b3261e;
-        --mono: ui-monospace, "SF Mono", Menlo, monospace;
+        --mono: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
       }
       * {
         box-sizing: border-box;
@@ -28,11 +49,7 @@
         margin: 0;
         background: var(--bg);
         color: var(--text);
-        font:
-          14px/1.5 -apple-system,
-          "PingFang TC",
-          "Noto Sans TC",
-          sans-serif;
+        font: 14px/1.5 "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
       }
       header {
         position: sticky;

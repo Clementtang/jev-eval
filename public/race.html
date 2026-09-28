@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Jev 立場賽跑</title>
     <style>
+      /* jf 金萱 3.1 is installed locally on the author's Mac; the three weights are mapped to one
+         family so CSS weights pick the right file. The fallbacks cover machines without it. */
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Book"), local("jf-jinxuan-3.1-Book");
+        font-weight: 100 450;
+      }
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Medium"), local("jf-jinxuan-3.1-Medium");
+        font-weight: 451 650;
+      }
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Bold"), local("jf-jinxuan-3.1-Bold");
+        font-weight: 651 900;
+      }
+      body {
+        font-variant-numeric: tabular-nums;
+      }
+
       /* Light theme only, on purpose: the recording must look the same on every machine. */
       :root {
         --desk: #dde2e8;
@@ -27,12 +48,10 @@
         --grok-4-7: #454545;
         --luna-6: #4a8fe0;
         --sol-6: #1d4f91;
-        --serif: "Songti TC", "Noto Serif TC", "Source Han Serif TC", serif;
-        --sans: -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
-        --num:
-          "DIN Alternate", "Bahnschrift", "Roboto Condensed", -apple-system,
-          sans-serif;
-        --mono: "SF Mono", ui-monospace, Menlo, monospace;
+        --serif: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+        --sans: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+        --num: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+        --mono: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
       }
       * {
         box-sizing: border-box;
@@ -895,10 +914,8 @@
       const MIN_CELL = 4;
       const CONTROL_CELL_RATIO = 0.72;
       const CONTROL_BINS = new Set(["peers", "control"]);
-      const FONT_SANS =
-        '-apple-system, "PingFang TC", "Noto Sans TC", sans-serif';
-      const FONT_NUM =
-        '"DIN Alternate", "Bahnschrift", "Roboto Condensed", -apple-system, sans-serif';
+      const FONT_SANS = '"JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif';
+      const FONT_NUM = '"JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif';
       const LANE_INFO = {
         jev: { name: "Jev", vendor: "TypeSafe．jev-1.13.0" },
         "claude-opus-5-5": { name: "Claude Opus 5.5", vendor: "Anthropic" },
@@ -1808,6 +1825,8 @@
       }
 
       async function init() {
+        // Canvas text does not re-render when a font arrives later, so wait for the local font first.
+        await Promise.all(["400", "500", "700"].map((w) => document.fonts.load(`${w} 16px "JF Jinxuan"`)));
         const [replay, dataset] = await Promise.all([
           fetch("/api/replay").then((r) => r.json()),
           fetch("/api/dataset").then((r) => r.json()),
