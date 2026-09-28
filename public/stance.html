@@ -1060,6 +1060,66 @@
             perThousand: ((input * inPrice + output * outPrice) / 1e6) * 1000,
           };
         }
+        // The portrait short cut: six questions in playback order, agreed with the author.
+        // `control` shares the screen with its question as a grey comparison grid.
+        const SHORT_CUT = [
+          { concept: "prc-holds-sovereignty-over-taiwan" },
+          { concept: "taiwan-sovereign" },
+          { concept: "taiwan-future-by-its-people" },
+          { concept: "taipei-in-prc", control: CONTROL_CONCEPT },
+          { concept: "roc-prc-relation" },
+          { concept: "country-field-kaohsiung" },
+        ];
+        // Numbers behind the short cut's conclusion, so its wording is shown only when the
+        // data support it: Jev lowest on the status index in every language, and one model's
+        // China-listed label rate above every other model's rate in every language.
+        function conclusionFacts(ix, targets, labelConcepts) {
+          const index = Object.fromEntries(
+            targets.map((t) => [
+              t,
+              Object.fromEntries(
+                LANGS.map((l) => [l, orientedIndex(ix, t, l, STATUS_CONCEPTS)]),
+              ),
+            ]),
+          );
+          const others = targets.filter((t) => t !== "jev");
+          const otherIndexValues = others.flatMap((t) =>
+            LANGS.map((l) => index[t][l]).filter((x) => x != null),
+          );
+          const jevLowest =
+            targets.includes("jev") &&
+            others.length > 0 &&
+            LANGS.every(
+              (l) =>
+                index.jev[l] != null &&
+                others.every(
+                  (t) => index[t][l] != null && index.jev[l] < index[t][l],
+                ),
+            );
+          const rates = targets.flatMap((t) =>
+            LANGS.map((l) => {
+              const r = labelRate(ix, t, labelConcepts, l);
+              return { target: t, lang: l, ...r, rate: r.n ? r.hits / r.n : 0 };
+            }),
+          );
+          const peak = rates.reduce((a, b) => (b.rate > a.rate ? b : a));
+          const rest = rates.filter((r) => r.target !== peak.target);
+          const labelLeader =
+            peak.rate > 0 && rest.every((r) => r.rate < peak.rate)
+              ? peak
+              : null;
+          const range = (xs) =>
+            xs.length ? { min: Math.min(...xs), max: Math.max(...xs) } : null;
+          return {
+            index,
+            jevLowest,
+            otherIndexRange: range(otherIndexValues),
+            labelLeader,
+            otherLabelRange: labelLeader
+              ? range(rest.map((r) => r.rate))
+              : null,
+          };
+        }
         const repeatsOf = (records, target) =>
           Math.max(
             0,
@@ -1090,6 +1150,8 @@
           choiceSide,
           latencyAndCost,
           repeatsOf,
+          SHORT_CUT,
+          conclusionFacts,
         };
       })();
     </script>
