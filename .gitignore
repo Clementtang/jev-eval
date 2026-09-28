@@ -4,3 +4,4 @@ node_modules/
 .env.op
 data/*.tmp
 .claude/worktrees/
+social/
