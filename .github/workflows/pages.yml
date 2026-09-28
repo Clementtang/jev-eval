@@ -11,6 +11,7 @@ on:
       - "data/**"
       - "lib/**"
       - "scripts/export-site-data.mjs"
+      - "CITATION.cff"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 

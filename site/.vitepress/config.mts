@@ -1,7 +1,52 @@
-import { defineConfig, type DefaultTheme, type HeadConfig } from "vitepress";
+import { defineConfig, type DefaultTheme, type HeadConfig, type PageData } from "vitepress";
 
 const REPO_URL = "https://github.com/Clementtang/jev-eval";
 const SITE_URL = "https://clementtang.github.io/jev-eval/";
+const CC_BY_URL = "https://creativecommons.org/licenses/by/4.0/";
+const PAPER_PAGES: Record<string, { citationLanguage: string; inLanguage: string; markdown: string }> = {
+  "paper.md": { citationLanguage: "zh-TW", inLanguage: "zh-Hant-TW", markdown: "paper.md" },
+  "en/paper.md": { citationLanguage: "en", inLanguage: "en", markdown: "en/paper.md" },
+};
+
+// YAML turns an unquoted 2026-09-28 into a Date, so both shapes are accepted.
+const isoDate = (value: unknown) => (value instanceof Date ? value.toISOString() : String(value)).slice(0, 10);
+
+// Google Scholar reads the citation_* tags; search engines and agents read the JSON-LD.
+// Every value comes from the paper frontmatter, so a new version needs no edit here.
+function paperHead(pageData: PageData, pageUrl: string): HeadConfig[] {
+  const page = PAPER_PAGES[pageData.relativePath];
+  if (!page) return [];
+  const { title, author, date, version } = pageData.frontmatter;
+  const published = isoDate(date);
+  const article = {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    name: title,
+    headline: title,
+    author: { "@type": "Person", name: author },
+    datePublished: published,
+    version,
+    inLanguage: page.inLanguage,
+    license: CC_BY_URL,
+    url: pageUrl,
+    isBasedOn: REPO_URL,
+  };
+  return [
+    ["meta", { name: "citation_title", content: title }],
+    ["meta", { name: "citation_author", content: author }],
+    ["meta", { name: "citation_publication_date", content: published.replaceAll("-", "/") }],
+    ["meta", { name: "citation_language", content: page.citationLanguage }],
+    ["link", { rel: "alternate", type: "text/markdown", href: SITE_URL + page.markdown }],
+    ["script", { type: "application/ld+json" }, JSON.stringify(article)],
+  ];
+}
+
+// Serialized into the client bundle as source text, so the function must not use outer variables.
+// Intl.Segmenter splits Chinese into words; the default tokenizer would index whole sentences.
+function tokenize(text: string) {
+  const segmenter = new Intl.Segmenter("zh-Hant", { granularity: "word" });
+  return Array.from(segmenter.segment(text)).filter((s) => s.isWordLike).map((s) => s.segment);
+}
 
 // The replays are plain HTML files in public/, outside the VitePress router, so they need a full
 // page load (target _self) instead of client-side navigation.
@@ -19,6 +64,8 @@ function replayNav(labels: { stance: string; portrait: string; race: string; men
 export default defineConfig({
   base: "/jev-eval/",
   cleanUrls: true,
+  // public/ holds the papers as raw Markdown for agents; they are served as files, not pages.
+  srcExclude: ["public/**"],
   // Light theme only: no toggle and no following the system dark setting.
   appearance: false,
   lastUpdated: false,
@@ -40,9 +87,11 @@ export default defineConfig({
       ["meta", { property: "og:description", content: description }],
       ["meta", { property: "og:url", content: SITE_URL + path }],
       ["meta", { name: "twitter:card", content: "summary" }],
+      ...paperHead(pageData, SITE_URL + path),
     ];
     return tags;
   },
+  sitemap: { hostname: SITE_URL },
   locales: {
     root: {
       label: "繁體中文",
@@ -62,6 +111,9 @@ export default defineConfig({
         sidebarMenuLabel: "選單",
         langMenuLabel: "切換語言",
         notFound: { title: "找不到這個頁面", quote: "網址可能打錯了，或頁面已經移動。", linkText: "回到首頁" },
+        footer: {
+          message: `文字與資料 <a href="${CC_BY_URL}">CC BY 4.0</a>，程式 <a href="${REPO_URL}/blob/main/LICENSE">MIT</a>`,
+        },
       },
     },
     en: {
@@ -80,10 +132,52 @@ export default defineConfig({
         ],
         outline: { label: "On this page", level: [2, 3] },
         docFooter: { prev: false, next: false },
+        footer: {
+          message: `Text and data <a href="${CC_BY_URL}">CC BY 4.0</a>, code <a href="${REPO_URL}/blob/main/LICENSE">MIT</a>`,
+        },
       },
     },
   },
   themeConfig: {
     socialLinks: [{ icon: "github", link: REPO_URL }],
+    search: {
+      provider: "local",
+      options: {
+        miniSearch: { options: { tokenize }, searchOptions: { combineWith: "AND" } },
+        locales: {
+          root: {
+            translations: {
+              button: { buttonText: "搜尋", buttonAriaLabel: "搜尋" },
+              modal: {
+                displayDetails: "顯示詳細清單",
+                resetButtonTitle: "清除搜尋",
+                backButtonTitle: "關閉搜尋",
+                noResultsText: "找不到結果",
+                footer: {
+                  selectText: "選擇",
+                  selectKeyAriaLabel: "Enter",
+                  navigateText: "切換",
+                  navigateUpKeyAriaLabel: "向上鍵",
+                  navigateDownKeyAriaLabel: "向下鍵",
+                  closeText: "關閉",
+                  closeKeyAriaLabel: "Esc",
+                },
+              },
+            },
+          },
+          en: {
+            translations: {
+              button: { buttonText: "Search", buttonAriaLabel: "Search" },
+              modal: {
+                displayDetails: "Display detailed list",
+                resetButtonTitle: "Reset search",
+                backButtonTitle: "Close search",
+                noResultsText: "No results for",
+              },
+            },
+          },
+        },
+      },
+    },
   },
 });

@@ -49,6 +49,11 @@ Jev 也是六個模型中回應最快、成本最低的：基準題延遲中位�
   <li><a :href="withBase('/replay/race.html')" target="_self">互動重播：速度對照</a><span class="desc">以實測延遲重播每一次呼叫，比較六個模型答完題庫所需的時間與成本。</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval">GitHub repo</a><span class="desc">題庫產生程式、分析腳本與重播頁的原始碼。</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/tree/main/results/runs">原始資料</a><span class="desc">每一次模型呼叫的原始紀錄（JSONL），以及<a href="https://github.com/Clementtang/jev-eval/blob/main/data/dataset.json">題庫</a>與<a href="https://github.com/Clementtang/jev-eval/blob/main/results/stats.md">統計輸出</a>。</span></li>
+  <li><a :href="withBase('/data/summary.json')" target="_self">結果摘要（JSON）</a><span class="desc">各指數與 95% bootstrap 區間、中立檢定、標籤比例、延遲與成本，附 schema 欄位說明每個鍵。給程式與 AI agent 讀取的還有 <a :href="withBase('/llms.txt')" target="_self">llms.txt</a>、論文 Markdown 原文（<a :href="withBase('/paper.md')" target="_self">繁體中文</a>、<a :href="withBase('/en/paper.md')" target="_self">英文</a>）與 <a href="https://github.com/Clementtang/jev-eval/blob/main/CITATION.cff">CITATION.cff</a>。</span></li>
 </ul>
+
+## 授權
+
+論文、題庫與結果以 <a href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權，標註出處即可使用、改作與轉載；程式以 <a href="https://github.com/Clementtang/jev-eval/blob/main/LICENSE">MIT</a> 授權。論文引用的第三方資料依其原始出處的條件使用。
 
 <p class="table-note">題目生成、程式、統計分析與論文撰寫由 Claude（Anthropic）協助完成，受測模型包含兩個 Claude 模型。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，API 費用自付。</p>

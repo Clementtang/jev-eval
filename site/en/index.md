@@ -49,6 +49,11 @@ Jev was also the fastest and cheapest of the six models: a median latency of 267
   <li><a :href="withBase('/replay/race.html')" target="_self">Replay: speed race</a><span class="desc">Every call replayed at its measured latency, comparing how long and how much each model takes to answer the item set. Interface in Traditional Chinese.</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval">GitHub repository</a><span class="desc">Item generator, analysis scripts and the replay source.</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/tree/main/results/runs">Raw data</a><span class="desc">The raw record of every model call (JSONL), plus the <a href="https://github.com/Clementtang/jev-eval/blob/main/data/dataset.json">item set</a> and the <a href="https://github.com/Clementtang/jev-eval/blob/main/results/stats.md">statistical output</a>.</span></li>
+  <li><a :href="withBase('/data/summary.json')" target="_self">Summary results (JSON)</a><span class="desc">Indices with 95% bootstrap intervals, neutrality tests, label rates, latency and cost, with a schema field describing every key. For programs and AI agents there is also <a :href="withBase('/llms.txt')" target="_self">llms.txt</a>, the paper as Markdown (<a :href="withBase('/en/paper.md')" target="_self">English</a>, <a :href="withBase('/paper.md')" target="_self">Traditional Chinese</a>) and <a href="https://github.com/Clementtang/jev-eval/blob/main/CITATION.cff">CITATION.cff</a>.</span></li>
 </ul>
+
+## License
+
+The paper, items and results are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>: reuse, adaptation and redistribution are allowed with attribution. The code is licensed under <a href="https://github.com/Clementtang/jev-eval/blob/main/LICENSE">MIT</a>. Third-party material cited in the paper remains under the terms of its original source.
 
 <p class="table-note">Items, code, statistical analysis and the paper were drafted with the help of Claude (Anthropic), and two Claude models are among those tested. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage.</p>

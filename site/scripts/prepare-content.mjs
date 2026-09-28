@@ -1,7 +1,9 @@
 // Copies the build inputs that live outside site/ into it, so each has one source in the repo:
-// the papers (docs/paper/*.md) and the replay pages (public/*.html). The copies are gitignored.
+// the papers (docs/paper/*.md), the replay pages (public/*.html) and the files for programs
+// (agent-files.mjs). The copies are gitignored.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { posix } from "node:path";
+import { writeAgentFiles } from "./agent-files.mjs";
 
 const REPO = new URL("../../", import.meta.url);
 const SITE = new URL("../", import.meta.url);
@@ -43,13 +45,14 @@ function addFrontmatter(markdown, lines) {
 
 function preparePaper({ source, target, sourceNote }) {
   const sourcePath = PAPER_DIR + source;
-  const original = readFileSync(new URL(sourcePath, REPO), "utf8");
-  const body = addFrontmatter(keepTableValuesTogether(rewriteLinks(original)), ["outline: [2, 3]", "pageClass: paper-page"]);
+  const markdown = rewriteLinks(readFileSync(new URL(sourcePath, REPO), "utf8"));
+  const body = addFrontmatter(keepTableValuesTogether(markdown), ["outline: [2, 3]", "pageClass: paper-page"]);
   const footer = `\n\n---\n\n<p class="paper-source">${sourceNote} <a href="${GITHUB_BLOB}${sourcePath}">${sourcePath}</a></p>\n`;
   const out = new URL(target, SITE);
   mkdirSync(new URL(".", out), { recursive: true });
   writeFileSync(out, body.trimEnd() + footer);
   console.log(`paper: ${sourcePath} -> site/${target}`);
+  return { sourcePath, target, markdown };
 }
 
 function prepareReplay(name) {
@@ -69,6 +72,7 @@ function checkReplayData() {
   }
 }
 
-PAPERS.forEach(preparePaper);
+const papers = PAPERS.map(preparePaper);
 REPLAYS.forEach(prepareReplay);
 checkReplayData();
+writeAgentFiles({ repo: REPO, site: SITE, papers });
