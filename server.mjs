@@ -11,6 +11,7 @@ const PORT = Number(process.env.PORT ?? 4173);
 const DATASET = new URL("./data/dataset.json", import.meta.url);
 const INDEX = new URL("./public/index.html", import.meta.url);
 const RACE = new URL("./public/race.html", import.meta.url);
+const STANCE = new URL("./public/stance.html", import.meta.url);
 const MAX_BODY_BYTES = 1_000_000;
 
 const loadDataset = () => JSON.parse(readFileSync(DATASET, "utf8"));
@@ -83,6 +84,7 @@ const routes = {
     send(res, 200, await runAndRecord({ runId, target, item, rep }));
   },
   "GET /race": (req, res) => send(res, 200, readFileSync(RACE), "text/html; charset=utf-8"),
+  "GET /stance": (req, res) => send(res, 200, readFileSync(STANCE), "text/html; charset=utf-8"),
   // Base-item records from every run, trimmed to what the race replay needs.
   "GET /api/replay": (req, res) => {
     const FIELDS = ["target", "run_id", "item_id", "rep", "ms", "value", "choice", "lang", "group", "topic", "concept", "subject", "polarity", "framing", "question_type"];
