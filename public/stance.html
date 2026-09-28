@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>同題對照重播</title>
     <style>
+      /* jf 金萱 3.1 is installed locally on the author's Mac; the three weights are mapped to one
+         family so CSS weights pick the right file. The fallbacks cover machines without it. */
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Book"), local("jf-jinxuan-3.1-Book");
+        font-weight: 100 450;
+      }
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Medium"), local("jf-jinxuan-3.1-Medium");
+        font-weight: 451 650;
+      }
+      @font-face {
+        font-family: "JF Jinxuan";
+        src: local("jf-jinxuan-3.1 Bold"), local("jf-jinxuan-3.1-Bold");
+        font-weight: 651 900;
+      }
+      body {
+        font-variant-numeric: tabular-nums;
+      }
+
       /* Light theme only: the recording must look the same whatever the viewer's OS setting is. */
       :root {
         --outside: #e4e7e5;
@@ -19,9 +40,9 @@
         --prc: #c93a6b;
         --neutral: #9aa0ab;
         --tile-base: #cfd3d8;
-        --serif: "Songti TC", "Songti SC", "STSong", serif;
-        --sans: -apple-system, "PingFang TC", "Heiti TC", sans-serif;
-        --mono: "SF Mono", ui-monospace, Menlo, monospace;
+        --serif: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+        --sans: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
+        --mono: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
         --side-w: 440px;
         --label-w: 176px;
         --row-h: 26px;
