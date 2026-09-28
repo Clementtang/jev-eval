@@ -1154,6 +1154,7 @@
         stepIndex: 0,
         elapsed: 0,
         lastFrame: 0,
+        frameRequest: 0,
         ready: false,
       };
 
@@ -1378,8 +1379,6 @@
         const cursor = el("div", "m-cursor");
         cursor.hidden = true;
         // Rows are implicit, so the span is explicit: the caret row plus one row per model.
-        cursor.style.gridRow = `2 / span ${state.lanes.length + 1}`;
-        // The rows are implicit, so the span is explicit: caret row plus one row per model.
         cursor.style.gridRow = `2 / span ${state.lanes.length + 1}`;
         matrix.append(cursor);
         state.cursor = cursor;
@@ -1747,9 +1746,16 @@
         renderSummaryNote();
         lockPicker();
       }
+      // A hidden tab stops animation frames; capping the gap keeps a return from skipping steps.
+      const MAX_FRAME_GAP_MS = 250;
       function frame(now) {
+        state.frameRequest = 0;
         if (!state.running) return;
-        state.elapsed += (now - state.lastFrame) * state.speed;
+        const gap = Math.min(
+          MAX_FRAME_GAP_MS,
+          Math.max(0, now - state.lastFrame),
+        );
+        state.elapsed += gap * state.speed;
         state.lastFrame = now;
         const step = state.steps[state.stepIndex];
         if (state.elapsed >= step.duration) {
@@ -1761,7 +1767,7 @@
           goTo(state.stepIndex + 1);
           state.elapsed = carry;
         }
-        requestAnimationFrame(frame);
+        state.frameRequest = requestAnimationFrame(frame);
       }
       function toggle() {
         if (!state.ready) return;
@@ -1774,7 +1780,10 @@
         state.lastFrame = performance.now();
         $("help").hidden = true;
         lockPicker();
-        requestAnimationFrame(frame);
+        // Pausing and resuming before the pending frame fires would otherwise leave two loops
+        // running, each adding elapsed time, so playback would run at double speed.
+        cancelAnimationFrame(state.frameRequest);
+        state.frameRequest = requestAnimationFrame(frame);
       }
       function reset() {
         state.running = false;
@@ -1910,7 +1919,8 @@
         if (!state.ready) return;
         if (e.key === " ") {
           e.preventDefault();
-          toggle();
+          // Holding Space auto-repeats; only the first press should toggle.
+          if (!e.repeat) toggle();
         } else if (e.key === "r" || e.key === "R") reset();
         else if (["1", "2", "4"].includes(e.key)) setSpeed(Number(e.key));
         else if (e.key === "h" || e.key === "H")
