@@ -55,6 +55,7 @@ Text, items and results are licensed under CC BY 4.0: reuse, adaptation and redi
 ## Data
 
 - [Summary results (JSON)](${url("data/summary.json")}): status, place and pooled indices with 95% bootstrap intervals, neutrality tests with exact and Holm-adjusted p, label rates, latency and cost; a schema field explains every key.
+- [Item browser data (JSON)](${url("data/items.json")}): all 957 items grouped by base item type, with the wording in three languages and per-model aggregates over every call.
 - [Item set (dataset.json)](${BLOB}data/dataset.json): the items exactly as sent to the models.
 - [Raw call records (JSONL)](${REPO_URL}/tree/main/results/runs): one line per model call.
 - [Statistical output (stats.md)](${BLOB}results/stats.md): every test and sensitivity analysis reported in the paper.
@@ -65,6 +66,8 @@ Text, items and results are licensed under CC BY 4.0: reuse, adaptation and redi
 - [MIT](${BLOB}LICENSE): code.
 
 ## Optional
+
+- [Item browser](${url("en/explore")}): search and filter every item and see the six models' answers; each item has a link of the form ${url("en/explore")}#item=<id>.
 
 - [Replay: stance comparison](${url("replay/stance.html")}): the six models' judgments, item by item (Traditional Chinese interface).
 - [Source repository](${REPO_URL}): item generator, analysis scripts and site source.

@@ -55,12 +55,12 @@ op run --env-file .env.op -- node scripts/run-all.mjs --repeats 5  # 全部模�
 
 ## 網站 / Website
 
-論文全文（繁體中文與英文）與兩個互動重播發布在 <https://clementtang.github.io/jev-eval/>，由 `site/` 的 VitePress 專案產生，push 到 `main` 後由 GitHub Actions（`.github/workflows/pages.yml`）部署。論文的唯一來源仍是 `docs/paper/*.md`，重播頁的唯一來源是 `public/*.html`，建置時才複製進 `site/`。給程式與 AI agent 讀取的 `llms.txt`、`llms-full.txt`、論文 Markdown（`/paper.md`、`/en/paper.md`）與 `/data/summary.json` 也在建置時由同樣的來源產生；`CITATION.cff` 的版本與日期若與論文 frontmatter 不符，建置會失敗。
+論文全文（繁體中文與英文）、題庫瀏覽器（`/explore`）與兩個互動重播發布在 <https://clementtang.github.io/jev-eval/>，由 `site/` 的 VitePress 專案產生，push 到 `main` 後由 GitHub Actions（`.github/workflows/pages.yml`）部署。論文的唯一來源仍是 `docs/paper/*.md`，重播頁的唯一來源是 `public/*.html`，建置時才複製進 `site/`。給程式與 AI agent 讀取的 `llms.txt`、`llms-full.txt`、論文 Markdown（`/paper.md`、`/en/paper.md`）與 `/data/summary.json` 也在建置時由同樣的來源產生；`CITATION.cff` 的版本與日期若與論文 frontmatter 不符，建置會失敗。
 
-The paper (Traditional Chinese and English) and both replays are published at <https://clementtang.github.io/jev-eval/>, built from the VitePress project in `site/` and deployed by GitHub Actions (`.github/workflows/pages.yml`) on push to `main`. The paper's only source stays `docs/paper/*.md` and the replays' only source `public/*.html`; the build copies them into `site/`. The files for programs and AI agents (`llms.txt`, `llms-full.txt`, the paper as Markdown at `/paper.md` and `/en/paper.md`, and `/data/summary.json`) are generated from the same sources at build time; the build fails if the version or date in `CITATION.cff` differs from the paper frontmatter.
+The paper (Traditional Chinese and English), the item browser (`/en/explore`) and both replays are published at <https://clementtang.github.io/jev-eval/>, built from the VitePress project in `site/` and deployed by GitHub Actions (`.github/workflows/pages.yml`) on push to `main`. The paper's only source stays `docs/paper/*.md` and the replays' only source `public/*.html`; the build copies them into `site/`. The files for programs and AI agents (`llms.txt`, `llms-full.txt`, the paper as Markdown at `/paper.md` and `/en/paper.md`, and `/data/summary.json`) are generated from the same sources at build time; the build fails if the version or date in `CITATION.cff` differs from the paper frontmatter.
 
 ```sh
-node scripts/export-site-data.mjs   # 匯出重播資料，不需 npm install / export replay data, no npm install needed
+node scripts/export-site-data.mjs   # 匯出重播與題庫瀏覽器資料，不需 npm install / export replay and item browser data, no npm install needed
 cd site
 npm ci
 npm run build                       # 輸出 / output: site/.vitepress/dist

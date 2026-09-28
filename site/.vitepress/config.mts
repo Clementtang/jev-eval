@@ -103,6 +103,7 @@ export default defineConfig({
         siteTitle: "台灣主權立場稽核",
         nav: [
           { text: "論文", link: "/paper" },
+          { text: "題庫", link: "/explore" },
           replayNav({ menu: "互動重播", stance: "同題對照", portrait: "同題對照（直式短版）", race: "速度對照" }),
         ],
         outline: { label: "本頁目錄", level: [2, 3] },
@@ -128,6 +129,7 @@ export default defineConfig({
         siteTitle: "Taiwan Stance Audit",
         nav: [
           { text: "Paper", link: "/en/paper" },
+          { text: "Items", link: "/en/explore" },
           replayNav({ menu: "Replays", stance: "Stance comparison", portrait: "Stance comparison (portrait, short)", race: "Speed race" }),
         ],
         outline: { label: "On this page", level: [2, 3] },

@@ -45,6 +45,7 @@ Jev was also the fastest and cheapest of the six models: a median latency of 267
 
 <ul class="link-list">
   <li><a :href="withBase('/en/paper')">Full paper</a><span class="desc">Method, all results, limitations and the revisions after four adversarial review rounds. Also available in <a :href="withBase('/paper')">Traditional Chinese</a>.</span></li>
+  <li><a :href="withBase('/en/explore')">Item browser</a><span class="desc">All 957 items in three languages with the six models' results on each, searchable and filterable, with a link for every item.</span></li>
   <li><a :href="withBase('/replay/stance.html')" target="_self">Replay: stance comparison</a><span class="desc">The six models' judgments on the same question, played chapter by chapter. Best viewed on a landscape desktop screen; on a phone, open the <a :href="withBase('/replay/stance.html?layout=portrait&cut=short')" target="_self">portrait short cut</a>. Interface in Traditional Chinese.</span></li>
   <li><a :href="withBase('/replay/race.html')" target="_self">Replay: speed race</a><span class="desc">Every call replayed at its measured latency, comparing how long and how much each model takes to answer the item set. Interface in Traditional Chinese.</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval">GitHub repository</a><span class="desc">Item generator, analysis scripts and the replay source.</span></li>

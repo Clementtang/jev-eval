@@ -45,6 +45,7 @@ Jev 也是六個模型中回應最快、成本最低的：基準題延遲中位�
 
 <ul class="link-list">
   <li><a :href="withBase('/paper')">論文全文</a><span class="desc">研究方法、全部結果、研究限制與四輪對抗式審查後的修訂。另有<a :href="withBase('/en/paper')">英文版</a>。</span></li>
+  <li><a :href="withBase('/explore')">題庫瀏覽器</a><span class="desc">全部 957 題的三語題目與六個模型在每一題的結果，可搜尋、篩選，每題有固定網址。</span></li>
   <li><a :href="withBase('/replay/stance.html')" target="_self">互動重播：同題對照</a><span class="desc">六個模型對同一題的判斷，依章節逐題播放。桌機橫向瀏覽；手機請改看<a :href="withBase('/replay/stance.html?layout=portrait&cut=short')" target="_self">直式短版</a>。</span></li>
   <li><a :href="withBase('/replay/race.html')" target="_self">互動重播：速度對照</a><span class="desc">以實測延遲重播每一次呼叫，比較六個模型答完題庫所需的時間與成本。</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval">GitHub repo</a><span class="desc">題庫產生程式、分析腳本與重播頁的原始碼。</span></li>

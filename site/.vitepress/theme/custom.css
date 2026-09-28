@@ -162,3 +162,17 @@ body {
     text-align: left;
   }
 }
+
+/* Tool pages (item browser, sensitivity lab) use the full layout width. */
+.tool-page .VPDoc .container,
+.tool-page .VPDoc .content-container {
+  max-width: 1152px;
+}
+.tool-page .VPDoc .content {
+  max-width: none;
+}
+.tool-page .vp-doc .tool-notes li,
+.tool-page .vp-doc .tool-notes p {
+  font-size: 14.5px;
+  color: var(--vp-c-text-2);
+}
