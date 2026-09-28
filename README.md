@@ -70,3 +70,13 @@ npx vitepress preview               # http://localhost:4173/jev-eval/
 題目生成、程式、統計分析與論文撰寫由 Claude（Anthropic）協助完成，受測模型包含兩個 Claude 模型。前兩輪審查由另開的 Claude 工作階段執行，第三、四輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行，這兩家也各有受測模型。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，API 費用自付。
 
 Items, code, statistical analysis and the paper were drafted with the help of Claude (Anthropic), and two Claude models are among those tested. Review rounds one and two were run by separate Claude sessions; rounds three and four by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build), whose vendors also have tested models. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage.
+
+## 授權 / License
+
+- 論文、題庫與結果（`docs/`、`data/`、`results/`）：[CC BY 4.0](LICENSE-CC-BY-4.0.txt)。標註出處即可使用、改作與轉載。
+- 程式（`scripts/`、`lib/`、`public/`、`site/`、`server.mjs` 等）：[MIT](LICENSE)。
+- 論文引用的第三方資料（民調結果、文獻）依其原始出處的條件使用。
+
+- Paper, item set and results (`docs/`, `data/`, `results/`): [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Reuse, adaptation and redistribution are allowed with attribution.
+- Code (`scripts/`, `lib/`, `public/`, `site/`, `server.mjs` and so on): [MIT](LICENSE).
+- Third-party material cited in the paper (poll results, literature) remains under the terms of its original source.
