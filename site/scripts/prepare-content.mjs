@@ -1,7 +1,9 @@
 // Copies the build inputs that live outside site/ into it, so each has one source in the repo:
-// the papers (docs/paper/*.md) and the replay pages (public/*.html). The copies are gitignored.
+// the papers (docs/paper/*.md), the replay pages (public/*.html) and the files for programs
+// (agent-files.mjs). The copies are gitignored.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { posix } from "node:path";
+import { writeAgentFiles } from "./agent-files.mjs";
 
 const REPO = new URL("../../", import.meta.url);
 const SITE = new URL("../", import.meta.url);
@@ -13,7 +15,7 @@ const PAPERS = [
   { source: "paper.en.md", target: "en/paper.md", sourceNote: "This page is generated from the paper source in the repository:" },
 ];
 const REPLAYS = ["stance.html", "race.html"];
-const REPLAY_DATA = ["replay.json", "dataset.json"];
+const EXPORTED_DATA = ["replay/data/replay.json", "replay/data/dataset.json", "data/items.json"];
 const DATA_SOURCE_META = '<meta name="jev-data-source" content="server" />';
 
 // Relative links resolve against docs/paper/ in the repo but would 404 on the site.
@@ -43,13 +45,14 @@ function addFrontmatter(markdown, lines) {
 
 function preparePaper({ source, target, sourceNote }) {
   const sourcePath = PAPER_DIR + source;
-  const original = readFileSync(new URL(sourcePath, REPO), "utf8");
-  const body = addFrontmatter(keepTableValuesTogether(rewriteLinks(original)), ["outline: [2, 3]", "pageClass: paper-page"]);
+  const markdown = rewriteLinks(readFileSync(new URL(sourcePath, REPO), "utf8"));
+  const body = addFrontmatter(keepTableValuesTogether(markdown), ["outline: [2, 3]", "pageClass: paper-page"]);
   const footer = `\n\n---\n\n<p class="paper-source">${sourceNote} <a href="${GITHUB_BLOB}${sourcePath}">${sourcePath}</a></p>\n`;
   const out = new URL(target, SITE);
   mkdirSync(new URL(".", out), { recursive: true });
   writeFileSync(out, body.trimEnd() + footer);
   console.log(`paper: ${sourcePath} -> site/${target}`);
+  return { sourcePath, target, markdown };
 }
 
 function prepareReplay(name) {
@@ -62,13 +65,14 @@ function prepareReplay(name) {
   console.log(`replay: public/${name} -> site/public/replay/${name} (data source: static)`);
 }
 
-function checkReplayData() {
-  const missing = REPLAY_DATA.filter((name) => !existsSync(new URL(`public/replay/data/${name}`, SITE)));
+function checkExportedData() {
+  const missing = EXPORTED_DATA.filter((path) => !existsSync(new URL(`public/${path}`, SITE)));
   if (missing.length) {
-    throw new Error(`site/public/replay/data is missing ${missing.join(", ")}; run node scripts/export-site-data.mjs from the repo root first`);
+    throw new Error(`site/public is missing ${missing.join(", ")}; run node scripts/export-site-data.mjs from the repo root first`);
   }
 }
 
-PAPERS.forEach(preparePaper);
+const papers = PAPERS.map(preparePaper);
 REPLAYS.forEach(prepareReplay);
-checkReplayData();
+checkExportedData();
+writeAgentFiles({ repo: REPO, site: SITE, papers });

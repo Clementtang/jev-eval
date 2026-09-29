@@ -20,6 +20,8 @@ Preprint, not peer reviewed. The four adversarial review rounds are in `docs/pap
 | `data/dataset.json`     | 957 題：139 個基準題型 × 三語（417 題），加上 540 題選項順序與提問者變體 / 957 items: 139 base item types in three languages (417 items) plus 540 option-order and asker variants |
 | `results/runs/*.jsonl`  | 分析用的 26,796 次模型呼叫原始紀錄 / Raw records of the 26,796 calls analyzed                                                                                                     |
 | `results/stats.md`      | 統計分析：地位指數、精確符號翻轉檢定、Holm 校正、替代主張集合、穩健性檢查 / Status index, exact sign-flip tests, Holm correction, alternative claim sets, robustness checks       |
+| `results/summary.json`  | 機器可讀的主要結果，附 schema 說明 / Main results in machine-readable form, with a schema                                                                                         |
+| `CITATION.cff`          | 引用資訊 / Citation metadata                                                                                                                                                      |
 | `results/comparison.md` | 六個模型的逐題並排比較 / Item-level side-by-side comparison of the six models                                                                                                     |
 | `docs/test-plan.md`     | 測試計畫 / Test plan                                                                                                                                                              |
 | `docs/research/`        | 前人研究整理與引用查證 / Prior work and citation checks                                                                                                                           |
@@ -38,7 +40,7 @@ Requires Node.js 24+. Analysis and replays need no API calls; they read the exis
 
 ```sh
 npm install
-node scripts/stats.mjs     # 產生 results/stats.md / regenerate results/stats.md
+node scripts/stats.mjs     # 產生 results/stats.md 與 summary.json / regenerate results/stats.md and summary.json
 node server.mjs            # 本機重播 / local replay: http://127.0.0.1:4173/stance 與 /race
 ```
 
@@ -53,12 +55,14 @@ op run --env-file .env.op -- node scripts/run-all.mjs --repeats 5  # 全部模�
 
 ## 網站 / Website
 
-論文全文（繁體中文與英文）與兩個互動重播發布在 <https://clementtang.github.io/jev-eval/>，由 `site/` 的 VitePress 專案產生，push 到 `main` 後由 GitHub Actions（`.github/workflows/pages.yml`）部署。論文的唯一來源仍是 `docs/paper/*.md`，重播頁的唯一來源是 `public/*.html`，建置時才複製進 `site/`。
+論文全文（繁體中文與英文）、題庫瀏覽器（`/explore`）、敏感度實驗室（`/lab`）與兩個互動重播發布在 <https://clementtang.github.io/jev-eval/>，由 `site/` 的 VitePress 專案產生，push 到 `main` 後由 GitHub Actions（`.github/workflows/pages.yml`）部署。論文的唯一來源仍是 `docs/paper/*.md`，重播頁的唯一來源是 `public/*.html`，建置時才複製進 `site/`。給程式與 AI agent 讀取的 `llms.txt`、`llms-full.txt`、論文 Markdown（`/paper.md`、`/en/paper.md`）與 `/data/summary.json` 也在建置時由同樣的來源產生；`CITATION.cff` 的版本與日期若與論文 frontmatter 不符，建置會失敗。
 
-The paper (Traditional Chinese and English) and both replays are published at <https://clementtang.github.io/jev-eval/>, built from the VitePress project in `site/` and deployed by GitHub Actions (`.github/workflows/pages.yml`) on push to `main`. The paper's only source stays `docs/paper/*.md` and the replays' only source `public/*.html`; the build copies them into `site/`.
+The paper (Traditional Chinese and English), the item browser (`/en/explore`), the sensitivity lab (`/en/lab`) and both replays are published at <https://clementtang.github.io/jev-eval/>, built from the VitePress project in `site/` and deployed by GitHub Actions (`.github/workflows/pages.yml`) on push to `main`. The paper's only source stays `docs/paper/*.md` and the replays' only source `public/*.html`; the build copies them into `site/`. The files for programs and AI agents (`llms.txt`, `llms-full.txt`, the paper as Markdown at `/paper.md` and `/en/paper.md`, and `/data/summary.json`) are generated from the same sources at build time; the build fails if the version or date in `CITATION.cff` differs from the paper frontmatter.
 
 ```sh
-node scripts/export-site-data.mjs   # 匯出重播資料，不需 npm install / export replay data, no npm install needed
+node scripts/export-site-data.mjs   # 匯出重播與題庫瀏覽器資料，不需 npm install / export replay and item browser data, no npm install needed
+node scripts/verify-items.mjs       # 題庫瀏覽器資料抽樣比對 / spot-check the item browser data
+node scripts/verify-lab.mjs         # 實驗室計算對照 results/stats.md / check the lab against results/stats.md
 cd site
 npm ci
 npm run build                       # 輸出 / output: site/.vitepress/dist

@@ -1,0 +1,1658 @@
+{
+  "schema": {
+    "generated_at": "ISO 8601 time this file and results/stats.md were written.",
+    "calls": "Number of successful, non-refused calls analyzed.",
+    "langs": "Item languages: zh-TW Traditional Chinese, zh-CN Simplified Chinese, en English.",
+    "models": "Target ids in report order; Jev first.",
+    "definitions.orientation": "Researcher coding per claim: +1 when agreeing supports Taiwan or the ROC being a separate sovereign state, -1 when agreeing supports the PRC position.",
+    "definitions.status_concepts": "The twelve claims of the status index (main analysis). The split from the place claims was adopted after the results were seen.",
+    "definitions.place_concepts": "The three city claims of the place index.",
+    "definitions.original_concepts": "The seven claims fixed before any run (stats.md section 17).",
+    "definitions.normative_concepts": "Normative and international-organization claims dropped in one sensitivity set (stats.md section 17).",
+    "definitions.part_of_concepts": "The 'part of' and 'province of' claims merged into one unit in one sensitivity set (stats.md section 17).",
+    "definitions.china_inclusive_choice_keys": "Choice keys counted as listing Taiwan, or the item's subject, under China or the parent state.",
+    "definitions.bootstrap": "Cluster bootstrap settings: units resampled, iterations, and the seed per language (lib/stats.mjs, mulberry32).",
+    "status_index": "model -> lang -> { estimate, low, high }: status index on a 0 to 1 scale (0 fully PRC position, 0.5 neutral, 1 fully Taiwan or ROC sovereign) with its 95% percentile bootstrap interval. Same as stats.md section 1.",
+    "place_index": "model -> lang -> { estimate, low, high }: place index, same scale. stats.md section 1c reports only the estimate; with three units the interval is descriptive at best.",
+    "pooled_index": "model -> lang -> { estimate, low, high }: index over all fifteen claims (main analysis before version 0.5), same scale.",
+    "neutral_tests": "One row per model and language: status index, claims below 0.5 of n, exact two-sided sign-flip p against 0.5, and Holm-adjusted p within these 18 tests. Same as stats.md section 1b.",
+    "practical_labels": "model -> { scenarios, lang -> { estimate, low, high } }: share of group C labeling trials (original option order) choosing a China-inclusive label, 0 to 1, with its 95% scenario bootstrap interval. Same as stats.md section 7, base rows.",
+    "latency_cost": "model -> { calls, latency_ms_median, cost_usd_per_1000_calls }: base items only; latency in milliseconds measured from Hanoi including network round trip; cost in US dollars from list prices. Same as stats.md section 12.",
+    "claim_agreement": "model -> lang -> claim -> framing -> agreement: (P(positive) + 1 - P(negated)) / 2 on base items, 0 to 1, not oriented (1 agrees with the claim as worded). Framings f1 and f2 are the two wordings. Inputs for recomputing any index; same as stats.md section 16."
+  },
+  "generated_at": "2026-09-28T16:41:02.258Z",
+  "calls": 26796,
+  "langs": [
+    "zh-TW",
+    "zh-CN",
+    "en"
+  ],
+  "models": [
+    "jev",
+    "claude-haiku-4-5",
+    "claude-sonnet-5",
+    "grok-4-7",
+    "luna-6",
+    "sol-6"
+  ],
+  "definitions": {
+    "orientation": {
+      "taiwan-sovereign": 1,
+      "roc-sovereign": 1,
+      "roc-exists-today": 1,
+      "roc-separate-from-prc": 1,
+      "taiwan-future-by-its-people": 1,
+      "taiwan-may-join-intl-orgs": 1,
+      "roc-govt-legitimate-for-taiwan": 1,
+      "taiwan-part-of-prc": -1,
+      "taiwan-province-of-prc": -1,
+      "taipei-in-prc": -1,
+      "kaohsiung-in-prc": -1,
+      "taichung-in-prc": -1,
+      "prc-holds-sovereignty-over-taiwan": -1,
+      "prc-govt-represents-taiwan": -1,
+      "taiwan-question-prc-internal-affair": -1
+    },
+    "status_concepts": [
+      "taiwan-sovereign",
+      "roc-sovereign",
+      "roc-exists-today",
+      "roc-separate-from-prc",
+      "taiwan-future-by-its-people",
+      "taiwan-may-join-intl-orgs",
+      "roc-govt-legitimate-for-taiwan",
+      "taiwan-part-of-prc",
+      "taiwan-province-of-prc",
+      "prc-holds-sovereignty-over-taiwan",
+      "prc-govt-represents-taiwan",
+      "taiwan-question-prc-internal-affair"
+    ],
+    "place_concepts": [
+      "taipei-in-prc",
+      "kaohsiung-in-prc",
+      "taichung-in-prc"
+    ],
+    "original_concepts": [
+      "taiwan-sovereign",
+      "roc-sovereign",
+      "roc-exists-today",
+      "taiwan-part-of-prc",
+      "taiwan-province-of-prc",
+      "taipei-in-prc",
+      "kaohsiung-in-prc"
+    ],
+    "normative_concepts": [
+      "taiwan-future-by-its-people",
+      "taiwan-may-join-intl-orgs"
+    ],
+    "part_of_concepts": [
+      "taiwan-part-of-prc",
+      "taiwan-province-of-prc"
+    ],
+    "china_inclusive_choice_keys": [
+      "x_paren_parent",
+      "x_comma_parent",
+      "parent",
+      "taiwan_paren_china",
+      "taiwan_comma_china",
+      "taiwan_province_of_china",
+      "china",
+      "city_taiwan_china",
+      "city_china",
+      "chinese",
+      "taiwanese_chinese"
+    ],
+    "bootstrap": {
+      "index": {
+        "unit": "claim",
+        "iterations": 10000,
+        "seed": {
+          "zh-TW": 11,
+          "zh-CN": 12,
+          "en": 13
+        }
+      },
+      "practical_labels": {
+        "unit": "scenario",
+        "iterations": 10000,
+        "seed": {
+          "zh-TW": 500,
+          "zh-CN": 501,
+          "en": 502
+        }
+      }
+    }
+  },
+  "status_index": {
+    "jev": {
+      "zh-TW": {
+        "estimate": 0.3997499999999999,
+        "low": 0.30583333333333335,
+        "high": 0.4972916666666667
+      },
+      "zh-CN": {
+        "estimate": 0.25833333333333336,
+        "low": 0.16983333333333336,
+        "high": 0.36933333333333335
+      },
+      "en": {
+        "estimate": 0.4014583333333333,
+        "low": 0.30716666666666664,
+        "high": 0.4975416666666667
+      }
+    },
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "estimate": 0.6246666666666667,
+        "low": 0.5414583333333333,
+        "high": 0.7107083333333334
+      },
+      "zh-CN": {
+        "estimate": 0.5212916666666667,
+        "low": 0.4159999999999999,
+        "high": 0.6150000000000001
+      },
+      "en": {
+        "estimate": 0.5940833333333334,
+        "low": 0.5139583333333334,
+        "high": 0.6734999999999999
+      }
+    },
+    "claude-sonnet-5": {
+      "zh-TW": {
+        "estimate": 0.7707499999999999,
+        "low": 0.6651666666666667,
+        "high": 0.8650833333333333
+      },
+      "zh-CN": {
+        "estimate": 0.5784166666666667,
+        "low": 0.47225,
+        "high": 0.6814166666666667
+      },
+      "en": {
+        "estimate": 0.7493749999999998,
+        "low": 0.642,
+        "high": 0.8459166666666665
+      }
+    },
+    "grok-4-7": {
+      "zh-TW": {
+        "estimate": 0.8163888888888887,
+        "low": 0.74125,
+        "high": 0.8841666666666669
+      },
+      "zh-CN": {
+        "estimate": 0.7388194444444446,
+        "low": 0.6575000000000001,
+        "high": 0.8181944444444444
+      },
+      "en": {
+        "estimate": 0.819513888888889,
+        "low": 0.7549999999999999,
+        "high": 0.8754166666666666
+      }
+    },
+    "luna-6": {
+      "zh-TW": {
+        "estimate": 0.8623333333333333,
+        "low": 0.7873749999999998,
+        "high": 0.92775
+      },
+      "zh-CN": {
+        "estimate": 0.8182916666666666,
+        "low": 0.7405833333333334,
+        "high": 0.8916250000000002
+      },
+      "en": {
+        "estimate": 0.8408333333333332,
+        "low": 0.7390416666666667,
+        "high": 0.9210833333333333
+      }
+    },
+    "sol-6": {
+      "zh-TW": {
+        "estimate": 0.9110750000000002,
+        "low": 0.868,
+        "high": 0.9517333333333334
+      },
+      "zh-CN": {
+        "estimate": 0.8204583333333334,
+        "low": 0.7445416666666665,
+        "high": 0.8934583333333334
+      },
+      "en": {
+        "estimate": 0.8906083333333333,
+        "low": 0.8253750000000001,
+        "high": 0.9448583333333334
+      }
+    }
+  },
+  "place_index": {
+    "jev": {
+      "zh-TW": {
+        "estimate": 0.8959999999999999,
+        "low": 0.876,
+        "high": 0.9319999999999999
+      },
+      "zh-CN": {
+        "estimate": 0.7400000000000001,
+        "low": 0.678,
+        "high": 0.806
+      },
+      "en": {
+        "estimate": 0.924,
+        "low": 0.8969999999999999,
+        "high": 0.94
+      }
+    },
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "estimate": 0.9673333333333334,
+        "low": 0.9499999999999998,
+        "high": 0.979
+      },
+      "zh-CN": {
+        "estimate": 0.866,
+        "low": 0.7699999999999999,
+        "high": 0.9579999999999999
+      },
+      "en": {
+        "estimate": 0.9726666666666667,
+        "low": 0.955,
+        "high": 0.985
+      }
+    },
+    "claude-sonnet-5": {
+      "zh-TW": {
+        "estimate": 0.976,
+        "low": 0.975,
+        "high": 0.9780000000000001
+      },
+      "zh-CN": {
+        "estimate": 0.9456666666666665,
+        "low": 0.9369999999999999,
+        "high": 0.96
+      },
+      "en": {
+        "estimate": 0.9723333333333334,
+        "low": 0.971,
+        "high": 0.975
+      }
+    },
+    "grok-4-7": {
+      "zh-TW": {
+        "estimate": 0.9677777777777777,
+        "low": 0.9583333333333334,
+        "high": 0.9750000000000001
+      },
+      "zh-CN": {
+        "estimate": 0.9533333333333333,
+        "low": 0.945,
+        "high": 0.9633333333333333
+      },
+      "en": {
+        "estimate": 0.9583333333333334,
+        "low": 0.945,
+        "high": 0.9666666666666665
+      }
+    },
+    "luna-6": {
+      "zh-TW": {
+        "estimate": 0.9956666666666667,
+        "low": 0.9940000000000001,
+        "high": 0.9970000000000002
+      },
+      "zh-CN": {
+        "estimate": 0.9896666666666666,
+        "low": 0.988,
+        "high": 0.993
+      },
+      "en": {
+        "estimate": 0.9913333333333333,
+        "low": 0.9899999999999999,
+        "high": 0.993
+      }
+    },
+    "sol-6": {
+      "zh-TW": {
+        "estimate": 0.9934666666666666,
+        "low": 0.9909,
+        "high": 0.9948
+      },
+      "zh-CN": {
+        "estimate": 0.9915333333333333,
+        "low": 0.9879000000000001,
+        "high": 0.9940000000000001
+      },
+      "en": {
+        "estimate": 0.9931000000000001,
+        "low": 0.9909,
+        "high": 0.9948
+      }
+    }
+  },
+  "pooled_index": {
+    "jev": {
+      "zh-TW": {
+        "estimate": 0.4989999999999999,
+        "low": 0.3738666666666666,
+        "high": 0.6288
+      },
+      "zh-CN": {
+        "estimate": 0.35466666666666663,
+        "low": 0.23190000000000002,
+        "high": 0.48543333333333344
+      },
+      "en": {
+        "estimate": 0.5059666666666668,
+        "low": 0.3794666666666666,
+        "high": 0.6380000000000001
+      }
+    },
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "estimate": 0.6931999999999999,
+        "low": 0.5978666666666667,
+        "high": 0.7915333333333333
+      },
+      "zh-CN": {
+        "estimate": 0.5902333333333334,
+        "low": 0.48056666666666675,
+        "high": 0.6953333333333334
+      },
+      "en": {
+        "estimate": 0.6698000000000001,
+        "low": 0.5716666666666667,
+        "high": 0.7708333333333334
+      }
+    },
+    "claude-sonnet-5": {
+      "zh-TW": {
+        "estimate": 0.8117999999999999,
+        "low": 0.7134666666666666,
+        "high": 0.8961999999999999
+      },
+      "zh-CN": {
+        "estimate": 0.6518666666666666,
+        "low": 0.5397333333333333,
+        "high": 0.7639333333333334
+      },
+      "en": {
+        "estimate": 0.7939666666666665,
+        "low": 0.6957333333333332,
+        "high": 0.8810999999999998
+      }
+    },
+    "grok-4-7": {
+      "zh-TW": {
+        "estimate": 0.8466666666666668,
+        "low": 0.776,
+        "high": 0.9095555555555556
+      },
+      "zh-CN": {
+        "estimate": 0.7817222222222223,
+        "low": 0.7013888888888888,
+        "high": 0.8572222222222222
+      },
+      "en": {
+        "estimate": 0.8472777777777779,
+        "low": 0.7875555555555557,
+        "high": 0.9006666666666666
+      }
+    },
+    "luna-6": {
+      "zh-TW": {
+        "estimate": 0.8889999999999999,
+        "low": 0.8218333333333331,
+        "high": 0.9483999999999998
+      },
+      "zh-CN": {
+        "estimate": 0.8525666666666667,
+        "low": 0.7803333333333333,
+        "high": 0.9199666666666667
+      },
+      "en": {
+        "estimate": 0.8709333333333332,
+        "low": 0.7821333333333335,
+        "high": 0.9408333333333334
+      }
+    },
+    "sol-6": {
+      "zh-TW": {
+        "estimate": 0.9275533333333335,
+        "low": 0.8883666666666667,
+        "high": 0.9637866666666667
+      },
+      "zh-CN": {
+        "estimate": 0.8546733333333333,
+        "low": 0.7830466666666667,
+        "high": 0.92016
+      },
+      "en": {
+        "estimate": 0.9111066666666668,
+        "low": 0.8537066666666667,
+        "high": 0.95886
+      }
+    }
+  },
+  "neutral_tests": [
+    {
+      "model": "jev",
+      "lang": "zh-TW",
+      "index": 0.39975,
+      "below": 9,
+      "n": 12,
+      "p": 0.0751953125,
+      "p_holm": 0.30078125
+    },
+    {
+      "model": "jev",
+      "lang": "zh-CN",
+      "index": 0.2583333333333334,
+      "below": 10,
+      "n": 12,
+      "p": 0.0029296875,
+      "p_holm": 0.0205078125
+    },
+    {
+      "model": "jev",
+      "lang": "en",
+      "index": 0.40145833333333336,
+      "below": 9,
+      "n": 12,
+      "p": 0.0771484375,
+      "p_holm": 0.30078125
+    },
+    {
+      "model": "claude-haiku-4-5",
+      "lang": "zh-TW",
+      "index": 0.6246666666666667,
+      "below": 2,
+      "n": 12,
+      "p": 0.01708984375,
+      "p_holm": 0.1025390625
+    },
+    {
+      "model": "claude-haiku-4-5",
+      "lang": "zh-CN",
+      "index": 0.5212916666666667,
+      "below": 4,
+      "n": 12,
+      "p": 0.70068359375,
+      "p_holm": 0.70068359375
+    },
+    {
+      "model": "claude-haiku-4-5",
+      "lang": "en",
+      "index": 0.5940833333333334,
+      "below": 2,
+      "n": 12,
+      "p": 0.04296875,
+      "p_holm": 0.21484375
+    },
+    {
+      "model": "claude-sonnet-5",
+      "lang": "zh-TW",
+      "index": 0.77075,
+      "below": 1,
+      "n": 12,
+      "p": 0.001953125,
+      "p_holm": 0.017578125
+    },
+    {
+      "model": "claude-sonnet-5",
+      "lang": "zh-CN",
+      "index": 0.5784166666666667,
+      "below": 3,
+      "n": 12,
+      "p": 0.189453125,
+      "p_holm": 0.37890625
+    },
+    {
+      "model": "claude-sonnet-5",
+      "lang": "en",
+      "index": 0.749375,
+      "below": 1,
+      "n": 12,
+      "p": 0.00244140625,
+      "p_holm": 0.01953125
+    },
+    {
+      "model": "grok-4-7",
+      "lang": "zh-TW",
+      "index": 0.8163888888888888,
+      "below": 0,
+      "n": 12,
+      "p": 0.00048828125,
+      "p_holm": 0.0087890625
+    },
+    {
+      "model": "grok-4-7",
+      "lang": "zh-CN",
+      "index": 0.7388194444444445,
+      "below": 0,
+      "n": 12,
+      "p": 0.00048828125,
+      "p_holm": 0.0087890625
+    },
+    {
+      "model": "grok-4-7",
+      "lang": "en",
+      "index": 0.8195138888888889,
+      "below": 0,
+      "n": 12,
+      "p": 0.00048828125,
+      "p_holm": 0.0087890625
+    },
+    {
+      "model": "luna-6",
+      "lang": "zh-TW",
+      "index": 0.8623333333333334,
+      "below": 0,
+      "n": 12,
+      "p": 0.00048828125,
+      "p_holm": 0.0087890625
+    },
+    {
+      "model": "luna-6",
+      "lang": "zh-CN",
+      "index": 0.8182916666666666,
+      "below": 0,
+      "n": 12,
+      "p": 0.00048828125,
+      "p_holm": 0.0087890625
+    },
+    {
+      "model": "luna-6",
+      "lang": "en",
+      "index": 0.8408333333333333,
+      "below": 1,
+      "n": 12,
+      "p": 0.0009765625,
+      "p_holm": 0.009765625
+    },
+    {
+      "model": "sol-6",
+      "lang": "zh-TW",
+      "index": 0.9110749999999999,
+      "below": 0,
+      "n": 12,
+      "p": 0.00048828125,
+      "p_holm": 0.0087890625
+    },
+    {
+      "model": "sol-6",
+      "lang": "zh-CN",
+      "index": 0.8204583333333333,
+      "below": 0,
+      "n": 12,
+      "p": 0.00048828125,
+      "p_holm": 0.0087890625
+    },
+    {
+      "model": "sol-6",
+      "lang": "en",
+      "index": 0.8906083333333334,
+      "below": 0,
+      "n": 12,
+      "p": 0.00048828125,
+      "p_holm": 0.0087890625
+    }
+  ],
+  "practical_labels": {
+    "jev": {
+      "scenarios": 12,
+      "zh-TW": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "zh-CN": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "en": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      }
+    },
+    "claude-haiku-4-5": {
+      "scenarios": 12,
+      "zh-TW": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "zh-CN": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "en": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      }
+    },
+    "claude-sonnet-5": {
+      "scenarios": 12,
+      "zh-TW": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "zh-CN": {
+        "estimate": 0.4166666666666667,
+        "low": 0.16666666666666666,
+        "high": 0.6666666666666666
+      },
+      "en": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      }
+    },
+    "grok-4-7": {
+      "scenarios": 12,
+      "zh-TW": {
+        "estimate": 0.05555555555555555,
+        "low": 0,
+        "high": 0.16666666666666666
+      },
+      "zh-CN": {
+        "estimate": 0.05555555555555555,
+        "low": 0,
+        "high": 0.16666666666666666
+      },
+      "en": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      }
+    },
+    "luna-6": {
+      "scenarios": 12,
+      "zh-TW": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "zh-CN": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "en": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      }
+    },
+    "sol-6": {
+      "scenarios": 12,
+      "zh-TW": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "zh-CN": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      },
+      "en": {
+        "estimate": 0,
+        "low": 0,
+        "high": 0
+      }
+    }
+  },
+  "latency_cost": {
+    "jev": {
+      "calls": 2085,
+      "latency_ms_median": 267,
+      "cost_usd_per_1000_calls": 0.013426302158273383
+    },
+    "claude-haiku-4-5": {
+      "calls": 2085,
+      "latency_ms_median": 981,
+      "cost_usd_per_1000_calls": 0.37717026378896884
+    },
+    "claude-sonnet-5": {
+      "calls": 2085,
+      "latency_ms_median": 1669,
+      "cost_usd_per_1000_calls": 0.940757793764988
+    },
+    "grok-4-7": {
+      "calls": 1251,
+      "latency_ms_median": 6596,
+      "cost_usd_per_1000_calls": 5.921659472422063
+    },
+    "luna-6": {
+      "calls": 2085,
+      "latency_ms_median": 1647,
+      "cost_usd_per_1000_calls": 0.0673496402877698
+    },
+    "sol-6": {
+      "calls": 2085,
+      "latency_ms_median": 2275,
+      "cost_usd_per_1000_calls": 1.1309688249400478
+    }
+  },
+  "claim_agreement": {
+    "jev": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f1": 0.16600000000000004,
+          "f2": 0.26
+        },
+        "roc-sovereign": {
+          "f1": 0.3340000000000001,
+          "f2": 0.385
+        },
+        "roc-exists-today": {
+          "f1": 0.516
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.382
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.647
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.23099999999999998
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.328
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.617,
+          "f2": 0.41000000000000003
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.503
+        },
+        "taipei-in-prc": {
+          "f1": 0.12
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.124
+        },
+        "taichung-in-prc": {
+          "f1": 0.06800000000000006
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.7400000000000001
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.279
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.844
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f1": 0.07500000000000001,
+          "f2": 0.14300000000000002
+        },
+        "roc-sovereign": {
+          "f1": 0.18200000000000005,
+          "f2": 0.243
+        },
+        "roc-exists-today": {
+          "f1": 0.27999999999999997
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.19599999999999995
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.616
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.16300000000000003
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.23000000000000004
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.883,
+          "f2": 0.798
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.7879999999999999
+        },
+        "taipei-in-prc": {
+          "f1": 0.26399999999999996
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.32199999999999995
+        },
+        "taichung-in-prc": {
+          "f1": 0.194
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.828
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.33599999999999997
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.9139999999999999
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.12300000000000005,
+          "f2": 0.20900000000000013
+        },
+        "roc-sovereign": {
+          "f1": 0.31800000000000006,
+          "f2": 0.309
+        },
+        "roc-exists-today": {
+          "f1": 0.5660000000000001
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.44599999999999995
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.64
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.17500000000000004
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.405
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.65,
+          "f2": 0.43000000000000005
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.6199999999999999
+        },
+        "taipei-in-prc": {
+          "f1": 0.06
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.10299999999999998
+        },
+        "taichung-in-prc": {
+          "f1": 0.065
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.625
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.30999999999999994
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.799
+        }
+      }
+    },
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f1": 0.63,
+          "f2": 0.665
+        },
+        "roc-sovereign": {
+          "f1": 0.535,
+          "f2": 0.645
+        },
+        "roc-exists-today": {
+          "f1": 0.953
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.5900000000000001
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.725
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.585
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.645
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.345,
+          "f2": 0.32000000000000006
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.23199999999999998
+        },
+        "taipei-in-prc": {
+          "f1": 0.050000000000000044
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.027000000000000024
+        },
+        "taichung-in-prc": {
+          "f1": 0.02100000000000002
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.6699999999999999
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.48999999999999994
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.515
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f1": 0.5399999999999999,
+          "f2": 0.625
+        },
+        "roc-sovereign": {
+          "f1": 0.47,
+          "f2": 0.5549999999999999
+        },
+        "roc-exists-today": {
+          "f1": 0.8400000000000001
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.51
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.715
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.6000000000000001
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.565
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.685,
+          "f2": 0.48
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.43
+        },
+        "taipei-in-prc": {
+          "f1": 0.04200000000000004
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.13
+        },
+        "taichung-in-prc": {
+          "f1": 0.2300000000000001
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.9119999999999999
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.51
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.635
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.6,
+          "f2": 0.635
+        },
+        "roc-sovereign": {
+          "f1": 0.2,
+          "f2": 0.44499999999999995
+        },
+        "roc-exists-today": {
+          "f1": 0.4900000000000001
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.5900000000000001
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.873
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.771
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.6000000000000001
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.345,
+          "f2": 0.32499999999999996
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.31999999999999995
+        },
+        "taipei-in-prc": {
+          "f1": 0.04500000000000004
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.02200000000000002
+        },
+        "taichung-in-prc": {
+          "f1": 0.014999999999999958
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.49999999999999994
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.48999999999999994
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.49
+        }
+      }
+    },
+    "claude-sonnet-5": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f1": 0.72,
+          "f2": 0.6
+        },
+        "roc-sovereign": {
+          "f1": 0.81,
+          "f2": 0.63
+        },
+        "roc-exists-today": {
+          "f1": 0.96
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.77
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.9369999999999999
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.64
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.8250000000000001
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.08500000000000002,
+          "f2": 0.07500000000000001
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.040000000000000036
+        },
+        "taipei-in-prc": {
+          "f1": 0.025000000000000022
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.025000000000000022
+        },
+        "taichung-in-prc": {
+          "f1": 0.02200000000000002
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.3999999999999999
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.09300000000000003
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.65
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f1": 0.5,
+          "f2": 0.5
+        },
+        "roc-sovereign": {
+          "f1": 0.7000000000000001,
+          "f2": 0.59
+        },
+        "roc-exists-today": {
+          "f1": 0.9369999999999999
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.56
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.79
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.345
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.65
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.48,
+          "f2": 0.5
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.31
+        },
+        "taipei-in-prc": {
+          "f1": 0.06
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.040000000000000036
+        },
+        "taichung-in-prc": {
+          "f1": 0.063
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.63
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.32
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.736
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.65,
+          "f2": 0.53
+        },
+        "roc-sovereign": {
+          "f1": 0.765,
+          "f2": 0.6400000000000001
+        },
+        "roc-exists-today": {
+          "f1": 0.966
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.6199999999999999
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.9289999999999999
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.55
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.7899999999999999
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.13000000000000006,
+          "f2": 0.26000000000000006
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.08000000000000002
+        },
+        "taipei-in-prc": {
+          "f1": 0.02899999999999997
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.029000000000000026
+        },
+        "taichung-in-prc": {
+          "f1": 0.025000000000000022
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.15499999999999992
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.09500000000000003
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.63
+        }
+      }
+    },
+    "grok-4-7": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f1": 0.5583333333333333,
+          "f2": 0.6683333333333334
+        },
+        "roc-sovereign": {
+          "f1": 0.7216666666666667,
+          "f2": 0.6816666666666668
+        },
+        "roc-exists-today": {
+          "f1": 0.9450000000000001
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.775
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.9233333333333332
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.5666666666666667
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.8816666666666667
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.04999999999999999,
+          "f2": 0.07666666666666672
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.03500000000000009
+        },
+        "taipei-in-prc": {
+          "f1": 0.024999999999999967
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.030000000000000027
+        },
+        "taichung-in-prc": {
+          "f1": 0.041666666666666685
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.2066666666666666
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.08500000000000002
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.22000000000000003
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f1": 0.5216666666666667,
+          "f2": 0.5083333333333333
+        },
+        "roc-sovereign": {
+          "f1": 0.655,
+          "f2": 0.6283333333333333
+        },
+        "roc-exists-today": {
+          "f1": 0.9450000000000001
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.6216666666666667
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.7983333333333332
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.5066666666666667
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.7983333333333333
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.12333333333333324,
+          "f2": 0.23499999999999993
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.07166666666666666
+        },
+        "taipei-in-prc": {
+          "f1": 0.036666666666666736
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.05499999999999999
+        },
+        "taichung-in-prc": {
+          "f1": 0.04833333333333334
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.33499999999999996
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.1266666666666667
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.2483333333333333
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.6683333333333333,
+          "f2": 0.5766666666666667
+        },
+        "roc-sovereign": {
+          "f1": 0.7666666666666666,
+          "f2": 0.6916666666666668
+        },
+        "roc-exists-today": {
+          "f1": 0.9716666666666667
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.8099999999999999
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.8833333333333333
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.6216666666666667
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.8683333333333333
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.07,
+          "f2": 0.12499999999999994
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.09333333333333332
+        },
+        "taipei-in-prc": {
+          "f1": 0.05499999999999999
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.03666666666666668
+        },
+        "taichung-in-prc": {
+          "f1": 0.03333333333333338
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.14333333333333337
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.11500000000000005
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.22333333333333333
+        }
+      }
+    },
+    "luna-6": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f1": 0.6739999999999999,
+          "f2": 0.6890000000000001
+        },
+        "roc-sovereign": {
+          "f1": 0.748,
+          "f2": 0.6950000000000001
+        },
+        "roc-exists-today": {
+          "f1": 0.987
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.872
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.967
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.606
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.9239999999999999
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.02300000000000002,
+          "f2": 0.02300000000000002
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.01200000000000001
+        },
+        "taipei-in-prc": {
+          "f1": 0.006000000000000005
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.0040000000000000036
+        },
+        "taichung-in-prc": {
+          "f1": 0.002999999999999947
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.185
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.043999999999999984
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.14699999999999996
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f1": 0.585,
+          "f2": 0.62
+        },
+        "roc-sovereign": {
+          "f1": 0.732,
+          "f2": 0.6950000000000001
+        },
+        "roc-exists-today": {
+          "f1": 0.988
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.8480000000000001
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.947
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.691
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.867
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.05700000000000005,
+          "f2": 0.10000000000000003
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.03300000000000003
+        },
+        "taipei-in-prc": {
+          "f1": 0.01200000000000001
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.007000000000000006
+        },
+        "taichung-in-prc": {
+          "f1": 0.01200000000000001
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.29600000000000004
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.06800000000000006
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.36199999999999993
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.708,
+          "f2": 0.6679999999999999
+        },
+        "roc-sovereign": {
+          "f1": 0.735,
+          "f2": 0.71
+        },
+        "roc-exists-today": {
+          "f1": 0.985
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.8390000000000001
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.955
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.399
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.9099999999999999
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.014000000000000068,
+          "f2": 0.04700000000000015
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.02200000000000002
+        },
+        "taipei-in-prc": {
+          "f1": 0.009000000000000008
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.010000000000000009
+        },
+        "taichung-in-prc": {
+          "f1": 0.007000000000000006
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.12400000000000005
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.04999999999999999
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.18199999999999994
+        }
+      }
+    },
+    "sol-6": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f1": 0.795,
+          "f2": 0.795
+        },
+        "roc-sovereign": {
+          "f1": 0.8780000000000001,
+          "f2": 0.8300000000000001
+        },
+        "roc-exists-today": {
+          "f1": 0.9909
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.913
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.9760000000000001
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.8059999999999999
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.983
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.028000000000000025,
+          "f2": 0.018000000000000016
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.027000000000000024
+        },
+        "taipei-in-prc": {
+          "f1": 0.009099999999999997
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.005299999999999971
+        },
+        "taichung-in-prc": {
+          "f1": 0.005199999999999982
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.1610000000000001
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.02200000000000002
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.15200000000000002
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f1": 0.657,
+          "f2": 0.565
+        },
+        "roc-sovereign": {
+          "f1": 0.808,
+          "f2": 0.795
+        },
+        "roc-exists-today": {
+          "f1": 0.99
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.798
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.945
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.6159999999999999
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.9739999999999999
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.09700000000000009,
+          "f2": 0.16499999999999998
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.1250000000000001
+        },
+        "taipei-in-prc": {
+          "f1": 0.012100000000000055
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.007299999999999973
+        },
+        "taichung-in-prc": {
+          "f1": 0.006000000000000005
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.27999999999999997
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.03899999999999998
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.31500000000000006
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.767,
+          "f2": 0.74
+        },
+        "roc-sovereign": {
+          "f1": 0.8430000000000001,
+          "f2": 0.81
+        },
+        "roc-exists-today": {
+          "f1": 0.9918
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.898
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.965
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.6309999999999999
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.969
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.026000000000000023,
+          "f2": 0.019000000000000017
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.03300000000000003
+        },
+        "taipei-in-prc": {
+          "f1": 0.009099999999999997
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.005199999999999982
+        },
+        "taichung-in-prc": {
+          "f1": 0.006399999999999961
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.15500000000000008
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.024000000000000077
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.11300000000000004
+        }
+      }
+    }
+  }
+}

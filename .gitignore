@@ -7,6 +7,11 @@ data/*.tmp
 social/
 # Static site: generated at build time from docs/paper, public and results
 site/public/replay/
+site/public/data/
+site/public/paper.md
+site/public/en/
+site/public/llms.txt
+site/public/llms-full.txt
 site/paper.md
 site/en/paper.md
 site/.vitepress/dist/
