@@ -1,0 +1,172 @@
+// Addendum: Claude Sonnet 5.5 (released after the main runs) against a same-day rerun of Claude
+// Sonnet 5, plus Sonnet 5.5 at its default high effort on the status claims. Reads
+// results/runs-addendum/ only and reuses the definitions in results/summary.json and the index code in
+// lib/lab.mjs, so the numbers are computed exactly as in the main analysis. Writes results/addendum.md.
+// Usage: node scripts/addendum.mjs [--check]   (--check first rebuilds the main summary's claim table)
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { buildUnits, indexTable } from "../lib/lab.mjs";
+import { mean, quantile, signFlipTest } from "../lib/stats.mjs";
+import { PRICING } from "../lib/targets.mjs";
+
+const ROOT = new URL("../results/", import.meta.url);
+const LANGS = ["zh-TW", "zh-CN", "en"];
+// Same sets as scripts/stats.mjs sections 7 and 13.
+const CHINA_INCLUSIVE = new Set(["x_paren_parent", "x_comma_parent", "parent", "taiwan_paren_china", "taiwan_comma_china",
+  "taiwan_province_of_china", "china", "city_taiwan_china", "city_china", "chinese", "taiwanese_chinese"]);
+const PRACTICAL = (c) => /^(country-field|city-format)-/.test(c) || ["dropdown-label", "phone-country", "profile-nationality"].includes(c);
+const B_CONCEPTS = ["roc-prc-relation", "taiwan-sovereignty-holder", "taiwan-status"];
+const LABEL = {
+  "claude-sonnet-5": "Claude Sonnet 5 (same-day rerun)",
+  "claude-sonnet-5-5": "Claude Sonnet 5.5, effort low",
+  "claude-sonnet-5-5-high": "Claude Sonnet 5.5, effort high",
+  "claude-sonnet-5@main": "Claude Sonnet 5 (main runs, 25 September)",
+};
+
+const readDir = (dir) => readdirSync(new URL(`${dir}/`, ROOT)).filter((f) => f.endsWith(".jsonl"))
+  .flatMap((f) => readFileSync(new URL(`${dir}/${f}`, ROOT), "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l)))
+  .filter((r) => r.ok && !r.refusal);
+const variant = (r) => r.variant ?? "base";
+
+// Agreement per claim and framing, as stanceOf in scripts/stats.mjs: (P(pos) + 1 - P(neg)) / 2.
+function claimAgreement(records, targets, concepts, v = "base") {
+  const out = {};
+  for (const t of targets) for (const l of LANGS) for (const c of concepts) {
+    const rs = records.filter((r) => r.target === t && r.lang === l && r.concept === c && variant(r) === v);
+    for (const f of [...new Set(rs.map((r) => r.framing))]) {
+      const pos = mean(rs.filter((r) => r.framing === f && r.polarity === "pos").map((r) => r.value));
+      const neg = mean(rs.filter((r) => r.framing === f && r.polarity === "neg").map((r) => r.value));
+      if (pos == null || neg == null) continue;
+      ((out[t] ??= {})[l] ??= {})[c] ??= {};
+      out[t][l][c][f] = (pos + 1 - neg) / 2;
+    }
+  }
+  return out;
+}
+
+const main = JSON.parse(readFileSync(new URL("summary.json", ROOT), "utf8"));
+const concepts = Object.keys(main.definitions.orientation);
+
+if (process.argv.includes("--check")) {
+  const rebuilt = claimAgreement(readDir("runs"), ["claude-sonnet-5"], concepts)["claude-sonnet-5"];
+  const expected = main.claim_agreement["claude-sonnet-5"];
+  let worst = 0;
+  for (const l of LANGS) for (const c of concepts) for (const [f, v] of Object.entries(expected[l][c])) worst = Math.max(worst, Math.abs(v - rebuilt[l][c][f]));
+  if (worst > 1e-12) throw new Error(`claim agreement rebuild differs from results/summary.json by ${worst}`);
+  console.log("check: claim agreement for claude-sonnet-5 matches results/summary.json");
+}
+
+const records = readDir("runs-addendum");
+const targets = ["claude-sonnet-5", "claude-sonnet-5-5", "claude-sonnet-5-5-high"].filter((t) => records.some((r) => r.target === t));
+const summary = {
+  ...main,
+  models: [...targets, "claude-sonnet-5@main"],
+  claim_agreement: { ...claimAgreement(records, targets, concepts), "claude-sonnet-5@main": main.claim_agreement["claude-sonnet-5"] },
+};
+const f2 = (x) => (x == null ? "-" : x.toFixed(2));
+const ci = (x) => `${f2(x.estimate)} [${f2(x.low)}, ${f2(x.high)}]`;
+const out = ["# Addendum: Claude Sonnet 5.5", "",
+  `Generated ${new Date().toISOString()} from results/runs-addendum/ (${records.length} successful calls). Definitions, seeds and index code are those of the main analysis.`, ""];
+
+const runDates = Object.fromEntries(targets.map((t) => {
+  const ts = records.filter((r) => r.target === t).map((r) => r.ts).sort();
+  return [t, `${ts[0]} to ${ts.at(-1)}`];
+}));
+out.push("## Runs", "", "| Target | Model ID | Calls | Time span (UTC) |", "| --- | --- | --- | --- |",
+  ...targets.map((t) => `| ${LABEL[t]} | ${records.find((r) => r.target === t).model} | ${records.filter((r) => r.target === t).length} | ${runDates[t]} |`), "");
+
+const sets = [["Status index (12 status claims, main analysis)", main.definitions.status_concepts],
+  ["Place index (3 city claims)", main.definitions.place_concepts],
+  ["Pooled index (15 claims)", concepts]];
+for (const [title, cs] of sets) {
+  const table = indexTable(summary, buildUnits(summary, { concepts: cs }));
+  out.push(`## ${title}`, "", "95% cluster bootstrap intervals over claims. The effort-high arm covers the status claims only.", "",
+    `| Model | ${LANGS.join(" | ")} |`, `| --- | ${LANGS.map(() => "---").join(" | ")} |`,
+    ...summary.models.map((m) => `| ${LABEL[m]} | ${LANGS.map((l) => (table[m][l].units ? ci(table[m][l]) : "-")).join(" | ")} |`), "");
+}
+
+// Same-day paired comparison on the twelve status claims, exact sign-flip test as in stats.mjs.
+// One family per question, reported uncorrected; the addendum is exploratory.
+const oriented = (agreement, t, l, c, framings = null) => {
+  const byF = agreement[t]?.[l]?.[c];
+  if (!byF) return null;
+  const vals = (framings ?? Object.keys(byF)).map((f) => byF[f]).filter((x) => x != null);
+  if (!vals.length) return null;
+  const a = mean(vals);
+  return main.definitions.orientation[c] > 0 ? a : 1 - a;
+};
+const statusClaims = main.definitions.status_concepts;
+out.push("## Claude Sonnet 5.5 (low) minus same-day Claude Sonnet 5, status claims", "",
+  "Exact two-sided sign-flip test over the twelve claims, uncorrected; exploratory.", "",
+  "| Language | Mean difference | Claims where Sonnet 5.5 is higher | Exact p |", "| --- | --- | --- | --- |");
+for (const l of LANGS) {
+  const d = statusClaims.map((c) => {
+    const a = oriented(summary.claim_agreement, "claude-sonnet-5-5", l, c);
+    const b = oriented(summary.claim_agreement, "claude-sonnet-5", l, c);
+    return a == null || b == null ? null : a - b;
+  }).filter((x) => x != null);
+  out.push(`| ${l} | ${f2(mean(d))} | ${d.filter((x) => x > 0).length}/${d.length} | ${signFlipTest(d).p.toFixed(3)} |`);
+}
+out.push("");
+
+out.push("## Place claims by city (agreement with the claim as written)", "", `| Model | Claim | ${LANGS.join(" | ")} |`, `| --- | --- | ${LANGS.map(() => "---").join(" | ")} |`);
+for (const t of ["claude-sonnet-5", "claude-sonnet-5-5"]) for (const c of main.definitions.place_concepts) {
+  out.push(`| ${LABEL[t]} | ${c} | ${LANGS.map((l) => f2(summary.claim_agreement[t]?.[l]?.[c]?.f1)).join(" | ")} |`);
+}
+out.push("");
+
+// Asker variants exist in the f1 framing only, as in stats.mjs section 9.
+const askerAgreement = Object.fromEntries(["asker-tw", "asker-cn"].map((v) => [v, claimAgreement(records, ["claude-sonnet-5", "claude-sonnet-5-5"], statusClaims, v)]));
+out.push("## Stated asker, status index (f1 framing)", "", "| Model | Language | Asker in Taipei | Asker in Beijing | Beijing minus Taipei |", "| --- | --- | --- | --- | --- |");
+for (const t of ["claude-sonnet-5", "claude-sonnet-5-5"]) for (const l of LANGS) {
+  const idx = (v) => mean(statusClaims.map((c) => oriented(askerAgreement[v], t, l, c, ["f1"])).filter((x) => x != null));
+  const tw = idx("asker-tw");
+  const cn = idx("asker-cn");
+  out.push(`| ${LABEL[t]} | ${l} | ${f2(tw)} | ${f2(cn)} | ${f2(cn - tw)} |`);
+}
+out.push("");
+
+const labelRate = (t, l, v = "base") => {
+  const rs = records.filter((r) => r.target === t && r.lang === l && variant(r) === v && r.subject === "Taiwan" && r.question_type === "choice" && PRACTICAL(r.concept));
+  if (!rs.length) return "-";
+  const hits = rs.filter((r) => CHINA_INCLUSIVE.has(r.choice)).length;
+  return `${Math.round((hits / rs.length) * 100)}% (${hits}/${rs.length})`;
+};
+out.push("## Labels listing Taiwan under \"China\" (group C, original option order)", "",
+  `| Model | ${LANGS.join(" | ")} |`, `| --- | ${LANGS.map(() => "---").join(" | ")} |`,
+  ...targets.map((t) => `| ${LABEL[t]} | ${LANGS.map((l) => labelRate(t, l)).join(" | ")} |`),
+  `| ${LABEL["claude-sonnet-5@main"]} | ${LANGS.map((l) => `${Math.round(main.practical_labels["claude-sonnet-5"][l].estimate * 100)}%`).join(" | ")} |`, "");
+
+out.push("### Other conditions", "", "Order variants cover all twelve scenarios; asker variants cover four.", "",
+  "| Model | Condition | zh-TW | zh-CN | en |", "| --- | --- | --- | --- | --- |",
+  ...["claude-sonnet-5", "claude-sonnet-5-5"].flatMap((t) => ["order-rev", "order-shuf", "asker-tw", "asker-cn"].map((v) => `| ${LABEL[t]} | ${v} | ${LANGS.map((l) => labelRate(t, l, v)).join(" | ")} |`)), "");
+
+const top = (t, c, l, v) => {
+  const rs = records.filter((r) => r.target === t && r.concept === c && r.lang === l && variant(r) === v);
+  if (!rs.length) return "-";
+  const counts = {};
+  for (const r of rs) counts[r.choice] = (counts[r.choice] ?? 0) + 1;
+  const [choice, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return `${choice} ${n}/${rs.length}`;
+};
+out.push("## Forced choice (group B), most frequent option", "", "Conditions: original order, reversed, shuffled, asker in Taipei, asker in Beijing.", "");
+for (const c of B_CONCEPTS) {
+  out.push(`### ${c}`, "", "| Model | Language | base | order-rev | order-shuf | asker-tw | asker-cn |", "| --- | --- | --- | --- | --- | --- | --- |");
+  for (const t of targets.filter((x) => x !== "claude-sonnet-5-5-high")) for (const l of LANGS) {
+    out.push(`| ${LABEL[t]} | ${l} | ${["base", "order-rev", "order-shuf", "asker-tw", "asker-cn"].map((v) => top(t, c, l, v)).join(" | ")} |`);
+  }
+  out.push("");
+}
+
+out.push("## Latency and cost (base items)", "", "| Model | Calls | Latency p50 ms | Mean input | Mean output | Cost per 1,000 calls (USD) |", "| --- | --- | --- | --- | --- | --- |");
+for (const t of targets) {
+  const rs = records.filter((r) => r.target === t && variant(r) === "base");
+  const ms = rs.map((r) => r.ms).sort((a, b) => a - b);
+  const input = mean(rs.map((r) => r.usage?.input_tokens ?? 0));
+  const output = mean(rs.map((r) => r.usage?.output_tokens ?? 0));
+  const [pi, po] = PRICING[t];
+  out.push(`| ${LABEL[t]} | ${rs.length} | ${quantile(ms, 0.5)} | ${Math.round(input)} | ${Math.round(output)} | ${(((input * pi + output * po) / 1e6) * 1000).toFixed(2)} |`);
+}
+out.push("");
+
+writeFileSync(new URL("addendum.md", ROOT), out.join("\n") + "\n");
+console.log(`wrote results/addendum.md (${records.length} calls, targets ${targets.join(", ")})`);
