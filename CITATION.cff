@@ -7,8 +7,8 @@ authors:
     family-names: "Tang"
     alias: "Clement Tang"
     orcid: "https://orcid.org/0000-0003-4700-8651"
-version: "0.6"
-date-released: "2026-09-28"
+version: "0.7"
+date-released: "2026-09-29"
 url: "https://clementtang.github.io/jev-eval/"
 repository-code: "https://github.com/Clementtang/jev-eval"
 license: CC-BY-4.0
@@ -27,8 +27,8 @@ preferred-citation:
       alias: "Clement Tang"
       orcid: "https://orcid.org/0000-0003-4700-8651"
   status: preprint
-  version: "0.6"
-  date-published: "2026-09-28"
+  version: "0.7"
+  date-published: "2026-09-29"
   year: 2026
   month: 9
   url: "https://clementtang.github.io/jev-eval/"

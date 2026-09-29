@@ -6,7 +6,7 @@
 
 [網站](https://clementtang.github.io/jev-eval/) · [論文](https://clementtang.github.io/jev-eval/paper) · [題庫瀏覽器](https://clementtang.github.io/jev-eval/explore) · [敏感度實驗室](https://clementtang.github.io/jev-eval/lab) · [互動重播](https://clementtang.github.io/jev-eval/replay/stance.html) · [引用](#引用)
 
-Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.6，2026 年 9 月 28 日，未經同儕審查。
+Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.7，2026 年 9 月 29 日，未經同儕審查。
 
 論文與資料採 [CC BY 4.0](LICENSE-CC-BY-4.0.txt) 授權，程式採 [MIT](LICENSE) 授權。
 
@@ -23,6 +23,7 @@ Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://
 - **選擇。** 在簡體中文的強迫選擇中，Jev 選擇中國的表述，且不受選項順序影響。
 - **標籤。** 在原始選項順序下，Jev、Claude Haiku 4.5 與兩個 GPT-6 模型從未選擇把台灣列在「China」之下的標籤；Claude Sonnet 5 則在 42% 的簡體中文試驗中如此標註。
 - **量測工具。** Jev 與 Claude Sonnet 5 互換位置：稽核主張或強迫選擇，會認為 Jev 較接近中國立場；稽核標籤，則會認為 Claude Sonnet 5 較接近。
+- **後繼版本（附錄 C）。** 9 月 29 日的同日附錄中，Claude Sonnet 5.5 在原始選項順序下沒有選過把台灣列在「China」之下的標籤，在任何條件下也幾乎沒有；同日重跑的 Claude Sonnet 5 仍重現 42%。Claude Sonnet 5.5 在簡體中文對台灣城市主張的否定則不如前一版堅定。詳見 [`results/addendum.md`](results/addendum.md)。
 - **速度與成本。** Jev 回應最快（中位數 267 毫秒），成本也最低（每 1,000 次約 0.013 美元）。
 
 Jev 在簡體中文的地位指數 0.26 屬於探索性結果：在它的檢定家族內低於 0.5，但把所有檢視過的主張集合一起校正後不顯著。地位主張與地點主張的區分是在看過結果之後採用的，論文同時報告兩種版本。
@@ -116,7 +117,7 @@ Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰�
   year   = {2026},
   month  = {9},
   type   = {Preprint},
-  note   = {Draft 0.6, not peer reviewed},
+  note   = {Draft 0.7, not peer reviewed},
   url    = {https://clementtang.github.io/jev-eval/}
 }
 ```

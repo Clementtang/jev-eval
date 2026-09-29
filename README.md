@@ -6,7 +6,7 @@ How audits of language models on Taiwan's sovereignty rank models differently de
 
 [Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Citation](#citation)
 
-Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.6, 28 September 2026. Not peer reviewed.
+Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.7, 29 September 2026. Not peer reviewed.
 
 Paper and data: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Code: [MIT](LICENSE).
 
@@ -23,6 +23,7 @@ Language models increasingly make structured decisions inside software, such as 
 - **Choices.** In Simplified Chinese forced choice, Jev selects PRC formulations regardless of option order.
 - **Labels.** In the original option order, Jev, Claude Haiku 4.5 and both GPT-6 models never chose a label that lists Taiwan under "China"; Claude Sonnet 5 did so in 42% of Simplified Chinese trials.
 - **Instrument.** Jev and Claude Sonnet 5 trade places: an audit of claims or forced choice places Jev closer to the PRC position, an audit of labels places Claude Sonnet 5 there.
+- **Successor model (Appendix C).** In a same-day addendum on 29 September, Claude Sonnet 5.5 chose no label listing Taiwan under "China" in the original option order and almost none in any condition, while a rerun of Claude Sonnet 5 reproduced its 42%. Sonnet 5.5 rejected the Taiwanese city claims less firmly in Simplified Chinese. Details in [`results/addendum.md`](results/addendum.md).
 - **Speed and cost.** Jev answered fastest (median 267 ms) and cheapest (about USD 0.013 per 1,000 calls).
 
 The Simplified Chinese status index of Jev (0.26) is exploratory: it is below 0.5 within its test family and not significant after correction across all claim sets examined. The split between status and place claims was adopted after the results were seen; the paper reports both versions.
@@ -116,7 +117,7 @@ Claude (Anthropic) assisted with item drafting, code, statistical analysis and t
   year   = {2026},
   month  = {9},
   type   = {Preprint},
-  note   = {Draft 0.6, not peer reviewed},
+  note   = {Draft 0.7, not peer reviewed},
   url    = {https://clementtang.github.io/jev-eval/}
 }
 ```
