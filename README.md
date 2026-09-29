@@ -1,85 +1,129 @@
-# jev-eval
+# Claims, Choices and Labels
 
-以三種題型稽核 TypeSafe 的結構化判斷模型 Jev（`jev-1.13.0`）與五個生成式模型（Claude Haiku 4.5、Claude Sonnet 5、Grok 4.7、GPT-6 Luna、GPT-6 Sol）在台灣主權議題上的判斷：是非題主張、強迫選擇題、實務標籤。題目有繁中、簡中、英文三個版本。
+**English** | [繁體中文](README.zh-TW.md)
 
-An audit of TypeSafe's structured decision model Jev (`jev-1.13.0`) and five generative models (Claude Haiku 4.5, Claude Sonnet 5, Grok 4.7, GPT-6 Luna, GPT-6 Sol) on Taiwan's sovereignty, using yes or no claims, forced-choice questions and practical labeling tasks in Traditional Chinese, Simplified Chinese and English.
+How audits of language models on Taiwan's sovereignty rank models differently depending on the instrument.
 
-## 論文 / Paper
+[Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Citation](#citation)
 
-- 繁體中文：[`docs/paper/paper.zh-TW.md`](docs/paper/paper.zh-TW.md)
-- English: [`docs/paper/paper.en.md`](docs/paper/paper.en.md)
+Clement Tang, independent researcher. Preprint draft 0.6, 28 September 2026. Not peer reviewed.
 
-預印本，未經同儕審查。四輪對抗式審查的報告放在 `docs/paper/review-*.md`。
+Paper and data: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Code: [MIT](LICENSE).
 
-Preprint, not peer reviewed. The four adversarial review rounds are in `docs/paper/review-*.md`.
+## Overview
 
-## 內容 / Contents
+Language models increasingly make structured decisions inside software, such as filling a country field. This study audits one structured decision model, TypeSafe Jev (`jev-1.13.0`), and five generative models on Taiwan's sovereignty with three instruments: yes or no claims, forced-choice stance questions and practical labeling tasks. Every item exists in Traditional Chinese, Simplified Chinese and English. The analysis covers 957 items (139 base item types in three languages plus option-order and asker variants) and 26,796 model calls.
 
-| 路徑 / Path             | 說明 / Description                                                                                                                                                                |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data/dataset.json`     | 957 題：139 個基準題型 × 三語（417 題），加上 540 題選項順序與提問者變體 / 957 items: 139 base item types in three languages (417 items) plus 540 option-order and asker variants |
-| `results/runs/*.jsonl`  | 分析用的 26,796 次模型呼叫原始紀錄 / Raw records of the 26,796 calls analyzed                                                                                                     |
-| `results/stats.md`      | 統計分析：地位指數、精確符號翻轉檢定、Holm 校正、替代主張集合、穩健性檢查 / Status index, exact sign-flip tests, Holm correction, alternative claim sets, robustness checks       |
-| `results/summary.json`  | 機器可讀的主要結果，附 schema 說明 / Main results in machine-readable form, with a schema                                                                                         |
-| `CITATION.cff`          | 引用資訊 / Citation metadata                                                                                                                                                      |
-| `results/comparison.md` | 六個模型的逐題並排比較 / Item-level side-by-side comparison of the six models                                                                                                     |
-| `docs/test-plan.md`     | 測試計畫 / Test plan                                                                                                                                                              |
-| `docs/research/`        | 前人研究整理與引用查證 / Prior work and citation checks                                                                                                                           |
-| `public/stance.html`    | 同題對照重播：六個模型對同一題的判斷 / Replay of the six models' judgments, one question at a time                                                                                |
-| `public/race.html`      | 速度對照重播：以實測延遲重播 / Speed replay using measured latencies                                                                                                              |
+<p align="center"><img src="docs/assets/status-index-en.png" width="520" alt="Status index with 95% bootstrap intervals for six models in three languages"></p>
 
-`results/runs-v1/` 是第一版題庫的紀錄，`results/runs-discarded/` 是分析前排除的檔案（檔名註明原因），兩者都不納入分析。
+## Key findings
+
+- **Claims.** On a status index of twelve claims that name the state they refer to, Jev scores lower than every generative model in every language. Against Claude Sonnet 5, Grok 4.7 and both GPT-6 models it is lower on all twelve claims (corrected p = 0.025 each); the gap to Claude Haiku 4.5 is not significant after correction.
+- **Places.** Jev rejects claims that Taipei, Kaohsiung or Taichung are cities of the People's Republic of China (PRC) while accepting that Lhasa is one. Pooling these place claims with the status claims, as earlier drafts did, gives an index that does not differ significantly from 0.5.
+- **Choices.** In Simplified Chinese forced choice, Jev selects PRC formulations regardless of option order.
+- **Labels.** In the original option order, Jev, Claude Haiku 4.5 and both GPT-6 models never chose a label that lists Taiwan under "China"; Claude Sonnet 5 did so in 42% of Simplified Chinese trials.
+- **Instrument.** Jev and Claude Sonnet 5 trade places: an audit of claims or forced choice places Jev closer to the PRC position, an audit of labels places Claude Sonnet 5 there.
+- **Speed and cost.** Jev answered fastest (median 267 ms) and cheapest (about USD 0.013 per 1,000 calls).
+
+The Simplified Chinese status index of Jev (0.26) is exploratory: it is below 0.5 within its test family and not significant after correction across all claim sets examined. The split between status and place claims was adopted after the results were seen; the paper reports both versions.
+
+| Model            | Traditional Chinese | Simplified Chinese | English | Labels under "China" (Simplified Chinese) |
+| ---------------- | ------------------- | ------------------ | ------- | ----------------------------------------- |
+| Jev              | 0.40                | 0.26               | 0.40    | 0%                                        |
+| Claude Haiku 4.5 | 0.62                | 0.52               | 0.59    | 0%                                        |
+| Claude Sonnet 5  | 0.77                | 0.58               | 0.75    | 42%                                       |
+| Grok 4.7         | 0.82                | 0.74               | 0.82    | 6%                                        |
+| GPT-6 Luna       | 0.86                | 0.82               | 0.84    | 0%                                        |
+| GPT-6 Sol        | 0.91                | 0.82               | 0.89    | 0%                                        |
+
+Status index: 0 means full agreement with the PRC position, 1 full agreement that Taiwan or the ROC is a separate sovereign state. Intervals and tests are in the paper (Table 3) and [`results/stats.md`](results/stats.md).
+
+## Models
+
+| Model            | Vendor    | Identifier         | Repeats | Reasoning setting      |
+| ---------------- | --------- | ------------------ | ------- | ---------------------- |
+| Jev              | TypeSafe  | `jev-1.13.0`       | 5       | Not applicable         |
+| Claude Haiku 4.5 | Anthropic | `claude-haiku-4-5` | 5       | Parameter not accepted |
+| Claude Sonnet 5  | Anthropic | `claude-sonnet-5`  | 5       | effort = low           |
+| Grok 4.7         | xAI       | `grok-4.7`         | 3       | reasoning_effort = low |
+| GPT-6 Luna       | OpenAI    | `gpt-6-luna`       | 5       | Vendor default         |
+| GPT-6 Sol        | OpenAI    | `gpt-6-sol`        | 5       | Vendor default         |
+
+All calls were made on 25 September 2026 (UTC). Hosted models may change without notice.
+
+## Repository structure
+
+| Path                                     | Contents                                                                            |
+| ---------------------------------------- | ----------------------------------------------------------------------------------- |
+| `docs/paper/`                            | The paper in English and Traditional Chinese, and four rounds of adversarial review |
+| `data/dataset.json`                      | The item set: 957 items with text in three languages, options and coding            |
+| `results/runs/*.jsonl`                   | Raw record of every analyzed call (one JSON object per line)                        |
+| `results/stats.md`                       | Statistical output: indices, exact sign-flip tests, Holm correction, robustness     |
+| `results/summary.json`                   | Main results in machine-readable form, with a schema                                |
+| `results/comparison.md`                  | Item-level side-by-side comparison of the six models                                |
+| `scripts/`, `lib/`                       | Item generator, model runners and analysis                                          |
+| `public/stance.html`, `public/race.html` | Replays: judgments question by question, and calls at measured latency              |
+| `site/`                                  | The website (VitePress), deployed by GitHub Actions                                 |
+| `docs/test-plan.md`, `docs/research/`    | Test plan, prior work and citation checks                                           |
 
 `results/runs-v1/` holds the first item version and `results/runs-discarded/` the files excluded before analysis (reason in each file name); neither is analyzed.
 
-## 重現 / Reproduce
+## Reproduce
 
-需要 Node.js 24 以上。不呼叫任何 API 也可以重跑分析與重播，只讀取 `results/runs/` 的既有紀錄：
-
-Requires Node.js 24+. Analysis and replays need no API calls; they read the existing records in `results/runs/`:
+Requires Node.js 24+. The analysis and the replays need no API calls; they read the stored records.
 
 ```sh
 npm install
-node scripts/stats.mjs     # 產生 results/stats.md 與 summary.json / regenerate results/stats.md and summary.json
-node server.mjs            # 本機重播 / local replay: http://127.0.0.1:4173/stance 與 /race
+node scripts/stats.mjs     # regenerate results/stats.md and results/summary.json
+node server.mjs            # local replays at http://127.0.0.1:4173/stance and /race
 ```
 
-重新呼叫模型需要各廠商的 API 金鑰。本專案以 1Password CLI 注入，`.env.op` 只放 `op://` reference，不在 repo 中，請自行建立：
-
-Calling the models again needs each vendor's API key. This project injects them with the 1Password CLI; `.env.op` holds only `op://` references and is not in the repo, so create your own:
+Calling the models again needs each vendor's API key. This project injects keys with the 1Password CLI; `.env.op` holds only `op://` references and is not in the repository, so create your own.
 
 ```sh
-npm run validate                                                   # 檢查資料集結構 / validate the dataset
-op run --env-file .env.op -- node scripts/run-all.mjs --repeats 5  # 全部模型 / all targets
+npm run validate                                                   # validate the item set
+op run --env-file .env.op -- node scripts/run-all.mjs --repeats 5  # run all targets
 ```
 
-## 網站 / Website
-
-論文全文（繁體中文與英文）、題庫瀏覽器（`/explore`）、敏感度實驗室（`/lab`）與兩個互動重播發布在 <https://clementtang.github.io/jev-eval/>，由 `site/` 的 VitePress 專案產生，push 到 `main` 後由 GitHub Actions（`.github/workflows/pages.yml`）部署。論文的唯一來源仍是 `docs/paper/*.md`，重播頁的唯一來源是 `public/*.html`，建置時才複製進 `site/`。給程式與 AI agent 讀取的 `llms.txt`、`llms-full.txt`、論文 Markdown（`/paper.md`、`/en/paper.md`）與 `/data/summary.json` 也在建置時由同樣的來源產生；`CITATION.cff` 的版本與日期若與論文 frontmatter 不符，建置會失敗。
-
-The paper (Traditional Chinese and English), the item browser (`/en/explore`), the sensitivity lab (`/en/lab`) and both replays are published at <https://clementtang.github.io/jev-eval/>, built from the VitePress project in `site/` and deployed by GitHub Actions (`.github/workflows/pages.yml`) on push to `main`. The paper's only source stays `docs/paper/*.md` and the replays' only source `public/*.html`; the build copies them into `site/`. The files for programs and AI agents (`llms.txt`, `llms-full.txt`, the paper as Markdown at `/paper.md` and `/en/paper.md`, and `/data/summary.json`) are generated from the same sources at build time; the build fails if the version or date in `CITATION.cff` differs from the paper frontmatter.
+Build the website locally:
 
 ```sh
-node scripts/export-site-data.mjs   # 匯出重播與題庫瀏覽器資料，不需 npm install / export replay and item browser data, no npm install needed
-node scripts/verify-items.mjs       # 題庫瀏覽器資料抽樣比對 / spot-check the item browser data
-node scripts/verify-lab.mjs         # 實驗室計算對照 results/stats.md / check the lab against results/stats.md
-cd site
-npm ci
-npm run build                       # 輸出 / output: site/.vitepress/dist
-npx vitepress preview               # http://localhost:4173/jev-eval/
+node scripts/export-site-data.mjs   # export replay and explorer data
+node scripts/verify-items.mjs       # spot-check the explorer data against the raw records
+node scripts/verify-lab.mjs         # check the lab against results/stats.md
+cd site && npm ci && npm run build  # output in site/.vitepress/dist
 ```
 
-## 利益揭露 / Disclosure
+## For AI agents
 
-題目生成、程式、統計分析與論文撰寫由 Claude（Anthropic）協助完成，受測模型包含兩個 Claude 模型。前兩輪審查由另開的 Claude 工作階段執行，第三、四輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行，這兩家也各有受測模型。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，API 費用自付。
+- [`llms.txt`](https://clementtang.github.io/jev-eval/llms.txt): site map with one-line descriptions
+- [`llms-full.txt`](https://clementtang.github.io/jev-eval/llms-full.txt): both papers as Markdown in one file
+- [`data/summary.json`](https://clementtang.github.io/jev-eval/data/summary.json): main results with a schema
+- [`data/items.json`](https://clementtang.github.io/jev-eval/data/items.json): every item with per-model aggregates
 
-Items, code, statistical analysis and the paper were drafted with the help of Claude (Anthropic), and two Claude models are among those tested. Review rounds one and two were run by separate Claude sessions; rounds three and four by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build), whose vendors also have tested models. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage.
+## Review process and disclosure
 
-## 授權 / License
+The drafts went through four adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one and two were run by separate Claude sessions; rounds three and four by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build).
 
-- 論文、題庫與結果（`docs/`、`data/`、`results/`）：[CC BY 4.0](LICENSE-CC-BY-4.0.txt)。標註出處即可使用、改作與轉載。
-- 程式（`scripts/`、`lib/`、`public/`、`site/`、`server.mjs` 等）：[MIT](LICENSE)。
-- 論文引用的第三方資料（民調結果、文獻）依其原始出處的條件使用。
+Claude (Anthropic) assisted with item drafting, code, statistical analysis and the paper, and two Claude models are among those tested. The vendors of the round three and four reviewers also have tested models. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage. TypeSafe was not contacted before publication.
+
+## Citation
+
+```bibtex
+@techreport{tang2026claims,
+  title  = {Claims, Choices and Labels: How Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument},
+  author = {Tang, Clement},
+  year   = {2026},
+  month  = {9},
+  type   = {Preprint},
+  note   = {Draft 0.6, not peer reviewed},
+  url    = {https://clementtang.github.io/jev-eval/}
+}
+```
+
+Citation metadata is also in [`CITATION.cff`](CITATION.cff); GitHub shows it under "Cite this repository".
+
+## License
 
 - Paper, item set and results (`docs/`, `data/`, `results/`): [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Reuse, adaptation and redistribution are allowed with attribution.
 - Code (`scripts/`, `lib/`, `public/`, `site/`, `server.mjs` and so on): [MIT](LICENSE).
