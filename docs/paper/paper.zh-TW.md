@@ -298,7 +298,7 @@ Jev 是最快、最便宜、在選項重排下最穩定的模型。Grok 4.7 的�
 
 ## 7. 揭露與研究倫理
 
-Anthropic 開發的 Claude 協助了題目起草、程式撰寫、統計分析與本文的撰寫。兩個 Anthropic 模型在受測之列。為了降低這項利益衝突，所有題目、原始回應、程式碼與分析腳本皆公開，隨機種子固定，草稿經過兩輪由另開的 Claude 工作階段執行的對抗式審查（審查者與受測模型屬同一廠商，同樣有利益衝突），第三輪與第四輪則由兩個非 Anthropic 模型執行：透過 OpenAI Codex CLI 的 GPT-6 Astra，以及透過 xAI Grok Build CLI 的 Grok；這兩個審查者所屬的廠商也都有模型在受測之列。各輪審查報告與本文的回應都放在 repo 中，本文也報告了我們與審查者找到的、對 Claude 模型不利的結果。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，所有 API 費用由作者自行支付。本研究發表前未聯繫 TypeSafe；本文引用了 TypeSafe 對此模型版本記載的限制。本研究未涉及人類受試者。
+Anthropic 開發的 Claude 協助了題目起草、程式撰寫、統計分析與本文的撰寫。兩個 Anthropic 模型在受測之列，附錄 C 另有第三個。為了降低這項利益衝突，所有題目、原始回應、程式碼與分析腳本皆公開，隨機種子固定，草稿經過兩輪由另開的 Claude 工作階段執行的對抗式審查（審查者與受測模型屬同一廠商，同樣有利益衝突），第三至五輪則由兩個非 Anthropic 模型執行：透過 OpenAI Codex CLI 的 GPT-6 Astra，以及透過 xAI Grok Build CLI 的 Grok；這兩個審查者所屬的廠商也都有模型在受測之列。各輪審查報告與本文的回應都放在 repo 中，本文也報告了我們與審查者找到的、對 Claude 模型不利的結果。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，所有 API 費用由作者自行支付。本研究發表前未聯繫 TypeSafe；本文引用了 TypeSafe 對此模型版本記載的限制。本研究未涉及人類受試者。
 
 ## 8. 可重現性
 

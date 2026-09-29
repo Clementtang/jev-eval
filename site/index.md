@@ -14,7 +14,7 @@ import { withBase } from "vitepress";
 
 <p class="home-subtitle">以不同量測工具稽核語言模型的台灣主權立場，會得到不同的模型排序</p>
 
-<p class="home-meta">Hong-Rui (Clement) Tang（獨立研究者，越南河內）｜預印本草稿 0.6，2026 年 9 月 28 日｜未經同儕審查</p>
+<p class="home-meta">Hong-Rui (Clement) Tang（獨立研究者，越南河內）｜預印本草稿 0.7，2026 年 9 月 29 日｜未經同儕審查</p>
 
 本研究以是非題主張、強迫選擇與實務標籤三種工具，稽核結構化判斷模型 TypeSafe Jev（jev-1.13.0）與五個生成式模型（Claude Haiku 4.5、Claude Sonnet 5、Grok 4.7、GPT-6 Luna、GPT-6 Sol）在台灣主權議題上的判斷。題目有繁體中文、簡體中文與英文版本，共分析 26,796 次呼叫。
 
@@ -44,7 +44,7 @@ Jev 也是六個模型中回應最快、成本最低的：基準題延遲中位�
 ## 閱讀與資料
 
 <ul class="link-list">
-  <li><a :href="withBase('/paper')">論文全文</a><span class="desc">研究方法、全部結果、研究限制與四輪對抗式審查後的修訂。另有<a :href="withBase('/en/paper')">英文版</a>。</span></li>
+  <li><a :href="withBase('/paper')">論文全文</a><span class="desc">研究方法、全部結果、研究限制與五輪對抗式審查後的修訂。另有<a :href="withBase('/en/paper')">英文版</a>。</span></li>
   <li><a :href="withBase('/explore')">題庫瀏覽器</a><span class="desc">全部 957 題的三語題目與六個模型在每一題的結果，可搜尋、篩選，每題有固定網址。</span></li>
   <li><a :href="withBase('/lab')">敏感度實驗室</a><span class="desc">自行選擇計入指數的主張，即時重算六個模型的指數與 95% bootstrap 區間。</span></li>
   <li><a :href="withBase('/replay/stance.html')" target="_self">互動重播：同題對照</a><span class="desc">六個模型對同一題的判斷，依章節逐題播放。桌機橫向瀏覽；手機請改看<a :href="withBase('/replay/stance.html?layout=portrait&cut=short')" target="_self">直式短版</a>。</span></li>

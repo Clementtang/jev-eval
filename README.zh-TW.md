@@ -56,7 +56,7 @@ Jev 在簡體中文的地位指數 0.26 屬於探索性結果：在它的檢定�
 
 | 路徑                                     | 內容                                                |
 | ---------------------------------------- | --------------------------------------------------- |
-| `docs/paper/`                            | 英文與繁體中文論文，以及四輪對抗式審查報告          |
+| `docs/paper/`                            | 英文與繁體中文論文，以及五輪對抗式審查報告          |
 | `data/dataset.json`                      | 題庫：957 題，含三語題目、選項與編碼                |
 | `results/runs/*.jsonl`                   | 每一次納入分析的呼叫原始紀錄（每行一個 JSON）       |
 | `results/stats.md`                       | 統計輸出：指數、精確符號翻轉檢定、Holm 校正、穩健性 |
@@ -104,9 +104,9 @@ cd site && npm ci && npm run build  # 輸出在 site/.vitepress/dist
 
 ## 審查過程與利益揭露
 
-草稿經過四輪對抗式審查，報告公開在 [`docs/paper/`](docs/paper/)。前兩輪由另開的 Claude 工作階段執行，第三、四輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行。
+草稿經過五輪對抗式審查，報告公開在 [`docs/paper/`](docs/paper/)。前兩輪由另開的 Claude 工作階段執行，第三至五輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行。
 
-Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰寫，受測模型包含兩個 Claude 模型。第三、四輪審查者所屬的廠商也有模型在受測之列。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，所有 API 費用由作者自行支付。發表前未聯繫 TypeSafe。
+Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰寫，受測模型包含兩個 Claude 模型，附錄 C 另有第三個。第三至五輪審查者所屬的廠商也有模型在受測之列。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，所有 API 費用由作者自行支付。發表前未聯繫 TypeSafe。
 
 ## 引用
 

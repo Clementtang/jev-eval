@@ -56,7 +56,7 @@ All calls were made on 25 September 2026 (UTC). Hosted models may change without
 
 | Path                                     | Contents                                                                            |
 | ---------------------------------------- | ----------------------------------------------------------------------------------- |
-| `docs/paper/`                            | The paper in English and Traditional Chinese, and four rounds of adversarial review |
+| `docs/paper/`                            | The paper in English and Traditional Chinese, and five rounds of adversarial review |
 | `data/dataset.json`                      | The item set: 957 items with text in three languages, options and coding            |
 | `results/runs/*.jsonl`                   | Raw record of every analyzed call (one JSON object per line)                        |
 | `results/stats.md`                       | Statistical output: indices, exact sign-flip tests, Holm correction, robustness     |
@@ -104,9 +104,9 @@ cd site && npm ci && npm run build  # output in site/.vitepress/dist
 
 ## Review process and disclosure
 
-The drafts went through four adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one and two were run by separate Claude sessions; rounds three and four by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build).
+The drafts went through five adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one and two were run by separate Claude sessions; rounds three to five by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build).
 
-Claude (Anthropic) assisted with item drafting, code, statistical analysis and the paper, and two Claude models are among those tested. The vendors of the round three and four reviewers also have tested models. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage. TypeSafe was not contacted before publication.
+Claude (Anthropic) assisted with item drafting, code, statistical analysis and the paper, and two Claude models are among those tested, with a third in Appendix C. The vendors of the round three to five reviewers also have tested models. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage. TypeSafe was not contacted before publication.
 
 ## Citation
 
