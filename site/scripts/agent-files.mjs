@@ -1,6 +1,6 @@
 // Files for readers that are programs: llms.txt, llms-full.txt, the papers as plain Markdown and
-// the machine-readable results. Everything is derived from docs/paper/*.md, results/summary.json
-// and CITATION.cff at build time, so there is no second copy to keep in sync.
+// the machine-readable results. Everything is derived from docs/paper/*.md, results/summary.json,
+// results/addendum.json and CITATION.cff at build time, so there is no second copy to keep in sync.
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 export const SITE_URL = "https://clementtang.github.io/jev-eval/";
@@ -60,6 +60,14 @@ Text, items and results are licensed under CC BY 4.0: reuse, adaptation and redi
 - [Raw call records (JSONL)](${REPO_URL}/tree/main/results/runs): one line per model call.
 - [Statistical output (stats.md)](${BLOB}results/stats.md): every test and sensitivity analysis reported in the paper.
 
+## Addendum
+
+An addendum outside the main analysis adds Claude Sonnet 5.5 (effort low on all 957 items, effort high on the twelve status claims only) and a same-day rerun of Claude Sonnet 5, all run on 29 September 2026. The main analysis and summary.json are unchanged.
+
+- [Addendum results (addendum.md)](${BLOB}results/addendum.md): indices, the same-day comparison, labels, forced choice, latency and cost.
+- [Addendum data (JSON)](${url("data/addendum.json")}): claim agreement in the format of summary.json's claim_agreement, with the indices and a schema.
+- [Addendum call records (JSONL)](${REPO_URL}/tree/main/results/runs-addendum): one line per model call.
+
 ## License
 
 - [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): paper, items and results (${BLOB}LICENSE-CC-BY-4.0.txt).
@@ -67,8 +75,8 @@ Text, items and results are licensed under CC BY 4.0: reuse, adaptation and redi
 
 ## Optional
 
-- [Item browser](${url("en/explore")}): search and filter every item and see the six models' answers; each item has a link of the form ${url("en/explore")}#item=<id>.
-- [Sensitivity lab](${url("en/lab")}): choose which claims enter the index and recompute it in the browser with the paper's bootstrap; exploratory, no p-values.
+- [Item browser](${url("en/explore")}): search and filter every item and see the six models' answers, with a switch that adds the addendum models; each item has a link of the form ${url("en/explore")}#item=<id>.
+- [Sensitivity lab](${url("en/lab")}): choose which claims enter the index and recompute it in the browser with the paper's bootstrap, optionally for the addendum models too; exploratory, no p-values.
 
 - [Replay: stance comparison](${url("replay/stance.html")}): the six models' judgments, item by item (Traditional Chinese interface).
 - [Source repository](${REPO_URL}): item generator, analysis scripts and site source.
@@ -94,6 +102,8 @@ export function writeAgentFiles({ repo, site, papers }) {
   write("llms-full.txt", `# ${en.meta.title}\n\nFull text of the paper in English, then in Traditional Chinese. License: CC BY 4.0. Index: ${SITE_URL}llms.txt\n\n${full}`);
 
   mkdirSync(new URL("public/data/", site), { recursive: true });
-  copyFileSync(new URL("results/summary.json", repo), new URL("public/data/summary.json", site));
-  console.log("agent file: results/summary.json -> site/public/data/summary.json");
+  for (const name of ["summary.json", "addendum.json"]) {
+    copyFileSync(new URL(`results/${name}`, repo), new URL(`public/data/${name}`, site));
+    console.log(`agent file: results/${name} -> site/public/data/${name}`);
+  }
 }
