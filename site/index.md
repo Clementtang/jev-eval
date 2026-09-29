@@ -14,7 +14,7 @@ import { withBase } from "vitepress";
 
 <p class="home-subtitle">以不同量測工具稽核語言模型的台灣主權立場，會得到不同的模型排序</p>
 
-<p class="home-meta">Clement Tang（獨立研究者，越南河內）｜預印本草稿 0.6，2026 年 9 月 28 日｜未經同儕審查</p>
+<p class="home-meta">Hong-Rui (Clement) Tang（獨立研究者，越南河內）｜預印本草稿 0.6，2026 年 9 月 28 日｜未經同儕審查</p>
 
 本研究以是非題主張、強迫選擇與實務標籤三種工具，稽核結構化判斷模型 TypeSafe Jev（jev-1.13.0）與五個生成式模型（Claude Haiku 4.5、Claude Sonnet 5、Grok 4.7、GPT-6 Luna、GPT-6 Sol）在台灣主權議題上的判斷。題目有繁體中文、簡體中文與英文版本，共分析 26,796 次呼叫。
 

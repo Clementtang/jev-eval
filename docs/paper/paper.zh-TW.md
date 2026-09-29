@@ -1,6 +1,9 @@
 ---
 title: 主張、選擇與標籤：以不同量測工具稽核語言模型的台灣主權立場，會得到不同的模型排序
-author: Clement Tang
+author: Hong-Rui (Clement) Tang
+author_name: Hong-Rui Tang
+author_alias: Clement Tang
+orcid: 0000-0003-4700-8651
 date: 2026-09-28
 version: 預印本草稿 0.6（未經同儕審查）
 repository: https://github.com/Clementtang/jev-eval
@@ -8,8 +11,8 @@ repository: https://github.com/Clementtang/jev-eval
 
 # 主張、選擇與標籤：以不同量測工具稽核語言模型的台灣主權立場，會得到不同的模型排序
 
-**Clement Tang**
-獨立研究者，越南河內
+**Hong-Rui (Clement) Tang**
+獨立研究者，越南河內。ORCID：[0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)
 預印本草稿 0.6，2026 年 9 月 28 日。未經同儕審查。
 
 ## 摘要

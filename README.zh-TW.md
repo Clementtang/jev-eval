@@ -6,7 +6,7 @@
 
 [網站](https://clementtang.github.io/jev-eval/) · [論文](https://clementtang.github.io/jev-eval/paper) · [題庫瀏覽器](https://clementtang.github.io/jev-eval/explore) · [敏感度實驗室](https://clementtang.github.io/jev-eval/lab) · [互動重播](https://clementtang.github.io/jev-eval/replay/stance.html) · [引用](#引用)
 
-Clement Tang，獨立研究者。預印本草稿 0.6，2026 年 9 月 28 日，未經同儕審查。
+Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.6，2026 年 9 月 28 日，未經同儕審查。
 
 論文與資料採 [CC BY 4.0](LICENSE-CC-BY-4.0.txt) 授權，程式採 [MIT](LICENSE) 授權。
 
@@ -112,7 +112,7 @@ Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰�
 ```bibtex
 @techreport{tang2026claims,
   title  = {Claims, Choices and Labels: How Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument},
-  author = {Tang, Clement},
+  author = {Tang, Hong-Rui},
   year   = {2026},
   month  = {9},
   type   = {Preprint},

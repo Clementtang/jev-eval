@@ -6,7 +6,7 @@ How audits of language models on Taiwan's sovereignty rank models differently de
 
 [Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Citation](#citation)
 
-Clement Tang, independent researcher. Preprint draft 0.6, 28 September 2026. Not peer reviewed.
+Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.6, 28 September 2026. Not peer reviewed.
 
 Paper and data: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Code: [MIT](LICENSE).
 
@@ -112,7 +112,7 @@ Claude (Anthropic) assisted with item drafting, code, statistical analysis and t
 ```bibtex
 @techreport{tang2026claims,
   title  = {Claims, Choices and Labels: How Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument},
-  author = {Tang, Clement},
+  author = {Tang, Hong-Rui},
   year   = {2026},
   month  = {9},
   type   = {Preprint},
