@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import {
-  CHOICE_PRC, CHOICE_TW, DATASET_URL, LANG_NAMES, LANG_SHORT, LANGS, MODEL_NAMES, RUNS_URL,
-  f2, loadJson, orientedColor, plainColor, plainText, textOn, type Lang, type Locale,
+  ADDENDUM_MD_URL, CHOICE_PRC, CHOICE_TW, DATASET_URL, LANG_NAMES, LANG_SHORT, LANGS, RUNS_URL,
+  f2, loadJson, modelName, orientedColor, plainColor, plainText, textOn, type Lang, type Locale,
 } from "../shared";
 
 const props = defineProps<{ locale: Locale }>();
+const locale = props.locale;
 
 interface Wording { id: string; instructions: string; statement?: string; state: Record<string, string>; options?: Record<string, string> }
 interface VariantWording { id: string; asker?: string; order?: string[] }
@@ -17,7 +18,7 @@ interface ItemType {
   text: Record<Lang, Wording>; variants: Record<string, Record<Lang, VariantWording>>;
   results: Record<string, Record<Lang, Record<string, Aggregate>>>;
 }
-interface Payload { models: string[]; types: ItemType[] }
+interface Payload { models: string[]; addendum: { run_date: string; models: string[] }; types: ItemType[] }
 
 const T = {
   zh: {
@@ -35,6 +36,7 @@ const T = {
     wording: "題目（三語並排）",
     options: "選項",
     results: "六個模型的結果",
+    resultsWithAddendum: "六個模型與附錄模型的結果",
     agreementNote: "格內大字為同意度（正反句平均），小字為本句的平均機率 ± 標準差與重複次數。",
     choiceNote: "橫條為各選項被選的次數比例，下方為最常被選的選項與次數。",
     pairLink: "對應的另一句",
@@ -53,7 +55,11 @@ const T = {
     asker: "提問者",
     order: "選項順序",
     close: "收合",
-    colon: "：", sep: "、",
+    showAddendum: "顯示附錄模型（2026-09-29）",
+    addendumHead: "附錄：2026-09-29 另行執行，不屬主分析",
+    notTested: "未測",
+    addendumNote: "附錄模型在 2026 年 9 月 29 日執行，主分析的六個模型在 9 月 25 日執行，論文的推論只依據主分析。同日重跑 Claude Sonnet 5，是為了把模型版本的差異與執行日期的差異分開。effort high 只測了 12 個地位主張的原題，其他題目顯示「未測」。統計結果見",
+    colon: "：", sep: "、", period: "。",
   },
   en: {
     loading: "Loading the items…",
@@ -70,6 +76,7 @@ const T = {
     wording: "Wording in three languages",
     options: "Options",
     results: "Results of the six models",
+    resultsWithAddendum: "Results of the six models and the addendum models",
     agreementNote: "The large figure is the agreement (positive and negated sentences combined); the small one is this sentence's mean probability ± standard deviation and the number of repeats.",
     choiceNote: "Bars show the share of repeats choosing each option; below is the most chosen option and its count.",
     pairLink: "Paired sentence",
@@ -88,7 +95,11 @@ const T = {
     asker: "Asker",
     order: "Option order",
     close: "Close",
-    colon: ": ", sep: ", ",
+    showAddendum: "Show addendum models (29 Sep 2026)",
+    addendumHead: "Addendum: run separately on 29 Sep 2026, outside the main analysis",
+    notTested: "not tested",
+    addendumNote: "The addendum models ran on 29 September 2026 and the six main models on 25 September; the paper's inferences rest on the main analysis only. Claude Sonnet 5 was rerun on the same day to separate the change of model version from the change of run date. Effort high answered only the original items of the 12 status claims; other items show \"not tested\". Statistics in",
+    colon: ": ", sep: ", ", period: ".",
   },
 }[props.locale];
 
@@ -117,7 +128,10 @@ const index = ref("");
 const openId = ref("");
 const openVariant = ref("base");
 const copiedId = ref("");
+const showAddendum = ref(false);
+const HIGH_EFFORT = "claude-sonnet-5-5-high@addendum";
 
+const rowModels = computed(() => (data.value ? [...data.value.models, ...(showAddendum.value ? data.value.addendum.models : [])] : []));
 const displayLang = computed<Lang>(() => lang.value || defaultLang);
 const byId = computed(() => new Map((data.value?.types ?? []).map((t) => [t.id, t])));
 
@@ -298,6 +312,7 @@ onBeforeUnmount(() => window.removeEventListener("hashchange", openFromHash));
           </select>
         </label>
       </div>
+      <label class="addendum-toggle"><input v-model="showAddendum" type="checkbox" /> {{ T.showAddendum }}</label>
       <p class="count">
         {{ T.count(filtered.length, data.types.length) }}
         <button v-if="query || group || type || lang || variant || index" type="button" class="link-button" @click="resetFilters">{{ T.reset }}</button>
@@ -343,7 +358,7 @@ onBeforeUnmount(() => window.removeEventListener("hashchange", openFromHash));
             </div>
             <p v-if="item.expected != null" class="expected">{{ T.expected }}{{ T.colon }}{{ item.expected }}</p>
 
-            <h4>{{ T.results }}</h4>
+            <h4>{{ showAddendum ? T.resultsWithAddendum : T.results }}</h4>
             <div class="variant-tabs" role="tablist">
               <button v-for="v in availableVariants(item)" :key="v" type="button" role="tab" :aria-selected="openVariant === v" :class="{ active: openVariant === v }" @click="openVariant = v">
                 {{ variantNames[v] }}
@@ -358,11 +373,15 @@ onBeforeUnmount(() => window.removeEventListener("hashchange", openFromHash));
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="m in data.models" :key="m">
-                    <th scope="row">{{ MODEL_NAMES[m] ?? m }}</th>
+                  <template v-for="m in rowModels" :key="m">
+                  <tr v-if="m === data.addendum.models[0]" class="addendum-head">
+                    <th :colspan="LANGS.length + 1" scope="rowgroup">{{ T.addendumHead }}</th>
+                  </tr>
+                  <tr :class="{ addendum: data.addendum.models.includes(m) }">
+                    <th scope="row">{{ modelName(m, locale) }}</th>
                     <td v-for="l in LANGS" :key="l" :class="{ dim: lang && lang !== l }">
                       <template v-if="!item.results[openVariant]?.[l]?.[m]">
-                        <span class="none">{{ T.noData }}</span>
+                        <span class="none">{{ m === HIGH_EFFORT ? T.notTested : T.noData }}</span>
                       </template>
                       <template v-else-if="item.type === 'noul'">
                         <div class="agree" :style="cellStyle(item, item.results[openVariant][l][m])">{{ f2(item.results[openVariant][l][m].agreement) }}</div>
@@ -376,10 +395,12 @@ onBeforeUnmount(() => window.removeEventListener("hashchange", openFromHash));
                       </template>
                     </td>
                   </tr>
+                  </template>
                 </tbody>
               </table>
             </div>
             <p class="note">{{ item.type === "noul" ? T.agreementNote : T.choiceNote }}</p>
+            <p v-if="showAddendum" class="note addendum-note">{{ T.addendumNote }} <a :href="ADDENDUM_MD_URL">results/addendum.md</a>{{ T.period }}</p>
             <p v-if="item.pair" class="note">
               {{ T.pairLink }}{{ T.colon }}<a :href="`#item=${item.pair}`">{{ item.pair }}</a>
             </p>
@@ -442,6 +463,32 @@ select {
 }
 select {
   appearance: auto;
+}
+.addendum-toggle {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.addendum-toggle input {
+  width: auto;
+}
+.results tr.addendum-head th {
+  background: var(--jev-panel);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  text-align: left;
+}
+.results tr.addendum th,
+.results tr.addendum td {
+  background: #f7f6f2;
+}
+.addendum-note {
+  border-left: 3px solid var(--jev-rule);
+  padding-left: 8px;
 }
 .count {
   font-size: 14px;

@@ -1,7 +1,8 @@
 // Addendum: Claude Sonnet 5.5 (released after the main runs) against a same-day rerun of Claude
 // Sonnet 5, plus Sonnet 5.5 at its default high effort on the status claims. Reads
 // results/runs-addendum/ only and reuses the definitions in results/summary.json and the index code in
-// lib/lab.mjs, so the numbers are computed exactly as in the main analysis. Writes results/addendum.md.
+// lib/lab.mjs, so the numbers are computed exactly as in the main analysis. Writes results/addendum.md
+// and results/addendum.json (the claim table and indices the site serves as /data/addendum.json).
 // Usage: node scripts/addendum.mjs [--check]   (--check first rebuilds the main summary's claim table)
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { buildUnits, indexTable } from "../lib/lab.mjs";
@@ -64,8 +65,9 @@ const summary = {
 };
 const f2 = (x) => (x == null ? "-" : x.toFixed(2));
 const ci = (x) => `${f2(x.estimate)} [${f2(x.low)}, ${f2(x.high)}]`;
+const generatedAt = new Date().toISOString();
 const out = ["# Addendum: Claude Sonnet 5.5", "",
-  `Generated ${new Date().toISOString()} from results/runs-addendum/ (${records.length} successful calls). Definitions, seeds and index code are those of the main analysis.`, ""];
+  `Generated ${generatedAt} from results/runs-addendum/ (${records.length} successful calls). Definitions, seeds and index code are those of the main analysis.`, ""];
 
 const runDates = Object.fromEntries(targets.map((t) => {
   const ts = records.filter((r) => r.target === t).map((r) => r.ts).sort();
@@ -74,11 +76,12 @@ const runDates = Object.fromEntries(targets.map((t) => {
 out.push("## Runs", "", "| Target | Model ID | Calls | Time span (UTC) |", "| --- | --- | --- | --- |",
   ...targets.map((t) => `| ${LABEL[t]} | ${records.find((r) => r.target === t).model} | ${records.filter((r) => r.target === t).length} | ${runDates[t]} |`), "");
 
-const sets = [["Status index (12 status claims, main analysis)", main.definitions.status_concepts],
-  ["Place index (3 city claims)", main.definitions.place_concepts],
-  ["Pooled index (15 claims)", concepts]];
-for (const [title, cs] of sets) {
-  const table = indexTable(summary, buildUnits(summary, { concepts: cs }));
+const sets = [["Status index (12 status claims, main analysis)", main.definitions.status_concepts, "status_index"],
+  ["Place index (3 city claims)", main.definitions.place_concepts, "place_index"],
+  ["Pooled index (15 claims)", concepts, "pooled_index"]];
+const indices = {};
+for (const [title, cs, key] of sets) {
+  const table = (indices[key] = indexTable(summary, buildUnits(summary, { concepts: cs })));
   out.push(`## ${title}`, "", "95% cluster bootstrap intervals over claims. The effort-high arm covers the status claims only.", "",
     `| Model | ${LANGS.join(" | ")} |`, `| --- | ${LANGS.map(() => "---").join(" | ")} |`,
     ...summary.models.map((m) => `| ${LABEL[m]} | ${LANGS.map((l) => (table[m][l].units ? ci(table[m][l]) : "-")).join(" | ")} |`), "");
@@ -170,3 +173,47 @@ out.push("");
 
 writeFileSync(new URL("addendum.md", ROOT), out.join("\n") + "\n");
 console.log(`wrote results/addendum.md (${records.length} calls, targets ${targets.join(", ")})`);
+
+// Keys are the target ids of results/runs-addendum/, so claude-sonnet-5 here is the 29 September
+// rerun; the main runs stay in results/summary.json only.
+const indexJson = (table) => Object.fromEntries(targets.map((t) => [t, Object.fromEntries(LANGS.map((l) => {
+  const cell = table[t][l];
+  return [l, cell.units ? { estimate: cell.estimate, low: cell.low, high: cell.high, units: cell.units } : null];
+}))]));
+const TARGET_INFO = {
+  "claude-sonnet-5-5": { effort: "low", coverage: "all 957 items" },
+  "claude-sonnet-5": { effort: "low", coverage: "all 957 items" },
+  "claude-sonnet-5-5-high": { effort: "high", coverage: "base items of the twelve status claims only" },
+};
+const json = {
+  schema: {
+    generated_at: "ISO 8601 time this file and results/addendum.md were written.",
+    run_date: "UTC date of every addendum call. The main analysis (results/summary.json) ran on 25 September 2026 and is not changed by this file.",
+    calls: "Number of successful, non-refused addendum calls analyzed.",
+    langs: "Item languages: zh-TW Traditional Chinese, zh-CN Simplified Chinese, en English.",
+    models: "Target ids as in results/runs-addendum/*.jsonl. claude-sonnet-5 is the same-day rerun, not the main-analysis run.",
+    targets: "target -> { label, model, effort, coverage, calls, first_call, last_call }.",
+    "status_index, place_index, pooled_index": "target -> lang -> { estimate, low, high, units } or null when the target has no claim of that set. Same definitions, seeds and code (lib/lab.mjs) as results/summary.json; the pooled index of the effort-high arm covers its status claims only.",
+    claim_agreement: "Same format as claim_agreement in results/summary.json: target -> lang -> claim -> framing -> agreement, (P(positive) + 1 - P(negated)) / 2 on base items, not oriented. Unrounded, so any index can be recomputed exactly.",
+  },
+  generated_at: generatedAt,
+  run_date: "2026-09-29",
+  calls: records.length,
+  source: "results/runs-addendum/*.jsonl in https://github.com/Clementtang/jev-eval; tables in results/addendum.md",
+  langs: LANGS,
+  models: targets,
+  targets: Object.fromEntries(targets.map((t) => {
+    const rs = records.filter((r) => r.target === t);
+    const ts = rs.map((r) => r.ts).sort();
+    return [t, { label: LABEL[t], model: rs[0].model, ...TARGET_INFO[t], calls: rs.length, first_call: ts[0], last_call: ts.at(-1) }];
+  })),
+  status_index: indexJson(indices.status_index),
+  place_index: indexJson(indices.place_index),
+  pooled_index: indexJson(indices.pooled_index),
+  claim_agreement: Object.fromEntries(targets.map((t) => [t, summary.claim_agreement[t]])),
+};
+if (new Set(records.map((r) => r.ts.slice(0, 10))).size !== 1 || records[0].ts.slice(0, 10) !== json.run_date) {
+  throw new Error(`addendum calls are expected on ${json.run_date} only`);
+}
+writeFileSync(new URL("addendum.json", ROOT), JSON.stringify(json, null, 2) + "\n");
+console.log("wrote results/addendum.json");

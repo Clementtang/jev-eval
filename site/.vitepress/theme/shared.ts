@@ -9,6 +9,7 @@ export const REPO_URL = "https://github.com/Clementtang/jev-eval";
 export const RUNS_URL = `${REPO_URL}/tree/main/results/runs`;
 export const DATASET_URL = `${REPO_URL}/blob/main/data/dataset.json`;
 export const STATS_URL = `${REPO_URL}/blob/main/results/stats.md`;
+export const ADDENDUM_MD_URL = `${REPO_URL}/blob/main/results/addendum.md`;
 
 export const COLORS = { green: "#1f8a78", pink: "#c4406f", grey: "#b9bcc4" };
 
@@ -20,6 +21,22 @@ export const MODEL_NAMES: Record<string, string> = {
   "luna-6": "GPT-6 Luna",
   "sol-6": "GPT-6 Sol",
 };
+
+// Addendum ids carry the suffix of lib/addendum.mjs; their names state the date and the arm.
+const ADDENDUM_NAMES: Record<Locale, Record<string, string>> = {
+  zh: {
+    "claude-sonnet-5-5@addendum": "Claude Sonnet 5.5（附錄，9/29）",
+    "claude-sonnet-5@addendum": "Claude Sonnet 5（附錄重跑，9/29）",
+    "claude-sonnet-5-5-high@addendum": "Claude Sonnet 5.5 effort high（附錄，只含地位主張）",
+  },
+  en: {
+    "claude-sonnet-5-5@addendum": "Claude Sonnet 5.5 (addendum, 29 Sep)",
+    "claude-sonnet-5@addendum": "Claude Sonnet 5 (addendum rerun, 29 Sep)",
+    "claude-sonnet-5-5-high@addendum": "Claude Sonnet 5.5 effort high (addendum, status claims only)",
+  },
+};
+export const modelName = (model: string, locale: Locale) =>
+  MODEL_NAMES[model] ?? ADDENDUM_NAMES[locale][model] ?? model;
 
 export const LANG_NAMES: Record<Locale, Record<Lang, string>> = {
   zh: { "zh-TW": "繁體中文", "zh-CN": "簡體中文", en: "英文" },

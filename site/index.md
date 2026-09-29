@@ -52,6 +52,7 @@ Jev 也是六個模型中回應最快、成本最低的：基準題延遲中位�
   <li><a href="https://github.com/Clementtang/jev-eval">GitHub repo</a><span class="desc">題庫產生程式、分析腳本與重播頁的原始碼。</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/tree/main/results/runs">原始資料</a><span class="desc">每一次模型呼叫的原始紀錄（JSONL），以及<a href="https://github.com/Clementtang/jev-eval/blob/main/data/dataset.json">題庫</a>與<a href="https://github.com/Clementtang/jev-eval/blob/main/results/stats.md">統計輸出</a>。</span></li>
   <li><a :href="withBase('/data/summary.json')" target="_self">結果摘要（JSON）</a><span class="desc">各指數與 95% bootstrap 區間、中立檢定、標籤比例、延遲與成本，附 schema 欄位說明每個鍵。給程式與 AI agent 讀取的還有 <a :href="withBase('/llms.txt')" target="_self">llms.txt</a>、論文 Markdown 原文（<a :href="withBase('/paper.md')" target="_self">繁體中文</a>、<a :href="withBase('/en/paper.md')" target="_self">英文</a>）與 <a href="https://github.com/Clementtang/jev-eval/blob/main/CITATION.cff">CITATION.cff</a>。</span></li>
+  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/addendum.md">附錄：Claude Sonnet 5.5</a><span class="desc">主分析之外，2026 年 9 月 29 日另行測試 Claude Sonnet 5.5，並在同一天重跑 Claude Sonnet 5，以區分模型版本與執行日期造成的差異；主分析的數值不變。機器可讀資料見 <a :href="withBase('/data/addendum.json')" target="_self">addendum.json</a>，題庫瀏覽器與敏感度實驗室可切換顯示附錄模型。</span></li>
 </ul>
 
 ## 授權
