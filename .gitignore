@@ -5,6 +5,13 @@ node_modules/
 data/*.tmp
 .claude/worktrees/
 social/
+# Internal working notes (plans, people searches, unverified leads) stay local
+docs/archive/
+docs/research/people-shen-wang.md
+docs/research/research-academic.md
+docs/research/research-community.md
+docs/research/research-methods.md
+docs/research/visualization.md
 # Static site: generated at build time from docs/paper, public and results
 site/public/replay/
 site/public/data/
