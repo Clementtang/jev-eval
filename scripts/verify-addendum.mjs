@@ -140,5 +140,24 @@ for (let i = 0; i < 12; i++) {
 const highCells = items.types.filter((t) => Object.values(t.results).some((ls) => Object.values(ls).some((c) => c[`claude-sonnet-5-5-high${ADDENDUM_SUFFIX}`])));
 check("items.json effort-high cells only on status claims", highCells.every((t) => t.index === "status"), true);
 
+// Effort comparison and forced-choice tables recomputed from the raw records.
+const EFFORT_TARGETS = ["claude-sonnet-5-5-high", "claude-sonnet-5-5"];
+const effortKeys = new Set(records.filter((r) => r.target === EFFORT_TARGETS[0] && (r.variant ?? "base") === "base").map((r) => `${r.item_id}#${r.rep}`));
+for (const t of EFFORT_TARGETS) {
+  const rs = records.filter((r) => r.target === t && (r.variant ?? "base") === "base" && effortKeys.has(`${r.item_id}#${r.rep}`));
+  const tokens = rs.map((r) => r.usage?.output_tokens ?? 0);
+  const cell = addendum.reasoning_effort[t];
+  check(`reasoning_effort ${t} calls`, cell.calls, rs.length);
+  check(`reasoning_effort ${t} mean output tokens`, cell.mean_output_tokens.toFixed(4), (tokens.reduce((a, b) => a + b, 0) / rs.length).toFixed(4));
+  const row = markdown.find((l) => l.startsWith(`| ${LABEL[t]} | ${rs.length} |`));
+  check(`reasoning_effort ${t} addendum.md row`, row?.includes(`| ${cell.mean_output_tokens.toFixed(1)} | ${cell.median_output_tokens} | ${cell.median_latency_ms} | ${cell.cost_per_1000_usd.toFixed(2)} |`), true);
+}
+const groupB = [...new Set(JSON.parse(readFileSync(join(root, "data/dataset.json"), "utf8")).filter((i) => i.group === "B").map((i) => i.concept))].sort();
+check("forced_choice covers every group B concept", Object.keys(addendum.forced_choice).sort().join(","), groupB.join(","));
+for (const c of groupB) for (const t of ["claude-sonnet-5", "claude-sonnet-5-5"]) for (const l of LANGS) for (const [v, counts] of Object.entries(addendum.forced_choice[c][t][l])) {
+  const rs = records.filter((r) => r.target === t && r.concept === c && r.lang === l && (r.variant ?? "base") === v);
+  check(`forced_choice ${c} ${t} ${l} ${v} total`, Object.values(counts).reduce((a, b) => a + b, 0), rs.length);
+}
+
 console.log(failures ? `${failures} failures, ${passes} passed` : `all ${passes} checks passed`);
 process.exitCode = failures ? 1 : 0;

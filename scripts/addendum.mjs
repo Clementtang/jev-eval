@@ -15,7 +15,9 @@ const LANGS = ["zh-TW", "zh-CN", "en"];
 const CHINA_INCLUSIVE = new Set(["x_paren_parent", "x_comma_parent", "parent", "taiwan_paren_china", "taiwan_comma_china",
   "taiwan_province_of_china", "china", "city_taiwan_china", "city_china", "chinese", "taiwanese_chinese"]);
 const PRACTICAL = (c) => /^(country-field|city-format)-/.test(c) || ["dropdown-label", "phone-country", "profile-nationality"].includes(c);
-const B_CONCEPTS = ["roc-prc-relation", "taiwan-sovereignty-holder", "taiwan-status"];
+// Read from the dataset so a concept added to group B cannot be left out of the forced-choice tables.
+const B_CONCEPTS = [...new Set(JSON.parse(readFileSync(new URL("../data/dataset.json", import.meta.url), "utf8"))
+  .filter((i) => i.group === "B").map((i) => i.concept))].sort();
 const LABEL = {
   "claude-sonnet-5": "Claude Sonnet 5 (same-day rerun)",
   "claude-sonnet-5-5": "Claude Sonnet 5.5, effort low",
@@ -143,22 +145,49 @@ out.push("### Other conditions", "", "Order variants cover all twelve scenarios;
   "| Model | Condition | zh-TW | zh-CN | en |", "| --- | --- | --- | --- | --- |",
   ...["claude-sonnet-5", "claude-sonnet-5-5"].flatMap((t) => ["order-rev", "order-shuf", "asker-tw", "asker-cn"].map((v) => `| ${LABEL[t]} | ${v} | ${LANGS.map((l) => labelRate(t, l, v)).join(" | ")} |`)), "");
 
-const top = (t, c, l, v) => {
-  const rs = records.filter((r) => r.target === t && r.concept === c && r.lang === l && variant(r) === v);
-  if (!rs.length) return "-";
+const CONDITIONS = ["base", "order-rev", "order-shuf", "asker-tw", "asker-cn"];
+const choiceCounts = (t, c, l, v) => {
   const counts = {};
-  for (const r of rs) counts[r.choice] = (counts[r.choice] ?? 0) + 1;
-  const [choice, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-  return `${choice} ${n}/${rs.length}`;
+  for (const r of records.filter((x) => x.target === t && x.concept === c && x.lang === l && variant(x) === v)) counts[r.choice] = (counts[r.choice] ?? 0) + 1;
+  return counts;
 };
+const top = (t, c, l, v) => {
+  const counts = choiceCounts(t, c, l, v);
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  if (!total) return "-";
+  const [choice, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return `${choice} ${n}/${total}`;
+};
+const forcedTargets = targets.filter((x) => x !== "claude-sonnet-5-5-high");
+const forcedChoice = Object.fromEntries(B_CONCEPTS.map((c) => [c, Object.fromEntries(forcedTargets.map((t) => [t, Object.fromEntries(LANGS.map((l) => [l,
+  Object.fromEntries(CONDITIONS.map((v) => [v, choiceCounts(t, c, l, v)]))]))]))]));
 out.push("## Forced choice (group B), most frequent option", "", "Conditions: original order, reversed, shuffled, asker in Taipei, asker in Beijing.", "");
 for (const c of B_CONCEPTS) {
   out.push(`### ${c}`, "", "| Model | Language | base | order-rev | order-shuf | asker-tw | asker-cn |", "| --- | --- | --- | --- | --- | --- | --- |");
-  for (const t of targets.filter((x) => x !== "claude-sonnet-5-5-high")) for (const l of LANGS) {
-    out.push(`| ${LABEL[t]} | ${l} | ${["base", "order-rev", "order-shuf", "asker-tw", "asker-cn"].map((v) => top(t, c, l, v)).join(" | ")} |`);
+  for (const t of forcedTargets) for (const l of LANGS) {
+    out.push(`| ${LABEL[t]} | ${l} | ${CONDITIONS.map((v) => top(t, c, l, v)).join(" | ")} |`);
   }
   out.push("");
 }
+
+// Same calls only: the effort-high arm covers the base items of the status claims, so the low arm is
+// restricted to the same item ids and repetitions.
+const callKey = (r) => `${r.item_id}#${r.rep}`;
+const highCalls = records.filter((r) => r.target === "claude-sonnet-5-5-high" && variant(r) === "base");
+const effortKeys = new Set(highCalls.map(callKey));
+const effortRows = ["claude-sonnet-5-5-high", "claude-sonnet-5-5"].filter((t) => targets.includes(t)).map((t) => {
+  const rs = records.filter((r) => r.target === t && variant(r) === "base" && effortKeys.has(callKey(r)));
+  const outTokens = rs.map((r) => r.usage?.output_tokens ?? 0).sort((a, b) => a - b);
+  const ms = rs.map((r) => r.ms).sort((a, b) => a - b);
+  const input = mean(rs.map((r) => r.usage?.input_tokens ?? 0));
+  const [pi, po] = PRICING[t];
+  return { target: t, calls: rs.length, mean_output_tokens: mean(outTokens), median_output_tokens: quantile(outTokens, 0.5),
+    median_latency_ms: quantile(ms, 0.5), cost_per_1000_usd: ((input * pi + mean(outTokens) * po) / 1e6) * 1000 };
+});
+out.push("## Reasoning effort on the same calls (Sonnet 5.5, status claims, base items)", "",
+  `Restricted to the ${effortKeys.size} item and repetition pairs the effort-high arm covers.`, "",
+  "| Model | Calls | Mean output tokens | Median output tokens | Latency p50 ms | Cost per 1,000 calls (USD) |", "| --- | --- | --- | --- | --- | --- |",
+  ...effortRows.map((e) => `| ${LABEL[e.target]} | ${e.calls} | ${e.mean_output_tokens.toFixed(1)} | ${e.median_output_tokens} | ${e.median_latency_ms} | ${e.cost_per_1000_usd.toFixed(2)} |`), "");
 
 out.push("## Latency and cost (base items)", "", "| Model | Calls | Latency p50 ms | Mean input | Mean output | Cost per 1,000 calls (USD) |", "| --- | --- | --- | --- | --- | --- |");
 for (const t of targets) {
@@ -194,6 +223,8 @@ const json = {
     models: "Target ids as in results/runs-addendum/*.jsonl. claude-sonnet-5 is the same-day rerun, not the main-analysis run.",
     targets: "target -> { label, model, effort, coverage, calls, first_call, last_call }.",
     "status_index, place_index, pooled_index": "target -> lang -> { estimate, low, high, units } or null when the target has no claim of that set. Same definitions, seeds and code (lib/lab.mjs) as results/summary.json; the pooled index of the effort-high arm covers its status claims only.",
+    reasoning_effort: "target -> { calls, mean_output_tokens, median_output_tokens, median_latency_ms, cost_per_1000_usd } over the base items both effort arms ran (the twelve status claims); cost uses PRICING in lib/targets.mjs and mean input and output tokens, as the latency table.",
+    forced_choice: "claim (every group B concept) -> target (low-effort arms only) -> lang -> condition (base, order-rev, order-shuf, asker-tw, asker-cn) -> { choice, count, calls } for the most frequent option, plus counts of every option.",
     claim_agreement: "Same format as claim_agreement in results/summary.json: target -> lang -> claim -> framing -> agreement, (P(positive) + 1 - P(negated)) / 2 on base items, not oriented. Unrounded, so any index can be recomputed exactly.",
   },
   generated_at: generatedAt,
@@ -211,6 +242,8 @@ const json = {
   place_index: indexJson(indices.place_index),
   pooled_index: indexJson(indices.pooled_index),
   claim_agreement: Object.fromEntries(targets.map((t) => [t, summary.claim_agreement[t]])),
+  reasoning_effort: Object.fromEntries(effortRows.map(({ target, ...cells }) => [target, cells])),
+  forced_choice: forcedChoice,
 };
 if (new Set(records.map((r) => r.ts.slice(0, 10))).size !== 1 || records[0].ts.slice(0, 10) !== json.run_date) {
   throw new Error(`addendum calls are expected on ${json.run_date} only`);

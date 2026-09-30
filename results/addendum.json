@@ -7,9 +7,11 @@
     "models": "Target ids as in results/runs-addendum/*.jsonl. claude-sonnet-5 is the same-day rerun, not the main-analysis run.",
     "targets": "target -> { label, model, effort, coverage, calls, first_call, last_call }.",
     "status_index, place_index, pooled_index": "target -> lang -> { estimate, low, high, units } or null when the target has no claim of that set. Same definitions, seeds and code (lib/lab.mjs) as results/summary.json; the pooled index of the effort-high arm covers its status claims only.",
+    "reasoning_effort": "target -> { calls, mean_output_tokens, median_output_tokens, median_latency_ms, cost_per_1000_usd } over the base items both effort arms ran (the twelve status claims); cost uses PRICING in lib/targets.mjs and mean input and output tokens, as the latency table.",
+    "forced_choice": "claim (every group B concept) -> target (low-effort arms only) -> lang -> condition (base, order-rev, order-shuf, asker-tw, asker-cn) -> { choice, count, calls } for the most frequent option, plus counts of every option.",
     "claim_agreement": "Same format as claim_agreement in results/summary.json: target -> lang -> claim -> framing -> agreement, (P(positive) + 1 - P(negated)) / 2 on base items, not oriented. Unrounded, so any index can be recomputed exactly."
   },
-  "generated_at": "2026-09-29T10:57:32.933Z",
+  "generated_at": "2026-09-30T17:42:03.992Z",
   "run_date": "2026-09-29",
   "calls": 10020,
   "source": "results/runs-addendum/*.jsonl in https://github.com/Clementtang/jev-eval; tables in results/addendum.md",
@@ -650,6 +652,569 @@
         },
         "taiwan-question-prc-internal-affair": {
           "f1": 0.32499999999999996
+        }
+      }
+    }
+  },
+  "reasoning_effort": {
+    "claude-sonnet-5-5-high": {
+      "calls": 450,
+      "mean_output_tokens": 98.14444444444445,
+      "median_output_tokens": 14,
+      "median_latency_ms": 1887,
+      "cost_per_1000_usd": 1.7135111111111112
+    },
+    "claude-sonnet-5-5": {
+      "calls": 450,
+      "mean_output_tokens": 16.497777777777777,
+      "median_output_tokens": 14,
+      "median_latency_ms": 1380,
+      "cost_per_1000_usd": 0.8970444444444445
+    }
+  },
+  "forced_choice": {
+    "roc-prc-relation": {
+      "claude-sonnet-5": {
+        "zh-TW": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "one_china_prc_legitimate": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "one_china_prc_legitimate": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "one_china_prc_legitimate": 5
+          }
+        },
+        "en": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "one_china_prc_legitimate": 5
+          }
+        }
+      },
+      "claude-sonnet-5-5": {
+        "zh-TW": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "en": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 4,
+            "two_separate_states": 1
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        }
+      }
+    },
+    "taiwan-roc-relation": {
+      "claude-sonnet-5": {
+        "zh-TW": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "taiwan_part_of_roc": 2,
+            "same_state": 3
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "taiwan_part_of_roc": 4,
+            "same_state": 1
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "taiwan_belongs_to_prc": 4,
+            "same_state": 1
+          }
+        },
+        "en": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "taiwan_belongs_to_prc": 5
+          }
+        }
+      },
+      "claude-sonnet-5-5": {
+        "zh-TW": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 5
+          }
+        },
+        "en": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 5
+          }
+        }
+      }
+    },
+    "taiwan-sovereignty-holder": {
+      "claude-sonnet-5": {
+        "zh-TW": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "prc": 3,
+            "undetermined": 2
+          },
+          "order-shuf": {
+            "prc": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "en": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        }
+      },
+      "claude-sonnet-5-5": {
+        "zh-TW": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "en": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        }
+      }
+    },
+    "taiwan-status": {
+      "claude-sonnet-5": {
+        "zh-TW": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "part_of_parent": 5
+          }
+        },
+        "en": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "part_of_parent": 5
+          }
+        }
+      },
+      "claude-sonnet-5-5": {
+        "zh-TW": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "en": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        }
+      }
+    },
+    "taiwanese-national-identity": {
+      "claude-sonnet-5": {
+        "zh-TW": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "en": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        }
+      },
+      "claude-sonnet-5-5": {
+        "zh-TW": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "en": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
         }
       }
     }

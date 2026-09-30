@@ -1,6 +1,6 @@
 # Addendum: Claude Sonnet 5.5
 
-Generated 2026-09-29T10:57:32.933Z from results/runs-addendum/ (10020 successful calls). Definitions, seeds and index code are those of the main analysis.
+Generated 2026-09-30T17:42:03.992Z from results/runs-addendum/ (10020 successful calls). Definitions, seeds and index code are those of the main analysis.
 
 ## Runs
 
@@ -114,6 +114,17 @@ Conditions: original order, reversed, shuffled, asker in Taipei, asker in Beijin
 | Claude Sonnet 5.5, effort low | zh-CN | unresolved 5/5 | unresolved 5/5 | unresolved 5/5 | unresolved 5/5 | unresolved 5/5 |
 | Claude Sonnet 5.5, effort low | en | unresolved 5/5 | unresolved 5/5 | unresolved 4/5 | unresolved 5/5 | unresolved 5/5 |
 
+### taiwan-roc-relation
+
+| Model | Language | base | order-rev | order-shuf | asker-tw | asker-cn |
+| --- | --- | --- | --- | --- | --- | --- |
+| Claude Sonnet 5 (same-day rerun) | zh-TW | same_state 5/5 | same_state 3/5 | same_state 5/5 | same_state 5/5 | same_state 5/5 |
+| Claude Sonnet 5 (same-day rerun) | zh-CN | same_state 5/5 | taiwan_part_of_roc 4/5 | same_state 5/5 | same_state 5/5 | taiwan_belongs_to_prc 4/5 |
+| Claude Sonnet 5 (same-day rerun) | en | same_state 5/5 | same_state 5/5 | same_state 5/5 | same_state 5/5 | taiwan_belongs_to_prc 5/5 |
+| Claude Sonnet 5.5, effort low | zh-TW | same_state 5/5 | same_state 5/5 | same_state 5/5 | same_state 5/5 | same_state 5/5 |
+| Claude Sonnet 5.5, effort low | zh-CN | same_state 5/5 | same_state 5/5 | same_state 5/5 | same_state 5/5 | same_state 5/5 |
+| Claude Sonnet 5.5, effort low | en | same_state 5/5 | same_state 5/5 | same_state 5/5 | same_state 5/5 | same_state 5/5 |
+
 ### taiwan-sovereignty-holder
 
 | Model | Language | base | order-rev | order-shuf | asker-tw | asker-cn |
@@ -135,6 +146,26 @@ Conditions: original order, reversed, shuffled, asker in Taipei, asker in Beijin
 | Claude Sonnet 5.5, effort low | zh-TW | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 |
 | Claude Sonnet 5.5, effort low | zh-CN | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 |
 | Claude Sonnet 5.5, effort low | en | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 | de_facto_limited_recognition 5/5 |
+
+### taiwanese-national-identity
+
+| Model | Language | base | order-rev | order-shuf | asker-tw | asker-cn |
+| --- | --- | --- | --- | --- | --- | --- |
+| Claude Sonnet 5 (same-day rerun) | zh-TW | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 |
+| Claude Sonnet 5 (same-day rerun) | zh-CN | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 |
+| Claude Sonnet 5 (same-day rerun) | en | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 |
+| Claude Sonnet 5.5, effort low | zh-TW | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 |
+| Claude Sonnet 5.5, effort low | zh-CN | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 |
+| Claude Sonnet 5.5, effort low | en | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 | taiwanese 5/5 |
+
+## Reasoning effort on the same calls (Sonnet 5.5, status claims, base items)
+
+Restricted to the 450 item and repetition pairs the effort-high arm covers.
+
+| Model | Calls | Mean output tokens | Median output tokens | Latency p50 ms | Cost per 1,000 calls (USD) |
+| --- | --- | --- | --- | --- | --- |
+| Claude Sonnet 5.5, effort high | 450 | 98.1 | 14 | 1887 | 1.71 |
+| Claude Sonnet 5.5, effort low | 450 | 16.5 | 14 | 1380 | 0.90 |
 
 ## Latency and cost (base items)
 
