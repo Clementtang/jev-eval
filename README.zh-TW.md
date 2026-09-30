@@ -2,7 +2,7 @@
 
 [English](README.md) | **繁體中文**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://zenodo.org/records/23055592)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
 [![Preprint](https://img.shields.io/badge/preprint-draft%200.7%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
@@ -11,11 +11,11 @@
 
 以不同量測工具稽核語言模型的台灣主權立場，會得到不同的模型排序。
 
-[網站](https://clementtang.github.io/jev-eval/) · [論文](https://clementtang.github.io/jev-eval/paper) · [題庫瀏覽器](https://clementtang.github.io/jev-eval/explore) · [敏感度實驗室](https://clementtang.github.io/jev-eval/lab) · [互動重播](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://zenodo.org/records/23055592) · [引用](#引用)
+[網站](https://clementtang.github.io/jev-eval/) · [論文](https://clementtang.github.io/jev-eval/paper) · [題庫瀏覽器](https://clementtang.github.io/jev-eval/explore) · [敏感度實驗室](https://clementtang.github.io/jev-eval/lab) · [互動重播](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [引用](#引用)
 
 Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.7，2026 年 9 月 29 日，未經同儕審查。
 
-DOI：[10.5281/zenodo.23055592](https://zenodo.org/records/23055592)（所有版本；v0.7 為 10.5281/zenodo.23055593）。
+DOI：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)（所有版本；v0.7 為 10.5281/zenodo.23055593）。
 
 論文與資料採 [CC BY 4.0](LICENSE-CC-BY-4.0.txt) 授權，程式採 [MIT](LICENSE) 授權。
 

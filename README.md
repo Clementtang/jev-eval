@@ -2,7 +2,7 @@
 
 **English** | [繁體中文](README.zh-TW.md)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://zenodo.org/records/23055592)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
 [![Preprint](https://img.shields.io/badge/preprint-draft%200.7%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
@@ -11,11 +11,11 @@
 
 How audits of language models on Taiwan's sovereignty rank models differently depending on the instrument.
 
-[Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://zenodo.org/records/23055592) · [Citation](#citation)
+[Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [Citation](#citation)
 
 Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.7, 29 September 2026. Not peer reviewed.
 
-DOI: [10.5281/zenodo.23055592](https://zenodo.org/records/23055592) (all versions; v0.7 is 10.5281/zenodo.23055593).
+DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions; v0.7 is 10.5281/zenodo.23055593).
 
 Paper and data: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Code: [MIT](LICENSE).
 
