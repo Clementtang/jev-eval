@@ -4,6 +4,7 @@ author: Hong-Rui (Clement) Tang
 author_name: Hong-Rui Tang
 author_alias: Clement Tang
 orcid: 0000-0003-4700-8651
+doi: 10.5281/zenodo.23055592
 date: 2026-09-29
 version: Preprint draft 0.7 (not peer reviewed)
 repository: https://github.com/Clementtang/jev-eval
@@ -12,7 +13,7 @@ repository: https://github.com/Clementtang/jev-eval
 # Claims, Choices and Labels: How Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument
 
 **Hong-Rui (Clement) Tang**
-Independent researcher, Hanoi, Vietnam. ORCID: [0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)
+Independent researcher, Hanoi, Vietnam. ORCID: [0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651). DOI (all versions): [10.5281/zenodo.23055592](https://zenodo.org/records/23055592)
 Preprint draft 0.7, 29 September 2026. Not peer reviewed.
 
 ## Abstract

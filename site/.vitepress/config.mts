@@ -16,7 +16,7 @@ const isoDate = (value: unknown) => (value instanceof Date ? value.toISOString()
 function paperHead(pageData: PageData, pageUrl: string): HeadConfig[] {
   const page = PAPER_PAGES[pageData.relativePath];
   if (!page) return [];
-  const { title, author_name: authorName, author_alias: authorAlias, orcid, date, version } = pageData.frontmatter;
+  const { title, author_name: authorName, author_alias: authorAlias, orcid, doi, date, version } = pageData.frontmatter;
   // Citation indexes expect "Family, Given"; the byline shows the alias in parentheses instead.
   const citationAuthor = authorName.replace(/^(.*)\s(\S+)$/, "$2, $1");
   const published = isoDate(date);
@@ -32,11 +32,13 @@ function paperHead(pageData: PageData, pageUrl: string): HeadConfig[] {
     license: CC_BY_URL,
     url: pageUrl,
     isBasedOn: REPO_URL,
+    identifier: `https://doi.org/${doi}`,
   };
   return [
     ["meta", { name: "citation_title", content: title }],
     ["meta", { name: "citation_author", content: citationAuthor }],
     ["meta", { name: "citation_author_orcid", content: `https://orcid.org/${orcid}` }],
+    ["meta", { name: "citation_doi", content: doi }],
     ["meta", { name: "citation_publication_date", content: published.replaceAll("-", "/") }],
     ["meta", { name: "citation_language", content: page.citationLanguage }],
     ["link", { rel: "alternate", type: "text/markdown", href: SITE_URL + page.markdown }],

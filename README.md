@@ -4,9 +4,11 @@
 
 How audits of language models on Taiwan's sovereignty rank models differently depending on the instrument.
 
-[Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Citation](#citation)
+[Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://zenodo.org/records/23055592) · [Citation](#citation)
 
 Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.7, 29 September 2026. Not peer reviewed.
+
+DOI: [10.5281/zenodo.23055592](https://zenodo.org/records/23055592) (all versions; v0.7 is 10.5281/zenodo.23055593).
 
 Paper and data: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Code: [MIT](LICENSE).
 
@@ -118,6 +120,7 @@ Claude (Anthropic) assisted with item drafting, code, statistical analysis and t
   month  = {9},
   type   = {Preprint},
   note   = {Draft 0.7, not peer reviewed},
+  doi    = {10.5281/zenodo.23055592},
   url    = {https://clementtang.github.io/jev-eval/}
 }
 ```
