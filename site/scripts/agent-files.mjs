@@ -36,6 +36,21 @@ function checkCitation(repo, meta) {
   }
 }
 
+// Zenodo reads .zenodo.json instead of CITATION.cff when both exist, so it must name the same work
+// and author as the paper; a mismatch would give the next release's DOI record the wrong metadata.
+function checkZenodo(repo, meta) {
+  const zenodo = JSON.parse(readFileSync(new URL(".zenodo.json", repo), "utf8"));
+  const creator = meta.author_name.replace(/^(.*)\s(\S+)$/, "$2, $1");
+  const problems = [
+    zenodo.title !== meta.title && `title is "${zenodo.title}"`,
+    zenodo.creators?.[0]?.name !== creator && `first creator is "${zenodo.creators?.[0]?.name}", expected "${creator}"`,
+    zenodo.creators?.[0]?.orcid !== meta.orcid && `first creator ORCID is ${zenodo.creators?.[0]?.orcid}, expected ${meta.orcid}`,
+    (zenodo.upload_type !== "publication" || zenodo.publication_type !== "preprint") && "resource type is not publication/preprint",
+    zenodo.license !== "cc-by-4.0" && `license is ${zenodo.license}`,
+  ].filter(Boolean);
+  if (problems.length) throw new Error(`.zenodo.json disagrees with the paper: ${problems.join("; ")}`);
+}
+
 function llmsTxt(en, zh) {
   const url = (path) => SITE_URL + path;
   return `# ${en.meta.title}
@@ -89,6 +104,7 @@ export function writeAgentFiles({ repo, site, papers }) {
   const en = withMeta.find((p) => p.target === "en/paper.md");
   const zh = withMeta.find((p) => p.target === "paper.md");
   checkCitation(repo, en.meta);
+  checkZenodo(repo, en.meta);
 
   const write = (path, body) => {
     const out = new URL(`public/${path}`, site);

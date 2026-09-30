@@ -1,0 +1,29 @@
+{
+  "title": "Claims, Choices and Labels: How Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "creators": [
+    {
+      "name": "Tang, Hong-Rui",
+      "orcid": "0000-0003-4700-8651",
+      "affiliation": "Independent researcher"
+    }
+  ],
+  "description": "<p>Preprint, not peer reviewed. An audit of the structured decision model TypeSafe Jev (jev-1.13.0) and five generative models (Claude Haiku 4.5, Claude Sonnet 5, Grok 4.7, GPT-6 Luna, GPT-6 Sol) on Taiwan's sovereignty, using yes or no claims, forced-choice questions and practical labeling tasks in Traditional Chinese, Simplified Chinese and English. The release contains the paper in English and Traditional Chinese, the item set, every raw model response, the analysis scripts and their output, and the adversarial review rounds.</p><p>Website: <a href=\"https://clementtang.github.io/jev-eval/\">https://clementtang.github.io/jev-eval/</a></p>",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "keywords": ["language models", "audit", "Taiwan", "sovereignty", "multilingual evaluation"],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Clementtang/jev-eval",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://clementtang.github.io/jev-eval/",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    }
+  ]
+}
