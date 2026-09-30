@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <!-- minimum-scale keeps phone browsers from widening the layout viewport to the unscaled stage. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1"
+    />
     <!-- "server" reads the local API; the site build rewrites this to "static". -->
     <meta name="jev-data-source" content="server" />
     <title>Jev 立場賽跑</title>
@@ -51,6 +54,10 @@
         --grok-4-7: #454545;
         --luna-6: #4a8fe0;
         --sol-6: #1d4f91;
+        /* Appendix C lanes; "@" cannot appear in a custom property name, see colorKey(). */
+        --claude-sonnet-5-5-addendum: #a0521d;
+        --claude-sonnet-5-addendum: #dbb066;
+        --claude-sonnet-5-5-high-addendum: #6e3a10;
         --serif: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
         --sans: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
         --num: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
@@ -160,6 +167,13 @@
       .lane-name b {
         font-size: 24px;
         font-weight: 600;
+      }
+      /* Appendix C names are long; wrapping keeps "附錄 C" (joined by a no-break space) visible in narrow lanes. */
+      .lane.addendum .lane-name {
+        white-space: normal;
+      }
+      .lane.addendum .lane-name b {
+        line-height: 1.15;
       }
       .lane-name span {
         color: var(--muted);
@@ -895,10 +909,12 @@
       const $ = (id) => document.getElementById(id);
       // Explicit per-copy setting instead of guessing from the hostname, so local replays never change.
       const DATA_URLS =
-        document.querySelector('meta[name="jev-data-source"]').content === "static"
+        document.querySelector('meta[name="jev-data-source"]').content ===
+        "static"
           ? { replay: "data/replay.json", dataset: "data/dataset.json" }
           : { replay: "/api/replay", dataset: "/api/dataset" };
       const SUMMARY_DELAY_MS = 1500;
+      const FOOT_NOTE = $("footNote").textContent.trim().replace(/\s+/g, " ");
       // Must match the stage padding and #lanes gap in the stylesheet.
       const STAGE_PADDING = 40;
       const LANE_GAP = 20;
@@ -922,8 +938,10 @@
       const MIN_CELL = 4;
       const CONTROL_CELL_RATIO = 0.72;
       const CONTROL_BINS = new Set(["peers", "control"]);
-      const FONT_SANS = '"JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif';
-      const FONT_NUM = '"JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif';
+      const FONT_SANS =
+        '"JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif';
+      const FONT_NUM =
+        '"JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif';
       const LANE_INFO = {
         jev: { name: "Jev", vendor: "TypeSafe．jev-1.13.0" },
         "claude-opus-5-5": { name: "Claude Opus 5.5", vendor: "Anthropic" },
@@ -933,6 +951,18 @@
         "claude-sonnet-5": { name: "Claude Sonnet 5", vendor: "Anthropic" },
         "claude-haiku-4-5": { name: "Claude Haiku 4.5", vendor: "Anthropic" },
         "claude-opus-5": { name: "Claude Opus 5", vendor: "Anthropic" },
+        "claude-sonnet-5-5@addendum": {
+          name: "Claude Sonnet 5.5（附錄\u00a0C）",
+          vendor: "Anthropic．9/29 另日測量",
+        },
+        "claude-sonnet-5@addendum": {
+          name: "Claude Sonnet 5（附錄\u00a0C 重跑）",
+          vendor: "Anthropic．9/29 另日測量",
+        },
+        "claude-sonnet-5-5-high@addendum": {
+          name: "Claude Sonnet 5.5 high（附錄\u00a0C）",
+          vendor: "Anthropic．9/29 另日測量．只含地位主張",
+        },
       };
       const MODEL_ORDER = [
         "jev",
@@ -942,6 +972,15 @@
         "luna-6",
         "sol-6",
       ];
+      // Appendix C (run 2026-09-29, outside the main analysis): offered in the picker but never
+      // raced by default, so the recorded videos and the default URL stay unchanged.
+      const ADDENDUM_ORDER = [
+        "claude-sonnet-5-5@addendum",
+        "claude-sonnet-5@addendum",
+        "claude-sonnet-5-5-high@addendum",
+      ];
+      const isAddendum = (target) => ADDENDUM_ORDER.includes(target);
+      const colorKey = (target) => target.replace("@", "-");
       const infoOf = (target) =>
         LANE_INFO[target] ?? { name: target, vendor: "" };
 
@@ -984,7 +1023,7 @@
       const rgb = ([r, g, b], alpha = 1) => `rgb(${r} ${g} ${b} / ${alpha})`;
       const mix = (a, b, share) =>
         a.map((v, i) => Math.round(v * share + b[i] * (1 - share)));
-      const modelColor = (target) => token(`--${target}`, "#141c26");
+      const modelColor = (target) => token(`--${colorKey(target)}`, "#141c26");
 
       // Same mapping as the previous color-mix(): stronger answers sit further from neutral grey.
       function colorFor(record) {
@@ -1100,8 +1139,11 @@
           binTotals[event.bin] = (binTotals[event.bin] ?? 0) + 1;
         const perThousand = costPerThousand(records, pricing, target);
 
-        const node = el("section", "lane");
-        node.style.setProperty("--accent", `var(--${target})`);
+        const node = el(
+          "section",
+          isAddendum(target) ? "lane addendum" : "lane",
+        );
+        node.style.setProperty("--accent", `var(--${colorKey(target)})`);
         const head = el("div", "card lane-head");
         const nameRow = el("div", "lane-name");
         const title = el("b", null, info.name);
@@ -1353,7 +1395,7 @@
 
       function updateTicker(laneName, record, item) {
         $("tickerWho").textContent = laneName;
-        $("tickerWho").style.color = `var(--${record.target})`;
+        $("tickerWho").style.color = `var(--${colorKey(record.target)})`;
         $("tickerWhat").textContent = questionText(record, item);
         $("tickerVerdict").textContent =
           record.question_type === "noul"
@@ -1406,6 +1448,11 @@
         ctx.clearRect(0, 0, width, height);
 
         const total = state.lanes[0]?.total ?? 0;
+        // Effort high answered only the status claims, so its lane is shorter than the others.
+        const shorter = state.lanes.filter((l) => l.total !== total);
+        const totalText = shorter.length
+          ? `每個模型 ${total} 題，${shorter.map((l) => `${l.info.name} 為 ${l.total} 題`).join("、")}`
+          : `每個模型 ${total} 題`;
         ctx.textBaseline = "alphabetic";
         ctx.textAlign = "left";
         ctx.fillStyle = rgb(PALETTE.ink);
@@ -1414,7 +1461,7 @@
         ctx.font = `400 14px ${FONT_SANS}`;
         ctx.fillStyle = rgb(PALETTE.muted);
         ctx.fillText(
-          `縱軸：已回答比例（每個模型 ${total} 題）　橫軸：實測時間（秒），隨重播延伸`,
+          `縱軸：已回答比例（${totalText}）　橫軸：實測時間（秒），隨重播延伸`,
           92,
           18,
         );
@@ -1580,7 +1627,7 @@
         const maxRate = Math.max(...state.lanes.map((l) => l.perThousand ?? 0));
         const markers = [];
         for (const lane of state.lanes) {
-          const accent = `var(--${lane.target})`;
+          const accent = `var(--${colorKey(lane.target)})`;
           const model = el("div", "sb-model");
           model.style.setProperty("--accent", accent);
           const name = el("div", null, lane.info.name);
@@ -1664,7 +1711,10 @@
           el(
             "p",
             "sb-note",
-            "灰色區段為 95% bootstrap 信賴區間；標記為綠或粉紅表示整段區間落在 0.5 同一側．生成式模型的機率為自報值，跨模型只比較方向．每千次呼叫成本以全部基準題呼叫（含重複）與公開定價計算",
+            "灰色區段為 95% bootstrap 信賴區間；標記為綠或粉紅表示整段區間落在 0.5 同一側．生成式模型的機率為自報值，跨模型只比較方向．每千次呼叫成本以全部基準題呼叫（含重複）與公開定價計算" +
+              (state.lanes.some((l) => isAddendum(l.target))
+                ? "．附錄 C 模型為 2026-09-29 另日測量，不屬主分析，完成時間與延遲不宜與 9/25 的模型直接比較"
+                : ""),
           ),
         );
         // Two frames so the markers start at 0.5 and the transition is visible.
@@ -1789,8 +1839,14 @@
           state.dataset.filter(
             (i) => (i.variant ?? "base") === "base" && i.lang === "zh-TW",
           ).length * 3;
-        $("title").textContent =
-          `台灣主權 ${baseItems} 題：同一份題目，${state.lanes.length} 個模型同時作答`;
+        const hasAddendum = state.lanes.some((l) => isAddendum(l.target));
+        // Addendum lanes were measured on another day, so "at the same time" would misstate them.
+        $("title").textContent = hasAddendum
+          ? `台灣主權 ${baseItems} 題：同一份題目，${state.lanes.length} 個模型的作答紀錄`
+          : `台灣主權 ${baseItems} 題：同一份題目，${state.lanes.length} 個模型同時作答`;
+        $("footNote").textContent = hasAddendum
+          ? `${FOOT_NOTE}．附錄 C 模型為 2026-09-29 另日實測，不屬主分析`
+          : FOOT_NOTE;
         // Compact mode depends on how wide each lane actually gets, not on the lane count:
         // six lanes fit comfortably on a 3060px stage but not on a 1920px one.
         const laneWidth =
@@ -1834,18 +1890,28 @@
 
       async function init() {
         // Canvas text does not re-render when a font arrives later, so wait for the local font first.
-        await Promise.all(["400", "500", "700"].map((w) => document.fonts.load(`${w} 16px "JF Jinxuan"`)));
+        await Promise.all(
+          ["400", "500", "700"].map((w) =>
+            document.fonts.load(`${w} 16px "JF Jinxuan"`),
+          ),
+        );
         const [replay, dataset] = await Promise.all([
           fetch(DATA_URLS.replay).then((r) => r.json()),
           fetch(DATA_URLS.dataset).then((r) => r.json()),
         ]);
         // Lane order is fixed so a recording always lists the models the same way.
         const present = new Set(replay.records.map((r) => r.target));
-        const available = [
+        const defaults = [
           ...MODEL_ORDER.filter((t) => present.has(t)),
-          ...[...present].filter((t) => !MODEL_ORDER.includes(t)).sort(),
+          ...[...present]
+            .filter((t) => !MODEL_ORDER.includes(t) && !isAddendum(t))
+            .sort(),
         ];
-        if (!available.length)
+        const available = [
+          ...defaults,
+          ...ADDENDUM_ORDER.filter((t) => present.has(t)),
+        ];
+        if (!defaults.length)
           throw new Error("沒有可重播的紀錄，請先執行 npm run batch");
         const order = seededOrder([
           ...new Set(
@@ -1859,8 +1925,9 @@
           .get("lanes")
           ?.split(",")
           .filter((t) => available.includes(t));
-        buildPicker(requested?.length ? requested : available);
-        buildLanes(requested?.length ? requested : available);
+        const lanes = requested?.length ? requested : defaults;
+        buildPicker(lanes);
+        buildLanes(lanes);
         $("stopState").textContent = state.stopWithJev ? "開" : "關";
         setSpeed(state.speed);
         state.ready = true;

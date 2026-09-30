@@ -363,6 +363,39 @@
           left 0.4s ease,
           width 0.4s ease;
       }
+      /* More lanes than the six main models (appendix C ticked): gauges go two per row and the
+         finale rows shrink, so every lane fits the fixed stage. */
+      #stage.crowded {
+        --label-w: 250px;
+      }
+      #stage.crowded .verdicts .who {
+        font-size: 15px;
+        white-space: nowrap;
+      }
+      #stage.crowded .gauges {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 20px;
+      }
+      #stage.crowded .gauge-model {
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      #stage.crowded .gauge-row {
+        grid-template-columns: 30px 1fr 44px;
+        gap: 6px;
+        height: 16px;
+        font-size: 12px;
+      }
+      #stage.crowded .gauge-row b {
+        font-size: 13px;
+      }
+      #stage.crowded .scale {
+        margin-left: 36px;
+        padding-right: 50px;
+      }
       .side-note {
         margin-top: auto;
         font-size: 13px;
@@ -493,6 +526,12 @@
       }
       #stage.finale.wide {
         --row-h: 54px;
+      }
+      #stage.finale.crowded {
+        --row-h: 30px;
+      }
+      #stage.crowded .ci-table {
+        row-gap: 4px;
       }
       #stage.finale #card,
       #stage.finale #side {
@@ -890,6 +929,26 @@
       .r-question.is-pair .r-who {
         font-size: 26px;
       }
+      /* Appendix C ticked on the portrait reel: shorter rows and wrapping names keep every lane on the phone frame. */
+      #stage.crowded .r-grid {
+        grid-auto-rows: 68px;
+        row-gap: 8px;
+      }
+      #stage.crowded .r-grid .r-who,
+      #stage.crowded .r-ci .r-who {
+        white-space: normal;
+        font-size: 20px;
+      }
+      #stage.crowded .r-ci {
+        grid-auto-rows: 74px;
+        row-gap: 6px;
+      }
+      #stage.crowded .r-ci-cell {
+        gap: 4px;
+      }
+      #stage.crowded .r-ci-cell .value {
+        font-size: 28px;
+      }
       .r-tile {
         border-radius: 10px;
         display: flex;
@@ -1195,6 +1254,14 @@
           "luna-6",
           "sol-6",
         ];
+        // Appendix C (run 2026-09-29, outside the main analysis): offered in the picker but never
+        // shown by default, and left out of every conclusion computed below. The suffix keeps
+        // the same-day rerun apart from the main claude-sonnet-5 (lib/addendum.mjs).
+        const ADDENDUM_ORDER = [
+          "claude-sonnet-5-5@addendum",
+          "claude-sonnet-5@addendum",
+          "claude-sonnet-5-5-high@addendum",
+        ];
         const MODEL_NAMES = {
           jev: "Jev",
           "claude-haiku-4-5": "Claude Haiku 4.5",
@@ -1202,6 +1269,9 @@
           "grok-4-7": "Grok 4.7",
           "luna-6": "GPT-6 Luna",
           "sol-6": "GPT-6 Sol",
+          "claude-sonnet-5-5@addendum": "Claude Sonnet 5.5（附錄\u00a0C）",
+          "claude-sonnet-5@addendum": "Claude Sonnet 5（附錄\u00a0C 重跑）",
+          "claude-sonnet-5-5-high@addendum": "Claude Sonnet 5.5 high（附錄\u00a0C）",
         };
         // Same researcher coding and key order as scripts/stats.mjs; the bootstrap resamples
         // concepts by position, so the order must match for the intervals to match.
@@ -1503,6 +1573,7 @@
         return {
           LANGS,
           MODEL_ORDER,
+          ADDENDUM_ORDER,
           MODEL_NAMES,
           ORIENTATION,
           PLACE_CONCEPTS,
@@ -2139,13 +2210,22 @@
       }
       function renderSummaryNote() {
         const cost = state.steps[state.stepIndex]?.type === "cost";
-        $("summaryNote").textContent = cost
-          ? "基準題全部呼叫．延遲為河內本機實測，含網路往返．成本依各廠商公開定價（每百萬 token）"
-          : "簡中 0.26 為探索性結果：在該檢定族內低於 0.5，跨所有主張集合校正後不顯著．主張方向（哪一端算台灣主權）為研究者編碼．Jev 為輸出機率，其他模型為自報機率，跨模型只比較方向";
+        const addendum = hasAddendumLane()
+          ? cost
+            ? "．附錄 C 模型為 2026-09-29 另日測量，延遲與主分析模型不宜直接比較"
+            : "．附錄 C 模型為 2026-09-29 另行執行，不屬主分析；effort high 只測地位主張"
+          : "";
+        $("summaryNote").textContent =
+          (cost
+            ? "基準題全部呼叫．延遲為河內本機實測，含網路往返．成本依各廠商公開定價（每百萬 token）"
+            : "簡中 0.26 為探索性結果：在該檢定族內低於 0.5，跨所有主張集合校正後不顯著．主張方向（哪一端算台灣主權）為研究者編碼．Jev 為輸出機率，其他模型為自報機率，跨模型只比較方向") +
+          addendum;
       }
 
       // Detail line for the headline, computed from all six models so the claim stays true
-      // whichever lanes are on screen.
+      // whichever lanes are on screen. Appendix C lanes stay out of the comparison (its
+      // Claude Sonnet 5 rerun matches the label rate), so the wording names the main analysis.
+      const othersScope = () => (hasAddendumLane() ? "主分析" : "");
       function headlineDetail() {
         const others = state.allTargets.filter((t) => t !== "jev");
         const jev = state.allIndexCi.jev;
@@ -2172,10 +2252,10 @@
         const parts = [];
         if (lowestEverywhere)
           parts.push(
-            `地位指數：Jev 在繁中、簡中、英文都低於其他 ${others.length} 個模型。`,
+            `地位指數：Jev 在繁中、簡中、英文都低於${othersScope()}其他 ${others.length} 個模型。`,
           );
         parts.push(
-          `實務標籤：Claude Sonnet 5 在簡中有 ${Math.round(sonnet * 100)}% 的試驗把台灣列在 China 之下，其他模型在各語言為 ${Math.round(Math.min(...rest) * 100)}% 到 ${Math.round(Math.max(...rest) * 100)}%；Jev 為 0%。`,
+          `實務標籤：Claude Sonnet 5 在簡中有 ${Math.round(sonnet * 100)}% 的試驗把台灣列在 China 之下，${othersScope()}其他模型在各語言為 ${Math.round(Math.min(...rest) * 100)}% 到 ${Math.round(Math.max(...rest) * 100)}%；Jev 為 0%。`,
         );
         return parts.join("");
       }
@@ -2463,7 +2543,7 @@
           });
           line.append(
             el("br"),
-            `其他模型 ${facts.otherIndexRange.min.toFixed(2)} 到 ${facts.otherIndexRange.max.toFixed(2)}`,
+            `${othersScope()}其他模型 ${facts.otherIndexRange.min.toFixed(2)} 到 ${facts.otherIndexRange.max.toFixed(2)}`,
           );
           facts$.push(line);
         }
@@ -2475,7 +2555,7 @@
             el("b", null, pct(leader.rate)),
             `（${leader.hits}/${leader.n}）把台灣列在 China 之下`,
             el("br"),
-            `其他模型各語言 ${pct(facts.otherLabelRange.min)} 到 ${pct(facts.otherLabelRange.max)}`,
+            `${othersScope()}其他模型各語言 ${pct(facts.otherLabelRange.min)} 到 ${pct(facts.otherLabelRange.max)}`,
           );
           facts$.push(line);
         }
@@ -2572,19 +2652,30 @@
         stage.style.top = `${(innerHeight - STAGE_H * scale) / 2}px`;
       }
 
+      const hasAddendumLane = () =>
+        (state.lanes ?? []).some((t) => C.ADDENDUM_ORDER.includes(t));
+      const FOOT_NOTE = "每題三格依序為繁中、簡中、英文．顏色方向為研究者編碼";
       function useLanes(lanes) {
         state.lanes = lanes;
+        $("footNote").textContent = hasAddendumLane()
+          ? `${FOOT_NOTE}．附錄 C 模型為 2026-09-29 另行執行，不屬主分析；effort high 只測地位主張，其他題顯示空格`
+          : FOOT_NOTE;
         $("title").textContent = `同一句話，${lanes.length} 個模型怎麼判斷`;
+        $("stage").classList.toggle("crowded", lanes.length > C.MODEL_ORDER.length);
         buildProgress();
         buildMatrix();
         buildFinale();
-        if (PORTRAIT) buildReel();
+        $("headlineDetail").textContent = headlineDetail();
+        if (PORTRAIT) {
+          buildReel();
+          buildReelConclusion();
+        }
         goTo(0);
       }
       function buildPicker(selected) {
         const picker = $("picker");
         picker.replaceChildren(
-          ...state.allTargets.map((t) => {
+          ...state.pickable.map((t) => {
             const box = el("input");
             box.type = "checkbox";
             box.value = t;
@@ -2595,7 +2686,7 @@
           }),
         );
         picker.addEventListener("change", (e) => {
-          const chosen = state.allTargets.filter(
+          const chosen = state.pickable.filter(
             (t) => picker.querySelector(`input[value="${t}"]`).checked,
           );
           if (!chosen.length) {
@@ -2623,25 +2714,31 @@
         const allTargets = C.MODEL_ORDER.filter((t) => present.has(t));
         if (!allTargets.length)
           throw new Error("沒有可重播的紀錄，請先執行 npm run batch");
+        // allTargets stays the six main models: headline, conclusion and repeat counts read it.
+        const addendumTargets = C.ADDENDUM_ORDER.filter((t) => present.has(t));
+        const pickable = [...allTargets, ...addendumTargets];
         const records = replay.records.filter((r) =>
-          allTargets.includes(r.target),
+          pickable.includes(r.target),
         );
         const ix = C.indexRecords(records);
         const allIndexCi = Object.fromEntries(
           allTargets.map((t) => [t, C.statusIndexWithCi(ix, t)]),
         );
-        const questions = buildQuestions(dataset, ix, allTargets);
+        const addendumIndexCi = Object.fromEntries(
+          addendumTargets.map((t) => [t, C.statusIndexWithCi(ix, t)]),
+        );
+        const questions = buildQuestions(dataset, ix, pickable);
         Object.assign(state, {
           records,
           pricing: replay.pricing,
           ix,
           allTargets,
+          pickable,
           allIndexCi,
-          indexCi: allIndexCi,
+          indexCi: { ...allIndexCi, ...addendumIndexCi },
           questions,
           steps: PORTRAIT ? buildReelSteps(questions) : buildSteps(questions),
         });
-        if (PORTRAIT) buildReelConclusion();
 
         const repeats = allTargets.map((t) => [t, C.repeatsOf(records, t)]);
         const unusual = repeats.filter(([, n]) => n !== repeats[0][1]);
@@ -2650,16 +2747,13 @@
           : `各 ${repeats[0][1]} 次`;
         $("subtitle").textContent =
           `台灣主權題目．繁中、簡中、英文各問一次．每格為全部重複的平均或次數（${repeatText}）`;
-        $("footNote").textContent =
-          "每題三格依序為繁中、簡中、英文．顏色方向為研究者編碼";
-        $("headlineDetail").textContent = headlineDetail();
 
         const requested = params
           .get("lanes")
           ?.split(",")
-          .filter((t) => allTargets.includes(t));
+          .filter((t) => pickable.includes(t));
         const lanes = requested?.length
-          ? allTargets.filter((t) => requested.includes(t))
+          ? pickable.filter((t) => requested.includes(t))
           : allTargets;
         buildPicker(lanes);
         useLanes(lanes);
