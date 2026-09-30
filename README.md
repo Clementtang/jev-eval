@@ -2,6 +2,13 @@
 
 **English** | [繁體中文](README.zh-TW.md)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://zenodo.org/records/23055592)
+[![Preprint](https://img.shields.io/badge/preprint-draft%200.7%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
+[![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
+[![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
+[![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-green)](LICENSE-CC-BY-4.0.txt)
+[![Node.js 24+](https://img.shields.io/badge/node-%E2%89%A5%2024-339933)](#reproduce)
+
 How audits of language models on Taiwan's sovereignty rank models differently depending on the instrument.
 
 [Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://zenodo.org/records/23055592) · [Citation](#citation)
