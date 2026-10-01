@@ -1,9 +1,11 @@
 // Runs several targets inside one process, so one `op run` authorization covers the whole study.
-// Usage: op run --env-file .env.op -- node scripts/run-all.mjs [--targets a,b] [--repeats 5] [--group A,B] [--limit 3]
+// Usage: op run --env-file .env.op -- node scripts/run-all.mjs [--targets a,b] [--repeats 5] [--group A,B] [--limit 3] [--resume]
+// --resume appends to each target's latest run and skips item/repeat pairs that already succeeded,
+// so a batch cut short (for example by exhausted credits) completes as one run.
 import { readFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { availableTargets, TARGETS } from "../lib/providers.mjs";
-import { newRunId, runAndRecord } from "../lib/results.mjs";
+import { listRuns, newRunId, readRun, runAndRecord } from "../lib/results.mjs";
 
 const { values } = parseArgs({
   options: {
@@ -14,6 +16,7 @@ const { values } = parseArgs({
     variant: { type: "string" },
     concept: { type: "string" },
     limit: { type: "string" },
+    resume: { type: "boolean", default: false },
   },
 });
 
@@ -33,10 +36,20 @@ if (values.limit) items = items.slice(0, Number(values.limit));
 const repeats = Number(values.repeats);
 const concurrency = Number(values.concurrency);
 
+function resumeState(target) {
+  // Run ids end with the target, and "-sol-6" is not a suffix of "-sol-6-1", so the match is exact.
+  const latest = listRuns().find((r) => r.run_id.endsWith(`-${target}`));
+  if (!latest) throw new Error(`--resume: no earlier run for ${target}`);
+  const succeeded = new Set(readRun(latest.run_id).filter((r) => r.ok).map((r) => `${r.item_id}#${r.rep}`));
+  return { runId: latest.run_id, succeeded };
+}
+
 async function runTarget(target) {
-  const runId = newRunId(target);
+  const { runId, succeeded } = values.resume ? resumeState(target) : { runId: newRunId(target), succeeded: new Set() };
   const queue = [];
-  for (let rep = 1; rep <= repeats; rep++) for (const item of items) queue.push({ item, rep });
+  for (let rep = 1; rep <= repeats; rep++) for (const item of items) {
+    if (!succeeded.has(`${item.id}#${rep}`)) queue.push({ item, rep });
+  }
   const total = queue.length;
   let done = 0;
   let failed = 0;
