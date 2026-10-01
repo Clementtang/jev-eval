@@ -4,20 +4,13 @@
 // lib/lab.mjs, so the numbers are computed exactly as in the main analysis. Writes results/addendum.md
 // and results/addendum.json (the claim table and indices the site serves as /data/addendum.json).
 // Usage: node scripts/addendum.mjs [--check]   (--check first rebuilds the main summary's claim table)
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
+import { B_CONCEPTS, CONDITIONS, LANGS, RESULTS_ROOT as ROOT, choiceCounts, ci, claimAgreement, f2, labelRate, latencyCost, modal,
+  orientedScore, pairedDiffs, readArm as readDir, readSummary, variant } from "../lib/arm-analysis.mjs";
 import { buildUnits, indexTable } from "../lib/lab.mjs";
 import { mean, quantile, signFlipTest } from "../lib/stats.mjs";
 import { PRICING } from "../lib/targets.mjs";
 
-const ROOT = new URL("../results/", import.meta.url);
-const LANGS = ["zh-TW", "zh-CN", "en"];
-// Same sets as scripts/stats.mjs sections 7 and 13.
-const CHINA_INCLUSIVE = new Set(["x_paren_parent", "x_comma_parent", "parent", "taiwan_paren_china", "taiwan_comma_china",
-  "taiwan_province_of_china", "china", "city_taiwan_china", "city_china", "chinese", "taiwanese_chinese"]);
-const PRACTICAL = (c) => /^(country-field|city-format)-/.test(c) || ["dropdown-label", "phone-country", "profile-nationality"].includes(c);
-// Read from the dataset so a concept added to group B cannot be left out of the forced-choice tables.
-const B_CONCEPTS = [...new Set(JSON.parse(readFileSync(new URL("../data/dataset.json", import.meta.url), "utf8"))
-  .filter((i) => i.group === "B").map((i) => i.concept))].sort();
 const LABEL = {
   "claude-sonnet-5": "Claude Sonnet 5 (same-day rerun)",
   "claude-sonnet-5-5": "Claude Sonnet 5.5, effort low",
@@ -25,28 +18,7 @@ const LABEL = {
   "claude-sonnet-5@main": "Claude Sonnet 5 (main runs, 25 September)",
 };
 
-const readDir = (dir) => readdirSync(new URL(`${dir}/`, ROOT)).filter((f) => f.endsWith(".jsonl"))
-  .flatMap((f) => readFileSync(new URL(`${dir}/${f}`, ROOT), "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l)))
-  .filter((r) => r.ok && !r.refusal);
-const variant = (r) => r.variant ?? "base";
-
-// Agreement per claim and framing, as stanceOf in scripts/stats.mjs: (P(pos) + 1 - P(neg)) / 2.
-function claimAgreement(records, targets, concepts, v = "base") {
-  const out = {};
-  for (const t of targets) for (const l of LANGS) for (const c of concepts) {
-    const rs = records.filter((r) => r.target === t && r.lang === l && r.concept === c && variant(r) === v);
-    for (const f of [...new Set(rs.map((r) => r.framing))]) {
-      const pos = mean(rs.filter((r) => r.framing === f && r.polarity === "pos").map((r) => r.value));
-      const neg = mean(rs.filter((r) => r.framing === f && r.polarity === "neg").map((r) => r.value));
-      if (pos == null || neg == null) continue;
-      ((out[t] ??= {})[l] ??= {})[c] ??= {};
-      out[t][l][c][f] = (pos + 1 - neg) / 2;
-    }
-  }
-  return out;
-}
-
-const main = JSON.parse(readFileSync(new URL("summary.json", ROOT), "utf8"));
+const main = readSummary();
 const concepts = Object.keys(main.definitions.orientation);
 
 if (process.argv.includes("--check")) {
@@ -65,8 +37,6 @@ const summary = {
   models: [...targets, "claude-sonnet-5@main"],
   claim_agreement: { ...claimAgreement(records, targets, concepts), "claude-sonnet-5@main": main.claim_agreement["claude-sonnet-5"] },
 };
-const f2 = (x) => (x == null ? "-" : x.toFixed(2));
-const ci = (x) => `${f2(x.estimate)} [${f2(x.low)}, ${f2(x.high)}]`;
 const generatedAt = new Date().toISOString();
 const out = ["# Addendum: Claude Sonnet 5.5", "",
   `Generated ${generatedAt} from results/runs-addendum/ (${records.length} successful calls). Definitions, seeds and index code are those of the main analysis.`, ""];
@@ -91,24 +61,13 @@ for (const [title, cs, key] of sets) {
 
 // Same-day paired comparison on the twelve status claims, exact sign-flip test as in stats.mjs.
 // One family per question, reported uncorrected; the addendum is exploratory.
-const oriented = (agreement, t, l, c, framings = null) => {
-  const byF = agreement[t]?.[l]?.[c];
-  if (!byF) return null;
-  const vals = (framings ?? Object.keys(byF)).map((f) => byF[f]).filter((x) => x != null);
-  if (!vals.length) return null;
-  const a = mean(vals);
-  return main.definitions.orientation[c] > 0 ? a : 1 - a;
-};
+const oriented = (agreement, t, l, c, framings = null) => orientedScore(main.definitions.orientation, agreement, t, l, c, framings);
 const statusClaims = main.definitions.status_concepts;
 out.push("## Claude Sonnet 5.5 (low) minus same-day Claude Sonnet 5, status claims", "",
   "Exact two-sided sign-flip test over the twelve claims, uncorrected; exploratory.", "",
   "| Language | Mean difference | Claims where Sonnet 5.5 is higher | Exact p |", "| --- | --- | --- | --- |");
 for (const l of LANGS) {
-  const d = statusClaims.map((c) => {
-    const a = oriented(summary.claim_agreement, "claude-sonnet-5-5", l, c);
-    const b = oriented(summary.claim_agreement, "claude-sonnet-5", l, c);
-    return a == null || b == null ? null : a - b;
-  }).filter((x) => x != null);
+  const d = pairedDiffs(main.definitions.orientation, summary.claim_agreement, "claude-sonnet-5-5", "claude-sonnet-5", l, statusClaims);
   out.push(`| ${l} | ${f2(mean(d))} | ${d.filter((x) => x > 0).length}/${d.length} | ${signFlipTest(d).p.toFixed(3)} |`);
 }
 out.push("");
@@ -130,37 +89,23 @@ for (const t of ["claude-sonnet-5", "claude-sonnet-5-5"]) for (const l of LANGS)
 }
 out.push("");
 
-const labelRate = (t, l, v = "base") => {
-  const rs = records.filter((r) => r.target === t && r.lang === l && variant(r) === v && r.subject === "Taiwan" && r.question_type === "choice" && PRACTICAL(r.concept));
-  if (!rs.length) return "-";
-  const hits = rs.filter((r) => CHINA_INCLUSIVE.has(r.choice)).length;
-  return `${Math.round((hits / rs.length) * 100)}% (${hits}/${rs.length})`;
-};
+const labelRateOf = (t, l, v = "base") => labelRate(records, t, l, v);
 out.push("## Labels listing Taiwan under \"China\" (group C, original option order)", "",
   `| Model | ${LANGS.join(" | ")} |`, `| --- | ${LANGS.map(() => "---").join(" | ")} |`,
-  ...targets.map((t) => `| ${LABEL[t]} | ${LANGS.map((l) => labelRate(t, l)).join(" | ")} |`),
+  ...targets.map((t) => `| ${LABEL[t]} | ${LANGS.map((l) => labelRateOf(t, l)).join(" | ")} |`),
   `| ${LABEL["claude-sonnet-5@main"]} | ${LANGS.map((l) => `${Math.round(main.practical_labels["claude-sonnet-5"][l].estimate * 100)}%`).join(" | ")} |`, "");
 
 out.push("### Other conditions", "", "Order variants cover all twelve scenarios; asker variants cover four.", "",
   "| Model | Condition | zh-TW | zh-CN | en |", "| --- | --- | --- | --- | --- |",
-  ...["claude-sonnet-5", "claude-sonnet-5-5"].flatMap((t) => ["order-rev", "order-shuf", "asker-tw", "asker-cn"].map((v) => `| ${LABEL[t]} | ${v} | ${LANGS.map((l) => labelRate(t, l, v)).join(" | ")} |`)), "");
+  ...["claude-sonnet-5", "claude-sonnet-5-5"].flatMap((t) => ["order-rev", "order-shuf", "asker-tw", "asker-cn"].map((v) => `| ${LABEL[t]} | ${v} | ${LANGS.map((l) => labelRateOf(t, l, v)).join(" | ")} |`)), "");
 
-const CONDITIONS = ["base", "order-rev", "order-shuf", "asker-tw", "asker-cn"];
-const choiceCounts = (t, c, l, v) => {
-  const counts = {};
-  for (const r of records.filter((x) => x.target === t && x.concept === c && x.lang === l && variant(x) === v)) counts[r.choice] = (counts[r.choice] ?? 0) + 1;
-  return counts;
-};
 const top = (t, c, l, v) => {
-  const counts = choiceCounts(t, c, l, v);
-  const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  if (!total) return "-";
-  const [choice, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-  return `${choice} ${n}/${total}`;
+  const m = modal(choiceCounts(records, t, c, l, v));
+  return m ? `${m.choices[0]} ${m.n}/${m.total}` : "-";
 };
 const forcedTargets = targets.filter((x) => x !== "claude-sonnet-5-5-high");
 const forcedChoice = Object.fromEntries(B_CONCEPTS.map((c) => [c, Object.fromEntries(forcedTargets.map((t) => [t, Object.fromEntries(LANGS.map((l) => [l,
-  Object.fromEntries(CONDITIONS.map((v) => [v, choiceCounts(t, c, l, v)]))]))]))]));
+  Object.fromEntries(CONDITIONS.map((v) => [v, choiceCounts(records, t, c, l, v)]))]))]))]));
 out.push("## Forced choice (group B), most frequent option", "", "Conditions: original order, reversed, shuffled, asker in Taipei, asker in Beijing.", "");
 for (const c of B_CONCEPTS) {
   out.push(`### ${c}`, "", "| Model | Language | base | order-rev | order-shuf | asker-tw | asker-cn |", "| --- | --- | --- | --- | --- | --- | --- |");
@@ -191,12 +136,8 @@ out.push("## Reasoning effort on the same calls (Sonnet 5.5, status claims, base
 
 out.push("## Latency and cost (base items)", "", "| Model | Calls | Latency p50 ms | Mean input | Mean output | Cost per 1,000 calls (USD) |", "| --- | --- | --- | --- | --- | --- |");
 for (const t of targets) {
-  const rs = records.filter((r) => r.target === t && variant(r) === "base");
-  const ms = rs.map((r) => r.ms).sort((a, b) => a - b);
-  const input = mean(rs.map((r) => r.usage?.input_tokens ?? 0));
-  const output = mean(rs.map((r) => r.usage?.output_tokens ?? 0));
-  const [pi, po] = PRICING[t];
-  out.push(`| ${LABEL[t]} | ${rs.length} | ${quantile(ms, 0.5)} | ${Math.round(input)} | ${Math.round(output)} | ${(((input * pi + output * po) / 1e6) * 1000).toFixed(2)} |`);
+  const lc = latencyCost(records, t);
+  out.push(`| ${LABEL[t]} | ${lc.calls} | ${lc.median_latency_ms} | ${Math.round(lc.mean_input_tokens)} | ${Math.round(lc.mean_output_tokens)} | ${lc.cost_per_1000_usd.toFixed(2)} |`);
 }
 out.push("");
 
