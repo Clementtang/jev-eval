@@ -7,7 +7,7 @@ import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname;
 const { buildUnits, indexTable, jevComparisons } = await import(join(root, "lib/lab.mjs"));
-const { ADDENDUM_SUFFIX, ADDENDUM_TARGETS, mergeAddendum } = await import(join(root, "lib/addendum.mjs"));
+const { ADDENDUM_SUFFIX, ADDENDUM_TARGETS, mergeAppendices } = await import(join(root, "lib/addendum.mjs"));
 const summary = JSON.parse(readFileSync(join(root, "results/summary.json"), "utf8"));
 const addendumPath = join(root, "results/addendum.json");
 const addendum = JSON.parse(readFileSync(addendumPath, "utf8"));
@@ -56,7 +56,7 @@ const tableAfter = (heading) => {
 };
 
 // 1. The lab's computation on the merged data against results/addendum.md and the typed figures.
-const merged = mergeAddendum(summary, addendum);
+const merged = mergeAppendices(summary, { C: addendum });
 const SETS = [
   ["## Status index (12 status claims, main analysis)", summary.definitions.status_concepts, "status_index"],
   ["## Place index (3 city claims)", summary.definitions.place_concepts, "place_index"],
@@ -111,8 +111,9 @@ if (existsSync(sitePath)) check("site/public/data/addendum.json is a copy of res
 
 // 3. items.json: main models unchanged, addendum cells against the raw records.
 check("items.json main models", items.models.join(","), summary.models.join(","));
-check("items.json addendum models", items.addendum.models.join(","), ADDENDUM_TARGETS.map((t) => t + ADDENDUM_SUFFIX).join(","));
-check("items.json addendum calls", items.addendum.calls, records.length);
+const itemsArm = items.appendices.find((a) => a.id === "C");
+check("items.json addendum models", itemsArm.models.join(","), ADDENDUM_TARGETS.map((t) => t + ADDENDUM_SUFFIX).join(","));
+check("items.json addendum calls", itemsArm.calls, records.length);
 let seed = 20260929;
 const random = () => ((seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31);
 const pick = (xs) => xs[Math.floor(random() * xs.length)];

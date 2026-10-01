@@ -54,10 +54,12 @@
         --grok-4-7: #454545;
         --luna-6: #4a8fe0;
         --sol-6: #1d4f91;
-        /* Appendix C lanes; "@" cannot appear in a custom property name, see colorKey(). */
+        /* Appendix lanes; "@" cannot appear in a custom property name, see colorKey(). */
         --claude-sonnet-5-5-addendum: #a0521d;
         --claude-sonnet-5-addendum: #dbb066;
         --claude-sonnet-5-5-high-addendum: #6e3a10;
+        --sol-6-1-appendix-d: #0f6e8c;
+        --sol-6-appendix-d: #8aaedb;
         --serif: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
         --sans: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
         --num: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
@@ -168,7 +170,7 @@
         font-size: 24px;
         font-weight: 600;
       }
-      /* Appendix C names are long; wrapping keeps "附錄 C" (joined by a no-break space) visible in narrow lanes. */
+      /* Appendix names are long; wrapping keeps "附錄 C" or "附錄 D" (joined by a no-break space) visible in narrow lanes. */
       .lane.addendum .lane-name {
         white-space: normal;
       }
@@ -963,6 +965,14 @@
           name: "Claude Sonnet 5.5 high（附錄\u00a0C）",
           vendor: "Anthropic．9/29 另日測量．只含地位主張",
         },
+        "sol-6-1@appendix-d": {
+          name: "GPT-6.1 Sol（附錄\u00a0D）",
+          vendor: "OpenAI．10/1 另日測量",
+        },
+        "sol-6@appendix-d": {
+          name: "GPT-6 Sol（附錄\u00a0D 重跑）",
+          vendor: "OpenAI．10/1 另日測量",
+        },
       };
       const MODEL_ORDER = [
         "jev",
@@ -972,14 +982,33 @@
         "luna-6",
         "sol-6",
       ];
-      // Appendix C (run 2026-09-29, outside the main analysis): offered in the picker but never
-      // raced by default, so the recorded videos and the default URL stay unchanged.
-      const ADDENDUM_ORDER = [
-        "claude-sonnet-5-5@addendum",
-        "claude-sonnet-5@addendum",
-        "claude-sonnet-5-5-high@addendum",
+      // Appendix arms (each run on its own day, outside the main analysis; lib/addendum.mjs):
+      // offered in the picker but never raced by default, so the recorded videos and the default
+      // URL stay unchanged.
+      const APPENDIX_ARMS = [
+        {
+          label: "附錄 C",
+          date: "2026-09-29",
+          targets: [
+            "claude-sonnet-5-5@addendum",
+            "claude-sonnet-5@addendum",
+            "claude-sonnet-5-5-high@addendum",
+          ],
+        },
+        {
+          label: "附錄 D",
+          date: "2026-10-01",
+          targets: ["sol-6-1@appendix-d", "sol-6@appendix-d"],
+        },
       ];
+      const ADDENDUM_ORDER = APPENDIX_ARMS.flatMap((arm) => arm.targets);
       const isAddendum = (target) => ADDENDUM_ORDER.includes(target);
+      // "附錄 C 模型為 2026-09-29" for each arm with a lane on screen, so every note names the
+      // run date of exactly the arms shown.
+      const armDates = (targets) =>
+        APPENDIX_ARMS.filter((arm) => arm.targets.some((t) => targets.includes(t)))
+          .map((arm) => `${arm.label} 模型為 ${arm.date}`)
+          .join("、");
       const colorKey = (target) => target.replace("@", "-");
       const infoOf = (target) =>
         LANE_INFO[target] ?? { name: target, vendor: "" };
@@ -1713,7 +1742,7 @@
             "sb-note",
             "灰色區段為 95% bootstrap 信賴區間；標記為綠或粉紅表示整段區間落在 0.5 同一側．生成式模型的機率為自報值，跨模型只比較方向．每千次呼叫成本以全部基準題呼叫（含重複）與公開定價計算" +
               (state.lanes.some((l) => isAddendum(l.target))
-                ? "．附錄 C 模型為 2026-09-29 另日測量，不屬主分析，完成時間與延遲不宜與 9/25 的模型直接比較"
+                ? `．${armDates(state.lanes.map((l) => l.target))} 另日測量，不屬主分析，完成時間與延遲不宜與 9/25 的模型直接比較`
                 : ""),
           ),
         );
@@ -1845,7 +1874,7 @@
           ? `台灣主權 ${baseItems} 題：同一份題目，${state.lanes.length} 個模型的作答紀錄`
           : `台灣主權 ${baseItems} 題：同一份題目，${state.lanes.length} 個模型同時作答`;
         $("footNote").textContent = hasAddendum
-          ? `${FOOT_NOTE}．附錄 C 模型為 2026-09-29 另日實測，不屬主分析`
+          ? `${FOOT_NOTE}．${armDates(state.lanes.map((l) => l.target))} 另日實測，不屬主分析`
           : FOOT_NOTE;
         // Compact mode depends on how wide each lane actually gets, not on the lane count:
         // six lanes fit comfortably on a 3060px stage but not on a 1920px one.

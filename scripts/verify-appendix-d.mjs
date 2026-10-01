@@ -1,8 +1,9 @@
 // Checks results/appendix-d.json and results/appendix-d.md against the raw records in
 // results/runs-appendixd/ (and results/runs/ for the bridge), recomputing every figure without
 // scripts/appendix-d.mjs or lib/arm-analysis.mjs; indices go through lib/lab.mjs as the site does.
-// Usage: node scripts/verify-appendix-d.mjs
-import { readdirSync, readFileSync } from "node:fs";
+// Section 7 checks the site's copy of the appendix (lab merge, items.json, replay.json).
+// Usage: node scripts/export-site-data.mjs && node scripts/verify-appendix-d.mjs
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname;
@@ -210,6 +211,59 @@ for (const row of appendix.cross_model_zh_cn) {
   hasRow(`zh-CN table ${row.model} ${row.run_date}`, `| ${row.label} | ${row.run_date} | ${ci(row.status_index)} | ${ci(row.place_index)} |`);
 }
 check("zh-CN table covers every main model and both targets", appendix.cross_model_zh_cn.map((r) => r.model).join(","), [...summary.models, ...TARGETS].join(","));
+
+// 7. The site: the lab's merge of appendix D (lib/addendum.mjs), and the exported items.json and
+// replay.json cells against the raw records.
+const { APPENDIX_ARMS, mergeAppendices } = await import(join(root, "lib/addendum.mjs"));
+const arm = APPENDIX_ARMS.find((a) => a.id === "D");
+const siteId = (t) => t + arm.suffix;
+check("arm D run date matches every record", records.every((r) => r.ts.startsWith(arm.runDate)), true);
+check("arm D targets", [...arm.targets].sort().join(","), [...TARGETS].sort().join(","));
+const siteMerged = mergeAppendices(summary, { D: appendix });
+for (const [key, cs] of [["status_index", summary.definitions.status_concepts], ["place_index", summary.definitions.place_concepts], ["pooled_index", concepts]]) {
+  const table = indexTable(siteMerged, buildUnits(siteMerged, { concepts: cs }));
+  for (const t of TARGETS) check(`site lab ${key} ${siteId(t)} vs appendix-d.json`, LANGS.map((l) => ci(table[siteId(t)][l])).join(" | "), LANGS.map((l) => ci(appendix[key][t][l])).join(" | "));
+  const alone = indexTable(summary, buildUnits(summary, { concepts: cs }));
+  check(`site lab ${key} main models unchanged by the merge`, JSON.stringify(summary.models.map((m) => table[m])) === JSON.stringify(summary.models.map((m) => alone[m])), true);
+}
+const siteCopy = join(root, "site/public/data/appendix-d.json");
+if (existsSync(siteCopy)) check("site/public/data/appendix-d.json is a copy of results/appendix-d.json", readFileSync(siteCopy, "utf8") === readFileSync(join(root, "results/appendix-d.json"), "utf8"), true);
+
+const items = JSON.parse(readFileSync(join(root, "site/public/data/items.json"), "utf8"));
+const itemsArm = items.appendices.find((a) => a.id === "D");
+check("items.json main models", items.models.join(","), summary.models.join(","));
+check("items.json appendix D models", itemsArm.models.join(","), arm.targets.map(siteId).join(","));
+check("items.json appendix D calls", itemsArm.calls, records.length);
+check("items.json appendix D run date", itemsArm.run_date, appendix.run_date);
+let seed = 20261001;
+const random = () => ((seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31);
+const pick = (xs) => xs[Math.floor(random() * xs.length)];
+const typeOf = (id) => items.types.find((t) => [...Object.values(t.text), ...Object.values(t.variants).flatMap((x) => Object.values(x))].some((x) => x.id === id));
+for (let i = 0; i < 12; i++) {
+  const t = TARGETS[i % TARGETS.length];
+  const record = pick(records.filter((r) => r.target === t));
+  const rs = records.filter((r) => r.item_id === record.item_id && r.target === t);
+  const cell = typeOf(record.item_id).results[v(record)][record.lang][siteId(t)];
+  if (record.question_type === "choice") {
+    const counts = {};
+    for (const r of rs) counts[r.choice] = (counts[r.choice] ?? 0) + 1;
+    check(`items.json ${record.item_id} ${siteId(t)} counts`, JSON.stringify(Object.entries(cell.counts).sort()), JSON.stringify(Object.entries(counts).sort()));
+  } else {
+    const xs = rs.map((r) => r.value);
+    const m = avg(xs);
+    const sd = Math.sqrt(xs.reduce((a, x) => a + (x - m) ** 2, 0) / (xs.length - 1));
+    check(`items.json ${record.item_id} ${siteId(t)} n/mean/sd`, `${cell.n}/${cell.mean.toFixed(4)}/${cell.sd.toFixed(4)}`, `${xs.length}/${m.toFixed(4)}/${sd.toFixed(4)}`);
+    if (v(record) === "base" && record.concept in summary.definitions.orientation) {
+      check(`items.json ${record.item_id} ${siteId(t)} agreement vs appendix-d.json`, cell.agreement, appendix.claim_agreement[t][record.lang][record.concept][record.framing]);
+    }
+  }
+}
+
+const replay = JSON.parse(readFileSync(join(root, "site/public/replay/data/replay.json"), "utf8"));
+for (const t of TARGETS) {
+  check(`replay.json ${siteId(t)} base calls`, replay.records.filter((r) => r.target === siteId(t)).length, records.filter((r) => r.target === t && v(r) === "base").length);
+  check(`replay.json ${siteId(t)} pricing`, JSON.stringify(replay.pricing[siteId(t)]), JSON.stringify(PRICING[t]));
+}
 
 console.log(failures ? `${failures} failures, ${passes} passed` : `all ${passes} checks passed`);
 process.exitCode = failures ? 1 : 0;

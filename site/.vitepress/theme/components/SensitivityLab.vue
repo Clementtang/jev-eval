@@ -3,8 +3,8 @@ import { computed, onMounted, ref } from "vue";
 import { withBase } from "vitepress";
 // scripts/verify-lab.mjs checks this same module against results/stats.md.
 import { buildUnits, indexTable, jevComparisons, presets } from "../../../../lib/lab.mjs";
-import { ADDENDUM_SUFFIX, ADDENDUM_TARGETS, mergeAddendum } from "../../../../lib/addendum.mjs";
-import { ADDENDUM_MD_URL, LANG_SHORT, LANGS, STATS_URL, f2, loadJson, modelName, orientedColor, textOn, type Lang, type Locale } from "../shared";
+import { APPENDIX_ARMS, APPENDIX_MODELS, armOf, mergeAppendices } from "../../../../lib/addendum.mjs";
+import { resultsUrl, LANG_SHORT, LANGS, STATS_URL, f2, loadJson, modelName, runDateLabel, orientedColor, textOn, type Lang, type Locale } from "../shared";
 
 const props = defineProps<{ locale: Locale }>();
 const locale = props.locale;
@@ -14,7 +14,7 @@ interface Summary {
   langs: Lang[];
   definitions: { orientation: Record<string, number>; status_concepts: string[]; place_concepts: string[]; part_of_concepts: string[] };
 }
-interface Addendum { run_date: string; claim_agreement: Record<string, unknown> }
+interface ArmData { run_date: string; claim_agreement: Record<string, unknown> }
 interface ItemsPayload { types: { group: string; concept: string; polarity: string | null; framing: string; text: Record<Lang, { statement?: string }> }[] }
 
 const T = {
@@ -47,9 +47,13 @@ const T = {
     statsLink: "統計檔第 17 節",
     and: "與",
     period: "。",
-    addendum: "附錄模型（2026-09-29，不屬主分析）",
-    addendumNote: "附錄模型在 2026 年 9 月 29 日執行，主分析的六個模型在 9 月 25 日執行。同日重跑 Claude Sonnet 5，是為了把模型版本的差異與執行日期的差異分開。effort high 只測了 12 個地位主張，勾選的主張含其他主張時顯示「未測」。附錄模型不列入下方與 Jev 的比較。統計結果見",
-    addendumHead: "附錄：2026-09-29 另行執行，不屬主分析",
+    appendices: "附錄模型（另日執行，不屬主分析）",
+    appendixIntro: "主分析的六個模型在 2026 年 9 月 25 日執行，每個附錄各在另一天執行。附錄模型不列入下方與 Jev 的比較。",
+    armNotes: {
+      C: "附錄 C 在 9 月 29 日執行。同日重跑 Claude Sonnet 5，是為了把模型版本的差異與執行日期的差異分開。effort high 只測了 12 個地位主張，勾選的主張含其他主張時顯示「未測」。統計結果見",
+      D: "附錄 D 在 10 月 1 日執行，同日重跑 GPT-6 Sol 的用途相同。統計結果見",
+    } as Record<string, string>,
+    armHead: (id: string, date: string) => `附錄 ${id}：${date} 另行執行，不屬主分析`,
     notTested: "未測",
   },
   en: {
@@ -81,17 +85,20 @@ const T = {
     statsLink: "section 17 of the statistics file",
     and: " and ",
     period: ".",
-    addendum: "Addendum models (29 Sep 2026, outside the main analysis)",
-    addendumNote: "The addendum models ran on 29 September 2026 and the six main models on 25 September. Claude Sonnet 5 was rerun on the same day to separate the change of model version from the change of run date. Effort high answered the 12 status claims only, so it shows \"not tested\" when the selection includes other claims. The addendum models are left out of the comparison with Jev below. Statistics in",
-    addendumHead: "Addendum: run separately on 29 Sep 2026, outside the main analysis",
+    appendices: "Appendix models (run on other days, outside the main analysis)",
+    appendixIntro: "The six main models ran on 25 September 2026, and each appendix ran on a day of its own. Appendix models are left out of the comparison with Jev below.",
+    armNotes: {
+      C: "Appendix C ran on 29 September. Claude Sonnet 5 was rerun on the same day to separate the change of model version from the change of run date. Effort high answered the 12 status claims only, so it shows \"not tested\" when the selection includes other claims. Statistics in",
+      D: "Appendix D ran on 1 October, with a same-day rerun of GPT-6 Sol for the same purpose. Statistics in",
+    } as Record<string, string>,
+    armHead: (id: string, date: string) => `Appendix ${id}: run separately on ${date}, outside the main analysis`,
     notTested: "not tested",
   },
 }[props.locale];
 
 const summary = ref<(Summary & Record<string, unknown>) | null>(null);
-const addendum = ref<Addendum | null>(null);
-const addendumModels = ADDENDUM_TARGETS.map((t) => t + ADDENDUM_SUFFIX);
-const shownAddendum = ref<string[]>([]);
+const armData = ref<Record<string, ArmData> | null>(null);
+const shownAppendix = ref<string[]>([]);
 const statements = ref<Record<string, string>>({});
 const error = ref("");
 const selected = ref<string[]>([]);
@@ -119,12 +126,17 @@ const activePreset = computed(() => {
 });
 
 const units = computed(() => (summary.value ? buildUnits(summary.value, { concepts: selected.value, mergePartOf: mergePartOf.value, mergeCities: mergeCities.value }) : []));
-// Only the ticked addendum models are bootstrapped; the main models come first as in the paper.
+// Only the ticked appendix models are bootstrapped; the main models come first as in the paper.
 const tableSummary = computed(() => {
-  if (!summary.value || !addendum.value) return summary.value;
-  const merged = mergeAddendum(summary.value, addendum.value);
-  return { ...merged, models: merged.models.filter((m: string) => summary.value!.models.includes(m) || shownAddendum.value.includes(m)) };
+  if (!summary.value || !armData.value) return summary.value;
+  const merged = mergeAppendices(summary.value, armData.value);
+  return { ...merged, models: merged.models.filter((m: string) => summary.value!.models.includes(m) || shownAppendix.value.includes(m)) };
 });
+// The arm whose group heading goes above model m: set only on the first shown model of each arm.
+const armHeadOf = (m: string) => {
+  const arm = armOf(m);
+  return arm && tableSummary.value!.models.find((x: string) => armOf(x) === arm) === m ? arm : null;
+};
 const table = computed(() => (tableSummary.value && units.value.length ? indexTable(tableSummary.value, units.value, framing.value) : null));
 // A cell missing some units (effort high has no place claims) would be a different index.
 const complete = (m: string, l: Lang) => table.value![m][l].units === units.value.length;
@@ -136,13 +148,16 @@ const signed = (x: number | null) => (x == null ? "-" : `${x < 0 ? "−" : "+"}$
 
 onMounted(async () => {
   try {
-    const [s, items, a] = await Promise.all([loadJson<Summary & Record<string, unknown>>("summary.json"), loadJson<ItemsPayload>("items.json"), loadJson<Addendum>("addendum.json")]);
+    const [s, items, ...arms] = await Promise.all([
+      loadJson<Summary & Record<string, unknown>>("summary.json"), loadJson<ItemsPayload>("items.json"),
+      ...APPENDIX_ARMS.map((arm) => loadJson<ArmData>(arm.data)),
+    ]);
     const text: Record<string, string> = {};
     for (const t of items.types) {
       if (t.group === "A" && t.polarity === "pos" && t.framing === "f1" && t.text[statementLang]?.statement) text[t.concept] = t.text[statementLang].statement!;
     }
     statements.value = text;
-    addendum.value = a;
+    armData.value = Object.fromEntries(APPENDIX_ARMS.map((arm, i) => [arm.id, arms[i] as ArmData]));
     summary.value = s;
     applyPreset("main");
   } catch (e) {
@@ -196,11 +211,12 @@ onMounted(async () => {
         </div>
         <p class="count">{{ T.units(units.length, selected.length) }}</p>
 
-        <h3>{{ T.addendum }}</h3>
+        <h3>{{ T.appendices }}</h3>
         <div class="options">
-          <label v-for="m in addendumModels" :key="m"><input v-model="shownAddendum" type="checkbox" :value="m" /> {{ modelName(m, locale) }}</label>
+          <label v-for="m in APPENDIX_MODELS" :key="m"><input v-model="shownAppendix" type="checkbox" :value="m" /> {{ modelName(m, locale) }}</label>
         </div>
-        <p class="count">{{ T.addendumNote }} <a :href="ADDENDUM_MD_URL">results/addendum.md</a>{{ T.period }}</p>
+        <p class="count">{{ T.appendixIntro }}</p>
+        <p v-for="arm in APPENDIX_ARMS" :key="arm.id" class="count arm-note">{{ T.armNotes[arm.id] }} <a :href="resultsUrl(arm.markdown)">results/{{ arm.markdown }}</a>{{ T.period }}</p>
       </div>
 
       <p v-if="!units.length" class="state">{{ T.none }}</p>
@@ -216,10 +232,10 @@ onMounted(async () => {
             </thead>
             <tbody>
               <template v-for="m in tableSummary!.models" :key="m">
-              <tr v-if="m === tableSummary!.models.find((x) => addendumModels.includes(x))" class="addendum-head">
-                <th :colspan="LANGS.length + 1" scope="rowgroup">{{ T.addendumHead }}</th>
+              <tr v-if="armHeadOf(m)" class="addendum-head">
+                <th :colspan="LANGS.length + 1" scope="rowgroup">{{ T.armHead(armHeadOf(m)!.id, runDateLabel(armHeadOf(m)!.runDate, locale)) }}</th>
               </tr>
-              <tr :class="{ jev: m === 'jev', addendum: addendumModels.includes(m) }">
+              <tr :class="{ jev: m === 'jev', addendum: APPENDIX_MODELS.includes(m) }">
                 <th scope="row">{{ modelName(m, locale) }}</th>
                 <td v-for="l in LANGS" :key="l">
                   <span v-if="!complete(m, l)" class="untested">{{ T.notTested }}</span>
@@ -399,6 +415,9 @@ legend {
   font-size: 14px;
   color: var(--vp-c-text-2);
   margin: 10px 0 0 !important;
+}
+.count.arm-note {
+  margin-top: 4px !important;
 }
 .table-wrap {
   overflow-x: auto;

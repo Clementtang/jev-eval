@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import {
-  ADDENDUM_MD_URL, CHOICE_PRC, CHOICE_TW, DATASET_URL, LANG_NAMES, LANG_SHORT, LANGS, RUNS_URL,
-  f2, loadJson, modelName, orientedColor, plainColor, plainText, textOn, type Lang, type Locale,
+  resultsUrl, CHOICE_PRC, CHOICE_TW, DATASET_URL, LANG_NAMES, LANG_SHORT, LANGS, RUNS_URL,
+  f2, loadJson, modelName, orientedColor, plainColor, plainText, runDateLabel, textOn, type Lang, type Locale,
 } from "../shared";
+import { APPENDIX_ARMS } from "../../../../lib/addendum.mjs";
 
 const props = defineProps<{ locale: Locale }>();
 const locale = props.locale;
@@ -18,7 +19,8 @@ interface ItemType {
   text: Record<Lang, Wording>; variants: Record<string, Record<Lang, VariantWording>>;
   results: Record<string, Record<Lang, Record<string, Aggregate>>>;
 }
-interface Payload { models: string[]; addendum: { run_date: string; models: string[] }; types: ItemType[] }
+interface Appendix { id: string; run_date: string; models: string[] }
+interface Payload { models: string[]; appendices: Appendix[]; types: ItemType[] }
 
 const T = {
   zh: {
@@ -55,10 +57,14 @@ const T = {
     asker: "提問者",
     order: "選項順序",
     close: "收合",
-    showAddendum: "顯示附錄模型（2026-09-29）",
-    addendumHead: "附錄：2026-09-29 另行執行，不屬主分析",
+    showAddendum: "顯示附錄模型（附錄 C 2026-09-29、附錄 D 2026-10-01）",
+    armHead: (id: string, date: string) => `附錄 ${id}：${date} 另行執行，不屬主分析`,
     notTested: "未測",
-    addendumNote: "附錄模型在 2026 年 9 月 29 日執行，主分析的六個模型在 9 月 25 日執行，論文的推論只依據主分析。同日重跑 Claude Sonnet 5，是為了把模型版本的差異與執行日期的差異分開。effort high 只測了 12 個地位主張的原題，其他題目顯示「未測」。統計結果見",
+    appendixIntro: "主分析的六個模型在 2026 年 9 月 25 日執行，每個附錄各在另一天執行，論文的推論只依據主分析。",
+    armNotes: {
+      C: "附錄 C 在 9 月 29 日執行。同日重跑 Claude Sonnet 5，是為了把模型版本的差異與執行日期的差異分開。effort high 只測了 12 個地位主張的原題，其他題目顯示「未測」。統計結果見",
+      D: "附錄 D 在 10 月 1 日執行，同日重跑 GPT-6 Sol 的用途相同。統計結果見",
+    } as Record<string, string>,
     colon: "：", sep: "、", period: "。",
   },
   en: {
@@ -76,7 +82,7 @@ const T = {
     wording: "Wording in three languages",
     options: "Options",
     results: "Results of the six models",
-    resultsWithAddendum: "Results of the six models and the addendum models",
+    resultsWithAddendum: "Results of the six models and the appendix models",
     agreementNote: "The large figure is the agreement (positive and negated sentences combined); the small one is this sentence's mean probability ± standard deviation and the number of repeats.",
     choiceNote: "Bars show the share of repeats choosing each option; below is the most chosen option and its count.",
     pairLink: "Paired sentence",
@@ -95,10 +101,14 @@ const T = {
     asker: "Asker",
     order: "Option order",
     close: "Close",
-    showAddendum: "Show addendum models (29 Sep 2026)",
-    addendumHead: "Addendum: run separately on 29 Sep 2026, outside the main analysis",
+    showAddendum: "Show appendix models (appendix C 29 Sep, appendix D 1 Oct 2026)",
+    armHead: (id: string, date: string) => `Appendix ${id}: run separately on ${date}, outside the main analysis`,
     notTested: "not tested",
-    addendumNote: "The addendum models ran on 29 September 2026 and the six main models on 25 September; the paper's inferences rest on the main analysis only. Claude Sonnet 5 was rerun on the same day to separate the change of model version from the change of run date. Effort high answered only the original items of the 12 status claims; other items show \"not tested\". Statistics in",
+    appendixIntro: "The six main models ran on 25 September 2026, and each appendix ran on a day of its own; the paper's inferences rest on the main analysis only.",
+    armNotes: {
+      C: "Appendix C ran on 29 September. Claude Sonnet 5 was rerun on the same day to separate the change of model version from the change of run date. Effort high answered only the original items of the 12 status claims; other items show \"not tested\". Statistics in",
+      D: "Appendix D ran on 1 October, with a same-day rerun of GPT-6 Sol for the same purpose. Statistics in",
+    } as Record<string, string>,
     colon: ": ", sep: ", ", period: ".",
   },
 }[props.locale];
@@ -131,7 +141,11 @@ const copiedId = ref("");
 const showAddendum = ref(false);
 const HIGH_EFFORT = "claude-sonnet-5-5-high@addendum";
 
-const rowModels = computed(() => (data.value ? [...data.value.models, ...(showAddendum.value ? data.value.addendum.models : [])] : []));
+const rowModels = computed(() => (data.value ? [...data.value.models, ...(showAddendum.value ? data.value.appendices.flatMap((a) => a.models) : [])] : []));
+// The appendix whose group heading goes above model m: set only on the arm's first model.
+const armHeadOf = (m: string) => data.value?.appendices.find((a) => a.models[0] === m) ?? null;
+const isAppendixModel = (m: string) => data.value?.appendices.some((a) => a.models.includes(m)) ?? false;
+const armMarkdown = (id: string) => APPENDIX_ARMS.find((arm) => arm.id === id)!.markdown;
 const displayLang = computed<Lang>(() => lang.value || defaultLang);
 const byId = computed(() => new Map((data.value?.types ?? []).map((t) => [t.id, t])));
 
@@ -374,10 +388,10 @@ onBeforeUnmount(() => window.removeEventListener("hashchange", openFromHash));
                 </thead>
                 <tbody>
                   <template v-for="m in rowModels" :key="m">
-                  <tr v-if="m === data.addendum.models[0]" class="addendum-head">
-                    <th :colspan="LANGS.length + 1" scope="rowgroup">{{ T.addendumHead }}</th>
+                  <tr v-if="armHeadOf(m)" class="addendum-head">
+                    <th :colspan="LANGS.length + 1" scope="rowgroup">{{ T.armHead(armHeadOf(m)!.id, runDateLabel(armHeadOf(m)!.run_date, locale)) }}</th>
                   </tr>
-                  <tr :class="{ addendum: data.addendum.models.includes(m) }">
+                  <tr :class="{ addendum: isAppendixModel(m) }">
                     <th scope="row">{{ modelName(m, locale) }}</th>
                     <td v-for="l in LANGS" :key="l" :class="{ dim: lang && lang !== l }">
                       <template v-if="!item.results[openVariant]?.[l]?.[m]">
@@ -400,7 +414,10 @@ onBeforeUnmount(() => window.removeEventListener("hashchange", openFromHash));
               </table>
             </div>
             <p class="note">{{ item.type === "noul" ? T.agreementNote : T.choiceNote }}</p>
-            <p v-if="showAddendum" class="note addendum-note">{{ T.addendumNote }} <a :href="ADDENDUM_MD_URL">results/addendum.md</a>{{ T.period }}</p>
+            <div v-if="showAddendum" class="note addendum-note">
+              <p>{{ T.appendixIntro }}</p>
+              <p v-for="a in data.appendices" :key="a.id">{{ T.armNotes[a.id] }} <a :href="resultsUrl(armMarkdown(a.id))">results/{{ armMarkdown(a.id) }}</a>{{ T.period }}</p>
+            </div>
             <p v-if="item.pair" class="note">
               {{ T.pairLink }}{{ T.colon }}<a :href="`#item=${item.pair}`">{{ item.pair }}</a>
             </p>
@@ -489,6 +506,9 @@ select {
 .addendum-note {
   border-left: 3px solid var(--jev-rule);
   padding-left: 8px;
+}
+.addendum-note p {
+  margin: 0 0 4px !important;
 }
 .count {
   font-size: 14px;

@@ -929,7 +929,7 @@
       .r-question.is-pair .r-who {
         font-size: 26px;
       }
-      /* Appendix C ticked on the portrait reel: shorter rows and wrapping names keep every lane on the phone frame. */
+      /* Appendix models ticked on the portrait reel: shorter rows and wrapping names keep every lane on the phone frame. */
       #stage.crowded .r-grid {
         grid-auto-rows: 68px;
         row-gap: 8px;
@@ -1254,14 +1254,27 @@
           "luna-6",
           "sol-6",
         ];
-        // Appendix C (run 2026-09-29, outside the main analysis): offered in the picker but never
-        // shown by default, and left out of every conclusion computed below. The suffix keeps
-        // the same-day rerun apart from the main claude-sonnet-5 (lib/addendum.mjs).
-        const ADDENDUM_ORDER = [
-          "claude-sonnet-5-5@addendum",
-          "claude-sonnet-5@addendum",
-          "claude-sonnet-5-5-high@addendum",
+        // Appendix arms (each run on its own day, outside the main analysis): offered in the
+        // picker but never shown by default, and left out of every conclusion computed below.
+        // Each arm's suffix keeps its same-day rerun apart from the main model of the same id
+        // (lib/addendum.mjs).
+        const APPENDIX_ARMS = [
+          {
+            label: "附錄 C",
+            date: "2026-09-29",
+            targets: [
+              "claude-sonnet-5-5@addendum",
+              "claude-sonnet-5@addendum",
+              "claude-sonnet-5-5-high@addendum",
+            ],
+          },
+          {
+            label: "附錄 D",
+            date: "2026-10-01",
+            targets: ["sol-6-1@appendix-d", "sol-6@appendix-d"],
+          },
         ];
+        const ADDENDUM_ORDER = APPENDIX_ARMS.flatMap((arm) => arm.targets);
         const MODEL_NAMES = {
           jev: "Jev",
           "claude-haiku-4-5": "Claude Haiku 4.5",
@@ -1272,6 +1285,8 @@
           "claude-sonnet-5-5@addendum": "Claude Sonnet 5.5（附錄\u00a0C）",
           "claude-sonnet-5@addendum": "Claude Sonnet 5（附錄\u00a0C 重跑）",
           "claude-sonnet-5-5-high@addendum": "Claude Sonnet 5.5 high（附錄\u00a0C）",
+          "sol-6-1@appendix-d": "GPT-6.1 Sol（附錄\u00a0D）",
+          "sol-6@appendix-d": "GPT-6 Sol（附錄\u00a0D 重跑）",
         };
         // Same researcher coding and key order as scripts/stats.mjs; the bootstrap resamples
         // concepts by position, so the order must match for the intervals to match.
@@ -1573,6 +1588,7 @@
         return {
           LANGS,
           MODEL_ORDER,
+          APPENDIX_ARMS,
           ADDENDUM_ORDER,
           MODEL_NAMES,
           ORIENTATION,
@@ -2212,8 +2228,8 @@
         const cost = state.steps[state.stepIndex]?.type === "cost";
         const addendum = hasAddendumLane()
           ? cost
-            ? "．附錄 C 模型為 2026-09-29 另日測量，延遲與主分析模型不宜直接比較"
-            : "．附錄 C 模型為 2026-09-29 另行執行，不屬主分析；effort high 只測地位主張"
+            ? `．${armDates()} 另日測量，延遲與主分析模型不宜直接比較`
+            : `．${armDates()} 另行執行，不屬主分析${hasArmLane("附錄 C") ? "；effort high 只測地位主張" : ""}`
           : "";
         $("summaryNote").textContent =
           (cost
@@ -2223,7 +2239,7 @@
       }
 
       // Detail line for the headline, computed from all six models so the claim stays true
-      // whichever lanes are on screen. Appendix C lanes stay out of the comparison (its
+      // whichever lanes are on screen. Appendix lanes stay out of the comparison (appendix C's
       // Claude Sonnet 5 rerun matches the label rate), so the wording names the main analysis.
       const othersScope = () => (hasAddendumLane() ? "主分析" : "");
       function headlineDetail() {
@@ -2654,11 +2670,21 @@
 
       const hasAddendumLane = () =>
         (state.lanes ?? []).some((t) => C.ADDENDUM_ORDER.includes(t));
+      const shownArms = () =>
+        C.APPENDIX_ARMS.filter((arm) =>
+          arm.targets.some((t) => (state.lanes ?? []).includes(t)),
+        );
+      const hasArmLane = (label) => shownArms().some((arm) => arm.label === label);
+      // Names the run date of exactly the arms on screen: "附錄 C 模型為 2026-09-29、附錄 D 模型為 2026-10-01".
+      const armDates = () =>
+        shownArms()
+          .map((arm) => `${arm.label} 模型為 ${arm.date}`)
+          .join("、");
       const FOOT_NOTE = "每題三格依序為繁中、簡中、英文．顏色方向為研究者編碼";
       function useLanes(lanes) {
         state.lanes = lanes;
         $("footNote").textContent = hasAddendumLane()
-          ? `${FOOT_NOTE}．附錄 C 模型為 2026-09-29 另行執行，不屬主分析；effort high 只測地位主張，其他題顯示空格`
+          ? `${FOOT_NOTE}．${armDates()} 另行執行，不屬主分析${hasArmLane("附錄 C") ? "；effort high 只測地位主張，其他題顯示空格" : ""}`
           : FOOT_NOTE;
         $("title").textContent = `同一句話，${lanes.length} 個模型怎麼判斷`;
         $("stage").classList.toggle("crowded", lanes.length > C.MODEL_ORDER.length);
