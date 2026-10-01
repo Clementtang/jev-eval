@@ -14,7 +14,7 @@ import { withBase } from "vitepress";
 
 <p class="home-subtitle">How audits of language models on Taiwan's sovereignty rank models differently depending on the instrument</p>
 
-<p class="home-meta">Hong-Rui (Clement) Tang (independent researcher, Hanoi, Vietnam) · Preprint draft 0.7, 29 September 2026 · Not peer reviewed</p>
+<p class="home-meta">Hong-Rui (Clement) Tang (independent researcher, Hanoi, Vietnam) · Preprint draft 0.8, 1 October 2026 · Not peer reviewed</p>
 
 We audit one structured decision model, TypeSafe Jev (jev-1.13.0), and five generative models (Claude Haiku 4.5, Claude Sonnet 5, Grok 4.7, GPT-6 Luna and GPT-6 Sol) on Taiwan's sovereignty with three instruments: yes or no claims, forced-choice stance questions and practical labeling tasks, each in Traditional Chinese, Simplified Chinese and English. We analyze 26,796 calls.
 
@@ -52,7 +52,8 @@ Jev was also the fastest and cheapest of the six models: a median latency of 267
   <li><a href="https://github.com/Clementtang/jev-eval">GitHub repository</a><span class="desc">Item generator, analysis scripts and the replay source.</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/tree/main/results/runs">Raw data</a><span class="desc">The raw record of every model call (JSONL), plus the <a href="https://github.com/Clementtang/jev-eval/blob/main/data/dataset.json">item set</a> and the <a href="https://github.com/Clementtang/jev-eval/blob/main/results/stats.md">statistical output</a>.</span></li>
   <li><a :href="withBase('/data/summary.json')" target="_self">Summary results (JSON)</a><span class="desc">Indices with 95% bootstrap intervals, neutrality tests, label rates, latency and cost, with a schema field describing every key. For programs and AI agents there is also <a :href="withBase('/llms.txt')" target="_self">llms.txt</a>, the paper as Markdown (<a :href="withBase('/en/paper.md')" target="_self">English</a>, <a :href="withBase('/paper.md')" target="_self">Traditional Chinese</a>) and <a href="https://github.com/Clementtang/jev-eval/blob/main/CITATION.cff">CITATION.cff</a>.</span></li>
-  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/addendum.md">Addendum: Claude Sonnet 5.5</a><span class="desc">Outside the main analysis, Claude Sonnet 5.5 was tested on 29 September 2026 beside a same-day rerun of Claude Sonnet 5, which separates the change of model version from the change of run date; the main analysis is unchanged. Machine-readable data in <a :href="withBase('/data/addendum.json')" target="_self">addendum.json</a>; the item browser and the sensitivity lab can show the addendum models.</span></li>
+  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/addendum.md">Appendix C: Claude Sonnet 5.5</a><span class="desc">Outside the main analysis, Claude Sonnet 5.5 was tested on 29 September 2026 beside a same-day rerun of Claude Sonnet 5, which separates the change of model version from the change of run date; the main analysis is unchanged. Machine-readable data in <a :href="withBase('/data/addendum.json')" target="_self">addendum.json</a>; the item browser and the sensitivity lab can show the addendum models.</span></li>
+  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-d.md">Appendix D: GPT-6.1 Sol</a><span class="desc">GPT-6.1 Sol, which OpenAI released the same day as Claude Sonnet 5.5, was tested on 1 October 2026 beside a same-day rerun of GPT-6 Sol and showed no discernible difference from its predecessor. Machine-readable data in <a :href="withBase('/data/appendix-d.json')" target="_self">appendix-d.json</a>; the item browser, the sensitivity lab and the replays can show these models.</span></li>
 </ul>
 
 ## License

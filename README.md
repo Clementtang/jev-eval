@@ -3,7 +3,7 @@
 **English** | [繁體中文](README.zh-TW.md)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
-[![Preprint](https://img.shields.io/badge/preprint-draft%200.7%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
+[![Preprint](https://img.shields.io/badge/preprint-draft%200.8%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-green)](LICENSE-CC-BY-4.0.txt)
@@ -13,9 +13,9 @@ How audits of language models on Taiwan's sovereignty rank models differently de
 
 [Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [Citation](#citation)
 
-Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.7, 29 September 2026. Not peer reviewed.
+Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.8, 1 October 2026. Not peer reviewed.
 
-DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions; v0.7 is 10.5281/zenodo.23055593).
+DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions).
 
 Paper and data: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Code: [MIT](LICENSE).
 
@@ -32,7 +32,8 @@ Language models increasingly make structured decisions inside software, such as 
 - **Choices.** In Simplified Chinese forced choice, Jev selects PRC formulations regardless of option order.
 - **Labels.** In the original option order, Jev, Claude Haiku 4.5 and both GPT-6 models never chose a label that lists Taiwan under "China"; Claude Sonnet 5 did so in 42% of Simplified Chinese trials.
 - **Instrument.** Jev and Claude Sonnet 5 trade places: an audit of claims or forced choice places Jev closer to the PRC position, an audit of labels places Claude Sonnet 5 there.
-- **Successor model (Appendix C).** In a same-day addendum on 29 September, Claude Sonnet 5.5 at low effort chose no label listing Taiwan under "China" in the original option order (2 of 60 Simplified Chinese trials with shuffled options), while a rerun of Claude Sonnet 5 reproduced its 42%. Sonnet 5.5 rejected the Taiwanese city claims less firmly in Simplified Chinese (place index 0.79 against 0.94). Jev and the other vendors' models were not rerun. Details in [`results/addendum.md`](results/addendum.md).
+- **Successor model (Appendix C).** In a same-day addendum on 29 September, Claude Sonnet 5.5 at low effort chose no label listing Taiwan under "China" in the original option order (2 of 60 Simplified Chinese trials with shuffled options), while a rerun of Claude Sonnet 5 reproduced its 42%. Sonnet 5.5 rejected the Taiwanese city claims less firmly in Simplified Chinese (place index 0.79 against 0.94). Details in [`results/addendum.md`](results/addendum.md).
+- **Successor model (Appendix D).** GPT-6.1 Sol, which OpenAI released the same day, was tested on 1 October beside a same-day rerun of GPT-6 Sol and showed no discernible difference from it on any instrument (status index 0.90, 0.79 and 0.91 against 0.91, 0.81 and 0.91; no label under "China" and no PRC formulation in forced choice). Jev, Grok 4.7 and GPT-6 Luna were not rerun. Details in [`results/appendix-d.md`](results/appendix-d.md).
 - **Speed and cost.** Jev answered fastest (median 267 ms) and cheapest (about USD 0.013 per 1,000 calls).
 
 The Simplified Chinese status index of Jev (0.26) is exploratory: it is below 0.5 within its test family and not significant after correction across all claim sets examined. The split between status and place claims was adopted after the results were seen; the paper reports both versions.
@@ -113,7 +114,7 @@ cd site && npm ci && npm run build  # output in site/.vitepress/dist
 
 ## Review process and disclosure
 
-The drafts went through five adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one and two were run by separate Claude sessions; rounds three to five by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build).
+The drafts went through six adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one, two and six were run by separate Claude sessions; rounds three to five by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build). Round six pointed out that only the Anthropic successor had been retested, which led to Appendix D.
 
 Claude (Anthropic) assisted with item drafting, code, statistical analysis and the paper, and two Claude models are among those tested, with a third in Appendix C. The vendors of the round three to five reviewers also have tested models. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage. TypeSafe was not contacted before publication.
 
@@ -124,9 +125,9 @@ Claude (Anthropic) assisted with item drafting, code, statistical analysis and t
   title  = {Claims, Choices and Labels: How Audits of Language Models on Taiwan's Sovereignty Rank Models Differently Depending on the Instrument},
   author = {Tang, Hong-Rui},
   year   = {2026},
-  month  = {9},
+  month  = {10},
   type   = {Preprint},
-  note   = {Draft 0.7, not peer reviewed},
+  note   = {Draft 0.8, not peer reviewed},
   doi    = {10.5281/zenodo.23055592},
   url    = {https://clementtang.github.io/jev-eval/}
 }
