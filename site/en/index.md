@@ -44,7 +44,7 @@ Jev was also the fastest and cheapest of the six models: a median latency of 267
 ## Read and explore
 
 <ul class="link-list">
-  <li><a :href="withBase('/en/paper')">Full paper</a><span class="desc">Method, all results, limitations and the revisions after five adversarial review rounds. Also available in <a :href="withBase('/paper')">Traditional Chinese</a>.</span></li>
+  <li><a :href="withBase('/en/paper')">Full paper</a><span class="desc">Method, all results, limitations and the revisions after six adversarial review rounds. Also available in <a :href="withBase('/paper')">Traditional Chinese</a>.</span></li>
   <li><a :href="withBase('/en/explore')">Item browser</a><span class="desc">All 957 items in three languages with the six models' results on each, searchable and filterable, with a link for every item.</span></li>
   <li><a :href="withBase('/en/lab')">Sensitivity lab</a><span class="desc">Choose which claims enter the index and recompute it for the six models, with 95% bootstrap intervals.</span></li>
   <li><a :href="withBase('/replay/stance.html')" target="_self">Replay: stance comparison</a><span class="desc">The six models' judgments on the same question, played chapter by chapter. Best viewed on a landscape desktop screen; on a phone, open the <a :href="withBase('/replay/stance.html?layout=portrait&cut=short')" target="_self">portrait short cut</a>. Interface in Traditional Chinese.</span></li>

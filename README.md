@@ -64,18 +64,18 @@ All calls were made on 25 September 2026 (UTC). Hosted models may change without
 
 ## Repository structure
 
-| Path                                     | Contents                                                                            |
-| ---------------------------------------- | ----------------------------------------------------------------------------------- |
-| `docs/paper/`                            | The paper in English and Traditional Chinese, and five rounds of adversarial review |
-| `data/dataset.json`                      | The item set: 957 items with text in three languages, options and coding            |
-| `results/runs/*.jsonl`                   | Raw record of every analyzed call (one JSON object per line)                        |
-| `results/stats.md`                       | Statistical output: indices, exact sign-flip tests, Holm correction, robustness     |
-| `results/summary.json`                   | Main results in machine-readable form, with a schema                                |
-| `results/comparison.md`                  | Item-level side-by-side comparison of the six models                                |
-| `scripts/`, `lib/`                       | Item generator, model runners and analysis                                          |
-| `public/stance.html`, `public/race.html` | Replays: judgments question by question, and calls at measured latency              |
-| `site/`                                  | The website (VitePress), deployed by GitHub Actions                                 |
-| `docs/test-plan.md`, `docs/research/`    | Test plan, prior work and citation checks                                           |
+| Path                                     | Contents                                                                           |
+| ---------------------------------------- | ---------------------------------------------------------------------------------- |
+| `docs/paper/`                            | The paper in English and Traditional Chinese, and six rounds of adversarial review |
+| `data/dataset.json`                      | The item set: 957 items with text in three languages, options and coding           |
+| `results/runs/*.jsonl`                   | Raw record of every analyzed call (one JSON object per line)                       |
+| `results/stats.md`                       | Statistical output: indices, exact sign-flip tests, Holm correction, robustness    |
+| `results/summary.json`                   | Main results in machine-readable form, with a schema                               |
+| `results/comparison.md`                  | Item-level side-by-side comparison of the six models                               |
+| `scripts/`, `lib/`                       | Item generator, model runners and analysis                                         |
+| `public/stance.html`, `public/race.html` | Replays: judgments question by question, and calls at measured latency             |
+| `site/`                                  | The website (VitePress), deployed by GitHub Actions                                |
+| `docs/test-plan.md`, `docs/research/`    | Test plan, prior work and citation checks                                          |
 
 `results/runs-v1/` holds the first item version and `results/runs-discarded/` the files excluded before analysis (reason in each file name); neither is analyzed.
 
