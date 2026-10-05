@@ -15,7 +15,7 @@ How audits of language models on Taiwan's sovereignty rank models differently de
 
 Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.8, 6 October 2026. Not peer reviewed.
 
-DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions).
+DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions; v0.8 is 10.5281/zenodo.23168211).
 
 Paper and data: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Code: [MIT](LICENSE).
 
