@@ -5,7 +5,7 @@ author_name: Hong-Rui Tang
 author_alias: Clement Tang
 orcid: 0000-0003-4700-8651
 doi: 10.5281/zenodo.23055592
-date: 2026-10-01
+date: 2026-10-06
 version: 預印本草稿 0.8（未經同儕審查）
 repository: https://github.com/Clementtang/jev-eval
 ---
@@ -14,7 +14,7 @@ repository: https://github.com/Clementtang/jev-eval
 
 **Hong-Rui (Clement) Tang**
 獨立研究者，越南河內。ORCID：[0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)。DOI（所有版本）：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)
-預印本草稿 0.8，2026 年 10 月 1 日。未經同儕審查。
+預印本草稿 0.8，2026 年 10 月 6 日。未經同儕審查。
 
 ## 摘要
 

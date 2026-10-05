@@ -13,7 +13,7 @@
 
 [網站](https://clementtang.github.io/jev-eval/) · [論文](https://clementtang.github.io/jev-eval/paper) · [題庫瀏覽器](https://clementtang.github.io/jev-eval/explore) · [敏感度實驗室](https://clementtang.github.io/jev-eval/lab) · [互動重播](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [引用](#引用)
 
-Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.8，2026 年 10 月 1 日，未經同儕審查。
+Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.8，2026 年 10 月 6 日，未經同儕審查。
 
 DOI：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)（所有版本）。
 

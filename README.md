@@ -13,7 +13,7 @@ How audits of language models on Taiwan's sovereignty rank models differently de
 
 [Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [Citation](#citation)
 
-Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.8, 1 October 2026. Not peer reviewed.
+Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.8, 6 October 2026. Not peer reviewed.
 
 DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions).
 
