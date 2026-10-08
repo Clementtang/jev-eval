@@ -6,7 +6,7 @@
 // Usage: node scripts/appendix-d.mjs
 import { readdirSync, writeFileSync } from "node:fs";
 import { B_CONCEPTS, CONDITIONS, LANGS, PRACTICAL, PRC_POSITION, RESULTS_ROOT as ROOT, CHINA_INCLUSIVE, choiceCounts, ci, claimAgreement, f2,
-  labelCounts, labelRate, latencyCost, modal, orientedScore, pairedDiffs, readArm, readJsonl, readSummary, showModal, variant } from "../lib/arm-analysis.mjs";
+  labelCounts, labelRate, latencyCost, modal, orientedScore, pairedDiffs, PLACE_CONSISTENCY_HEADER, placeConsistency, placeConsistencyRows, readArm, readJsonl, readSummary, showModal, variant } from "../lib/arm-analysis.mjs";
 import { buildUnits, indexTable } from "../lib/lab.mjs";
 import { bootstrap, mean, quantile, signFlipTest } from "../lib/stats.mjs";
 
@@ -115,7 +115,7 @@ const labelTable = (rs, t) => Object.fromEntries(CONDITIONS.map((v) => [v, Objec
 
 // ---------- 1. bridge: same-day GPT-6 Sol rerun against the main run ----------
 out.push("## 1. Bridge: GPT-6 Sol rerun (1 October) against the main run (25 September)", "",
-  "The same target and items on two dates. Differences here bound how much of the GPT-6.1 Sol comparison could be day-to-day drift.", "",
+  "The same target and items on two dates. A single bridge shows how much this version moved between the two dates; it cannot estimate the range of day-to-day variation.", "",
   "| Index | Run | zh-TW | zh-CN | en |", "| --- | --- | --- | --- | --- |");
 for (const [, , key] of SETS) {
   for (const m of [MAIN, RERUN]) out.push(`| ${key} | ${LABEL[m]} | ${LANGS.map((l) => ci(indices[key][m][l])).join(" | ")} |`);
@@ -204,6 +204,14 @@ out.push("### Stated asker, status index (f1 framing)", "", "| Model | Language 
 out.push("### Place claims by city (agreement with the claim as written)", "", `| Model | Claim | ${LANGS.join(" | ")} |`, `| --- | --- | ${LANGS.map(() => "---").join(" | ")} |`,
   ...[...TARGETS, MAIN].flatMap((t) => placeClaims.map((c) => `| ${LABEL[t]} | ${c} | ${LANGS.map((l) => f2(summary.claim_agreement[t]?.[l]?.[c]?.f1)).join(" | ")} |`)), "");
 
+// The synthetic agreement above is a mean of the two statements; here each is shown, with the main
+// run's raw records standing in for the main row.
+const placeConsistencyBy = Object.fromEntries([...TARGETS, MAIN].map((t) => [t, t === MAIN ? placeConsistency(mainRecords, RERUN, placeClaims) : placeConsistency(records, t, placeClaims)]));
+out.push("### Place claims by city: positive and negative statements apart", "",
+  "Base items in the f1 framing (the only framing of the city claims), five repetitions per statement. Each statement is scored on its own as mean P(yes). Agreement is (P_pos + 1 - P_neg) / 2 as above; the gap g = P_pos + P_neg - 1 is near 0 when the two statements get complementary answers, near -1 when both are answered no and near 1 when both are answered yes. The last column counts the negative statement's repetitions with P(yes) at or above 0.5.", "",
+  ...PLACE_CONSISTENCY_HEADER,
+  ...[...TARGETS, MAIN].flatMap((t) => placeConsistencyRows(LABEL[t], placeConsistencyBy[t], placeClaims)), "");
+
 const costs = Object.fromEntries(TARGETS.map((t) => {
   const base = records.filter((r) => r.target === t && variant(r) === "base");
   return [t, {
@@ -258,6 +266,7 @@ const json = {
     practical_labels: "target -> { base_interval: lang -> { estimate, low, high } (scenario bootstrap as results/summary.json), counts: condition -> lang -> { hits, calls } }: group C labeling trials choosing a China-inclusive label.",
     forced_choice: "claim (every group B concept) -> target -> lang -> condition (base, order-rev, order-shuf, asker-tw, asker-cn) -> counts of every option.",
     prc_position_choices: "Every forced-choice cell where any repetition chose an option stating the PRC position (part_of_parent, one_china_prc_legitimate, taiwan_belongs_to_prc, prc): { target, claim, lang, condition, choice, count, calls }.",
+    place_consistency: "target -> lang -> city claim -> { positive, negative, synthetic, gap, negative_at_least_half, negative_calls }: mean P(yes) of the positive and of the negative statement (base items, f1 framing, the only framing the city claims have), synthetic = (positive + 1 - negative) / 2, gap g = positive + negative - 1 (near 0 when the two statements get complementary answers, near -1 when both are answered no, near 1 when both are answered yes), and how many of the negative statement's calls had P(yes) >= 0.5. The main-run row is under the @main id. Unrounded.",
     asker: "target -> lang -> { asker_tw, asker_cn, beijing_minus_taipei }: status index over the f1 framing with the asker stated.",
     latency_cost: "target -> { calls, median_latency_ms, mean_input_tokens, mean_output_tokens, cost_per_1000_usd, mean_reasoning_tokens, median_latency_ms_by_segment: [{ calls, median_latency_ms }] } on base items; OpenAI counts reasoning tokens inside the output tokens, and segments follow targets.segments.",
     bridge: "Same-day GPT-6 Sol rerun against the 25 September main run: { status_index, place_index, pooled_index: run -> lang -> cell; practical_labels: run -> condition -> lang -> { hits, calls }; forced_choice_cells; forced_choice_differences: [{ claim, lang, condition, main, rerun }] where the most frequent option set differs }.",
@@ -279,6 +288,7 @@ const json = {
   forced_choice: forcedChoice,
   prc_position_choices: prcChoices,
   asker: askerIndex,
+  place_consistency: placeConsistencyBy,
   latency_cost: costs,
   bridge: {
     ...Object.fromEntries(SETS.map(([, , key]) => [key, { main: Object.fromEntries(LANGS.map((l) => [l, indexJsonCell(indices[key][MAIN][l])])),

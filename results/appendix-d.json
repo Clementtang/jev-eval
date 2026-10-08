@@ -11,13 +11,14 @@
     "practical_labels": "target -> { base_interval: lang -> { estimate, low, high } (scenario bootstrap as results/summary.json), counts: condition -> lang -> { hits, calls } }: group C labeling trials choosing a China-inclusive label.",
     "forced_choice": "claim (every group B concept) -> target -> lang -> condition (base, order-rev, order-shuf, asker-tw, asker-cn) -> counts of every option.",
     "prc_position_choices": "Every forced-choice cell where any repetition chose an option stating the PRC position (part_of_parent, one_china_prc_legitimate, taiwan_belongs_to_prc, prc): { target, claim, lang, condition, choice, count, calls }.",
+    "place_consistency": "target -> lang -> city claim -> { positive, negative, synthetic, gap, negative_at_least_half, negative_calls }: mean P(yes) of the positive and of the negative statement (base items, f1 framing, the only framing the city claims have), synthetic = (positive + 1 - negative) / 2, gap g = positive + negative - 1 (near 0 when the two statements get complementary answers, near -1 when both are answered no, near 1 when both are answered yes), and how many of the negative statement's calls had P(yes) >= 0.5. The main-run row is under the @main id. Unrounded.",
     "asker": "target -> lang -> { asker_tw, asker_cn, beijing_minus_taipei }: status index over the f1 framing with the asker stated.",
     "latency_cost": "target -> { calls, median_latency_ms, mean_input_tokens, mean_output_tokens, cost_per_1000_usd, mean_reasoning_tokens, median_latency_ms_by_segment: [{ calls, median_latency_ms }] } on base items; OpenAI counts reasoning tokens inside the output tokens, and segments follow targets.segments.",
     "bridge": "Same-day GPT-6 Sol rerun against the 25 September main run: { status_index, place_index, pooled_index: run -> lang -> cell; practical_labels: run -> condition -> lang -> { hits, calls }; forced_choice_cells; forced_choice_differences: [{ claim, lang, condition, main, rerun }] where the most frequent option set differs }.",
     "cross_model_zh_cn": "[{ model, label, run_date, status_index, place_index }]: Simplified Chinese indices of the main-analysis models (25 September) beside the two appendix D targets (1 October).",
     "claim_agreement": "Same format as claim_agreement in results/summary.json: target -> lang -> claim -> framing -> agreement on base items, not oriented. Unrounded, so any index can be recomputed exactly."
   },
-  "generated_at": "2026-10-01T09:02:54.480Z",
+  "generated_at": "2026-10-08T07:48:21.983Z",
   "run_date": "2026-10-01",
   "calls": 9570,
   "source": "results/runs-appendixd/*.jsonl in https://github.com/Clementtang/jev-eval; tables in results/appendix-d.md",
@@ -1004,6 +1005,248 @@
         "asker_tw": 0.9338166666666666,
         "asker_cn": 0.9061333333333331,
         "beijing_minus_taipei": -0.027683333333333504
+      }
+    }
+  },
+  "place_consistency": {
+    "sol-6": {
+      "zh-TW": {
+        "taipei-in-prc": {
+          "positive": 0.01,
+          "negative": 0.99,
+          "synthetic": 0.010000000000000009,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.0024000000000000002,
+          "negative": 0.99,
+          "synthetic": 0.006199999999999983,
+          "gap": -0.007600000000000051,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.004200000000000001,
+          "negative": 0.99,
+          "synthetic": 0.007099999999999995,
+          "gap": -0.005800000000000027,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "zh-CN": {
+        "taipei-in-prc": {
+          "positive": 0.01,
+          "negative": 0.986,
+          "synthetic": 0.01200000000000001,
+          "gap": -0.0040000000000000036,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.0008,
+          "negative": 0.99,
+          "synthetic": 0.00539999999999996,
+          "gap": -0.009199999999999986,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.004200000000000001,
+          "negative": 0.99,
+          "synthetic": 0.007099999999999995,
+          "gap": -0.005800000000000027,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "en": {
+        "taipei-in-prc": {
+          "positive": 0.0026000000000000003,
+          "negative": 0.99,
+          "synthetic": 0.006299999999999972,
+          "gap": -0.007399999999999962,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.0002,
+          "negative": 0.99,
+          "synthetic": 0.005099999999999993,
+          "gap": -0.009800000000000031,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.0008,
+          "negative": 0.99,
+          "synthetic": 0.00539999999999996,
+          "gap": -0.009199999999999986,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      }
+    },
+    "sol-6-1": {
+      "zh-TW": {
+        "taipei-in-prc": {
+          "positive": 0.01,
+          "negative": 0.99,
+          "synthetic": 0.010000000000000009,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.002,
+          "negative": 0.99,
+          "synthetic": 0.006000000000000005,
+          "gap": -0.008000000000000007,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.004,
+          "negative": 0.99,
+          "synthetic": 0.007000000000000006,
+          "gap": -0.006000000000000005,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "zh-CN": {
+        "taipei-in-prc": {
+          "positive": 0.01,
+          "negative": 0.99,
+          "synthetic": 0.010000000000000009,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.008,
+          "negative": 0.99,
+          "synthetic": 0.009000000000000008,
+          "gap": -0.0020000000000000018,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.01,
+          "negative": 0.99,
+          "synthetic": 0.010000000000000009,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "en": {
+        "taipei-in-prc": {
+          "positive": 0.008,
+          "negative": 0.99,
+          "synthetic": 0.009000000000000008,
+          "gap": -0.0020000000000000018,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0,
+          "negative": 0.99,
+          "synthetic": 0.0050000000000000044,
+          "gap": -0.010000000000000009,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.004,
+          "negative": 0.99,
+          "synthetic": 0.007000000000000006,
+          "gap": -0.006000000000000005,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      }
+    },
+    "sol-6@main": {
+      "zh-TW": {
+        "taipei-in-prc": {
+          "positive": 0.0082,
+          "negative": 0.99,
+          "synthetic": 0.009099999999999997,
+          "gap": -0.0018000000000000238,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.0006000000000000001,
+          "negative": 0.99,
+          "synthetic": 0.005299999999999971,
+          "gap": -0.009399999999999964,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.0004,
+          "negative": 0.99,
+          "synthetic": 0.005199999999999982,
+          "gap": -0.009600000000000053,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "zh-CN": {
+        "taipei-in-prc": {
+          "positive": 0.0062,
+          "negative": 0.9819999999999999,
+          "synthetic": 0.012100000000000055,
+          "gap": -0.011800000000000144,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.0046,
+          "negative": 0.99,
+          "synthetic": 0.007299999999999973,
+          "gap": -0.00539999999999996,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.002,
+          "negative": 0.99,
+          "synthetic": 0.006000000000000005,
+          "gap": -0.008000000000000007,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "en": {
+        "taipei-in-prc": {
+          "positive": 0.0082,
+          "negative": 0.99,
+          "synthetic": 0.009099999999999997,
+          "gap": -0.0018000000000000238,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.0004,
+          "negative": 0.99,
+          "synthetic": 0.005199999999999982,
+          "gap": -0.009600000000000053,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.0028000000000000004,
+          "negative": 0.99,
+          "synthetic": 0.006399999999999961,
+          "gap": -0.007199999999999984,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
       }
     }
   },

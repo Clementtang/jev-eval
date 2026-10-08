@@ -189,6 +189,26 @@ for (const t of TARGETS) for (const l of LANGS) {
   check(`asker ${t} ${l}`, `${f2(cell.asker_tw)} ${f2(cell.asker_cn)}`, `${f2(idx("asker-tw"))} ${f2(idx("asker-cn"))}`);
 }
 
+// 7b. City claims: positive and negative statement apart, recomputed from the raw records.
+const f3 = (x) => x.toFixed(3);
+for (const [t, rs, label] of [...TARGETS.map((x) => [x, records, LABEL[x]]), ["sol-6@main", mainRecords, LABEL.main]]) {
+  const target = t.endsWith("@main") ? "sol-6" : t;
+  for (const l of LANGS) for (const c of summary.definitions.place_concepts) {
+    const cell = rs.filter((r) => r.target === target && r.lang === l && r.concept === c && v(r) === "base" && r.framing === "f1");
+    const pos = cell.filter((r) => r.polarity === "pos").map((r) => r.value);
+    const neg = cell.filter((r) => r.polarity === "neg").map((r) => r.value);
+    const p = avg(pos);
+    const n = avg(neg);
+    const high = neg.filter((x) => x >= 0.5).length;
+    const got = appendix.place_consistency[t][l][c];
+    check(`place consistency ${t} ${l} ${c}`, `${got.positive.toFixed(12)} ${got.negative.toFixed(12)} ${got.synthetic.toFixed(12)} ${got.gap.toFixed(12)} ${got.negative_at_least_half}/${got.negative_calls}`,
+      `${p.toFixed(12)} ${n.toFixed(12)} ${((p + 1 - n) / 2).toFixed(12)} ${(p + n - 1).toFixed(12)} ${high}/${neg.length}`);
+    check(`place consistency synthetic equals claim_agreement ${t} ${l} ${c}`, Math.abs(got.synthetic - (t.endsWith("@main") ? summary.claim_agreement[target] : appendix.claim_agreement[t])[l][c].f1) < 1e-12, true);
+    hasRow(`place consistency ${t} ${l} ${c}`, `| ${label} | ${c} | ${l} | ${f3(p)} | ${f3(n)} | ${f3((p + 1 - n) / 2)} | ${f3(p + n - 1)} | ${high}/${neg.length} |`);
+  }
+}
+check("bridge sentence avoids an upper-bound claim", markdown.some((line) => line.includes("it cannot estimate the range of day-to-day variation")) && !markdown.some((line) => line.includes("bound how much")), true);
+
 // 8. Latency and cost from the raw records.
 for (const t of TARGETS) {
   const rs = records.filter((r) => r.target === t && v(r) === "base");

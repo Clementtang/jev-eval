@@ -8,7 +8,7 @@
 // Usage: node scripts/appendix-e.mjs
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { B_CONCEPTS, CONDITIONS, LANGS, PRACTICAL, PRC_POSITION, RESULTS_ROOT as ROOT, CHINA_INCLUSIVE, choiceCounts, ci, claimAgreement, f2,
-  labelCounts, labelRate, latencyCost, modal, orientedScore, pairedDiffs, readArm, readJsonl, readSummary, showModal, variant } from "../lib/arm-analysis.mjs";
+  labelCounts, labelRate, latencyCost, modal, orientedScore, pairedDiffs, PLACE_CONSISTENCY_HEADER, placeConsistency, placeConsistencyRows, readArm, readJsonl, readSummary, showModal, variant } from "../lib/arm-analysis.mjs";
 import { buildUnits, indexTable } from "../lib/lab.mjs";
 import { bootstrap, mean, quantile, signFlipTest } from "../lib/stats.mjs";
 import { PRICING } from "../lib/targets.mjs";
@@ -130,7 +130,7 @@ const labelTable = (rs, t) => Object.fromEntries(CONDITIONS.map((v) => [v, Objec
 
 // ---------- 1. bridge: same-day Claude Haiku 4.5 rerun against the main run ----------
 out.push("## 1. Bridge: Claude Haiku 4.5 rerun (8 October) against the main run (25 September)", "",
-  "The same target and items on two dates. Differences here bound how much of the Claude Haiku 5.5 comparison could be day-to-day drift.", "",
+  "The same target and items on two dates. A single bridge shows how much this version moved between the two dates; it cannot estimate the range of day-to-day variation.", "",
   "| Index | Run | zh-TW | zh-CN | en |", "| --- | --- | --- | --- | --- |");
 for (const [, , key] of SETS) {
   for (const m of [MAIN, RERUN]) out.push(`| ${key} | ${LABEL[m]} | ${LANGS.map((l) => ci(indices[key][m][l])).join(" | ")} |`);
@@ -221,6 +221,14 @@ out.push("### Stated asker, status index (f1 framing)", "", "| Model | Language 
 out.push("### Place claims by city (agreement with the claim as written)", "", `| Model | Claim | ${LANGS.join(" | ")} |`, `| --- | --- | ${LANGS.map(() => "---").join(" | ")} |`,
   ...[...FULL_TARGETS, MAIN].flatMap((t) => placeClaims.map((c) => `| ${LABEL[t]} | ${c} | ${LANGS.map((l) => f2(summary.claim_agreement[t]?.[l]?.[c]?.f1)).join(" | ")} |`)), "");
 
+// The synthetic agreement above is a mean of the two statements; here each is shown, with the main
+// run's raw records standing in for the main row.
+const placeConsistencyBy = Object.fromEntries([...FULL_TARGETS, MAIN].map((t) => [t, t === MAIN ? placeConsistency(mainRecords, RERUN, placeClaims) : placeConsistency(records, t, placeClaims)]));
+out.push("### Place claims by city: positive and negative statements apart", "",
+  "Base items in the f1 framing (the only framing of the city claims), five repetitions per statement. Each statement is scored on its own as mean P(yes). Agreement is (P_pos + 1 - P_neg) / 2 as above; the gap g = P_pos + P_neg - 1 is near 0 when the two statements get complementary answers, near -1 when both are answered no and near 1 when both are answered yes. The last column counts the negative statement's repetitions with P(yes) at or above 0.5.", "",
+  ...PLACE_CONSISTENCY_HEADER,
+  ...[...FULL_TARGETS, MAIN].flatMap((t) => placeConsistencyRows(LABEL[t], placeConsistencyBy[t], placeClaims)), "");
+
 // Anthropic counts extended thinking inside output_tokens and returns no separate count, so the
 // records hold none; the column says "not reported", since a zero would misstate it.
 const costs = Object.fromEntries(TARGETS.map((t) => [t, { ...latencyCost(records, t), mean_reasoning_tokens: null }]));
@@ -300,6 +308,7 @@ const json = {
     practical_labels: "target -> { base_interval: lang -> { estimate, low, high } (scenario bootstrap as results/summary.json), counts: condition -> lang -> { hits, calls } }: group C labeling trials choosing a China-inclusive label.",
     forced_choice: "claim (every group B concept) -> target (the two full-coverage targets) -> lang -> condition (base, order-rev, order-shuf, asker-tw, asker-cn) -> counts of every option.",
     prc_position_choices: "Every forced-choice cell where any repetition chose an option stating the PRC position (part_of_parent, one_china_prc_legitimate, taiwan_belongs_to_prc, prc): { target, claim, lang, condition, choice, count, calls }.",
+    place_consistency: "target -> lang -> city claim -> { positive, negative, synthetic, gap, negative_at_least_half, negative_calls }: mean P(yes) of the positive and of the negative statement (base items, f1 framing, the only framing the city claims have), synthetic = (positive + 1 - negative) / 2, gap g = positive + negative - 1 (near 0 when the two statements get complementary answers, near -1 when both are answered no, near 1 when both are answered yes), and how many of the negative statement's calls had P(yes) >= 0.5. The main-run row is under the @main id. Unrounded.",
     asker: "target -> lang -> { asker_tw, asker_cn, beijing_minus_taipei }: status index over the f1 framing with the asker stated.",
     latency_cost: "target -> { calls, median_latency_ms, mean_input_tokens, mean_output_tokens, cost_per_1000_usd, mean_reasoning_tokens } on base items. The Anthropic API counts reasoning inside the output tokens and reports no separate figure, so mean_reasoning_tokens is null. Claude Haiku 5.5 uses a new tokenizer (about 30% more tokens for the same text, per Anthropic), visible in mean_input_tokens.",
     mean_input_ratio: "Mean input tokens of Claude Haiku 5.5 (low) over those of the same-day Claude Haiku 4.5 on the same base items, so on identical prompts.",
@@ -324,6 +333,7 @@ const json = {
   forced_choice: forcedChoice,
   prc_position_choices: prcChoices,
   asker: askerIndex,
+  place_consistency: placeConsistencyBy,
   latency_cost: costs,
   mean_input_ratio: inputRatio,
   reasoning_effort: { calls_compared: effortKeys.size, rows: Object.fromEntries(effortRows.map(({ target, ...cells }) => [target, cells])), sign_flip: effortSignFlip },

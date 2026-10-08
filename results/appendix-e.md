@@ -1,6 +1,6 @@
 # Appendix E: Claude Haiku 5.5
 
-Generated 2026-10-08T06:15:12.746Z from results/runs-appendixe/ (10020 successful calls) and, for the bridge, the Claude Haiku 4.5 records of results/runs/. Definitions, seeds and index code are those of the main analysis.
+Generated 2026-10-08T07:48:22.550Z from results/runs-appendixe/ (10020 successful calls) and, for the bridge, the Claude Haiku 4.5 records of results/runs/. Definitions, seeds and index code are those of the main analysis.
 
 ## Runs
 
@@ -16,7 +16,7 @@ Records in results/runs-appendixe/: 10020; failed (ok false) 0; refusals 0; succ
 
 ## 1. Bridge: Claude Haiku 4.5 rerun (8 October) against the main run (25 September)
 
-The same target and items on two dates. Differences here bound how much of the Claude Haiku 5.5 comparison could be day-to-day drift.
+The same target and items on two dates. A single bridge shows how much this version moved between the two dates; it cannot estimate the range of day-to-day variation.
 
 | Index | Run | zh-TW | zh-CN | en |
 | --- | --- | --- | --- | --- |
@@ -220,6 +220,40 @@ Every cell where any repetition chose part_of_parent, one_china_prc_legitimate, 
 | Claude Haiku 4.5 (main runs, 25 September) | taipei-in-prc | 0.05 | 0.04 | 0.05 |
 | Claude Haiku 4.5 (main runs, 25 September) | kaohsiung-in-prc | 0.03 | 0.13 | 0.02 |
 | Claude Haiku 4.5 (main runs, 25 September) | taichung-in-prc | 0.02 | 0.23 | 0.01 |
+
+### Place claims by city: positive and negative statements apart
+
+Base items in the f1 framing (the only framing of the city claims), five repetitions per statement. Each statement is scored on its own as mean P(yes). Agreement is (P_pos + 1 - P_neg) / 2 as above; the gap g = P_pos + P_neg - 1 is near 0 when the two statements get complementary answers, near -1 when both are answered no and near 1 when both are answered yes. The last column counts the negative statement's repetitions with P(yes) at or above 0.5.
+
+| Model | Claim | Language | Mean P(yes), positive | Mean P(yes), negative | Agreement (P_pos + 1 - P_neg) / 2 | Gap g = P_pos + P_neg - 1 | Negative calls with P >= 0.5 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Claude Haiku 4.5 (same-day rerun) | taipei-in-prc | zh-TW | 0.044 | 0.960 | 0.042 | 0.004 | 5/5 |
+| Claude Haiku 4.5 (same-day rerun) | kaohsiung-in-prc | zh-TW | 0.020 | 1.000 | 0.010 | 0.020 | 5/5 |
+| Claude Haiku 4.5 (same-day rerun) | taichung-in-prc | zh-TW | 0.010 | 0.990 | 0.010 | 0.000 | 5/5 |
+| Claude Haiku 4.5 (same-day rerun) | taipei-in-prc | zh-CN | 0.050 | 0.960 | 0.045 | 0.010 | 5/5 |
+| Claude Haiku 4.5 (same-day rerun) | kaohsiung-in-prc | zh-CN | 0.020 | 0.766 | 0.127 | -0.214 | 4/5 |
+| Claude Haiku 4.5 (same-day rerun) | taichung-in-prc | zh-CN | 0.040 | 0.010 | 0.515 | -0.950 | 0/5 |
+| Claude Haiku 4.5 (same-day rerun) | taipei-in-prc | en | 0.050 | 0.950 | 0.050 | 0.000 | 5/5 |
+| Claude Haiku 4.5 (same-day rerun) | kaohsiung-in-prc | en | 0.004 | 1.000 | 0.002 | 0.004 | 5/5 |
+| Claude Haiku 4.5 (same-day rerun) | taichung-in-prc | en | 0.044 | 1.000 | 0.022 | 0.044 | 5/5 |
+| Claude Haiku 5.5, effort low | taipei-in-prc | zh-TW | 0.020 | 0.870 | 0.075 | -0.110 | 5/5 |
+| Claude Haiku 5.5, effort low | kaohsiung-in-prc | zh-TW | 0.002 | 0.896 | 0.053 | -0.102 | 5/5 |
+| Claude Haiku 5.5, effort low | taichung-in-prc | zh-TW | 0.010 | 0.880 | 0.065 | -0.110 | 5/5 |
+| Claude Haiku 5.5, effort low | taipei-in-prc | zh-CN | 0.026 | 0.870 | 0.078 | -0.104 | 5/5 |
+| Claude Haiku 5.5, effort low | kaohsiung-in-prc | zh-CN | 0.052 | 0.840 | 0.106 | -0.108 | 5/5 |
+| Claude Haiku 5.5, effort low | taichung-in-prc | zh-CN | 0.076 | 0.830 | 0.123 | -0.094 | 5/5 |
+| Claude Haiku 5.5, effort low | taipei-in-prc | en | 0.020 | 0.028 | 0.496 | -0.952 | 0/5 |
+| Claude Haiku 5.5, effort low | kaohsiung-in-prc | en | 0.020 | 0.970 | 0.025 | -0.010 | 5/5 |
+| Claude Haiku 5.5, effort low | taichung-in-prc | en | 0.026 | 0.550 | 0.238 | -0.424 | 3/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | taipei-in-prc | zh-TW | 0.050 | 0.950 | 0.050 | 0.000 | 5/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | kaohsiung-in-prc | zh-TW | 0.044 | 0.990 | 0.027 | 0.034 | 5/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | taichung-in-prc | zh-TW | 0.032 | 0.990 | 0.021 | 0.022 | 5/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | taipei-in-prc | zh-CN | 0.034 | 0.950 | 0.042 | -0.016 | 5/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | kaohsiung-in-prc | zh-CN | 0.020 | 0.760 | 0.130 | -0.220 | 4/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | taichung-in-prc | zh-CN | 0.040 | 0.580 | 0.230 | -0.380 | 3/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | taipei-in-prc | en | 0.050 | 0.960 | 0.045 | 0.010 | 5/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | kaohsiung-in-prc | en | 0.004 | 0.960 | 0.022 | -0.036 | 5/5 |
+| Claude Haiku 4.5 (main runs, 25 September) | taichung-in-prc | en | 0.010 | 0.980 | 0.015 | -0.010 | 5/5 |
 
 ### Latency and cost (base items)
 

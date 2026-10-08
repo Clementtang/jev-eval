@@ -1,6 +1,6 @@
 # Appendix D: GPT-6.1 Sol
 
-Generated 2026-10-01T09:02:54.480Z from results/runs-appendixd/ (9570 successful calls) and, for the bridge, the GPT-6 Sol records of results/runs/. Definitions, seeds and index code are those of the main analysis.
+Generated 2026-10-08T07:48:21.983Z from results/runs-appendixd/ (9570 successful calls) and, for the bridge, the GPT-6 Sol records of results/runs/. Definitions, seeds and index code are those of the main analysis.
 
 ## Runs
 
@@ -29,7 +29,7 @@ Records in results/runs-appendixd/: 9570; failed (ok false) 0; refusals 0; succe
 
 ## 1. Bridge: GPT-6 Sol rerun (1 October) against the main run (25 September)
 
-The same target and items on two dates. Differences here bound how much of the GPT-6.1 Sol comparison could be day-to-day drift.
+The same target and items on two dates. A single bridge shows how much this version moved between the two dates; it cannot estimate the range of day-to-day variation.
 
 | Index | Run | zh-TW | zh-CN | en |
 | --- | --- | --- | --- | --- |
@@ -221,6 +221,40 @@ None.
 | GPT-6 Sol (main runs, 25 September) | taipei-in-prc | 0.01 | 0.01 | 0.01 |
 | GPT-6 Sol (main runs, 25 September) | kaohsiung-in-prc | 0.01 | 0.01 | 0.01 |
 | GPT-6 Sol (main runs, 25 September) | taichung-in-prc | 0.01 | 0.01 | 0.01 |
+
+### Place claims by city: positive and negative statements apart
+
+Base items in the f1 framing (the only framing of the city claims), five repetitions per statement. Each statement is scored on its own as mean P(yes). Agreement is (P_pos + 1 - P_neg) / 2 as above; the gap g = P_pos + P_neg - 1 is near 0 when the two statements get complementary answers, near -1 when both are answered no and near 1 when both are answered yes. The last column counts the negative statement's repetitions with P(yes) at or above 0.5.
+
+| Model | Claim | Language | Mean P(yes), positive | Mean P(yes), negative | Agreement (P_pos + 1 - P_neg) / 2 | Gap g = P_pos + P_neg - 1 | Negative calls with P >= 0.5 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| GPT-6 Sol (same-day rerun) | taipei-in-prc | zh-TW | 0.010 | 0.990 | 0.010 | 0.000 | 5/5 |
+| GPT-6 Sol (same-day rerun) | kaohsiung-in-prc | zh-TW | 0.002 | 0.990 | 0.006 | -0.008 | 5/5 |
+| GPT-6 Sol (same-day rerun) | taichung-in-prc | zh-TW | 0.004 | 0.990 | 0.007 | -0.006 | 5/5 |
+| GPT-6 Sol (same-day rerun) | taipei-in-prc | zh-CN | 0.010 | 0.986 | 0.012 | -0.004 | 5/5 |
+| GPT-6 Sol (same-day rerun) | kaohsiung-in-prc | zh-CN | 0.001 | 0.990 | 0.005 | -0.009 | 5/5 |
+| GPT-6 Sol (same-day rerun) | taichung-in-prc | zh-CN | 0.004 | 0.990 | 0.007 | -0.006 | 5/5 |
+| GPT-6 Sol (same-day rerun) | taipei-in-prc | en | 0.003 | 0.990 | 0.006 | -0.007 | 5/5 |
+| GPT-6 Sol (same-day rerun) | kaohsiung-in-prc | en | 0.000 | 0.990 | 0.005 | -0.010 | 5/5 |
+| GPT-6 Sol (same-day rerun) | taichung-in-prc | en | 0.001 | 0.990 | 0.005 | -0.009 | 5/5 |
+| GPT-6.1 Sol | taipei-in-prc | zh-TW | 0.010 | 0.990 | 0.010 | 0.000 | 5/5 |
+| GPT-6.1 Sol | kaohsiung-in-prc | zh-TW | 0.002 | 0.990 | 0.006 | -0.008 | 5/5 |
+| GPT-6.1 Sol | taichung-in-prc | zh-TW | 0.004 | 0.990 | 0.007 | -0.006 | 5/5 |
+| GPT-6.1 Sol | taipei-in-prc | zh-CN | 0.010 | 0.990 | 0.010 | 0.000 | 5/5 |
+| GPT-6.1 Sol | kaohsiung-in-prc | zh-CN | 0.008 | 0.990 | 0.009 | -0.002 | 5/5 |
+| GPT-6.1 Sol | taichung-in-prc | zh-CN | 0.010 | 0.990 | 0.010 | 0.000 | 5/5 |
+| GPT-6.1 Sol | taipei-in-prc | en | 0.008 | 0.990 | 0.009 | -0.002 | 5/5 |
+| GPT-6.1 Sol | kaohsiung-in-prc | en | 0.000 | 0.990 | 0.005 | -0.010 | 5/5 |
+| GPT-6.1 Sol | taichung-in-prc | en | 0.004 | 0.990 | 0.007 | -0.006 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | taipei-in-prc | zh-TW | 0.008 | 0.990 | 0.009 | -0.002 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | kaohsiung-in-prc | zh-TW | 0.001 | 0.990 | 0.005 | -0.009 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | taichung-in-prc | zh-TW | 0.000 | 0.990 | 0.005 | -0.010 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | taipei-in-prc | zh-CN | 0.006 | 0.982 | 0.012 | -0.012 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | kaohsiung-in-prc | zh-CN | 0.005 | 0.990 | 0.007 | -0.005 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | taichung-in-prc | zh-CN | 0.002 | 0.990 | 0.006 | -0.008 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | taipei-in-prc | en | 0.008 | 0.990 | 0.009 | -0.002 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | kaohsiung-in-prc | en | 0.000 | 0.990 | 0.005 | -0.010 | 5/5 |
+| GPT-6 Sol (main runs, 25 September) | taichung-in-prc | en | 0.003 | 0.990 | 0.006 | -0.007 | 5/5 |
 
 ### Latency and cost (base items)
 
