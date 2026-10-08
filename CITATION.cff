@@ -20,6 +20,9 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.23168211"
     description: "Version v0.8"
+  - type: doi
+    value: "10.5281/zenodo.23232006"
+    description: "Version v0.9"
 url: "https://clementtang.github.io/jev-eval/"
 repository-code: "https://github.com/Clementtang/jev-eval"
 license: CC-BY-4.0
