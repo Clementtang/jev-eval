@@ -3,7 +3,7 @@
 [English](README.md) | **繁體中文**
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
-[![Preprint](https://img.shields.io/badge/preprint-draft%200.8%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/paper)
+[![Preprint](https://img.shields.io/badge/preprint-draft%200.9%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-green)](LICENSE-CC-BY-4.0.txt)
@@ -13,9 +13,9 @@
 
 [網站](https://clementtang.github.io/jev-eval/) · [論文](https://clementtang.github.io/jev-eval/paper) · [題庫瀏覽器](https://clementtang.github.io/jev-eval/explore) · [敏感度實驗室](https://clementtang.github.io/jev-eval/lab) · [互動重播](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [引用](#引用)
 
-Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.8，2026 年 10 月 6 日，未經同儕審查。
+Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.9，2026 年 10 月 8 日，未經同儕審查。
 
-DOI：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)（所有版本；v0.8 為 10.5281/zenodo.23168211）。
+DOI：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)（所有版本）。
 
 論文與資料採 [CC BY 4.0](LICENSE-CC-BY-4.0.txt) 授權，程式採 [MIT](LICENSE) 授權。
 
@@ -128,7 +128,7 @@ Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰�
   year   = {2026},
   month  = {10},
   type   = {Preprint},
-  note   = {Draft 0.8, not peer reviewed},
+  note   = {Draft 0.9, not peer reviewed},
   doi    = {10.5281/zenodo.23055592},
   url    = {https://clementtang.github.io/jev-eval/}
 }

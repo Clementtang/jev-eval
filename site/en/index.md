@@ -14,7 +14,7 @@ import { withBase } from "vitepress";
 
 <p class="home-subtitle">How audits of language models on Taiwan's sovereignty rank models differently depending on the instrument</p>
 
-<p class="home-meta">Hong-Rui (Clement) Tang (independent researcher, Hanoi, Vietnam) · Preprint draft 0.8, 6 October 2026 · Not peer reviewed</p>
+<p class="home-meta">Hong-Rui (Clement) Tang (independent researcher, Hanoi, Vietnam) · Preprint draft 0.9, 8 October 2026 · Not peer reviewed</p>
 
 We audit one structured decision model, TypeSafe Jev (jev-1.13.0), and five generative models (Claude Haiku 4.5, Claude Sonnet 5, Grok 4.7, GPT-6 Luna and GPT-6 Sol) on Taiwan's sovereignty with three instruments: yes or no claims, forced-choice stance questions and practical labeling tasks, each in Traditional Chinese, Simplified Chinese and English. We analyze 26,796 calls.
 

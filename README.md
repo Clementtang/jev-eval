@@ -3,7 +3,7 @@
 **English** | [繁體中文](README.zh-TW.md)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
-[![Preprint](https://img.shields.io/badge/preprint-draft%200.8%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
+[![Preprint](https://img.shields.io/badge/preprint-draft%200.9%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-green)](LICENSE-CC-BY-4.0.txt)
@@ -13,9 +13,9 @@ How audits of language models on Taiwan's sovereignty rank models differently de
 
 [Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [Citation](#citation)
 
-Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.8, 6 October 2026. Not peer reviewed.
+Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.9, 8 October 2026. Not peer reviewed.
 
-DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions; v0.8 is 10.5281/zenodo.23168211).
+DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions).
 
 Paper and data: [CC BY 4.0](LICENSE-CC-BY-4.0.txt). Code: [MIT](LICENSE).
 
@@ -128,7 +128,7 @@ Claude (Anthropic) assisted with item drafting, code, statistical analysis and t
   year   = {2026},
   month  = {10},
   type   = {Preprint},
-  note   = {Draft 0.8, not peer reviewed},
+  note   = {Draft 0.9, not peer reviewed},
   doi    = {10.5281/zenodo.23055592},
   url    = {https://clementtang.github.io/jev-eval/}
 }
