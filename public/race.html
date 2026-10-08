@@ -60,6 +60,9 @@
         --claude-sonnet-5-5-high-addendum: #6e3a10;
         --sol-6-1-appendix-d: #0f6e8c;
         --sol-6-appendix-d: #8aaedb;
+        --claude-haiku-5-5-appendix-e: #6d7a1f;
+        --claude-haiku-4-5-appendix-e: #c4ab8a;
+        --claude-haiku-5-5-medium-appendix-e: #3f4a0f;
         --serif: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
         --sans: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
         --num: "JF Jinxuan", "PingFang TC", "Noto Sans TC", sans-serif;
@@ -170,7 +173,7 @@
         font-size: 24px;
         font-weight: 600;
       }
-      /* Appendix names are long; wrapping keeps "附錄 C" or "附錄 D" (joined by a no-break space) visible in narrow lanes. */
+      /* Appendix names are long; wrapping keeps "附錄 C", "附錄 D" or "附錄 E" (joined by a no-break space) visible in narrow lanes. */
       .lane.addendum .lane-name {
         white-space: normal;
       }
@@ -973,6 +976,18 @@
           name: "GPT-6 Sol（附錄\u00a0D 重跑）",
           vendor: "OpenAI．10/1 另日測量",
         },
+        "claude-haiku-5-5@appendix-e": {
+          name: "Claude Haiku 5.5（附錄\u00a0E）",
+          vendor: "Anthropic．10/8 另日測量",
+        },
+        "claude-haiku-4-5@appendix-e": {
+          name: "Claude Haiku 4.5（附錄\u00a0E 重跑）",
+          vendor: "Anthropic．10/8 另日測量",
+        },
+        "claude-haiku-5-5-medium@appendix-e": {
+          name: "Claude Haiku 5.5 medium（附錄\u00a0E）",
+          vendor: "Anthropic．10/8 另日測量．只含地位主張",
+        },
       };
       const MODEL_ORDER = [
         "jev",
@@ -999,6 +1014,15 @@
           label: "附錄 D",
           date: "2026-10-01",
           targets: ["sol-6-1@appendix-d", "sol-6@appendix-d"],
+        },
+        {
+          label: "附錄 E",
+          date: "2026-10-08",
+          targets: [
+            "claude-haiku-5-5@appendix-e",
+            "claude-haiku-4-5@appendix-e",
+            "claude-haiku-5-5-medium@appendix-e",
+          ],
         },
       ];
       const ADDENDUM_ORDER = APPENDIX_ARMS.flatMap((arm) => arm.targets);

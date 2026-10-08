@@ -1262,6 +1262,7 @@
           {
             label: "附錄 C",
             date: "2026-09-29",
+            statusOnly: "effort high",
             targets: [
               "claude-sonnet-5-5@addendum",
               "claude-sonnet-5@addendum",
@@ -1272,6 +1273,16 @@
             label: "附錄 D",
             date: "2026-10-01",
             targets: ["sol-6-1@appendix-d", "sol-6@appendix-d"],
+          },
+          {
+            label: "附錄 E",
+            date: "2026-10-08",
+            statusOnly: "effort medium",
+            targets: [
+              "claude-haiku-5-5@appendix-e",
+              "claude-haiku-4-5@appendix-e",
+              "claude-haiku-5-5-medium@appendix-e",
+            ],
           },
         ];
         const ADDENDUM_ORDER = APPENDIX_ARMS.flatMap((arm) => arm.targets);
@@ -1287,6 +1298,9 @@
           "claude-sonnet-5-5-high@addendum": "Claude Sonnet 5.5 high（附錄\u00a0C）",
           "sol-6-1@appendix-d": "GPT-6.1 Sol（附錄\u00a0D）",
           "sol-6@appendix-d": "GPT-6 Sol（附錄\u00a0D 重跑）",
+          "claude-haiku-5-5@appendix-e": "Claude Haiku 5.5（附錄\u00a0E）",
+          "claude-haiku-4-5@appendix-e": "Claude Haiku 4.5（附錄\u00a0E 重跑）",
+          "claude-haiku-5-5-medium@appendix-e": "Claude Haiku 5.5 medium（附錄\u00a0E）",
         };
         // Same researcher coding and key order as scripts/stats.mjs; the bootstrap resamples
         // concepts by position, so the order must match for the intervals to match.
@@ -2229,7 +2243,7 @@
         const addendum = hasAddendumLane()
           ? cost
             ? `．${armDates()} 另日測量，延遲與主分析模型不宜直接比較`
-            : `．${armDates()} 另行執行，不屬主分析${hasArmLane("附錄 C") ? "；effort high 只測地位主張" : ""}`
+            : `．${armDates()} 另行執行，不屬主分析${statusOnlyNote()}`
           : "";
         $("summaryNote").textContent =
           (cost
@@ -2674,7 +2688,13 @@
         C.APPENDIX_ARMS.filter((arm) =>
           arm.targets.some((t) => (state.lanes ?? []).includes(t)),
         );
-      const hasArmLane = (label) => shownArms().some((arm) => arm.label === label);
+      // "；effort high 只測地位主張" for each arm on screen with a lane that answered the status claims only.
+      const statusOnlyNote = (tail = "") => {
+        const names = shownArms()
+          .filter((arm) => arm.statusOnly)
+          .map((arm) => arm.statusOnly);
+        return names.length ? `；${names.join("、")} 只測地位主張${tail}` : "";
+      };
       // Names the run date of exactly the arms on screen: "附錄 C 模型為 2026-09-29、附錄 D 模型為 2026-10-01".
       const armDates = () =>
         shownArms()
@@ -2684,7 +2704,7 @@
       function useLanes(lanes) {
         state.lanes = lanes;
         $("footNote").textContent = hasAddendumLane()
-          ? `${FOOT_NOTE}．${armDates()} 另行執行，不屬主分析${hasArmLane("附錄 C") ? "；effort high 只測地位主張，其他題顯示空格" : ""}`
+          ? `${FOOT_NOTE}．${armDates()} 另行執行，不屬主分析${statusOnlyNote("，其他題顯示空格")}`
           : FOOT_NOTE;
         $("title").textContent = `同一句話，${lanes.length} 個模型怎麼判斷`;
         $("stage").classList.toggle("crowded", lanes.length > C.MODEL_ORDER.length);

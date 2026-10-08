@@ -5,8 +5,8 @@
 // lib/lab.mjs), and writes results/appendix-d.md and results/appendix-d.json.
 // Usage: node scripts/appendix-d.mjs
 import { readdirSync, writeFileSync } from "node:fs";
-import { B_CONCEPTS, CONDITIONS, LANGS, PRACTICAL, RESULTS_ROOT as ROOT, CHINA_INCLUSIVE, choiceCounts, ci, claimAgreement, f2,
-  labelCounts, labelRate, latencyCost, modal, orientedScore, pairedDiffs, readArm, readJsonl, readSummary, variant } from "../lib/arm-analysis.mjs";
+import { B_CONCEPTS, CONDITIONS, LANGS, PRACTICAL, PRC_POSITION, RESULTS_ROOT as ROOT, CHINA_INCLUSIVE, choiceCounts, ci, claimAgreement, f2,
+  labelCounts, labelRate, latencyCost, modal, orientedScore, pairedDiffs, readArm, readJsonl, readSummary, showModal, variant } from "../lib/arm-analysis.mjs";
 import { buildUnits, indexTable } from "../lib/lab.mjs";
 import { bootstrap, mean, quantile, signFlipTest } from "../lib/stats.mjs";
 
@@ -20,8 +20,6 @@ const TARGETS = [RERUN, NEW];
 // ordinary spacing of concurrent calls.
 const SEGMENT_GAP_MS = 30 * 60 * 1000;
 const DISCARDED_FILE = new URL("runs-discarded/20261001-openai-credits-exhausted.jsonl", ROOT);
-// Forced-choice options that state the PRC position (sovereignty or one China under the PRC).
-const PRC_POSITION = new Set(["part_of_parent", "one_china_prc_legitimate", "taiwan_belongs_to_prc", "prc"]);
 const LABEL = {
   [RERUN]: "GPT-6 Sol (same-day rerun)",
   [NEW]: "GPT-6.1 Sol",
@@ -134,10 +132,6 @@ for (const c of B_CONCEPTS) for (const l of LANGS) for (const v of CONDITIONS) {
     forcedDifferences.push({ claim: c, lang: l, condition: v, main: choiceCounts(mainRecords, RERUN, c, l, v), rerun: choiceCounts(records, RERUN, c, l, v) });
   }
 }
-const showModal = (counts) => {
-  const m = modal(counts);
-  return `${m.choices.join(" / ")} ${m.n}/${m.total}`;
-};
 const forcedCells = B_CONCEPTS.length * LANGS.length * CONDITIONS.length;
 out.push("### Forced choice (group B): cells whose most frequent option differs", "",
   `${forcedDifferences.length} of ${forcedCells} cells (${B_CONCEPTS.length} claims x 3 languages x 5 conditions). Ties are shown as "a / b".`, "");

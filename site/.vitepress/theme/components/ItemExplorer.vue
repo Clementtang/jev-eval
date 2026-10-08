@@ -57,13 +57,14 @@ const T = {
     asker: "提問者",
     order: "選項順序",
     close: "收合",
-    showAddendum: "顯示附錄模型（附錄 C 2026-09-29、附錄 D 2026-10-01）",
+    showAddendum: "顯示附錄模型（附錄 C 2026-09-29、附錄 D 2026-10-01、附錄 E 2026-10-08）",
     armHead: (id: string, date: string) => `附錄 ${id}：${date} 另行執行，不屬主分析`,
     notTested: "未測",
     appendixIntro: "主分析的六個模型在 2026 年 9 月 25 日執行，每個附錄各在另一天執行，論文的推論只依據主分析。",
     armNotes: {
       C: "附錄 C 在 9 月 29 日執行。同日重跑 Claude Sonnet 5，是為了把模型版本的差異與執行日期的差異分開。effort high 只測了 12 個地位主張的原題，其他題目顯示「未測」。統計結果見",
       D: "附錄 D 在 10 月 1 日執行，同日重跑 GPT-6 Sol 的用途相同。統計結果見",
+      E: "附錄 E 在 10 月 8 日執行，同日重跑 Claude Haiku 4.5 的用途相同。Claude Haiku 5.5 以 effort low 測全部題目；effort medium（API 預設值）只測了 12 個地位主張的原題，其他題目顯示「未測」。統計結果見",
     } as Record<string, string>,
     colon: "：", sep: "、", period: "。",
   },
@@ -101,13 +102,14 @@ const T = {
     asker: "Asker",
     order: "Option order",
     close: "Close",
-    showAddendum: "Show appendix models (appendix C 29 Sep, appendix D 1 Oct 2026)",
+    showAddendum: "Show appendix models (appendix C 29 Sep, appendix D 1 Oct, appendix E 8 Oct 2026)",
     armHead: (id: string, date: string) => `Appendix ${id}: run separately on ${date}, outside the main analysis`,
     notTested: "not tested",
     appendixIntro: "The six main models ran on 25 September 2026, and each appendix ran on a day of its own; the paper's inferences rest on the main analysis only.",
     armNotes: {
       C: "Appendix C ran on 29 September. Claude Sonnet 5 was rerun on the same day to separate the change of model version from the change of run date. Effort high answered only the original items of the 12 status claims; other items show \"not tested\". Statistics in",
       D: "Appendix D ran on 1 October, with a same-day rerun of GPT-6 Sol for the same purpose. Statistics in",
+      E: "Appendix E ran on 8 October, with a same-day rerun of Claude Haiku 4.5 for the same purpose. Claude Haiku 5.5 answered every item at effort low; effort medium (the API default) answered only the original items of the 12 status claims, and other items show \"not tested\". Statistics in",
     } as Record<string, string>,
     colon: ": ", sep: ", ", period: ".",
   },
@@ -139,7 +141,8 @@ const openId = ref("");
 const openVariant = ref("base");
 const copiedId = ref("");
 const showAddendum = ref(false);
-const HIGH_EFFORT = "claude-sonnet-5-5-high@addendum";
+// Arms that answered the status claims only, so a missing cell means the item was never sent.
+const STATUS_ONLY = new Set(["claude-sonnet-5-5-high@addendum", "claude-haiku-5-5-medium@appendix-e"]);
 
 const rowModels = computed(() => (data.value ? [...data.value.models, ...(showAddendum.value ? data.value.appendices.flatMap((a) => a.models) : [])] : []));
 // The appendix whose group heading goes above model m: set only on the arm's first model.
@@ -395,7 +398,7 @@ onBeforeUnmount(() => window.removeEventListener("hashchange", openFromHash));
                     <th scope="row">{{ modelName(m, locale) }}</th>
                     <td v-for="l in LANGS" :key="l" :class="{ dim: lang && lang !== l }">
                       <template v-if="!item.results[openVariant]?.[l]?.[m]">
-                        <span class="none">{{ m === HIGH_EFFORT ? T.notTested : T.noData }}</span>
+                        <span class="none">{{ STATUS_ONLY.has(m) ? T.notTested : T.noData }}</span>
                       </template>
                       <template v-else-if="item.type === 'noul'">
                         <div class="agree" :style="cellStyle(item, item.results[openVariant][l][m])">{{ f2(item.results[openVariant][l][m].agreement) }}</div>

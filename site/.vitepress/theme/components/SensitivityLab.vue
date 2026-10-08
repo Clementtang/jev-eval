@@ -52,6 +52,7 @@ const T = {
     armNotes: {
       C: "附錄 C 在 9 月 29 日執行。同日重跑 Claude Sonnet 5，是為了把模型版本的差異與執行日期的差異分開。effort high 只測了 12 個地位主張，勾選的主張含其他主張時顯示「未測」。統計結果見",
       D: "附錄 D 在 10 月 1 日執行，同日重跑 GPT-6 Sol 的用途相同。統計結果見",
+      E: "附錄 E 在 10 月 8 日執行，同日重跑 Claude Haiku 4.5 的用途相同。Claude Haiku 5.5 以 effort low 測全部題目；effort medium（API 預設值）只測了 12 個地位主張，勾選的主張含其他主張時顯示「未測」。統計結果見",
     } as Record<string, string>,
     armHead: (id: string, date: string) => `附錄 ${id}：${date} 另行執行，不屬主分析`,
     notTested: "未測",
@@ -90,6 +91,7 @@ const T = {
     armNotes: {
       C: "Appendix C ran on 29 September. Claude Sonnet 5 was rerun on the same day to separate the change of model version from the change of run date. Effort high answered the 12 status claims only, so it shows \"not tested\" when the selection includes other claims. Statistics in",
       D: "Appendix D ran on 1 October, with a same-day rerun of GPT-6 Sol for the same purpose. Statistics in",
+      E: "Appendix E ran on 8 October, with a same-day rerun of Claude Haiku 4.5 for the same purpose. Claude Haiku 5.5 answered every item at effort low; effort medium (the API default) answered the 12 status claims only, so it shows \"not tested\" when the selection includes other claims. Statistics in",
     } as Record<string, string>,
     armHead: (id: string, date: string) => `Appendix ${id}: run separately on ${date}, outside the main analysis`,
     notTested: "not tested",

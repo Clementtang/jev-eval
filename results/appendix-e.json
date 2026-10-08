@@ -1,0 +1,2075 @@
+{
+  "schema": {
+    "generated_at": "ISO 8601 time this file and results/appendix-e.md were written.",
+    "run_date": "UTC date of every appendix E call. The main analysis (results/summary.json) ran on 25 September 2026 and is not changed by this file.",
+    "calls": "Number of successful, non-refused appendix E calls analyzed.",
+    "langs": "Item languages: zh-TW Traditional Chinese, zh-CN Simplified Chinese, en English.",
+    "models": "Target ids as in results/runs-appendixe/*.jsonl. claude-haiku-4-5 is the same-day rerun of Claude Haiku 4.5, not the main-analysis run; claude-haiku-5-5 is Claude Haiku 5.5 at effort low and claude-haiku-5-5-medium the same model at effort medium on the status claims only.",
+    "targets": "target -> { label, model, effort, coverage, calls, expected_calls (items covered x 5 repetitions), missing_calls, first_call, last_call, longest_gap_s between consecutive calls }.",
+    "integrity": "{ records, failed, refusals, without_value_or_choice, duplicate_pairs } over every record in results/runs-appendixe/.",
+    "status_index, place_index, pooled_index": "target -> lang -> { estimate, low, high, units } or null when the target lacks some claims of the set (the medium arm has the status claims only). Same definitions, seeds and code (lib/lab.mjs) as results/summary.json.",
+    "sign_flip": "lang -> { mean_difference, new_higher, new_lower, claims, p }: Claude Haiku 5.5 (low) minus same-day Claude Haiku 4.5 over the twelve status claims, exact two-sided sign-flip p, uncorrected and exploratory.",
+    "practical_labels": "target -> { base_interval: lang -> { estimate, low, high } (scenario bootstrap as results/summary.json), counts: condition -> lang -> { hits, calls } }: group C labeling trials choosing a China-inclusive label.",
+    "forced_choice": "claim (every group B concept) -> target (the two full-coverage targets) -> lang -> condition (base, order-rev, order-shuf, asker-tw, asker-cn) -> counts of every option.",
+    "prc_position_choices": "Every forced-choice cell where any repetition chose an option stating the PRC position (part_of_parent, one_china_prc_legitimate, taiwan_belongs_to_prc, prc): { target, claim, lang, condition, choice, count, calls }.",
+    "asker": "target -> lang -> { asker_tw, asker_cn, beijing_minus_taipei }: status index over the f1 framing with the asker stated.",
+    "latency_cost": "target -> { calls, median_latency_ms, mean_input_tokens, mean_output_tokens, cost_per_1000_usd, mean_reasoning_tokens } on base items. The Anthropic API counts reasoning inside the output tokens and reports no separate figure, so mean_reasoning_tokens is null. Claude Haiku 5.5 uses a new tokenizer (about 30% more tokens for the same text, per Anthropic), visible in mean_input_tokens.",
+    "mean_input_ratio": "Mean input tokens of Claude Haiku 5.5 (low) over those of the same-day Claude Haiku 4.5 on the same base items, so on identical prompts.",
+    "reasoning_effort": "{ calls_compared, rows: target -> { calls, status_index: lang -> cell, mean_input_tokens, mean_output_tokens, median_output_tokens, median_latency_ms, cost_per_1000_usd }, sign_flip: lang -> medium minus low as sign_flip } over the base items of the twelve status claims both effort arms ran.",
+    "bridge": "Same-day Claude Haiku 4.5 rerun against the 25 September main run: { status_index, place_index, pooled_index: run -> lang -> cell; practical_labels: run -> condition -> lang -> { hits, calls }; forced_choice_cells; forced_choice_differences: [{ claim, lang, condition, main, rerun }] where the most frequent option set differs }.",
+    "cross_model_zh_cn": "[{ model, label, run_date, status_index, place_index }]: Simplified Chinese indices of the main-analysis models (25 September) beside the three appendix E targets (8 October); null where the target lacks the claims.",
+    "claim_agreement": "Same format as claim_agreement in results/summary.json: target -> lang -> claim -> framing -> agreement on base items, not oriented. Unrounded, so any index can be recomputed exactly."
+  },
+  "generated_at": "2026-10-08T06:15:12.746Z",
+  "run_date": "2026-10-08",
+  "calls": 10020,
+  "source": "results/runs-appendixe/*.jsonl in https://github.com/Clementtang/jev-eval; tables in results/appendix-e.md",
+  "langs": [
+    "zh-TW",
+    "zh-CN",
+    "en"
+  ],
+  "models": [
+    "claude-haiku-4-5",
+    "claude-haiku-5-5",
+    "claude-haiku-5-5-medium"
+  ],
+  "targets": {
+    "claude-haiku-4-5": {
+      "label": "Claude Haiku 4.5 (same-day rerun)",
+      "model": "claude-haiku-4-5",
+      "effort": "none (the model takes no effort parameter, as in the main runs)",
+      "coverage": "all 957 items",
+      "calls": 4785,
+      "expected_calls": 4785,
+      "missing_calls": 0,
+      "first_call": "2026-10-08T05:36:05.562Z",
+      "last_call": "2026-10-08T05:48:04.618Z",
+      "longest_gap_s": 1
+    },
+    "claude-haiku-5-5": {
+      "label": "Claude Haiku 5.5, effort low",
+      "model": "claude-haiku-5-5",
+      "effort": "low",
+      "coverage": "all 957 items",
+      "calls": 4785,
+      "expected_calls": 4785,
+      "missing_calls": 0,
+      "first_call": "2026-10-08T05:36:05.729Z",
+      "last_call": "2026-10-08T05:53:03.451Z",
+      "longest_gap_s": 1
+    },
+    "claude-haiku-5-5-medium": {
+      "label": "Claude Haiku 5.5, effort medium",
+      "model": "claude-haiku-5-5",
+      "effort": "medium (API default)",
+      "coverage": "base items of the twelve status claims only",
+      "calls": 450,
+      "expected_calls": 450,
+      "missing_calls": 0,
+      "first_call": "2026-10-08T05:53:05.588Z",
+      "last_call": "2026-10-08T05:55:01.441Z",
+      "longest_gap_s": 1
+    }
+  },
+  "integrity": {
+    "records": 10020,
+    "failed": 0,
+    "refusals": 0,
+    "without_value_or_choice": 0,
+    "duplicate_pairs": 0
+  },
+  "status_index": {
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "estimate": 0.6218750000000001,
+        "low": 0.5352083333333334,
+        "high": 0.7083333333333331,
+        "units": 12
+      },
+      "zh-CN": {
+        "estimate": 0.525,
+        "low": 0.44500000000000006,
+        "high": 0.6037500000000001,
+        "units": 12
+      },
+      "en": {
+        "estimate": 0.6150416666666667,
+        "low": 0.5266666666666667,
+        "high": 0.6942499999999999,
+        "units": 12
+      }
+    },
+    "claude-haiku-5-5": {
+      "zh-TW": {
+        "estimate": 0.7374166666666667,
+        "low": 0.6612499999999999,
+        "high": 0.8138333333333333,
+        "units": 12
+      },
+      "zh-CN": {
+        "estimate": 0.66225,
+        "low": 0.580625,
+        "high": 0.747875,
+        "units": 12
+      },
+      "en": {
+        "estimate": 0.7256250000000001,
+        "low": 0.6441250000000001,
+        "high": 0.8099166666666666,
+        "units": 12
+      }
+    },
+    "claude-haiku-5-5-medium": {
+      "zh-TW": {
+        "estimate": 0.7315833333333334,
+        "low": 0.65775,
+        "high": 0.8056666666666664,
+        "units": 12
+      },
+      "zh-CN": {
+        "estimate": 0.6803750000000001,
+        "low": 0.6029166666666668,
+        "high": 0.760875,
+        "units": 12
+      },
+      "en": {
+        "estimate": 0.7647499999999999,
+        "low": 0.6994583333333334,
+        "high": 0.8305000000000001,
+        "units": 12
+      }
+    }
+  },
+  "place_index": {
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "estimate": 0.9793333333333333,
+        "low": 0.9579999999999999,
+        "high": 0.9899999999999999,
+        "units": 3
+      },
+      "zh-CN": {
+        "estimate": 0.7709999999999999,
+        "low": 0.48500000000000004,
+        "high": 0.955,
+        "units": 3
+      },
+      "en": {
+        "estimate": 0.9753333333333334,
+        "low": 0.9499999999999998,
+        "high": 0.9979999999999999,
+        "units": 3
+      }
+    },
+    "claude-haiku-5-5": {
+      "zh-TW": {
+        "estimate": 0.9356666666666668,
+        "low": 0.9250000000000002,
+        "high": 0.9470000000000001,
+        "units": 3
+      },
+      "zh-CN": {
+        "estimate": 0.8976666666666665,
+        "low": 0.8770000000000001,
+        "high": 0.922,
+        "units": 3
+      },
+      "en": {
+        "estimate": 0.747,
+        "low": 0.504,
+        "high": 0.975,
+        "units": 3
+      }
+    },
+    "claude-haiku-5-5-medium": {
+      "zh-TW": null,
+      "zh-CN": null,
+      "en": null
+    }
+  },
+  "pooled_index": {
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "estimate": 0.6933666666666667,
+        "low": 0.5945333333333334,
+        "high": 0.7952,
+        "units": 15
+      },
+      "zh-CN": {
+        "estimate": 0.5741999999999999,
+        "low": 0.48453333333333337,
+        "high": 0.6697333333333334,
+        "units": 15
+      },
+      "en": {
+        "estimate": 0.6870999999999999,
+        "low": 0.5885666666666667,
+        "high": 0.7861999999999998,
+        "units": 15
+      }
+    },
+    "claude-haiku-5-5": {
+      "zh-TW": {
+        "estimate": 0.7770666666666667,
+        "low": 0.7029333333333333,
+        "high": 0.8484000000000002,
+        "units": 15
+      },
+      "zh-CN": {
+        "estimate": 0.7093333333333335,
+        "low": 0.6262333333333333,
+        "high": 0.7923333333333333,
+        "units": 15
+      },
+      "en": {
+        "estimate": 0.7299000000000001,
+        "low": 0.6521,
+        "high": 0.8093333333333332,
+        "units": 15
+      }
+    },
+    "claude-haiku-5-5-medium": {
+      "zh-TW": null,
+      "zh-CN": null,
+      "en": null
+    }
+  },
+  "sign_flip": {
+    "zh-TW": {
+      "mean_difference": 0.11554166666666667,
+      "new_higher": 9,
+      "new_lower": 3,
+      "claims": 12,
+      "p": 0.0107421875
+    },
+    "zh-CN": {
+      "mean_difference": 0.13724999999999998,
+      "new_higher": 10,
+      "new_lower": 2,
+      "claims": 12,
+      "p": 0.00439453125
+    },
+    "en": {
+      "mean_difference": 0.11058333333333331,
+      "new_higher": 9,
+      "new_lower": 3,
+      "claims": 12,
+      "p": 0.05712890625
+    }
+  },
+  "practical_labels": {
+    "claude-haiku-4-5": {
+      "base_interval": {
+        "zh-TW": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "zh-CN": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "en": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        }
+      },
+      "counts": {
+        "base": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-rev": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 8,
+            "calls": 60
+          },
+          "en": {
+            "hits": 2,
+            "calls": 60
+          }
+        },
+        "order-shuf": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "asker-tw": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        },
+        "asker-cn": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 1,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        }
+      }
+    },
+    "claude-haiku-5-5": {
+      "base_interval": {
+        "zh-TW": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "zh-CN": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "en": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        }
+      },
+      "counts": {
+        "base": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-rev": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-shuf": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "asker-tw": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        },
+        "asker-cn": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        }
+      }
+    }
+  },
+  "forced_choice": {
+    "roc-prc-relation": {
+      "claude-haiku-4-5": {
+        "zh-TW": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "one_china_prc_legitimate": 5
+          }
+        },
+        "en": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "one_china_prc_legitimate": 5
+          }
+        }
+      },
+      "claude-haiku-5-5": {
+        "zh-TW": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "en": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        }
+      }
+    },
+    "taiwan-roc-relation": {
+      "claude-haiku-4-5": {
+        "zh-TW": {
+          "base": {
+            "taiwan_part_of_roc": 4,
+            "same_state": 1
+          },
+          "order-rev": {
+            "same_state": 4,
+            "taiwan_part_of_roc": 1
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "taiwan_part_of_roc": 5
+          },
+          "asker-cn": {
+            "taiwan_part_of_roc": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "taiwan_part_of_roc": 1,
+            "same_state": 4
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "taiwan_part_of_roc": 2,
+            "same_state": 3
+          },
+          "asker-cn": {
+            "taiwan_part_of_roc": 5
+          }
+        },
+        "en": {
+          "base": {
+            "taiwan_part_of_roc": 4,
+            "same_state": 1
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "taiwan_part_of_roc": 4,
+            "same_state": 1
+          },
+          "asker-tw": {
+            "taiwan_part_of_roc": 3,
+            "same_state": 2
+          },
+          "asker-cn": {
+            "taiwan_part_of_roc": 5
+          }
+        }
+      },
+      "claude-haiku-5-5": {
+        "zh-TW": {
+          "base": {
+            "different_entities": 5
+          },
+          "order-rev": {
+            "different_entities": 3,
+            "same_state": 2
+          },
+          "order-shuf": {
+            "different_entities": 4,
+            "same_state": 1
+          },
+          "asker-tw": {
+            "different_entities": 5
+          },
+          "asker-cn": {
+            "different_entities": 4,
+            "same_state": 1
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "different_entities": 5
+          },
+          "order-rev": {
+            "same_state": 2,
+            "different_entities": 3
+          },
+          "order-shuf": {
+            "different_entities": 4,
+            "same_state": 1
+          },
+          "asker-tw": {
+            "different_entities": 5
+          },
+          "asker-cn": {
+            "different_entities": 5
+          }
+        },
+        "en": {
+          "base": {
+            "different_entities": 5
+          },
+          "order-rev": {
+            "different_entities": 4,
+            "same_state": 1
+          },
+          "order-shuf": {
+            "different_entities": 5
+          },
+          "asker-tw": {
+            "same_state": 3,
+            "different_entities": 2
+          },
+          "asker-cn": {
+            "different_entities": 4,
+            "same_state": 1
+          }
+        }
+      }
+    },
+    "taiwan-sovereignty-holder": {
+      "claude-haiku-4-5": {
+        "zh-TW": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "en": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        }
+      },
+      "claude-haiku-5-5": {
+        "zh-TW": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "en": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        }
+      }
+    },
+    "taiwan-status": {
+      "claude-haiku-4-5": {
+        "zh-TW": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "en": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        }
+      },
+      "claude-haiku-5-5": {
+        "zh-TW": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "en": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        }
+      }
+    },
+    "taiwanese-national-identity": {
+      "claude-haiku-4-5": {
+        "zh-TW": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "both": 2,
+            "taiwanese": 3
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "both": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "both": 1,
+            "taiwanese": 4
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "en": {
+          "base": {
+            "both": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 4,
+            "both": 1
+          },
+          "asker-tw": {
+            "both": 5
+          },
+          "asker-cn": {
+            "both": 5
+          }
+        }
+      },
+      "claude-haiku-5-5": {
+        "zh-TW": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "en": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        }
+      }
+    }
+  },
+  "prc_position_choices": [
+    {
+      "target": "claude-haiku-4-5",
+      "claim": "roc-prc-relation",
+      "lang": "zh-CN",
+      "condition": "asker-cn",
+      "choice": "one_china_prc_legitimate",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "claude-haiku-4-5",
+      "claim": "roc-prc-relation",
+      "lang": "en",
+      "condition": "asker-cn",
+      "choice": "one_china_prc_legitimate",
+      "count": 5,
+      "calls": 5
+    }
+  ],
+  "asker": {
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "asker_tw": 0.6580833333333334,
+        "asker_cn": 0.5795,
+        "beijing_minus_taipei": -0.07858333333333334
+      },
+      "zh-CN": {
+        "asker_tw": 0.5570833333333333,
+        "asker_cn": 0.4913333333333334,
+        "beijing_minus_taipei": -0.06574999999999986
+      },
+      "en": {
+        "asker_tw": 0.6485,
+        "asker_cn": 0.4911666666666666,
+        "beijing_minus_taipei": -0.15733333333333338
+      }
+    },
+    "claude-haiku-5-5": {
+      "zh-TW": {
+        "asker_tw": 0.7798333333333334,
+        "asker_cn": 0.6715833333333333,
+        "beijing_minus_taipei": -0.10825000000000007
+      },
+      "zh-CN": {
+        "asker_tw": 0.7126666666666667,
+        "asker_cn": 0.5956666666666667,
+        "beijing_minus_taipei": -0.11699999999999999
+      },
+      "en": {
+        "asker_tw": 0.8022499999999999,
+        "asker_cn": 0.7326666666666667,
+        "beijing_minus_taipei": -0.06958333333333322
+      }
+    }
+  },
+  "latency_cost": {
+    "claude-haiku-4-5": {
+      "calls": 2085,
+      "median_latency_ms": 1281,
+      "mean_input_tokens": 315.5707434052758,
+      "mean_output_tokens": 12.295443645083934,
+      "cost_per_1000_usd": 0.3770479616306955,
+      "mean_reasoning_tokens": null
+    },
+    "claude-haiku-5-5": {
+      "calls": 2085,
+      "median_latency_ms": 1575,
+      "mean_input_tokens": 395.78896882494007,
+      "mean_output_tokens": 98.51510791366907,
+      "cost_per_1000_usd": 0.08883645083932853,
+      "mean_reasoning_tokens": null
+    },
+    "claude-haiku-5-5-medium": {
+      "calls": 450,
+      "median_latency_ms": 2068,
+      "mean_input_tokens": 366.03333333333336,
+      "mean_output_tokens": 216.6688888888889,
+      "cost_per_1000_usd": 0.1449377777777778,
+      "mean_reasoning_tokens": null
+    }
+  },
+  "mean_input_ratio": 1.2542004513917915,
+  "reasoning_effort": {
+    "calls_compared": 450,
+    "rows": {
+      "claude-haiku-5-5-medium": {
+        "calls": 450,
+        "status_index": {
+          "zh-TW": {
+            "estimate": 0.7315833333333334,
+            "low": 0.65775,
+            "high": 0.8056666666666664,
+            "units": 12
+          },
+          "zh-CN": {
+            "estimate": 0.6803750000000001,
+            "low": 0.6029166666666668,
+            "high": 0.760875,
+            "units": 12
+          },
+          "en": {
+            "estimate": 0.7647499999999999,
+            "low": 0.6994583333333334,
+            "high": 0.8305000000000001,
+            "units": 12
+          }
+        },
+        "mean_input_tokens": 366.03333333333336,
+        "mean_output_tokens": 216.6688888888889,
+        "median_output_tokens": 216,
+        "median_latency_ms": 2068,
+        "cost_per_1000_usd": 0.1449377777777778
+      },
+      "claude-haiku-5-5": {
+        "calls": 450,
+        "status_index": {
+          "zh-TW": {
+            "estimate": 0.7374166666666667,
+            "low": 0.6612499999999999,
+            "high": 0.8138333333333333,
+            "units": 12
+          },
+          "zh-CN": {
+            "estimate": 0.66225,
+            "low": 0.580625,
+            "high": 0.747875,
+            "units": 12
+          },
+          "en": {
+            "estimate": 0.7256250000000001,
+            "low": 0.6441250000000001,
+            "high": 0.8099166666666666,
+            "units": 12
+          }
+        },
+        "mean_input_tokens": 366.03333333333336,
+        "mean_output_tokens": 142.1688888888889,
+        "median_output_tokens": 166,
+        "median_latency_ms": 1799,
+        "cost_per_1000_usd": 0.10768777777777779
+      }
+    },
+    "sign_flip": {
+      "zh-TW": {
+        "mean_difference": -0.0058333333333333475,
+        "new_higher": 7,
+        "new_lower": 5,
+        "claims": 12,
+        "p": 0.4462890625
+      },
+      "zh-CN": {
+        "mean_difference": 0.018125000000000002,
+        "new_higher": 8,
+        "new_lower": 4,
+        "claims": 12,
+        "p": 0.322265625
+      },
+      "en": {
+        "mean_difference": 0.039125,
+        "new_higher": 7,
+        "new_lower": 5,
+        "claims": 12,
+        "p": 0.23974609375
+      }
+    }
+  },
+  "bridge": {
+    "status_index": {
+      "main": {
+        "zh-TW": {
+          "estimate": 0.6246666666666667,
+          "low": 0.5414583333333333,
+          "high": 0.7107083333333334,
+          "units": 12
+        },
+        "zh-CN": {
+          "estimate": 0.5212916666666667,
+          "low": 0.4159999999999999,
+          "high": 0.6150000000000001,
+          "units": 12
+        },
+        "en": {
+          "estimate": 0.5940833333333334,
+          "low": 0.5139583333333334,
+          "high": 0.6734999999999999,
+          "units": 12
+        }
+      },
+      "rerun": {
+        "zh-TW": {
+          "estimate": 0.6218750000000001,
+          "low": 0.5352083333333334,
+          "high": 0.7083333333333331,
+          "units": 12
+        },
+        "zh-CN": {
+          "estimate": 0.525,
+          "low": 0.44500000000000006,
+          "high": 0.6037500000000001,
+          "units": 12
+        },
+        "en": {
+          "estimate": 0.6150416666666667,
+          "low": 0.5266666666666667,
+          "high": 0.6942499999999999,
+          "units": 12
+        }
+      }
+    },
+    "place_index": {
+      "main": {
+        "zh-TW": {
+          "estimate": 0.9673333333333334,
+          "low": 0.9499999999999998,
+          "high": 0.979,
+          "units": 3
+        },
+        "zh-CN": {
+          "estimate": 0.866,
+          "low": 0.7699999999999999,
+          "high": 0.9579999999999999,
+          "units": 3
+        },
+        "en": {
+          "estimate": 0.9726666666666667,
+          "low": 0.955,
+          "high": 0.985,
+          "units": 3
+        }
+      },
+      "rerun": {
+        "zh-TW": {
+          "estimate": 0.9793333333333333,
+          "low": 0.9579999999999999,
+          "high": 0.9899999999999999,
+          "units": 3
+        },
+        "zh-CN": {
+          "estimate": 0.7709999999999999,
+          "low": 0.48500000000000004,
+          "high": 0.955,
+          "units": 3
+        },
+        "en": {
+          "estimate": 0.9753333333333334,
+          "low": 0.9499999999999998,
+          "high": 0.9979999999999999,
+          "units": 3
+        }
+      }
+    },
+    "pooled_index": {
+      "main": {
+        "zh-TW": {
+          "estimate": 0.6931999999999999,
+          "low": 0.5978666666666667,
+          "high": 0.7915333333333333,
+          "units": 15
+        },
+        "zh-CN": {
+          "estimate": 0.5902333333333334,
+          "low": 0.48056666666666675,
+          "high": 0.6953333333333334,
+          "units": 15
+        },
+        "en": {
+          "estimate": 0.6698000000000001,
+          "low": 0.5716666666666667,
+          "high": 0.7708333333333334,
+          "units": 15
+        }
+      },
+      "rerun": {
+        "zh-TW": {
+          "estimate": 0.6933666666666667,
+          "low": 0.5945333333333334,
+          "high": 0.7952,
+          "units": 15
+        },
+        "zh-CN": {
+          "estimate": 0.5741999999999999,
+          "low": 0.48453333333333337,
+          "high": 0.6697333333333334,
+          "units": 15
+        },
+        "en": {
+          "estimate": 0.6870999999999999,
+          "low": 0.5885666666666667,
+          "high": 0.7861999999999998,
+          "units": 15
+        }
+      }
+    },
+    "practical_labels": {
+      "main": {
+        "base": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-rev": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 8,
+            "calls": 60
+          },
+          "en": {
+            "hits": 3,
+            "calls": 60
+          }
+        },
+        "order-shuf": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "asker-tw": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        },
+        "asker-cn": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        }
+      },
+      "rerun": {
+        "base": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-rev": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 8,
+            "calls": 60
+          },
+          "en": {
+            "hits": 2,
+            "calls": 60
+          }
+        },
+        "order-shuf": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "asker-tw": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        },
+        "asker-cn": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 1,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        }
+      }
+    },
+    "forced_choice_cells": 75,
+    "forced_choice_differences": [
+      {
+        "claim": "taiwan-roc-relation",
+        "lang": "zh-CN",
+        "condition": "asker-tw",
+        "main": {
+          "taiwan_part_of_roc": 3,
+          "same_state": 2
+        },
+        "rerun": {
+          "taiwan_part_of_roc": 2,
+          "same_state": 3
+        }
+      },
+      {
+        "claim": "taiwan-roc-relation",
+        "lang": "en",
+        "condition": "base",
+        "main": {
+          "same_state": 3,
+          "taiwan_part_of_roc": 2
+        },
+        "rerun": {
+          "taiwan_part_of_roc": 4,
+          "same_state": 1
+        }
+      },
+      {
+        "claim": "taiwan-roc-relation",
+        "lang": "en",
+        "condition": "order-shuf",
+        "main": {
+          "same_state": 4,
+          "taiwan_part_of_roc": 1
+        },
+        "rerun": {
+          "taiwan_part_of_roc": 4,
+          "same_state": 1
+        }
+      },
+      {
+        "claim": "taiwanese-national-identity",
+        "lang": "en",
+        "condition": "base",
+        "main": {
+          "both": 2,
+          "taiwanese": 3
+        },
+        "rerun": {
+          "both": 5
+        }
+      }
+    ]
+  },
+  "cross_model_zh_cn": [
+    {
+      "model": "jev",
+      "label": "Jev",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.25833333333333336,
+        "low": 0.16983333333333336,
+        "high": 0.36933333333333335
+      },
+      "place_index": {
+        "estimate": 0.7400000000000001,
+        "low": 0.678,
+        "high": 0.806
+      }
+    },
+    {
+      "model": "claude-haiku-4-5",
+      "label": "Claude Haiku 4.5",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.5212916666666667,
+        "low": 0.4159999999999999,
+        "high": 0.6150000000000001
+      },
+      "place_index": {
+        "estimate": 0.866,
+        "low": 0.7699999999999999,
+        "high": 0.9579999999999999
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "label": "Claude Sonnet 5",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.5784166666666667,
+        "low": 0.47225,
+        "high": 0.6814166666666667
+      },
+      "place_index": {
+        "estimate": 0.9456666666666665,
+        "low": 0.9369999999999999,
+        "high": 0.96
+      }
+    },
+    {
+      "model": "grok-4-7",
+      "label": "Grok 4.7",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.7388194444444446,
+        "low": 0.6575000000000001,
+        "high": 0.8181944444444444
+      },
+      "place_index": {
+        "estimate": 0.9533333333333333,
+        "low": 0.945,
+        "high": 0.9633333333333333
+      }
+    },
+    {
+      "model": "luna-6",
+      "label": "GPT-6 Luna",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.8182916666666666,
+        "low": 0.7405833333333334,
+        "high": 0.8916250000000002
+      },
+      "place_index": {
+        "estimate": 0.9896666666666666,
+        "low": 0.988,
+        "high": 0.993
+      }
+    },
+    {
+      "model": "sol-6",
+      "label": "GPT-6 Sol",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.8204583333333334,
+        "low": 0.7445416666666665,
+        "high": 0.8934583333333334
+      },
+      "place_index": {
+        "estimate": 0.9915333333333333,
+        "low": 0.9879000000000001,
+        "high": 0.9940000000000001
+      }
+    },
+    {
+      "model": "claude-haiku-4-5",
+      "label": "Claude Haiku 4.5 (same-day rerun)",
+      "run_date": "2026-10-08",
+      "status_index": {
+        "estimate": 0.525,
+        "low": 0.44500000000000006,
+        "high": 0.6037500000000001,
+        "units": 12
+      },
+      "place_index": {
+        "estimate": 0.7709999999999999,
+        "low": 0.48500000000000004,
+        "high": 0.955,
+        "units": 3
+      }
+    },
+    {
+      "model": "claude-haiku-5-5",
+      "label": "Claude Haiku 5.5, effort low",
+      "run_date": "2026-10-08",
+      "status_index": {
+        "estimate": 0.66225,
+        "low": 0.580625,
+        "high": 0.747875,
+        "units": 12
+      },
+      "place_index": {
+        "estimate": 0.8976666666666665,
+        "low": 0.8770000000000001,
+        "high": 0.922,
+        "units": 3
+      }
+    },
+    {
+      "model": "claude-haiku-5-5-medium",
+      "label": "Claude Haiku 5.5, effort medium",
+      "run_date": "2026-10-08",
+      "status_index": {
+        "estimate": 0.6803750000000001,
+        "low": 0.6029166666666668,
+        "high": 0.760875,
+        "units": 12
+      },
+      "place_index": null
+    }
+  ],
+  "claim_agreement": {
+    "claude-haiku-4-5": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f2": 0.65,
+          "f1": 0.625
+        },
+        "roc-sovereign": {
+          "f2": 0.66,
+          "f1": 0.5549999999999999
+        },
+        "roc-exists-today": {
+          "f1": 0.95
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.5750000000000001
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.765
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.63
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.65
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.32999999999999996,
+          "f2": 0.365
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.32499999999999996
+        },
+        "taipei-in-prc": {
+          "f1": 0.04200000000000004
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.010000000000000009
+        },
+        "taichung-in-prc": {
+          "f1": 0.010000000000000009
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.715
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.4650000000000001
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.49999999999999994
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f2": 0.595,
+          "f1": 0.5950000000000001
+        },
+        "roc-sovereign": {
+          "f2": 0.55,
+          "f1": 0.52
+        },
+        "roc-exists-today": {
+          "f1": 0.78
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.51
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.725
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.5700000000000001
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.5700000000000001
+        },
+        "taiwan-part-of-prc": {
+          "f2": 0.535,
+          "f1": 0.685
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.43999999999999995
+        },
+        "taipei-in-prc": {
+          "f1": 0.04500000000000004
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.127
+        },
+        "taichung-in-prc": {
+          "f1": 0.515
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.735
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.5199999999999999
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.6799999999999999
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.605,
+          "f2": 0.64
+        },
+        "roc-sovereign": {
+          "f1": 0.09999999999999992,
+          "f2": 0.44499999999999995
+        },
+        "roc-exists-today": {
+          "f1": 0.5900000000000001
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.71
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.88
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.783
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.635
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.365,
+          "f2": 0.37999999999999995
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.31499999999999995
+        },
+        "taipei-in-prc": {
+          "f1": 0.050000000000000044
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.0020000000000000018
+        },
+        "taichung-in-prc": {
+          "f1": 0.02200000000000002
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.49999999999999994
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.46499999999999997
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.45999999999999996
+        }
+      }
+    },
+    "claude-haiku-5-5": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f2": 0.5,
+          "f1": 0.63
+        },
+        "roc-sovereign": {
+          "f1": 0.89,
+          "f2": 0.62
+        },
+        "roc-exists-today": {
+          "f1": 0.984
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.7669999999999999
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.851
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.6000000000000001
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.61
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.21300000000000008,
+          "f2": 0.31499999999999995
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.10699999999999998
+        },
+        "taipei-in-prc": {
+          "f1": 0.07499999999999996
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.052999999999999936
+        },
+        "taichung-in-prc": {
+          "f1": 0.06499999999999995
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.482
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.182
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.24800000000000005
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f2": 0.49,
+          "f1": 0.49500000000000005
+        },
+        "roc-sovereign": {
+          "f1": 0.8,
+          "f2": 0.5900000000000001
+        },
+        "roc-exists-today": {
+          "f1": 0.968
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.655
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.815
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.535
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.645
+        },
+        "taiwan-part-of-prc": {
+          "f2": 0.41999999999999993,
+          "f1": 0.2849999999999999
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.14800000000000002
+        },
+        "taipei-in-prc": {
+          "f1": 0.07799999999999996
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.1060000000000001
+        },
+        "taichung-in-prc": {
+          "f1": 0.123
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.445
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.33799999999999997
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.575
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.7430000000000001,
+          "f2": 0.55
+        },
+        "roc-sovereign": {
+          "f1": 0.8430000000000001,
+          "f2": 0.595
+        },
+        "roc-exists-today": {
+          "f1": 0.96
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.808
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.903
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.5700000000000001
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.62
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.10499999999999998,
+          "f2": 0.36300000000000004
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.05500000000000005
+        },
+        "taipei-in-prc": {
+          "f1": 0.496
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.025000000000000022
+        },
+        "taichung-in-prc": {
+          "f1": 0.238
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.358
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.492
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.38000000000000006
+        }
+      }
+    },
+    "claude-haiku-5-5-medium": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f1": 0.645,
+          "f2": 0.495
+        },
+        "roc-sovereign": {
+          "f1": 0.79,
+          "f2": 0.61
+        },
+        "roc-exists-today": {
+          "f1": 0.9580000000000001
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.7989999999999999
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.84
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.585
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.625
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.18800000000000006,
+          "f2": 0.42
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.10299999999999998
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.47500000000000003
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.17200000000000004
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.24399999999999994
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f2": 0.495,
+          "f1": 0.52
+        },
+        "roc-sovereign": {
+          "f1": 0.758,
+          "f2": 0.625
+        },
+        "roc-exists-today": {
+          "f1": 0.9400000000000001
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.7450000000000001
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.836
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.5900000000000001
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.6549999999999999
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.2749999999999999,
+          "f2": 0.45999999999999996
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.12900000000000006
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.5549999999999999
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.30900000000000005
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.44000000000000006
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.783,
+          "f2": 0.5800000000000001
+        },
+        "roc-sovereign": {
+          "f2": 0.5800000000000001,
+          "f1": 0.785
+        },
+        "roc-exists-today": {
+          "f1": 0.9339999999999999
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.8180000000000001
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.88
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.55
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.655
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.125,
+          "f2": 0.43499999999999994
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.05199999999999999
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.19700000000000006
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.19
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.305
+        }
+      }
+    }
+  }
+}

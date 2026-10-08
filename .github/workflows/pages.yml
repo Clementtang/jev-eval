@@ -13,6 +13,7 @@ on:
       - "scripts/export-site-data.mjs"
       - "scripts/addendum.mjs"
       - "scripts/appendix-d.mjs"
+      - "scripts/appendix-e.mjs"
       - "scripts/verify-*.mjs"
       - "CITATION.cff"
       - ".zenodo.json"
@@ -43,14 +44,16 @@ jobs:
       - name: Export replay and item browser data
         run: node scripts/export-site-data.mjs
       # Stops the deploy if the item browser or the lab would disagree with results/stats.md, the
-      # addendum columns with results/addendum.md and results/runs-addendum/, or appendix D with
-      # results/appendix-d.md and results/runs-appendixd/.
+      # addendum columns with results/addendum.md and results/runs-addendum/, appendix D with
+      # results/appendix-d.md and results/runs-appendixd/, or appendix E with results/appendix-e.md
+      # and results/runs-appendixe/.
       - name: Check site data
         run: |
           node scripts/verify-items.mjs
           node scripts/verify-lab.mjs
           node scripts/verify-addendum.mjs
           node scripts/verify-appendix-d.mjs
+          node scripts/verify-appendix-e.mjs
       - name: Install site dependencies
         working-directory: site
         run: npm ci
