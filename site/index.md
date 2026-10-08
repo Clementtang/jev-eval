@@ -54,6 +54,7 @@ Jev 也是六個模型中回應最快、成本最低的：基準題延遲中位�
   <li><a :href="withBase('/data/summary.json')" target="_self">結果摘要（JSON）</a><span class="desc">各指數與 95% bootstrap 區間、中立檢定、標籤比例、延遲與成本，附 schema 欄位說明每個鍵。給程式與 AI agent 讀取的還有 <a :href="withBase('/llms.txt')" target="_self">llms.txt</a>、論文 Markdown 原文（<a :href="withBase('/paper.md')" target="_self">繁體中文</a>、<a :href="withBase('/en/paper.md')" target="_self">英文</a>）與 <a href="https://github.com/Clementtang/jev-eval/blob/main/CITATION.cff">CITATION.cff</a>。</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/addendum.md">附錄 C：Claude Sonnet 5.5</a><span class="desc">主分析之外，2026 年 9 月 29 日另行測試 Claude Sonnet 5.5，並在同一天重跑 Claude Sonnet 5，以區分模型版本與執行日期造成的差異；主分析的數值不變。機器可讀資料見 <a :href="withBase('/data/addendum.json')" target="_self">addendum.json</a>，題庫瀏覽器與敏感度實驗室可切換顯示附錄模型。</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-d.md">附錄 D：GPT-6.1 Sol</a><span class="desc">OpenAI 與 Claude Sonnet 5.5 同日推出的 GPT-6.1 Sol，2026 年 10 月 1 日另行測試，並在同一天重跑 GPT-6 Sol；與前一版沒有可辨的差異。機器可讀資料見 <a :href="withBase('/data/appendix-d.json')" target="_self">appendix-d.json</a>，題庫瀏覽器、敏感度實驗室與重播頁可切換顯示。</span></li>
+  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-e.md">附錄 E：Claude Haiku 5.5</a><span class="desc">10 月 7 日推出的 Claude Haiku 5.5，2026 年 10 月 8 日另行測試，並在同一天重跑 Claude Haiku 4.5；地位指數在三種語言都較前一版高。機器可讀資料見 <a :href="withBase('/data/appendix-e.json')" target="_self">appendix-e.json</a>，題庫瀏覽器、敏感度實驗室與重播頁可切換顯示。</span></li>
 </ul>
 
 ## 授權
