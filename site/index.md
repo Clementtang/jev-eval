@@ -14,7 +14,7 @@ import { withBase } from "vitepress";
 
 <p class="home-subtitle">以不同量測工具稽核語言模型的台灣主權立場，會得到不同的模型排序</p>
 
-<p class="home-meta">Hong-Rui (Clement) Tang（獨立研究者，越南河內）｜預印本草稿 0.9，2026 年 10 月 8 日｜未經同儕審查</p>
+<p class="home-meta">Hong-Rui (Clement) Tang（獨立研究者，越南河內）｜預印本草稿 0.9.1，2026 年 10 月 8 日｜未經同儕審查</p>
 
 本研究以是非題主張、強迫選擇與實務標籤三種工具，稽核結構化判斷模型 TypeSafe Jev（jev-1.13.0）與五個生成式模型（Claude Haiku 4.5、Claude Sonnet 5、Grok 4.7、GPT-6 Luna、GPT-6 Sol）在台灣主權議題上的判斷。題目有繁體中文、簡體中文與英文版本，共分析 26,796 次呼叫。
 
@@ -44,7 +44,7 @@ Jev 也是六個模型中回應最快、成本最低的：基準題延遲中位�
 ## 閱讀與資料
 
 <ul class="link-list">
-  <li><a :href="withBase('/paper')">論文全文</a><span class="desc">研究方法、全部結果、研究限制與六輪對抗式審查後的修訂。另有<a :href="withBase('/en/paper')">英文版</a>。</span></li>
+  <li><a :href="withBase('/paper')">論文全文</a><span class="desc">研究方法、全部結果、研究限制與七輪對抗式審查後的修訂。另有<a :href="withBase('/en/paper')">英文版</a>。</span></li>
   <li><a :href="withBase('/explore')">題庫瀏覽器</a><span class="desc">全部 957 題的三語題目與六個模型在每一題的結果，可搜尋、篩選，每題有固定網址。</span></li>
   <li><a :href="withBase('/lab')">敏感度實驗室</a><span class="desc">自行選擇計入指數的主張，即時重算六個模型的指數與 95% bootstrap 區間。</span></li>
   <li><a :href="withBase('/replay/stance.html')" target="_self">互動重播：同題對照</a><span class="desc">六個模型對同一題的判斷，依章節逐題播放。桌機橫向瀏覽；手機請改看<a :href="withBase('/replay/stance.html?layout=portrait&cut=short')" target="_self">直式短版</a>。</span></li>
@@ -53,12 +53,12 @@ Jev 也是六個模型中回應最快、成本最低的：基準題延遲中位�
   <li><a href="https://github.com/Clementtang/jev-eval/tree/main/results/runs">原始資料</a><span class="desc">每一次模型呼叫的原始紀錄（JSONL），以及<a href="https://github.com/Clementtang/jev-eval/blob/main/data/dataset.json">題庫</a>與<a href="https://github.com/Clementtang/jev-eval/blob/main/results/stats.md">統計輸出</a>。</span></li>
   <li><a :href="withBase('/data/summary.json')" target="_self">結果摘要（JSON）</a><span class="desc">各指數與 95% bootstrap 區間、中立檢定、標籤比例、延遲與成本，附 schema 欄位說明每個鍵。給程式與 AI agent 讀取的還有 <a :href="withBase('/llms.txt')" target="_self">llms.txt</a>、論文 Markdown 原文（<a :href="withBase('/paper.md')" target="_self">繁體中文</a>、<a :href="withBase('/en/paper.md')" target="_self">英文</a>）與 <a href="https://github.com/Clementtang/jev-eval/blob/main/CITATION.cff">CITATION.cff</a>。</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/addendum.md">附錄 C：Claude Sonnet 5.5</a><span class="desc">主分析之外，2026 年 9 月 29 日另行測試 Claude Sonnet 5.5，並在同一天重跑 Claude Sonnet 5，以區分模型版本與執行日期造成的差異；主分析的數值不變。機器可讀資料見 <a :href="withBase('/data/addendum.json')" target="_self">addendum.json</a>，題庫瀏覽器與敏感度實驗室可切換顯示附錄模型。</span></li>
-  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-d.md">附錄 D：GPT-6.1 Sol</a><span class="desc">OpenAI 與 Claude Sonnet 5.5 同日推出的 GPT-6.1 Sol，2026 年 10 月 1 日另行測試，並在同一天重跑 GPT-6 Sol；與前一版沒有可辨的差異。機器可讀資料見 <a :href="withBase('/data/appendix-d.json')" target="_self">appendix-d.json</a>，題庫瀏覽器、敏感度實驗室與重播頁可切換顯示。</span></li>
-  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-e.md">附錄 E：Claude Haiku 5.5</a><span class="desc">10 月 7 日推出的 Claude Haiku 5.5，2026 年 10 月 8 日另行測試，並在同一天重跑 Claude Haiku 4.5；地位指數在三種語言都較前一版高。機器可讀資料見 <a :href="withBase('/data/appendix-e.json')" target="_self">appendix-e.json</a>，題庫瀏覽器、敏感度實驗室與重播頁可切換顯示。</span></li>
+  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-d.md">附錄 D：GPT-6.1 Sol</a><span class="desc">OpenAI 與 Claude Sonnet 5.5 同日推出的 GPT-6.1 Sol，2026 年 10 月 1 日另行測試，並在同一天重跑 GPT-6 Sol；與前一版的差距小，本次未檢出差異。機器可讀資料見 <a :href="withBase('/data/appendix-d.json')" target="_self">appendix-d.json</a>，題庫瀏覽器、敏感度實驗室與重播頁可切換顯示。</span></li>
+  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-e.md">附錄 E：Claude Haiku 5.5</a><span class="desc">10 月 7 日推出的 Claude Haiku 5.5，2026 年 10 月 8 日另行測試，並在同一天重跑 Claude Haiku 4.5；以低推理強度執行時，平均地位指數在三種語言都較前一版高（英文 p = 0.057），地點指數在繁中與英文較低，英文的低值來自正反句都被否定。機器可讀資料見 <a :href="withBase('/data/appendix-e.json')" target="_self">appendix-e.json</a>，題庫瀏覽器、敏感度實驗室與重播頁可切換顯示。</span></li>
 </ul>
 
 ## 授權
 
 論文、題庫與結果以 <a href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權，標註出處即可使用、改作與轉載；程式以 <a href="https://github.com/Clementtang/jev-eval/blob/main/LICENSE">MIT</a> 授權。論文引用的第三方資料依其原始出處的條件使用。
 
-<p class="table-note">題目生成、程式、統計分析與論文撰寫由 Claude（Anthropic）協助完成，受測模型包含兩個 Claude 模型。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，API 費用自付。</p>
+<p class="table-note">題目生成、程式、統計分析與論文撰寫由 Claude（Anthropic）協助完成，主分析的受測模型包含兩個 Claude 模型，附錄 C 與附錄 E 另有兩個。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，API 費用自付。</p>

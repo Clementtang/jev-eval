@@ -3,7 +3,7 @@
 [English](README.md) | **繁體中文**
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
-[![Preprint](https://img.shields.io/badge/preprint-draft%200.9%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/paper)
+[![Preprint](https://img.shields.io/badge/preprint-draft%200.9.1%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-green)](LICENSE-CC-BY-4.0.txt)
@@ -13,9 +13,9 @@
 
 [網站](https://clementtang.github.io/jev-eval/) · [論文](https://clementtang.github.io/jev-eval/paper) · [題庫瀏覽器](https://clementtang.github.io/jev-eval/explore) · [敏感度實驗室](https://clementtang.github.io/jev-eval/lab) · [互動重播](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [引用](#引用)
 
-Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.9，2026 年 10 月 8 日，未經同儕審查。
+Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.9.1，2026 年 10 月 8 日，未經同儕審查。
 
-DOI：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)（所有版本；v0.9 為 10.5281/zenodo.23232006）。
+DOI：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)（所有版本）。
 
 論文與資料採 [CC BY 4.0](LICENSE-CC-BY-4.0.txt) 授權，程式採 [MIT](LICENSE) 授權。
 
@@ -33,8 +33,8 @@ DOI：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)（所�
 - **標籤。** 在原始選項順序下，Jev、Claude Haiku 4.5 與兩個 GPT-6 模型從未選擇把台灣列在「China」之下的標籤；Claude Sonnet 5 則在 42% 的簡體中文試驗中如此標註。
 - **量測工具。** Jev 與 Claude Sonnet 5 互換位置：稽核主張或強迫選擇，會認為 Jev 較接近中國立場；稽核標籤，則會認為 Claude Sonnet 5 較接近。
 - **後繼版本（附錄 C）。** 9 月 29 日的同日附錄中，Claude Sonnet 5.5 在低推理強度、原始選項順序下沒有選過把台灣列在「China」之下的標籤（打亂順序時簡體中文 60 次中 2 次）；同日重跑的 Claude Sonnet 5 仍重現 42%。Claude Sonnet 5.5 在簡體中文對台灣城市主張的否定則不如前一版堅定（地點指數 0.79，前一版 0.94）。詳見 [`results/addendum.md`](results/addendum.md)。
-- **後繼版本（附錄 D）。** OpenAI 同日推出的 GPT-6.1 Sol 於 10 月 1 日與同日重跑的 GPT-6 Sol 一起測試，在三種工具上都與前一版沒有可辨的差異（地位指數 0.90、0.79、0.91，前一版 0.91、0.81、0.91；沒有把台灣列在「China」之下的標籤，強迫選擇也沒有選中華人民共和國的表述）。Jev、Grok 4.7 與 GPT-6 Luna 沒有重跑。詳見 [`results/appendix-d.md`](results/appendix-d.md)。
-- **後繼版本（附錄 E）。** 10 月 7 日推出的 Claude Haiku 5.5 於 10 月 8 日以低推理強度與同日重跑的 Claude Haiku 4.5 一起測試。它的地位指數在三種語言都高 0.11 至 0.14（0.74、0.66、0.73，前一版 0.62、0.53、0.62），沒有把台灣列在「China」之下的標籤，強迫選擇也沒有選中華人民共和國的表述。英文地點指數 0.75 來自它同時否定「台北是中華人民共和國的城市」與其反句。詳見 [`results/appendix-e.md`](results/appendix-e.md)。
+- **後繼版本（附錄 D）。** OpenAI 同日推出的 GPT-6.1 Sol 於 10 月 1 日與同日重跑的 GPT-6 Sol 一起測試，與前一版的差距小，本次未檢出差異，也沒有檢驗等效性（地位指數 0.90、0.79、0.91，前一版 0.91、0.81、0.91；沒有把台灣列在「China」之下的標籤，強迫選擇也沒有選中華人民共和國的表述）。Jev、Grok 4.7 與 GPT-6 Luna 沒有重跑。詳見 [`results/appendix-d.md`](results/appendix-d.md)。
+- **後繼版本（附錄 E）。** 10 月 7 日推出的 Claude Haiku 5.5 於 10 月 8 日以低推理強度與同日重跑的 Claude Haiku 4.5 一起測試。它的地位指數高 0.11 至 0.14（0.74、0.66、0.73，前一版 0.62、0.53、0.62；精確 p = 0.011、0.004、0.057，皆未校正），沒有把台灣列在「China」之下的標籤，強迫選擇也沒有選中華人民共和國的表述；標籤與選擇題沒有以它預設的中推理強度測試。它的地點指數在繁中與英文較低，英文的 0.75 來自同時否定「台北是中華人民共和國的城市」與其反句。詳見 [`results/appendix-e.md`](results/appendix-e.md)。
 - **速度與成本。** Jev 回應最快（中位數 267 毫秒），成本也最低（每 1,000 次約 0.013 美元）。
 
 Jev 在簡體中文的地位指數 0.26 屬於探索性結果：在它的檢定家族內低於 0.5，但把所有檢視過的主張集合一起校正後不顯著。地位主張與地點主張的區分是在看過結果之後採用的，論文同時報告兩種版本。
@@ -67,7 +67,7 @@ Jev 在簡體中文的地位指數 0.26 屬於探索性結果：在它的檢定�
 
 | 路徑                                     | 內容                                                |
 | ---------------------------------------- | --------------------------------------------------- |
-| `docs/paper/`                            | 英文與繁體中文論文，以及六輪對抗式審查報告          |
+| `docs/paper/`                            | 英文與繁體中文論文，以及七輪對抗式審查報告          |
 | `data/dataset.json`                      | 題庫：957 題，含三語題目、選項與編碼                |
 | `results/runs/*.jsonl`                   | 每一次納入分析的呼叫原始紀錄（每行一個 JSON）       |
 | `results/stats.md`                       | 統計輸出：指數、精確符號翻轉檢定、Holm 校正、穩健性 |
@@ -115,9 +115,9 @@ cd site && npm ci && npm run build  # 輸出在 site/.vitepress/dist
 
 ## 審查過程與利益揭露
 
-草稿經過六輪對抗式審查，報告公開在 [`docs/paper/`](docs/paper/)。第一、二、六輪由另開的 Claude 工作階段執行，第三至五輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行。第六輪指出只有 Anthropic 的後繼版本經過重測，因此補做了附錄 D。
+草稿經過七輪對抗式審查，報告公開在 [`docs/paper/`](docs/paper/)。第一、二、六輪由另開的 Claude 工作階段執行，第三至五輪與第七輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行。第六輪指出只有 Anthropic 的後繼版本經過重測，因此補做了附錄 D；第七輪審查附錄 D、E，促成草稿 0.9.1。
 
-Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰寫，受測模型包含兩個 Claude 模型，附錄 C 另有第三個。第三至五輪審查者所屬的廠商也有模型在受測之列。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，所有 API 費用由作者自行支付。發表前未聯繫 TypeSafe。
+Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰寫，受測模型包含兩個 Claude 模型，附錄 C 與附錄 E 另有兩個。第三至五輪與第七輪審查者所屬的廠商也有模型在受測之列。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，所有 API 費用由作者自行支付。發表前未聯繫 TypeSafe。
 
 ## 引用
 
@@ -128,7 +128,7 @@ Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰�
   year   = {2026},
   month  = {10},
   type   = {Preprint},
-  note   = {Draft 0.9, not peer reviewed},
+  note   = {Draft 0.9.1, not peer reviewed},
   doi    = {10.5281/zenodo.23055592},
   url    = {https://clementtang.github.io/jev-eval/}
 }
