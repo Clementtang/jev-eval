@@ -1284,6 +1284,15 @@
               "claude-haiku-5-5-medium@appendix-e",
             ],
           },
+          {
+            label: "附錄 F",
+            date: "2026-10-10",
+            targets: [
+              "luna-6-decisions@appendix-f",
+              "luna-6@appendix-f",
+              "jev@appendix-f",
+            ],
+          },
         ];
         const ADDENDUM_ORDER = APPENDIX_ARMS.flatMap((arm) => arm.targets);
         const MODEL_NAMES = {
@@ -1301,6 +1310,9 @@
           "claude-haiku-5-5@appendix-e": "Claude Haiku 5.5（附錄\u00a0E）",
           "claude-haiku-4-5@appendix-e": "Claude Haiku 4.5（附錄\u00a0E 重跑）",
           "claude-haiku-5-5-medium@appendix-e": "Claude Haiku 5.5 medium（附錄\u00a0E）",
+          "luna-6-decisions@appendix-f": "GPT-6 Luna Decisions API（附錄\u00a0F）",
+          "luna-6@appendix-f": "GPT-6 Luna（附錄\u00a0F 重跑）",
+          "jev@appendix-f": "Jev（附錄\u00a0F 重跑）",
         };
         // Same researcher coding and key order as scripts/stats.mjs; the bootstrap resamples
         // concepts by position, so the order must match for the intervals to match.

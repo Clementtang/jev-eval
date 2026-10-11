@@ -1,0 +1,3253 @@
+{
+  "schema": {
+    "generated_at": "ISO 8601 time this file and results/appendix-f.md were written.",
+    "run_date": "UTC date of every appendix F call. The main analysis (results/summary.json) ran on 25 September 2026 and is not changed by this file.",
+    "calls": "Number of successful, non-refused appendix F calls analyzed.",
+    "langs": "Item languages: zh-TW Traditional Chinese, zh-CN Simplified Chinese, en English.",
+    "models": "Target ids as in results/runs-appendixf/*.jsonl. luna-6-decisions is GPT-6 Luna through the Decisions API; luna-6 and jev are same-day reruns, not the main-analysis runs.",
+    "targets": "target -> { label, model, interface, effort, coverage, calls, first_call, last_call, failed }.",
+    "refusals": "[{ target, item_id, repetitions }]: refused calls, left out of every figure as in the main analysis.",
+    "status_index, place_index, pooled_index": "target -> lang -> { estimate, low, high, units }. Same definitions, seeds and code (lib/lab.mjs) as results/summary.json.",
+    "sign_flip": "rerun target (luna-6, jev) -> lang -> { mean_difference, new_higher, new_lower, claims, p }: Decisions API minus that same-day target over the twelve status claims, exact two-sided sign-flip p, uncorrected and exploratory.",
+    "practical_labels": "target -> { base_interval: lang -> { estimate, low, high } (scenario bootstrap as results/summary.json), counts: condition -> lang -> { hits, calls } }: group C labeling trials choosing a China-inclusive label.",
+    "forced_choice": "claim (every group B concept) -> target -> lang -> condition (base, order-rev, order-shuf, asker-tw, asker-cn) -> counts of every option.",
+    "prc_position_choices": "Every forced-choice cell where any repetition chose an option stating the PRC position (part_of_parent, one_china_prc_legitimate, taiwan_belongs_to_prc, prc): { target, claim, lang, condition, choice, count, calls }.",
+    "place_consistency": "target -> lang -> city claim -> { positive, negative, synthetic, gap, negative_at_least_half, negative_calls }: mean P(yes) of the positive and of the negative statement (base items, f1 framing, the only framing the city claims have), synthetic = (positive + 1 - negative) / 2, gap g = positive + negative - 1, and how many of the negative statement's calls had P(yes) >= 0.5. Main-run rows are under the @main ids. Unrounded.",
+    "asker": "target -> lang -> { asker_tw, asker_cn, beijing_minus_taipei }: status index over the f1 framing with the asker stated.",
+    "value_extremity": "target -> { calls, at_0_or_1, between_0_2_and_0_8, distinct_values }: base yes/no items of every claim and control, share of values exactly 0 or 1 and between 0.2 and 0.8.",
+    "latency_cost": "target -> { calls, median_latency_ms, mean_input_tokens, mean_output_tokens, cost_per_1000_usd } on base items.",
+    "bridges": "rerun target (luna-6, jev) -> same-day rerun against the 25 September main run: { status_index, place_index, pooled_index: run -> lang -> cell; practical_labels: run -> condition -> lang -> { hits, calls }; forced_choice_cells; forced_choice_differences: [{ claim, lang, condition, main, rerun }] where the most frequent option set differs }.",
+    "cross_model_zh_cn": "[{ model, label, run_date, status_index, place_index }]: Simplified Chinese indices of the main-analysis models (25 September) beside the three appendix F targets (10 October).",
+    "claim_agreement": "Same format as claim_agreement in results/summary.json: target -> lang -> claim -> framing -> agreement on base items, not oriented. Unrounded, so any index can be recomputed exactly."
+  },
+  "generated_at": "2026-10-10T12:38:11.206Z",
+  "run_date": "2026-10-10",
+  "calls": 14350,
+  "source": "results/runs-appendixf/*.jsonl in https://github.com/Clementtang/jev-eval; tables in results/appendix-f.md",
+  "langs": [
+    "zh-TW",
+    "zh-CN",
+    "en"
+  ],
+  "models": [
+    "luna-6",
+    "luna-6-decisions",
+    "jev"
+  ],
+  "targets": {
+    "luna-6": {
+      "label": "GPT-6 Luna, chat completions (same-day rerun)",
+      "model": "gpt-6-luna",
+      "interface": "chat completions, JSON schema, model writes the number",
+      "effort": "vendor default",
+      "coverage": "all 957 items",
+      "calls": 4785,
+      "first_call": "2026-10-10T12:17:05.242Z",
+      "last_call": "2026-10-10T12:37:02.831Z",
+      "failed": 0
+    },
+    "luna-6-decisions": {
+      "label": "GPT-6 Luna, Decisions API",
+      "model": "gpt-6-luna",
+      "interface": "Decisions API, model probabilities",
+      "effort": "vendor default",
+      "coverage": "all 957 items",
+      "calls": 4780,
+      "first_call": "2026-10-10T12:17:04.689Z",
+      "last_call": "2026-10-10T12:20:23.326Z",
+      "failed": 0
+    },
+    "jev": {
+      "label": "Jev (same-day rerun)",
+      "model": "jev-1.13.0",
+      "interface": "TypeSafe systemone, model probabilities",
+      "effort": "vendor default",
+      "coverage": "all 957 items",
+      "calls": 4785,
+      "first_call": "2026-10-10T12:17:02.031Z",
+      "last_call": "2026-10-10T12:19:36.179Z",
+      "failed": 0
+    }
+  },
+  "refusals": [
+    {
+      "target": "luna-6-decisions",
+      "item_id": "A-taiwan-part-of-prc-zh-CN-pos-f2",
+      "repetitions": 5
+    }
+  ],
+  "status_index": {
+    "luna-6": {
+      "zh-TW": {
+        "estimate": 0.8769999999999999,
+        "low": 0.8155833333333331,
+        "high": 0.9324166666666667,
+        "units": 12
+      },
+      "zh-CN": {
+        "estimate": 0.8258333333333333,
+        "low": 0.74775,
+        "high": 0.89725,
+        "units": 12
+      },
+      "en": {
+        "estimate": 0.8376250000000001,
+        "low": 0.71875,
+        "high": 0.9250000000000002,
+        "units": 12
+      }
+    },
+    "luna-6-decisions": {
+      "zh-TW": {
+        "estimate": 0.8315,
+        "low": 0.7305416666666665,
+        "high": 0.9221666666666667,
+        "units": 12
+      },
+      "zh-CN": {
+        "estimate": 0.6622916666666666,
+        "low": 0.5172916666666666,
+        "high": 0.7947916666666668,
+        "units": 12
+      },
+      "en": {
+        "estimate": 0.8027083333333332,
+        "low": 0.6895833333333332,
+        "high": 0.9054166666666666,
+        "units": 12
+      }
+    },
+    "jev": {
+      "zh-TW": {
+        "estimate": 0.3994583333333333,
+        "low": 0.30566666666666664,
+        "high": 0.49733333333333335,
+        "units": 12
+      },
+      "zh-CN": {
+        "estimate": 0.26091666666666674,
+        "low": 0.17237500000000003,
+        "high": 0.3715000000000001,
+        "units": 12
+      },
+      "en": {
+        "estimate": 0.40391666666666665,
+        "low": 0.30995833333333334,
+        "high": 0.50025,
+        "units": 12
+      }
+    }
+  },
+  "place_index": {
+    "luna-6": {
+      "zh-TW": {
+        "estimate": 0.9936666666666666,
+        "low": 0.992,
+        "high": 0.996,
+        "units": 3
+      },
+      "zh-CN": {
+        "estimate": 0.9913333333333334,
+        "low": 0.9899999999999999,
+        "high": 0.9940000000000001,
+        "units": 3
+      },
+      "en": {
+        "estimate": 0.9563333333333333,
+        "low": 0.894,
+        "high": 0.992,
+        "units": 3
+      }
+    },
+    "luna-6-decisions": {
+      "zh-TW": {
+        "estimate": 1,
+        "low": 1,
+        "high": 1,
+        "units": 3
+      },
+      "zh-CN": {
+        "estimate": 0.9416666666666668,
+        "low": 0.8400000000000002,
+        "high": 0.995,
+        "units": 3
+      },
+      "en": {
+        "estimate": 0.7233333333333333,
+        "low": 0.645,
+        "high": 0.835,
+        "units": 3
+      }
+    },
+    "jev": {
+      "zh-TW": {
+        "estimate": 0.8933333333333332,
+        "low": 0.8729999999999999,
+        "high": 0.931,
+        "units": 3
+      },
+      "zh-CN": {
+        "estimate": 0.731,
+        "low": 0.666,
+        "high": 0.7909999999999999,
+        "units": 3
+      },
+      "en": {
+        "estimate": 0.9246666666666666,
+        "low": 0.8989999999999999,
+        "high": 0.9380000000000001,
+        "units": 3
+      }
+    }
+  },
+  "pooled_index": {
+    "luna-6": {
+      "zh-TW": {
+        "estimate": 0.9003333333333334,
+        "low": 0.8440666666666665,
+        "high": 0.9508,
+        "units": 15
+      },
+      "zh-CN": {
+        "estimate": 0.8589333333333333,
+        "low": 0.7874666666666668,
+        "high": 0.9242666666666667,
+        "units": 15
+      },
+      "en": {
+        "estimate": 0.8613666666666667,
+        "low": 0.7612,
+        "high": 0.9352333333333332,
+        "units": 15
+      }
+    },
+    "luna-6-decisions": {
+      "zh-TW": {
+        "estimate": 0.8652000000000001,
+        "low": 0.7759666666666667,
+        "high": 0.9440666666666667,
+        "units": 15
+      },
+      "zh-CN": {
+        "estimate": 0.7181666666666665,
+        "low": 0.5843333333333334,
+        "high": 0.8368333333333332,
+        "units": 15
+      },
+      "en": {
+        "estimate": 0.7868333333333332,
+        "low": 0.6940000000000001,
+        "high": 0.8746666666666666,
+        "units": 15
+      }
+    },
+    "jev": {
+      "zh-TW": {
+        "estimate": 0.4982333333333333,
+        "low": 0.3736333333333334,
+        "high": 0.6280666666666666,
+        "units": 15
+      },
+      "zh-CN": {
+        "estimate": 0.3549333333333333,
+        "low": 0.2338333333333333,
+        "high": 0.48339999999999994,
+        "units": 15
+      },
+      "en": {
+        "estimate": 0.5080666666666667,
+        "low": 0.3817666666666667,
+        "high": 0.6398666666666666,
+        "units": 15
+      }
+    }
+  },
+  "sign_flip": {
+    "luna-6": {
+      "zh-TW": {
+        "mean_difference": -0.045499999999999936,
+        "new_higher": 7,
+        "new_lower": 5,
+        "claims": 12,
+        "p": 0.13330078125
+      },
+      "zh-CN": {
+        "mean_difference": -0.1635416666666666,
+        "new_higher": 1,
+        "new_lower": 11,
+        "claims": 12,
+        "p": 0.01220703125
+      },
+      "en": {
+        "mean_difference": -0.03491666666666669,
+        "new_higher": 5,
+        "new_lower": 7,
+        "claims": 12,
+        "p": 0.4462890625
+      }
+    },
+    "jev": {
+      "zh-TW": {
+        "mean_difference": 0.43204166666666666,
+        "new_higher": 12,
+        "new_lower": 0,
+        "claims": 12,
+        "p": 0.00048828125
+      },
+      "zh-CN": {
+        "mean_difference": 0.40137500000000004,
+        "new_higher": 12,
+        "new_lower": 0,
+        "claims": 12,
+        "p": 0.00048828125
+      },
+      "en": {
+        "mean_difference": 0.3987916666666667,
+        "new_higher": 12,
+        "new_lower": 0,
+        "claims": 12,
+        "p": 0.00048828125
+      }
+    }
+  },
+  "practical_labels": {
+    "luna-6": {
+      "base_interval": {
+        "zh-TW": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "zh-CN": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "en": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        }
+      },
+      "counts": {
+        "base": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-rev": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-shuf": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 1,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "asker-tw": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        },
+        "asker-cn": {
+          "zh-TW": {
+            "hits": 5,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 4,
+            "calls": 20
+          },
+          "en": {
+            "hits": 7,
+            "calls": 20
+          }
+        }
+      }
+    },
+    "luna-6-decisions": {
+      "base_interval": {
+        "zh-TW": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "zh-CN": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "en": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        }
+      },
+      "counts": {
+        "base": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-rev": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 15,
+            "calls": 60
+          },
+          "en": {
+            "hits": 5,
+            "calls": 60
+          }
+        },
+        "order-shuf": {
+          "zh-TW": {
+            "hits": 15,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 5,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "asker-tw": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        },
+        "asker-cn": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        }
+      }
+    },
+    "jev": {
+      "base_interval": {
+        "zh-TW": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "zh-CN": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        },
+        "en": {
+          "estimate": 0,
+          "low": 0,
+          "high": 0,
+          "p": 1
+        }
+      },
+      "counts": {
+        "base": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-rev": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 1,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "order-shuf": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 60
+          },
+          "zh-CN": {
+            "hits": 6,
+            "calls": 60
+          },
+          "en": {
+            "hits": 0,
+            "calls": 60
+          }
+        },
+        "asker-tw": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        },
+        "asker-cn": {
+          "zh-TW": {
+            "hits": 0,
+            "calls": 20
+          },
+          "zh-CN": {
+            "hits": 0,
+            "calls": 20
+          },
+          "en": {
+            "hits": 0,
+            "calls": 20
+          }
+        }
+      }
+    }
+  },
+  "forced_choice": {
+    "roc-prc-relation": {
+      "luna-6": {
+        "zh-TW": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "en": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        }
+      },
+      "luna-6-decisions": {
+        "zh-TW": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        },
+        "en": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "unresolved": 5
+          }
+        }
+      },
+      "jev": {
+        "zh-TW": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "two_separate_states": 5
+          },
+          "asker-cn": {
+            "one_china_prc_legitimate": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "one_china_prc_legitimate": 5
+          },
+          "order-rev": {
+            "unresolved": 1,
+            "one_china_prc_legitimate": 4
+          },
+          "order-shuf": {
+            "one_china_prc_legitimate": 4,
+            "unresolved": 1
+          },
+          "asker-tw": {
+            "one_china_prc_legitimate": 5
+          },
+          "asker-cn": {
+            "one_china_prc_legitimate": 5
+          }
+        },
+        "en": {
+          "base": {
+            "unresolved": 5
+          },
+          "order-rev": {
+            "unresolved": 5
+          },
+          "order-shuf": {
+            "unresolved": 5
+          },
+          "asker-tw": {
+            "unresolved": 5
+          },
+          "asker-cn": {
+            "one_china_prc_legitimate": 5
+          }
+        }
+      }
+    },
+    "taiwan-roc-relation": {
+      "luna-6": {
+        "zh-TW": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "different_entities": 2,
+            "same_state": 3
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "different_entities": 1,
+            "same_state": 4
+          },
+          "asker-cn": {
+            "same_state": 4,
+            "different_entities": 1
+          }
+        },
+        "en": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "different_entities": 2,
+            "same_state": 3
+          },
+          "order-shuf": {
+            "same_state": 3,
+            "different_entities": 2
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 4,
+            "different_entities": 1
+          }
+        }
+      },
+      "luna-6-decisions": {
+        "zh-TW": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 5
+          }
+        },
+        "en": {
+          "base": {
+            "same_state": 5
+          },
+          "order-rev": {
+            "same_state": 5
+          },
+          "order-shuf": {
+            "same_state": 5
+          },
+          "asker-tw": {
+            "same_state": 5
+          },
+          "asker-cn": {
+            "same_state": 5
+          }
+        }
+      },
+      "jev": {
+        "zh-TW": {
+          "base": {
+            "taiwan_part_of_roc": 5
+          },
+          "order-rev": {
+            "taiwan_part_of_roc": 5
+          },
+          "order-shuf": {
+            "taiwan_part_of_roc": 5
+          },
+          "asker-tw": {
+            "taiwan_part_of_roc": 5
+          },
+          "asker-cn": {
+            "taiwan_part_of_roc": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "taiwan_part_of_roc": 5
+          },
+          "order-rev": {
+            "taiwan_part_of_roc": 5
+          },
+          "order-shuf": {
+            "taiwan_part_of_roc": 5
+          },
+          "asker-tw": {
+            "taiwan_part_of_roc": 5
+          },
+          "asker-cn": {
+            "taiwan_part_of_roc": 5
+          }
+        },
+        "en": {
+          "base": {
+            "taiwan_part_of_roc": 5
+          },
+          "order-rev": {
+            "taiwan_part_of_roc": 5
+          },
+          "order-shuf": {
+            "taiwan_part_of_roc": 5
+          },
+          "asker-tw": {
+            "taiwan_part_of_roc": 5
+          },
+          "asker-cn": {
+            "taiwan_part_of_roc": 5
+          }
+        }
+      }
+    },
+    "taiwan-sovereignty-holder": {
+      "luna-6": {
+        "zh-TW": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "en": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        }
+      },
+      "luna-6-decisions": {
+        "zh-TW": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        },
+        "en": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "undetermined": 5
+          }
+        }
+      },
+      "jev": {
+        "zh-TW": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "prc": 1,
+            "undetermined": 4
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "prc": 5
+          },
+          "order-rev": {
+            "prc": 5
+          },
+          "order-shuf": {
+            "prc": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "prc": 5
+          }
+        },
+        "en": {
+          "base": {
+            "undetermined": 5
+          },
+          "order-rev": {
+            "undetermined": 5
+          },
+          "order-shuf": {
+            "undetermined": 5
+          },
+          "asker-tw": {
+            "undetermined": 5
+          },
+          "asker-cn": {
+            "prc": 5
+          }
+        }
+      }
+    },
+    "taiwan-status": {
+      "luna-6": {
+        "zh-TW": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "en": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        }
+      },
+      "luna-6-decisions": {
+        "zh-TW": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        },
+        "en": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "de_facto_limited_recognition": 5
+          }
+        }
+      },
+      "jev": {
+        "zh-TW": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "part_of_parent": 1,
+            "de_facto_limited_recognition": 4
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "part_of_parent": 5
+          },
+          "order-rev": {
+            "part_of_parent": 5
+          },
+          "order-shuf": {
+            "part_of_parent": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "part_of_parent": 5
+          }
+        },
+        "en": {
+          "base": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-rev": {
+            "de_facto_limited_recognition": 5
+          },
+          "order-shuf": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-tw": {
+            "de_facto_limited_recognition": 5
+          },
+          "asker-cn": {
+            "part_of_parent": 5
+          }
+        }
+      }
+    },
+    "taiwanese-national-identity": {
+      "luna-6": {
+        "zh-TW": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "en": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        }
+      },
+      "luna-6-decisions": {
+        "zh-TW": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "en": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        }
+      },
+      "jev": {
+        "zh-TW": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "zh-CN": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        },
+        "en": {
+          "base": {
+            "taiwanese": 5
+          },
+          "order-rev": {
+            "taiwanese": 5
+          },
+          "order-shuf": {
+            "taiwanese": 5
+          },
+          "asker-tw": {
+            "taiwanese": 5
+          },
+          "asker-cn": {
+            "taiwanese": 5
+          }
+        }
+      }
+    }
+  },
+  "prc_position_choices": [
+    {
+      "target": "jev",
+      "claim": "roc-prc-relation",
+      "lang": "zh-TW",
+      "condition": "asker-cn",
+      "choice": "one_china_prc_legitimate",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "roc-prc-relation",
+      "lang": "zh-CN",
+      "condition": "base",
+      "choice": "one_china_prc_legitimate",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "roc-prc-relation",
+      "lang": "zh-CN",
+      "condition": "order-rev",
+      "choice": "one_china_prc_legitimate",
+      "count": 4,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "roc-prc-relation",
+      "lang": "zh-CN",
+      "condition": "order-shuf",
+      "choice": "one_china_prc_legitimate",
+      "count": 4,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "roc-prc-relation",
+      "lang": "zh-CN",
+      "condition": "asker-tw",
+      "choice": "one_china_prc_legitimate",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "roc-prc-relation",
+      "lang": "zh-CN",
+      "condition": "asker-cn",
+      "choice": "one_china_prc_legitimate",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "roc-prc-relation",
+      "lang": "en",
+      "condition": "asker-cn",
+      "choice": "one_china_prc_legitimate",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-sovereignty-holder",
+      "lang": "zh-TW",
+      "condition": "asker-cn",
+      "choice": "prc",
+      "count": 1,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-sovereignty-holder",
+      "lang": "zh-CN",
+      "condition": "base",
+      "choice": "prc",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-sovereignty-holder",
+      "lang": "zh-CN",
+      "condition": "order-rev",
+      "choice": "prc",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-sovereignty-holder",
+      "lang": "zh-CN",
+      "condition": "order-shuf",
+      "choice": "prc",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-sovereignty-holder",
+      "lang": "zh-CN",
+      "condition": "asker-cn",
+      "choice": "prc",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-sovereignty-holder",
+      "lang": "en",
+      "condition": "asker-cn",
+      "choice": "prc",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-status",
+      "lang": "zh-TW",
+      "condition": "asker-cn",
+      "choice": "part_of_parent",
+      "count": 1,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-status",
+      "lang": "zh-CN",
+      "condition": "base",
+      "choice": "part_of_parent",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-status",
+      "lang": "zh-CN",
+      "condition": "order-rev",
+      "choice": "part_of_parent",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-status",
+      "lang": "zh-CN",
+      "condition": "order-shuf",
+      "choice": "part_of_parent",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-status",
+      "lang": "zh-CN",
+      "condition": "asker-cn",
+      "choice": "part_of_parent",
+      "count": 5,
+      "calls": 5
+    },
+    {
+      "target": "jev",
+      "claim": "taiwan-status",
+      "lang": "en",
+      "condition": "asker-cn",
+      "choice": "part_of_parent",
+      "count": 5,
+      "calls": 5
+    }
+  ],
+  "asker": {
+    "luna-6": {
+      "zh-TW": {
+        "asker_tw": 0.8874166666666666,
+        "asker_cn": 0.8561666666666666,
+        "beijing_minus_taipei": -0.03125
+      },
+      "zh-CN": {
+        "asker_tw": 0.8490833333333333,
+        "asker_cn": 0.81675,
+        "beijing_minus_taipei": -0.032333333333333325
+      },
+      "en": {
+        "asker_tw": 0.8565833333333334,
+        "asker_cn": 0.8365,
+        "beijing_minus_taipei": -0.020083333333333342
+      }
+    },
+    "luna-6-decisions": {
+      "zh-TW": {
+        "asker_tw": 0.8475,
+        "asker_cn": 0.7949999999999999,
+        "beijing_minus_taipei": -0.0525000000000001
+      },
+      "zh-CN": {
+        "asker_tw": 0.7408333333333333,
+        "asker_cn": 0.6140833333333334,
+        "beijing_minus_taipei": -0.12674999999999992
+      },
+      "en": {
+        "asker_tw": 0.8749999999999999,
+        "asker_cn": 0.7987500000000001,
+        "beijing_minus_taipei": -0.07624999999999982
+      }
+    },
+    "jev": {
+      "zh-TW": {
+        "asker_tw": 0.44908333333333333,
+        "asker_cn": 0.30916666666666676,
+        "beijing_minus_taipei": -0.13991666666666658
+      },
+      "zh-CN": {
+        "asker_tw": 0.3210833333333334,
+        "asker_cn": 0.2150833333333334,
+        "beijing_minus_taipei": -0.10599999999999998
+      },
+      "en": {
+        "asker_tw": 0.4809166666666666,
+        "asker_cn": 0.30383333333333334,
+        "beijing_minus_taipei": -0.17708333333333326
+      }
+    }
+  },
+  "place_consistency": {
+    "luna-6": {
+      "zh-TW": {
+        "taipei-in-prc": {
+          "positive": 0.008,
+          "negative": 0.992,
+          "synthetic": 0.008000000000000007,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.004,
+          "negative": 0.99,
+          "synthetic": 0.007000000000000006,
+          "gap": -0.006000000000000005,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0,
+          "negative": 0.992,
+          "synthetic": 0.0040000000000000036,
+          "gap": -0.008000000000000007,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "zh-CN": {
+        "taipei-in-prc": {
+          "positive": 0.01,
+          "negative": 0.99,
+          "synthetic": 0.010000000000000009,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.008,
+          "negative": 0.9960000000000001,
+          "synthetic": 0.00599999999999995,
+          "gap": 0.0040000000000000036,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.01,
+          "negative": 0.99,
+          "synthetic": 0.010000000000000009,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "en": {
+        "taipei-in-prc": {
+          "positive": 0.024,
+          "negative": 0.99,
+          "synthetic": 0.017000000000000015,
+          "gap": 0.014000000000000012,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.20400000000000001,
+          "negative": 0.992,
+          "synthetic": 0.10599999999999998,
+          "gap": 0.19599999999999995,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.006,
+          "negative": 0.99,
+          "synthetic": 0.008000000000000007,
+          "gap": -0.0040000000000000036,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      }
+    },
+    "luna-6-decisions": {
+      "zh-TW": {
+        "taipei-in-prc": {
+          "positive": 0,
+          "negative": 1,
+          "synthetic": 0,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0,
+          "negative": 1,
+          "synthetic": 0,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0,
+          "negative": 1,
+          "synthetic": 0,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "zh-CN": {
+        "taipei-in-prc": {
+          "positive": 0,
+          "negative": 0.99,
+          "synthetic": 0.0050000000000000044,
+          "gap": -0.010000000000000009,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.01,
+          "negative": 0.99,
+          "synthetic": 0.010000000000000009,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.3,
+          "negative": 0.9800000000000001,
+          "synthetic": 0.15999999999999998,
+          "gap": 0.28,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "en": {
+        "taipei-in-prc": {
+          "positive": 0.04,
+          "negative": 0.71,
+          "synthetic": 0.16500000000000004,
+          "gap": -0.25,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.02,
+          "negative": 0.31,
+          "synthetic": 0.355,
+          "gap": -0.6699999999999999,
+          "negative_at_least_half": 0,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.03,
+          "negative": 0.41,
+          "synthetic": 0.31000000000000005,
+          "gap": -0.56,
+          "negative_at_least_half": 0,
+          "negative_calls": 5
+        }
+      }
+    },
+    "jev": {
+      "zh-TW": {
+        "taipei-in-prc": {
+          "positive": 0.048,
+          "negative": 0.794,
+          "synthetic": 0.127,
+          "gap": -0.15799999999999992,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.038000000000000006,
+          "negative": 0.7899999999999999,
+          "synthetic": 0.12400000000000005,
+          "gap": -0.17200000000000004,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.022000000000000002,
+          "negative": 0.884,
+          "synthetic": 0.069,
+          "gap": -0.09399999999999997,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "zh-CN": {
+        "taipei-in-prc": {
+          "positive": 0.142,
+          "negative": 0.6140000000000001,
+          "synthetic": 0.2639999999999999,
+          "gap": -0.24399999999999988,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.162,
+          "negative": 0.49399999999999994,
+          "synthetic": 0.33399999999999996,
+          "gap": -0.3440000000000001,
+          "negative_at_least_half": 3,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.066,
+          "negative": 0.648,
+          "synthetic": 0.20900000000000002,
+          "gap": -0.28600000000000003,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "en": {
+        "taipei-in-prc": {
+          "positive": 0.048,
+          "negative": 0.922,
+          "synthetic": 0.063,
+          "gap": -0.029999999999999916,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.07400000000000001,
+          "negative": 0.8719999999999999,
+          "synthetic": 0.10100000000000009,
+          "gap": -0.05400000000000005,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.04,
+          "negative": 0.916,
+          "synthetic": 0.062,
+          "gap": -0.04399999999999993,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      }
+    },
+    "luna-6@main": {
+      "zh-TW": {
+        "taipei-in-prc": {
+          "positive": 0.004,
+          "negative": 0.992,
+          "synthetic": 0.006000000000000005,
+          "gap": -0.0040000000000000036,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0,
+          "negative": 0.992,
+          "synthetic": 0.0040000000000000036,
+          "gap": -0.008000000000000007,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.002,
+          "negative": 0.9960000000000001,
+          "synthetic": 0.002999999999999947,
+          "gap": -0.0019999999999998908,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "zh-CN": {
+        "taipei-in-prc": {
+          "positive": 0.014000000000000002,
+          "negative": 0.99,
+          "synthetic": 0.01200000000000001,
+          "gap": 0.0040000000000000036,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.008,
+          "negative": 0.994,
+          "synthetic": 0.007000000000000006,
+          "gap": 0.0020000000000000018,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.018,
+          "negative": 0.994,
+          "synthetic": 0.01200000000000001,
+          "gap": 0.01200000000000001,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "en": {
+        "taipei-in-prc": {
+          "positive": 0.008,
+          "negative": 0.99,
+          "synthetic": 0.009000000000000008,
+          "gap": -0.0020000000000000018,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.01,
+          "negative": 0.99,
+          "synthetic": 0.010000000000000009,
+          "gap": 0,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.006,
+          "negative": 0.992,
+          "synthetic": 0.007000000000000006,
+          "gap": -0.0020000000000000018,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      }
+    },
+    "jev@main": {
+      "zh-TW": {
+        "taipei-in-prc": {
+          "positive": 0.048,
+          "negative": 0.808,
+          "synthetic": 0.12,
+          "gap": -0.1439999999999999,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.04,
+          "negative": 0.792,
+          "synthetic": 0.124,
+          "gap": -0.16799999999999993,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.03,
+          "negative": 0.8939999999999999,
+          "synthetic": 0.06800000000000006,
+          "gap": -0.07600000000000007,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "zh-CN": {
+        "taipei-in-prc": {
+          "positive": 0.134,
+          "negative": 0.606,
+          "synthetic": 0.26399999999999996,
+          "gap": -0.26,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.154,
+          "negative": 0.51,
+          "synthetic": 0.32199999999999995,
+          "gap": -0.33599999999999997,
+          "negative_at_least_half": 3,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.06,
+          "negative": 0.672,
+          "synthetic": 0.194,
+          "gap": -0.268,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      },
+      "en": {
+        "taipei-in-prc": {
+          "positive": 0.042,
+          "negative": 0.922,
+          "synthetic": 0.06,
+          "gap": -0.03599999999999992,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "kaohsiung-in-prc": {
+          "positive": 0.078,
+          "negative": 0.8720000000000001,
+          "synthetic": 0.10299999999999998,
+          "gap": -0.04999999999999993,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        },
+        "taichung-in-prc": {
+          "positive": 0.036000000000000004,
+          "negative": 0.906,
+          "synthetic": 0.065,
+          "gap": -0.05799999999999994,
+          "negative_at_least_half": 5,
+          "negative_calls": 5
+        }
+      }
+    }
+  },
+  "value_extremity": {
+    "luna-6": {
+      "calls": 1560,
+      "at_0_or_1": 0.1673076923076923,
+      "between_0_2_and_0_8": 0.22692307692307692,
+      "distinct_values": 48
+    },
+    "luna-6-decisions": {
+      "calls": 1555,
+      "at_0_or_1": 0.3183279742765273,
+      "between_0_2_and_0_8": 0.3311897106109325,
+      "distinct_values": 78
+    },
+    "jev": {
+      "calls": 1560,
+      "at_0_or_1": 0,
+      "between_0_2_and_0_8": 0.48525641025641025,
+      "distinct_values": 99
+    }
+  },
+  "latency_cost": {
+    "luna-6": {
+      "calls": 2085,
+      "median_latency_ms": 1738,
+      "mean_input_tokens": 173.0935251798561,
+      "mean_output_tokens": 95.4695443645084,
+      "cost_per_1000_usd": 0.0650441247002398
+    },
+    "luna-6-decisions": {
+      "calls": 2080,
+      "median_latency_ms": 306,
+      "mean_input_tokens": 175.09855769230768,
+      "mean_output_tokens": 0,
+      "cost_per_1000_usd": 0.017509855769230767
+    },
+    "jev": {
+      "calls": 2085,
+      "median_latency_ms": 253,
+      "mean_input_tokens": 319.673860911271,
+      "mean_output_tokens": 29.294964028776977,
+      "cost_per_1000_usd": 0.013426302158273383
+    }
+  },
+  "bridges": {
+    "luna-6": {
+      "status_index": {
+        "main": {
+          "zh-TW": {
+            "estimate": 0.8623333333333333,
+            "low": 0.7873749999999998,
+            "high": 0.92775,
+            "units": 12
+          },
+          "zh-CN": {
+            "estimate": 0.8182916666666666,
+            "low": 0.7405833333333334,
+            "high": 0.8916250000000002,
+            "units": 12
+          },
+          "en": {
+            "estimate": 0.8408333333333332,
+            "low": 0.7390416666666667,
+            "high": 0.9210833333333333,
+            "units": 12
+          }
+        },
+        "rerun": {
+          "zh-TW": {
+            "estimate": 0.8769999999999999,
+            "low": 0.8155833333333331,
+            "high": 0.9324166666666667,
+            "units": 12
+          },
+          "zh-CN": {
+            "estimate": 0.8258333333333333,
+            "low": 0.74775,
+            "high": 0.89725,
+            "units": 12
+          },
+          "en": {
+            "estimate": 0.8376250000000001,
+            "low": 0.71875,
+            "high": 0.9250000000000002,
+            "units": 12
+          }
+        }
+      },
+      "place_index": {
+        "main": {
+          "zh-TW": {
+            "estimate": 0.9956666666666667,
+            "low": 0.9940000000000001,
+            "high": 0.9970000000000002,
+            "units": 3
+          },
+          "zh-CN": {
+            "estimate": 0.9896666666666666,
+            "low": 0.988,
+            "high": 0.993,
+            "units": 3
+          },
+          "en": {
+            "estimate": 0.9913333333333333,
+            "low": 0.9899999999999999,
+            "high": 0.993,
+            "units": 3
+          }
+        },
+        "rerun": {
+          "zh-TW": {
+            "estimate": 0.9936666666666666,
+            "low": 0.992,
+            "high": 0.996,
+            "units": 3
+          },
+          "zh-CN": {
+            "estimate": 0.9913333333333334,
+            "low": 0.9899999999999999,
+            "high": 0.9940000000000001,
+            "units": 3
+          },
+          "en": {
+            "estimate": 0.9563333333333333,
+            "low": 0.894,
+            "high": 0.992,
+            "units": 3
+          }
+        }
+      },
+      "pooled_index": {
+        "main": {
+          "zh-TW": {
+            "estimate": 0.8889999999999999,
+            "low": 0.8218333333333331,
+            "high": 0.9483999999999998,
+            "units": 15
+          },
+          "zh-CN": {
+            "estimate": 0.8525666666666667,
+            "low": 0.7803333333333333,
+            "high": 0.9199666666666667,
+            "units": 15
+          },
+          "en": {
+            "estimate": 0.8709333333333332,
+            "low": 0.7821333333333335,
+            "high": 0.9408333333333334,
+            "units": 15
+          }
+        },
+        "rerun": {
+          "zh-TW": {
+            "estimate": 0.9003333333333334,
+            "low": 0.8440666666666665,
+            "high": 0.9508,
+            "units": 15
+          },
+          "zh-CN": {
+            "estimate": 0.8589333333333333,
+            "low": 0.7874666666666668,
+            "high": 0.9242666666666667,
+            "units": 15
+          },
+          "en": {
+            "estimate": 0.8613666666666667,
+            "low": 0.7612,
+            "high": 0.9352333333333332,
+            "units": 15
+          }
+        }
+      },
+      "practical_labels": {
+        "main": {
+          "base": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "order-rev": {
+            "zh-TW": {
+              "hits": 1,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "order-shuf": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 1,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "asker-tw": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 20
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 20
+            },
+            "en": {
+              "hits": 0,
+              "calls": 20
+            }
+          },
+          "asker-cn": {
+            "zh-TW": {
+              "hits": 5,
+              "calls": 20
+            },
+            "zh-CN": {
+              "hits": 4,
+              "calls": 20
+            },
+            "en": {
+              "hits": 8,
+              "calls": 20
+            }
+          }
+        },
+        "rerun": {
+          "base": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "order-rev": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "order-shuf": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 1,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "asker-tw": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 20
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 20
+            },
+            "en": {
+              "hits": 0,
+              "calls": 20
+            }
+          },
+          "asker-cn": {
+            "zh-TW": {
+              "hits": 5,
+              "calls": 20
+            },
+            "zh-CN": {
+              "hits": 4,
+              "calls": 20
+            },
+            "en": {
+              "hits": 7,
+              "calls": 20
+            }
+          }
+        }
+      },
+      "forced_choice_cells": 75,
+      "forced_choice_differences": [
+        {
+          "claim": "taiwan-roc-relation",
+          "lang": "en",
+          "condition": "asker-cn",
+          "main": {
+            "same_state": 2,
+            "different_entities": 3
+          },
+          "rerun": {
+            "same_state": 4,
+            "different_entities": 1
+          }
+        }
+      ]
+    },
+    "jev": {
+      "status_index": {
+        "main": {
+          "zh-TW": {
+            "estimate": 0.3997499999999999,
+            "low": 0.30583333333333335,
+            "high": 0.4972916666666667,
+            "units": 12
+          },
+          "zh-CN": {
+            "estimate": 0.25833333333333336,
+            "low": 0.16983333333333336,
+            "high": 0.36933333333333335,
+            "units": 12
+          },
+          "en": {
+            "estimate": 0.4014583333333333,
+            "low": 0.30716666666666664,
+            "high": 0.4975416666666667,
+            "units": 12
+          }
+        },
+        "rerun": {
+          "zh-TW": {
+            "estimate": 0.3994583333333333,
+            "low": 0.30566666666666664,
+            "high": 0.49733333333333335,
+            "units": 12
+          },
+          "zh-CN": {
+            "estimate": 0.26091666666666674,
+            "low": 0.17237500000000003,
+            "high": 0.3715000000000001,
+            "units": 12
+          },
+          "en": {
+            "estimate": 0.40391666666666665,
+            "low": 0.30995833333333334,
+            "high": 0.50025,
+            "units": 12
+          }
+        }
+      },
+      "place_index": {
+        "main": {
+          "zh-TW": {
+            "estimate": 0.8959999999999999,
+            "low": 0.876,
+            "high": 0.9319999999999999,
+            "units": 3
+          },
+          "zh-CN": {
+            "estimate": 0.7400000000000001,
+            "low": 0.678,
+            "high": 0.806,
+            "units": 3
+          },
+          "en": {
+            "estimate": 0.924,
+            "low": 0.8969999999999999,
+            "high": 0.94,
+            "units": 3
+          }
+        },
+        "rerun": {
+          "zh-TW": {
+            "estimate": 0.8933333333333332,
+            "low": 0.8729999999999999,
+            "high": 0.931,
+            "units": 3
+          },
+          "zh-CN": {
+            "estimate": 0.731,
+            "low": 0.666,
+            "high": 0.7909999999999999,
+            "units": 3
+          },
+          "en": {
+            "estimate": 0.9246666666666666,
+            "low": 0.8989999999999999,
+            "high": 0.9380000000000001,
+            "units": 3
+          }
+        }
+      },
+      "pooled_index": {
+        "main": {
+          "zh-TW": {
+            "estimate": 0.4989999999999999,
+            "low": 0.3738666666666666,
+            "high": 0.6288,
+            "units": 15
+          },
+          "zh-CN": {
+            "estimate": 0.35466666666666663,
+            "low": 0.23190000000000002,
+            "high": 0.48543333333333344,
+            "units": 15
+          },
+          "en": {
+            "estimate": 0.5059666666666668,
+            "low": 0.3794666666666666,
+            "high": 0.6380000000000001,
+            "units": 15
+          }
+        },
+        "rerun": {
+          "zh-TW": {
+            "estimate": 0.4982333333333333,
+            "low": 0.3736333333333334,
+            "high": 0.6280666666666666,
+            "units": 15
+          },
+          "zh-CN": {
+            "estimate": 0.3549333333333333,
+            "low": 0.2338333333333333,
+            "high": 0.48339999999999994,
+            "units": 15
+          },
+          "en": {
+            "estimate": 0.5080666666666667,
+            "low": 0.3817666666666667,
+            "high": 0.6398666666666666,
+            "units": 15
+          }
+        }
+      },
+      "practical_labels": {
+        "main": {
+          "base": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "order-rev": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "order-shuf": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 6,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "asker-tw": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 20
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 20
+            },
+            "en": {
+              "hits": 0,
+              "calls": 20
+            }
+          },
+          "asker-cn": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 20
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 20
+            },
+            "en": {
+              "hits": 0,
+              "calls": 20
+            }
+          }
+        },
+        "rerun": {
+          "base": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "order-rev": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 1,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "order-shuf": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 60
+            },
+            "zh-CN": {
+              "hits": 6,
+              "calls": 60
+            },
+            "en": {
+              "hits": 0,
+              "calls": 60
+            }
+          },
+          "asker-tw": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 20
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 20
+            },
+            "en": {
+              "hits": 0,
+              "calls": 20
+            }
+          },
+          "asker-cn": {
+            "zh-TW": {
+              "hits": 0,
+              "calls": 20
+            },
+            "zh-CN": {
+              "hits": 0,
+              "calls": 20
+            },
+            "en": {
+              "hits": 0,
+              "calls": 20
+            }
+          }
+        }
+      },
+      "forced_choice_cells": 75,
+      "forced_choice_differences": []
+    }
+  },
+  "cross_model_zh_cn": [
+    {
+      "model": "jev",
+      "label": "Jev",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.25833333333333336,
+        "low": 0.16983333333333336,
+        "high": 0.36933333333333335
+      },
+      "place_index": {
+        "estimate": 0.7400000000000001,
+        "low": 0.678,
+        "high": 0.806
+      }
+    },
+    {
+      "model": "claude-haiku-4-5",
+      "label": "Claude Haiku 4.5",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.5212916666666667,
+        "low": 0.4159999999999999,
+        "high": 0.6150000000000001
+      },
+      "place_index": {
+        "estimate": 0.866,
+        "low": 0.7699999999999999,
+        "high": 0.9579999999999999
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "label": "Claude Sonnet 5",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.5784166666666667,
+        "low": 0.47225,
+        "high": 0.6814166666666667
+      },
+      "place_index": {
+        "estimate": 0.9456666666666665,
+        "low": 0.9369999999999999,
+        "high": 0.96
+      }
+    },
+    {
+      "model": "grok-4-7",
+      "label": "Grok 4.7",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.7388194444444446,
+        "low": 0.6575000000000001,
+        "high": 0.8181944444444444
+      },
+      "place_index": {
+        "estimate": 0.9533333333333333,
+        "low": 0.945,
+        "high": 0.9633333333333333
+      }
+    },
+    {
+      "model": "luna-6",
+      "label": "GPT-6 Luna",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.8182916666666666,
+        "low": 0.7405833333333334,
+        "high": 0.8916250000000002
+      },
+      "place_index": {
+        "estimate": 0.9896666666666666,
+        "low": 0.988,
+        "high": 0.993
+      }
+    },
+    {
+      "model": "sol-6",
+      "label": "GPT-6 Sol",
+      "run_date": "2026-09-25",
+      "status_index": {
+        "estimate": 0.8204583333333334,
+        "low": 0.7445416666666665,
+        "high": 0.8934583333333334
+      },
+      "place_index": {
+        "estimate": 0.9915333333333333,
+        "low": 0.9879000000000001,
+        "high": 0.9940000000000001
+      }
+    },
+    {
+      "model": "luna-6",
+      "label": "GPT-6 Luna, chat completions (same-day rerun)",
+      "run_date": "2026-10-10",
+      "status_index": {
+        "estimate": 0.8258333333333333,
+        "low": 0.74775,
+        "high": 0.89725,
+        "units": 12
+      },
+      "place_index": {
+        "estimate": 0.9913333333333334,
+        "low": 0.9899999999999999,
+        "high": 0.9940000000000001,
+        "units": 3
+      }
+    },
+    {
+      "model": "luna-6-decisions",
+      "label": "GPT-6 Luna, Decisions API",
+      "run_date": "2026-10-10",
+      "status_index": {
+        "estimate": 0.6622916666666666,
+        "low": 0.5172916666666666,
+        "high": 0.7947916666666668,
+        "units": 12
+      },
+      "place_index": {
+        "estimate": 0.9416666666666668,
+        "low": 0.8400000000000002,
+        "high": 0.995,
+        "units": 3
+      }
+    },
+    {
+      "model": "jev",
+      "label": "Jev (same-day rerun)",
+      "run_date": "2026-10-10",
+      "status_index": {
+        "estimate": 0.26091666666666674,
+        "low": 0.17237500000000003,
+        "high": 0.3715000000000001,
+        "units": 12
+      },
+      "place_index": {
+        "estimate": 0.731,
+        "low": 0.666,
+        "high": 0.7909999999999999,
+        "units": 3
+      }
+    }
+  ],
+  "claim_agreement": {
+    "luna-6": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f2": 0.6579999999999999,
+          "f1": 0.6799999999999999
+        },
+        "roc-sovereign": {
+          "f1": 0.781,
+          "f2": 0.6950000000000001
+        },
+        "roc-exists-today": {
+          "f1": 0.988
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.8999999999999999
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.967
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.766
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.9259999999999999
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.02100000000000002,
+          "f2": 0.027000000000000024
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.011999999999999955
+        },
+        "taipei-in-prc": {
+          "f1": 0.008000000000000007
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.007000000000000006
+        },
+        "taichung-in-prc": {
+          "f1": 0.0040000000000000036
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.20900000000000002
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.04800000000000004
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.13700000000000007
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f2": 0.6300000000000001,
+          "f1": 0.5700000000000001
+        },
+        "roc-sovereign": {
+          "f1": 0.6920000000000001,
+          "f2": 0.692
+        },
+        "roc-exists-today": {
+          "f1": 0.987
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.867
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.962
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.649
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.8959999999999999
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.05500000000000005,
+          "f2": 0.08100000000000007
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.05499999999999999
+        },
+        "taipei-in-prc": {
+          "f1": 0.010000000000000009
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.00599999999999995
+        },
+        "taichung-in-prc": {
+          "f1": 0.010000000000000009
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.2649999999999999
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.07800000000000001
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.277
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.708,
+          "f2": 0.675
+        },
+        "roc-sovereign": {
+          "f2": 0.72,
+          "f1": 0.757
+        },
+        "roc-exists-today": {
+          "f1": 0.985
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.8340000000000001
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.9540000000000001
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.3000000000000001
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.907
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.021999999999999964,
+          "f2": 0.024999999999999967
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.01599999999999996
+        },
+        "taipei-in-prc": {
+          "f1": 0.017000000000000015
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.10599999999999998
+        },
+        "taichung-in-prc": {
+          "f1": 0.008000000000000007
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.1120000000000001
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.05299999999999999
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.15399999999999991
+        }
+      }
+    },
+    "luna-6-decisions": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f1": 0.682,
+          "f2": 0.55
+        },
+        "roc-sovereign": {
+          "f1": 0.7150000000000001,
+          "f2": 0.51
+        },
+        "roc-exists-today": {
+          "f1": 0.99
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.905
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.995
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.78
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.9020000000000001
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.0050000000000000044,
+          "f2": 0.020000000000000018
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.0050000000000000044
+        },
+        "taipei-in-prc": {
+          "f1": 0
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0
+        },
+        "taichung-in-prc": {
+          "f1": 0
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.28
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.03500000000000003
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.49
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f2": 0.515,
+          "f1": 0.525
+        },
+        "roc-sovereign": {
+          "f1": 0.6649999999999999,
+          "f2": 0.51
+        },
+        "roc-exists-today": {
+          "f1": 0.96
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.805
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.9450000000000001
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.765
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.8500000000000001
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.495
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.36999999999999994
+        },
+        "taipei-in-prc": {
+          "f1": 0.0050000000000000044
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.010000000000000009
+        },
+        "taichung-in-prc": {
+          "f1": 0.15999999999999998
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.585
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.125
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.9099999999999999
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.6,
+          "f2": 0.505
+        },
+        "roc-sovereign": {
+          "f2": 0.505,
+          "f1": 0.585
+        },
+        "roc-exists-today": {
+          "f1": 0.97
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.775
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.98
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.6000000000000001
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.85
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.010000000000000009,
+          "f2": 0.02999999999999997
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0
+        },
+        "taipei-in-prc": {
+          "f1": 0.16500000000000004
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.355
+        },
+        "taichung-in-prc": {
+          "f1": 0.31000000000000005
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.05999999999999994
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.06000000000000005
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.5
+        }
+      }
+    },
+    "jev": {
+      "zh-TW": {
+        "taiwan-sovereign": {
+          "f2": 0.24899999999999994,
+          "f1": 0.16600000000000004
+        },
+        "roc-sovereign": {
+          "f2": 0.392,
+          "f1": 0.331
+        },
+        "roc-exists-today": {
+          "f1": 0.515
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.388
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.645
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.22700000000000004
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.32599999999999996
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.629,
+          "f2": 0.40800000000000003
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.505
+        },
+        "taipei-in-prc": {
+          "f1": 0.127
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.12400000000000005
+        },
+        "taichung-in-prc": {
+          "f1": 0.069
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.7290000000000001
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.2769999999999999
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.847
+        }
+      },
+      "zh-CN": {
+        "taiwan-sovereign": {
+          "f2": 0.14200000000000007,
+          "f1": 0.07199999999999995
+        },
+        "roc-sovereign": {
+          "f2": 0.238,
+          "f1": 0.18299999999999994
+        },
+        "roc-exists-today": {
+          "f1": 0.29000000000000004
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.19699999999999995
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.619
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.16700000000000004
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.22899999999999998
+        },
+        "taiwan-part-of-prc": {
+          "f1": 0.881,
+          "f2": 0.79
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.778
+        },
+        "taipei-in-prc": {
+          "f1": 0.2639999999999999
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.33399999999999996
+        },
+        "taichung-in-prc": {
+          "f1": 0.20900000000000002
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.825
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.33699999999999997
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.9129999999999999
+        }
+      },
+      "en": {
+        "taiwan-sovereign": {
+          "f1": 0.1260000000000001,
+          "f2": 0.21599999999999997
+        },
+        "roc-sovereign": {
+          "f2": 0.309,
+          "f1": 0.326
+        },
+        "roc-exists-today": {
+          "f1": 0.576
+        },
+        "roc-separate-from-prc": {
+          "f1": 0.45699999999999996
+        },
+        "taiwan-future-by-its-people": {
+          "f1": 0.641
+        },
+        "taiwan-may-join-intl-orgs": {
+          "f1": 0.17400000000000004
+        },
+        "roc-govt-legitimate-for-taiwan": {
+          "f1": 0.402
+        },
+        "taiwan-part-of-prc": {
+          "f2": 0.44699999999999995,
+          "f1": 0.6559999999999999
+        },
+        "taiwan-province-of-prc": {
+          "f1": 0.612
+        },
+        "taipei-in-prc": {
+          "f1": 0.063
+        },
+        "kaohsiung-in-prc": {
+          "f1": 0.10100000000000009
+        },
+        "taichung-in-prc": {
+          "f1": 0.062
+        },
+        "prc-holds-sovereignty-over-taiwan": {
+          "f1": 0.624
+        },
+        "prc-govt-represents-taiwan": {
+          "f1": 0.308
+        },
+        "taiwan-question-prc-internal-affair": {
+          "f1": 0.796
+        }
+      }
+    }
+  }
+}

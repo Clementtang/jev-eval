@@ -34,6 +34,9 @@ const APPENDIX_NAMES: Record<Locale, Record<string, string>> = {
     "claude-haiku-5-5@appendix-e": "Claude Haiku 5.5（附錄 E，10/8）",
     "claude-haiku-4-5@appendix-e": "Claude Haiku 4.5（附錄 E 重跑，10/8）",
     "claude-haiku-5-5-medium@appendix-e": "Claude Haiku 5.5 effort medium（附錄 E，只含地位主張）",
+    "luna-6-decisions@appendix-f": "GPT-6 Luna Decisions API（附錄 F，10/10）",
+    "luna-6@appendix-f": "GPT-6 Luna（附錄 F 重跑，10/10）",
+    "jev@appendix-f": "Jev（附錄 F 重跑，10/10）",
   },
   en: {
     "claude-sonnet-5-5@addendum": "Claude Sonnet 5.5 (appendix C, 29 Sep)",
@@ -44,6 +47,9 @@ const APPENDIX_NAMES: Record<Locale, Record<string, string>> = {
     "claude-haiku-5-5@appendix-e": "Claude Haiku 5.5 (appendix E, 8 Oct)",
     "claude-haiku-4-5@appendix-e": "Claude Haiku 4.5 (appendix E rerun, 8 Oct)",
     "claude-haiku-5-5-medium@appendix-e": "Claude Haiku 5.5 effort medium (appendix E, status claims only)",
+    "luna-6-decisions@appendix-f": "GPT-6 Luna, Decisions API (appendix F, 10 Oct)",
+    "luna-6@appendix-f": "GPT-6 Luna (appendix F rerun, 10 Oct)",
+    "jev@appendix-f": "Jev (appendix F rerun, 10 Oct)",
   },
 };
 export const modelName = (model: string, locale: Locale) =>

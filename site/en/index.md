@@ -14,7 +14,7 @@ import { withBase } from "vitepress";
 
 <p class="home-subtitle">How audits of language models on Taiwan's sovereignty rank models differently depending on the instrument</p>
 
-<p class="home-meta">Hong-Rui (Clement) Tang (independent researcher, Hanoi, Vietnam) · Preprint draft 0.9.1, 8 October 2026 · Not peer reviewed</p>
+<p class="home-meta">Hong-Rui (Clement) Tang (independent researcher, Hanoi, Vietnam) · Preprint draft 0.10, 11 October 2026 · Not peer reviewed</p>
 
 We audit one structured decision model, TypeSafe Jev (jev-1.13.0), and five generative models (Claude Haiku 4.5, Claude Sonnet 5, Grok 4.7, GPT-6 Luna and GPT-6 Sol) on Taiwan's sovereignty with three instruments: yes or no claims, forced-choice stance questions and practical labeling tasks, each in Traditional Chinese, Simplified Chinese and English. We analyze 26,796 calls.
 
@@ -44,7 +44,7 @@ Jev was also the fastest and cheapest of the six models: a median latency of 267
 ## Read and explore
 
 <ul class="link-list">
-  <li><a :href="withBase('/en/paper')">Full paper</a><span class="desc">Method, all results, limitations and the revisions after seven adversarial review rounds. Also available in <a :href="withBase('/paper')">Traditional Chinese</a>.</span></li>
+  <li><a :href="withBase('/en/paper')">Full paper</a><span class="desc">Method, all results, limitations and the revisions after eight adversarial review rounds. Also available in <a :href="withBase('/paper')">Traditional Chinese</a>.</span></li>
   <li><a :href="withBase('/en/explore')">Item browser</a><span class="desc">All 957 items in three languages with the six models' results on each, searchable and filterable, with a link for every item.</span></li>
   <li><a :href="withBase('/en/lab')">Sensitivity lab</a><span class="desc">Choose which claims enter the index and recompute it for the six models, with 95% bootstrap intervals.</span></li>
   <li><a :href="withBase('/replay/stance.html')" target="_self">Replay: stance comparison</a><span class="desc">The six models' judgments on the same question, played chapter by chapter. Best viewed on a landscape desktop screen; on a phone, open the <a :href="withBase('/replay/stance.html?layout=portrait&cut=short')" target="_self">portrait short cut</a>. Interface in Traditional Chinese.</span></li>
@@ -55,6 +55,7 @@ Jev was also the fastest and cheapest of the six models: a median latency of 267
   <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/addendum.md">Appendix C: Claude Sonnet 5.5</a><span class="desc">Outside the main analysis, Claude Sonnet 5.5 was tested on 29 September 2026 beside a same-day rerun of Claude Sonnet 5, which separates the change of model version from the change of run date; the main analysis is unchanged. Machine-readable data in <a :href="withBase('/data/addendum.json')" target="_self">addendum.json</a>; the item browser and the sensitivity lab can show the addendum models.</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-d.md">Appendix D: GPT-6.1 Sol</a><span class="desc">GPT-6.1 Sol, which OpenAI released the same day as Claude Sonnet 5.5, was tested on 1 October 2026 beside a same-day rerun of GPT-6 Sol and differed little from its predecessor; no difference was detected. Machine-readable data in <a :href="withBase('/data/appendix-d.json')" target="_self">appendix-d.json</a>; the item browser, the sensitivity lab and the replays can show these models.</span></li>
   <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-e.md">Appendix E: Claude Haiku 5.5</a><span class="desc">Claude Haiku 5.5, released on 7 October, was tested on 8 October 2026 beside a same-day rerun of Claude Haiku 4.5; at low effort its mean status index is higher than its predecessor's in all three languages (p = 0.057 in English), and its place index is lower in Traditional Chinese and English, the English value from rejecting both sentences of a pair. Machine-readable data in <a :href="withBase('/data/appendix-e.json')" target="_self">appendix-e.json</a>; the item browser, the sensitivity lab and the replays can show these models.</span></li>
+  <li><a href="https://github.com/Clementtang/jev-eval/blob/main/results/appendix-f.md">Appendix F: GPT-6 Luna through the Decisions API</a><span class="desc">OpenAI's Decisions API, released on 6 October, was tested with GPT-6 Luna on 10 October 2026 beside same-day reruns of GPT-6 Luna through chat completions and of Jev; its Simplified Chinese status index was 0.16 lower than through chat completions, under changed option orders it chose "China" labels in every repetition of some scenarios, and it remained above Jev on every status claim. The two endpoints also used different prompts. Machine-readable data in <a :href="withBase('/data/appendix-f.json')" target="_self">appendix-f.json</a>; the item browser, the sensitivity lab and the replays can show these models.</span></li>
 </ul>
 
 ## License

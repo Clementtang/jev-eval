@@ -3,7 +3,7 @@
 **English** | [繁體中文](README.zh-TW.md)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
-[![Preprint](https://img.shields.io/badge/preprint-draft%200.9.1%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
+[![Preprint](https://img.shields.io/badge/preprint-draft%200.10%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-green)](LICENSE-CC-BY-4.0.txt)
@@ -13,7 +13,7 @@ How audits of language models on Taiwan's sovereignty rank models differently de
 
 [Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [Citation](#citation)
 
-Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.9.1, 8 October 2026. Not peer reviewed.
+Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.10, 11 October 2026. Not peer reviewed.
 
 DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions; v0.9.1 is 10.5281/zenodo.23233411).
 
@@ -35,6 +35,7 @@ Language models increasingly make structured decisions inside software, such as 
 - **Successor model (Appendix C).** In a same-day addendum on 29 September, Claude Sonnet 5.5 at low effort chose no label listing Taiwan under "China" in the original option order (2 of 60 Simplified Chinese trials with shuffled options), while a rerun of Claude Sonnet 5 reproduced its 42%. Sonnet 5.5 rejected the Taiwanese city claims less firmly in Simplified Chinese (place index 0.79 against 0.94). Details in [`results/addendum.md`](results/addendum.md).
 - **Successor model (Appendix D).** GPT-6.1 Sol, which OpenAI released the same day, was tested on 1 October beside a same-day rerun of GPT-6 Sol and differed little from it; no difference was detected and equivalence was not tested (status index 0.90, 0.79 and 0.91 against 0.91, 0.81 and 0.91; no label under "China" and no PRC formulation in forced choice). Jev, Grok 4.7 and GPT-6 Luna were not rerun. Details in [`results/appendix-d.md`](results/appendix-d.md).
 - **Successor model (Appendix E).** Claude Haiku 5.5, released on 7 October, was tested on 8 October at low effort beside a same-day rerun of Claude Haiku 4.5. Its status index was 0.11 to 0.14 higher (0.74, 0.66 and 0.73 against 0.62, 0.53 and 0.62; exact p = 0.011, 0.004 and 0.057, uncorrected), and it chose no label under "China" and no PRC formulation; labels and forced choice were not run at its default medium effort. Its place index was lower in Traditional Chinese and English, where the 0.75 comes from rejecting both "Taipei is a city in the PRC" and its negation. Details in [`results/appendix-e.md`](results/appendix-e.md).
+- **Interface (Appendix F).** On 10 October GPT-6 Luna answered all items through OpenAI's Decisions API, released in public beta on 6 October, beside same-day reruns of GPT-6 Luna through chat completions and of Jev, both of which were close to the main analysis. Through the Decisions API its status index was 0.83, 0.66 and 0.80 against 0.88, 0.83 and 0.84 (Simplified Chinese 0.16 lower, exact p = 0.012, uncorrected), and under changed option orders it chose a label listing Taiwan under "China" in every repetition of some scenarios; it remained above Jev on every status claim. The two endpoints also used different prompts, and their effects cannot be separated. The addendum was decided after draft 0.9.1. Details in [`results/appendix-f.md`](results/appendix-f.md).
 - **Speed and cost.** Jev answered fastest (median 267 ms) and cheapest (about USD 0.013 per 1,000 calls).
 
 The Simplified Chinese status index of Jev (0.26) is exploratory: it is below 0.5 within its test family and not significant after correction across all claim sets examined. The split between status and place claims was adopted after the results were seen; the paper reports both versions.
@@ -67,7 +68,7 @@ All calls were made on 25 September 2026 (UTC). Hosted models may change without
 
 | Path                                     | Contents                                                                             |
 | ---------------------------------------- | ------------------------------------------------------------------------------------ |
-| `docs/paper/`                            | The paper in English and Traditional Chinese, and seven rounds of adversarial review |
+| `docs/paper/`                            | The paper in English and Traditional Chinese, and eight rounds of adversarial review |
 | `data/dataset.json`                      | The item set: 957 items with text in three languages, options and coding             |
 | `results/runs/*.jsonl`                   | Raw record of every analyzed call (one JSON object per line)                         |
 | `results/stats.md`                       | Statistical output: indices, exact sign-flip tests, Holm correction, robustness      |
@@ -115,9 +116,9 @@ cd site && npm ci && npm run build  # output in site/.vitepress/dist
 
 ## Review process and disclosure
 
-The drafts went through seven adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one, two and six were run by separate Claude sessions; rounds three to five and seven by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build). Round six pointed out that only the Anthropic successor had been retested, which led to Appendix D; round seven reviewed Appendices D and E and led to draft 0.9.1.
+The drafts went through eight adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one, two and six were run by separate Claude sessions; rounds three to five, seven and eight by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build). Round six pointed out that only the Anthropic successor had been retested, which led to Appendix D; round seven reviewed Appendices D and E and led to draft 0.9.1; round eight reviewed Appendix F and led to draft 0.10.
 
-Claude (Anthropic) assisted with item drafting, code, statistical analysis and the paper, and two Claude models are among those tested, with two more in Appendices C and E. The vendors of the reviewers in rounds three to five and seven also have tested models. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage. TypeSafe was not contacted before publication.
+Claude (Anthropic) assisted with item drafting, code, statistical analysis and the paper, and two Claude models are among those tested, with two more in Appendices C and E. The vendors of the reviewers in rounds three to five, seven and eight also have tested models; Appendix F tests an OpenAI product, and the round-eight reviewer GPT-6 Astra is an OpenAI model. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage. TypeSafe was not contacted before publication.
 
 ## Citation
 
@@ -128,7 +129,7 @@ Claude (Anthropic) assisted with item drafting, code, statistical analysis and t
   year   = {2026},
   month  = {10},
   type   = {Preprint},
-  note   = {Draft 0.9.1, not peer reviewed},
+  note   = {Draft 0.10, not peer reviewed},
   doi    = {10.5281/zenodo.23055592},
   url    = {https://clementtang.github.io/jev-eval/}
 }

@@ -1,6 +1,7 @@
 // Files for readers that are programs: llms.txt, llms-full.txt, the papers as plain Markdown and
 // the machine-readable results. Everything is derived from docs/paper/*.md, results/summary.json,
-// the appendix results (results/addendum.json, results/appendix-d.json, results/appendix-e.json) and CITATION.cff at build
+// the appendix results (results/addendum.json, results/appendix-d.json, results/appendix-e.json,
+// results/appendix-f.json) and CITATION.cff at build
 // time, so there is no second copy to keep in sync.
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
@@ -96,6 +97,12 @@ Appendix E, also outside the main analysis, adds Claude Haiku 5.5 (effort low on
 - [Appendix E data (JSON)](${url("data/appendix-e.json")}): claim agreement in the format of summary.json's claim_agreement, with the indices, the bridge and a schema.
 - [Appendix E call records (JSONL)](${REPO_URL}/tree/main/results/runs-appendixe): one line per model call.
 
+Appendix F, also outside the main analysis, adds GPT-6 Luna through OpenAI's Decisions API (public beta from 6 October 2026), which returns the model's probabilities as Jev does, with same-day reruns of GPT-6 Luna through chat completions and of Jev, all on all 957 items, run on 10 October 2026.
+
+- [Appendix F results (appendix-f.md)](${BLOB}results/appendix-f.md): indices, the bridges to the main GPT-6 Luna and Jev runs, labels, forced choice, latency and cost.
+- [Appendix F data (JSON)](${url("data/appendix-f.json")}): claim agreement in the format of summary.json's claim_agreement, with the indices, the bridges and a schema.
+- [Appendix F call records (JSONL)](${REPO_URL}/tree/main/results/runs-appendixf): one line per model call.
+
 ## License
 
 - [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): paper, items and results (${BLOB}LICENSE-CC-BY-4.0.txt).
@@ -103,8 +110,8 @@ Appendix E, also outside the main analysis, adds Claude Haiku 5.5 (effort low on
 
 ## Optional
 
-- [Item browser](${url("en/explore")}): search and filter every item and see the six models' answers, with a switch that adds the appendix C, D and E models; each item has a link of the form ${url("en/explore")}#item=<id>.
-- [Sensitivity lab](${url("en/lab")}): choose which claims enter the index and recompute it in the browser with the paper's bootstrap, optionally for the appendix C, D and E models too; exploratory, no p-values.
+- [Item browser](${url("en/explore")}): search and filter every item and see the six models' answers, with a switch that adds the appendix C to F models; each item has a link of the form ${url("en/explore")}#item=<id>.
+- [Sensitivity lab](${url("en/lab")}): choose which claims enter the index and recompute it in the browser with the paper's bootstrap, optionally for the appendix C to F models too; exploratory, no p-values.
 
 - [Replay: stance comparison](${url("replay/stance.html")}): the six models' judgments, item by item (Traditional Chinese interface).
 - [Source repository](${REPO_URL}): item generator, analysis scripts and site source.
@@ -131,7 +138,7 @@ export function writeAgentFiles({ repo, site, papers }) {
   write("llms-full.txt", `# ${en.meta.title}\n\nFull text of the paper in English, then in Traditional Chinese. License: CC BY 4.0. Index: ${SITE_URL}llms.txt\n\n${full}`);
 
   mkdirSync(new URL("public/data/", site), { recursive: true });
-  for (const name of ["summary.json", "addendum.json", "appendix-d.json", "appendix-e.json"]) {
+  for (const name of ["summary.json", "addendum.json", "appendix-d.json", "appendix-e.json", "appendix-f.json"]) {
     copyFileSync(new URL(`results/${name}`, repo), new URL(`public/data/${name}`, site));
     console.log(`agent file: results/${name} -> site/public/data/${name}`);
   }
