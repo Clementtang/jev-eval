@@ -3,7 +3,7 @@
 [English](README.md) | **繁體中文**
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
-[![Preprint](https://img.shields.io/badge/preprint-draft%200.10%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/paper)
+[![Preprint](https://img.shields.io/badge/preprint-draft%200.10.1%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-green)](LICENSE-CC-BY-4.0.txt)
@@ -13,7 +13,7 @@
 
 [網站](https://clementtang.github.io/jev-eval/) · [論文](https://clementtang.github.io/jev-eval/paper) · [題庫瀏覽器](https://clementtang.github.io/jev-eval/explore) · [敏感度實驗室](https://clementtang.github.io/jev-eval/lab) · [互動重播](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [引用](#引用)
 
-Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.10，2026 年 10 月 11 日，未經同儕審查。
+Hong-Rui (Clement) Tang，獨立研究者（[ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)）。預印本草稿 0.10.1，2026 年 10 月 12 日，未經同儕審查。
 
 DOI：[10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592)（所有版本；v0.10 為 10.5281/zenodo.23302251）。
 
@@ -68,7 +68,7 @@ Jev 在簡體中文的地位指數 0.26 屬於探索性結果：在它的檢定�
 
 | 路徑                                     | 內容                                                |
 | ---------------------------------------- | --------------------------------------------------- |
-| `docs/paper/`                            | 英文與繁體中文論文，以及八輪對抗式審查報告          |
+| `docs/paper/`                            | 英文與繁體中文論文，以及九輪對抗式審查報告          |
 | `data/dataset.json`                      | 題庫：957 題，含三語題目、選項與編碼                |
 | `results/runs/*.jsonl`                   | 每一次納入分析的呼叫原始紀錄（每行一個 JSON）       |
 | `results/stats.md`                       | 統計輸出：指數、精確符號翻轉檢定、Holm 校正、穩健性 |
@@ -116,9 +116,9 @@ cd site && npm ci && npm run build  # 輸出在 site/.vitepress/dist
 
 ## 審查過程與利益揭露
 
-草稿經過八輪對抗式審查，報告公開在 [`docs/paper/`](docs/paper/)。第一、二、六輪由另開的 Claude 工作階段執行，第三至五輪與第七、八輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行。第六輪指出只有 Anthropic 的後繼版本經過重測，因此補做了附錄 D；第七輪審查附錄 D、E，促成草稿 0.9.1；第八輪審查附錄 F，促成草稿 0.10。
+草稿經過九輪對抗式審查，報告公開在 [`docs/paper/`](docs/paper/)。第一、二、六輪由另開的 Claude 工作階段執行，第三至五輪與第七至九輪由 GPT-6 Astra（OpenAI Codex CLI）與 Grok（xAI Grok Build）執行。第六輪指出只有 Anthropic 的後繼版本經過重測，因此補做了附錄 D；第七輪審查附錄 D、E，促成草稿 0.9.1；第八輪審查附錄 F，促成草稿 0.10；第九輪審查新增的同時期研究引用（Hsiao, 2026）與附錄 F 時間線，促成草稿 0.10.1。
 
-Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰寫，受測模型包含兩個 Claude 模型，附錄 C 與附錄 E 另有兩個。第三至五輪與第七、八輪審查者所屬的廠商也有模型在受測之列；附錄 F 測的是 OpenAI 的產品，第八輪審查者 GPT-6 Astra 也屬於 OpenAI。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，所有 API 費用由作者自行支付。發表前未聯繫 TypeSafe。
+Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰寫，受測模型包含兩個 Claude 模型，附錄 C 與附錄 E 另有兩個。第三至五輪與第七至九輪審查者所屬的廠商也有模型在受測之列；附錄 F 測的是 OpenAI 的產品，第八、九輪審查者 GPT-6 Astra 也屬於 OpenAI。作者與 TypeSafe、Anthropic、xAI、OpenAI 均無財務關係，所有 API 費用由作者自行支付。發表前未聯繫 TypeSafe。
 
 ## 引用
 
@@ -129,7 +129,7 @@ Claude（Anthropic）協助了題目起草、程式、統計分析與論文撰�
   year   = {2026},
   month  = {10},
   type   = {Preprint},
-  note   = {Draft 0.10, not peer reviewed},
+  note   = {Draft 0.10.1, not peer reviewed},
   doi    = {10.5281/zenodo.23055592},
   url    = {https://clementtang.github.io/jev-eval/}
 }

@@ -3,7 +3,7 @@
 **English** | [繁體中文](README.zh-TW.md)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23055592.svg)](https://doi.org/10.5281/zenodo.23055592)
-[![Preprint](https://img.shields.io/badge/preprint-draft%200.10%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
+[![Preprint](https://img.shields.io/badge/preprint-draft%200.10.1%2C%20not%20peer%20reviewed-orange)](https://clementtang.github.io/jev-eval/en/paper)
 [![Site](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml/badge.svg)](https://github.com/Clementtang/jev-eval/actions/workflows/pages.yml)
 [![Code license: MIT](https://img.shields.io/badge/code%20license-MIT-blue)](LICENSE)
 [![Data license: CC BY 4.0](https://img.shields.io/badge/data%20license-CC%20BY%204.0-green)](LICENSE-CC-BY-4.0.txt)
@@ -13,7 +13,7 @@ How audits of language models on Taiwan's sovereignty rank models differently de
 
 [Website](https://clementtang.github.io/jev-eval/) · [Paper](https://clementtang.github.io/jev-eval/en/paper) · [Item explorer](https://clementtang.github.io/jev-eval/en/explore) · [Sensitivity lab](https://clementtang.github.io/jev-eval/en/lab) · [Replay](https://clementtang.github.io/jev-eval/replay/stance.html) · [Zenodo](https://doi.org/10.5281/zenodo.23055592) · [Citation](#citation)
 
-Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.10, 11 October 2026. Not peer reviewed.
+Hong-Rui (Clement) Tang, independent researcher ([ORCID 0000-0003-4700-8651](https://orcid.org/0000-0003-4700-8651)). Preprint draft 0.10.1, 12 October 2026. Not peer reviewed.
 
 DOI: [10.5281/zenodo.23055592](https://doi.org/10.5281/zenodo.23055592) (all versions; v0.10 is 10.5281/zenodo.23302251).
 
@@ -68,7 +68,7 @@ All calls were made on 25 September 2026 (UTC). Hosted models may change without
 
 | Path                                     | Contents                                                                             |
 | ---------------------------------------- | ------------------------------------------------------------------------------------ |
-| `docs/paper/`                            | The paper in English and Traditional Chinese, and eight rounds of adversarial review |
+| `docs/paper/`                            | The paper in English and Traditional Chinese, and nine rounds of adversarial review |
 | `data/dataset.json`                      | The item set: 957 items with text in three languages, options and coding             |
 | `results/runs/*.jsonl`                   | Raw record of every analyzed call (one JSON object per line)                         |
 | `results/stats.md`                       | Statistical output: indices, exact sign-flip tests, Holm correction, robustness      |
@@ -116,9 +116,9 @@ cd site && npm ci && npm run build  # output in site/.vitepress/dist
 
 ## Review process and disclosure
 
-The drafts went through eight adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one, two and six were run by separate Claude sessions; rounds three to five, seven and eight by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build). Round six pointed out that only the Anthropic successor had been retested, which led to Appendix D; round seven reviewed Appendices D and E and led to draft 0.9.1; round eight reviewed Appendix F and led to draft 0.10.
+The drafts went through nine adversarial review rounds, published in [`docs/paper/`](docs/paper/). Rounds one, two and six were run by separate Claude sessions; rounds three to five and seven to nine by GPT-6 Astra (OpenAI Codex CLI) and Grok (xAI Grok Build). Round six pointed out that only the Anthropic successor had been retested, which led to Appendix D; round seven reviewed Appendices D and E and led to draft 0.9.1; round eight reviewed Appendix F and led to draft 0.10; round nine reviewed the added citation of a concurrent study (Hsiao, 2026) and the Appendix F timeline, and led to draft 0.10.1.
 
-Claude (Anthropic) assisted with item drafting, code, statistical analysis and the paper, and two Claude models are among those tested, with two more in Appendices C and E. The vendors of the reviewers in rounds three to five, seven and eight also have tested models; Appendix F tests an OpenAI product, and the round-eight reviewer GPT-6 Astra is an OpenAI model. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage. TypeSafe was not contacted before publication.
+Claude (Anthropic) assisted with item drafting, code, statistical analysis and the paper, and two Claude models are among those tested, with two more in Appendices C and E. The vendors of the reviewers in rounds three to five and seven to nine also have tested models; Appendix F tests an OpenAI product, and GPT-6 Astra, a reviewer in rounds eight and nine, is an OpenAI model. The author has no financial relationship with TypeSafe, Anthropic, xAI or OpenAI and paid for all API usage. TypeSafe was not contacted before publication.
 
 ## Citation
 
@@ -129,7 +129,7 @@ Claude (Anthropic) assisted with item drafting, code, statistical analysis and t
   year   = {2026},
   month  = {10},
   type   = {Preprint},
-  note   = {Draft 0.10, not peer reviewed},
+  note   = {Draft 0.10.1, not peer reviewed},
   doi    = {10.5281/zenodo.23055592},
   url    = {https://clementtang.github.io/jev-eval/}
 }
